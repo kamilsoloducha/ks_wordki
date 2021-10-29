@@ -1,0 +1,55 @@
+@id = 4663083a-ead9-44dd-acf4-11810aaa78da
+
+@host = http://localhost:5000/users
+
+### registering user
+# @name register
+POST {{host}}/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "user_name",
+    "password": "pass",
+    "email": "user@mail.com",
+    "firstName": null,
+    "surname": null
+}
+
+@id = {{register.response.body.$.response}}
+
+### confirming user
+PUT {{host}}/confirm HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "{{id}}"
+}
+
+### logining user
+# @name login
+PUT {{host}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "user_name",
+    "password": "pass"
+}
+
+###
+
+@authToken = Bearer {{login.response.body.$.token}}
+
+### logining user
+DELETE {{host}}/delete HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "id": "{{id}}"
+}
+
+### getUsers
+GET {{host}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+

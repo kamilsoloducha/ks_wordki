@@ -1,0 +1,143 @@
+@host = http://localhost:5000
+
+### logining user
+# @name login
+PUT {{host}}/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "user_name",
+    "password": "pass"
+}
+
+#
+@authToken = Bearer {{login.response.body.$.response.token}}
+@userId = {{login.response.body.$.response.id}}
+
+### get groups by userId
+# @name allGroups
+GET {{host}}/cards/{{userId}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+#
+@groupId = {{allGroups.response.body.$.groups[0].id}}
+
+
+### get group by userId and groupId
+# @name group
+GET {{host}}/cards/{{userId}}/{{groupId}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+#
+@cardId = {{group.response.body.$.cards[0].id}}
+
+
+### add group
+POST {{host}}/cards/add/group HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "groupName":"group1",
+    "front":1,
+    "back":2,
+    "cards":[
+        {
+            "frontValue":"front value1",
+            "frontExampe":"front Example1",
+            "backValue":"back value1",
+            "backExampe":"back Example1",
+            "comment":"comment1"
+            
+        }        
+    ]
+}
+
+### update group
+PUT {{host}}/cards/update/group HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "groupId": "{{groupId}}",
+    "groupName":"group2",
+    "front":2,
+    "back":1
+}
+
+### delete group
+DELETE  {{host}}/cards/delete/group HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "groupId": "{{groupId}}",
+}
+
+### add card
+POST {{host}}/cards/add/card HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "groupId":"{{groupId}}",
+    "front":{
+        "value":"frontvalue1",
+        "example":"frontExample1",
+    },
+    "back":{
+        "value":"backvalue1",
+        "example":"backExample1",
+    },
+    "comment":"comment1"
+}
+
+### update card
+PUT {{host}}/cards/update/card HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "groupId":"{{groupId}}",
+    "cardId":"{{cardId}}",
+    "front":{
+        "value":"asdf",
+        "example":"asdf",
+    },
+    "back":{
+        "value":"fdsa",
+        "example":"fdsa",
+    },
+    "comment":"comment1"
+}
+
+### delete card
+DELETE {{host}}/cards/delete/card HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "groupId":"{{groupId}}",
+    "cardId":"{{cardId}}"
+}
+
+
+### update card
+PUT {{host}}/cards/add/cardSide HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "cardSideIds":[
+        { "cardId":"{{cardId}}", "side":1 }
+    ]
+}
