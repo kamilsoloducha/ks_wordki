@@ -67,6 +67,8 @@ namespace Users.Application
         {
             public string Token { get; set; }
             public Guid Id { get; set; }
+            public DateTime CreatingDateTime { get; set; }
+            public DateTime ExpirationDateTime { get; set; }
         }
     }
 }

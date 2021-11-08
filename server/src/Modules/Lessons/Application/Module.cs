@@ -1,5 +1,6 @@
 using Domain.IntegrationEvents;
 using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lessons.Application
@@ -8,6 +9,7 @@ namespace Lessons.Application
     {
         public static IServiceCollection AddLessonsApplicationModule(this IServiceCollection services)
         {
+            services.AddMediatR(typeof(LessonsApplicationModule).Assembly);
             return services;
         }
 

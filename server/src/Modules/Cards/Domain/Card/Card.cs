@@ -20,8 +20,10 @@ namespace Cards.Domain
         internal static Card Create(
                 string frontValue,
                 string frontExample,
+                bool frontIsUsed,
                 string backValue,
                 string backExample,
+                bool backIsUsed,
                 string comment
             )
         {
@@ -33,8 +35,8 @@ namespace Cards.Domain
                 IsNew = true
             };
 
-            var front = CardSide.CreateFront(newCard, frontValue, frontExample);
-            var back = CardSide.CreateBack(newCard, backValue, backExample);
+            var front = CardSide.CreateFront(newCard, frontValue, frontExample, frontIsUsed);
+            var back = CardSide.CreateBack(newCard, backValue, backExample, backIsUsed);
 
             var sides = new[] { front, back };
 
@@ -52,18 +54,18 @@ namespace Cards.Domain
             Sides = sides;
         }
 
-        internal void UpdateBack(string value, string example, int language)
-            => UpdateSide(value, example, language, Side.Back);
+        internal void UpdateBack(string value, string example, bool isUsed)
+            => UpdateSide(value, example, isUsed, Side.Back);
 
 
 
-        internal void UpdateFront(string value, string example, int language)
-            => UpdateSide(value, example, language, Side.Front);
+        internal void UpdateFront(string value, string example, bool isUsed)
+            => UpdateSide(value, example, isUsed, Side.Front);
 
-        private void UpdateSide(string value, string example, int langauge, Side side)
+        private void UpdateSide(string value, string example, bool isUsed, Side side)
         {
             var cardSide = GetSide(side);
-            cardSide.Update(value, example, langauge);
+            cardSide.Update(value, example, isUsed);
         }
 
         internal void UpdateComment(string comment)

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Services;
@@ -9,7 +8,7 @@ using MediatR;
 
 namespace Cards.Application.Queries
 {
-    public class GetRepeats
+    public class GetDashboardSummary
     {
         internal class QueryHandler : IRequestHandler<Query, Response>
         {
@@ -27,25 +26,28 @@ namespace Cards.Application.Queries
             {
                 var userIdValue = _userDataProvider.GetUserId();
                 var userId = UserId.Restore(userIdValue);
-                var now = DateTime.Now.Date;
-                var repeats = await _queryRepository.GetRepeats2(userId, now, request.Count, cancellationToken);
+                var dateTime = DateTime.Now.Date;
+
+                var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(userId, dateTime, cancellationToken);
+                var groupsCount = await _queryRepository.GetGroupsCount(userId, cancellationToken);
+                var cardsCount = await _queryRepository.GetCardsCount(userId, cancellationToken);
 
                 return new Response
                 {
-                    Repeats = repeats,
+                    DailyRepeats = dailyRepeats,
+                    GroupsCount = groupsCount,
+                    CardsCount = cardsCount
                 };
             }
         }
 
-        public class Query : IRequest<Response>
-        {
-            public int Count { get; set; }
-        }
+        public class Query : IRequest<Response> { }
 
         public class Response
         {
-            public IEnumerable<Repeat> Repeats { get; set; }
+            public int GroupsCount { get; set; }
+            public int CardsCount { get; set; }
+            public int DailyRepeats { get; set; }
         }
-
     }
 }

@@ -10,29 +10,34 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api
 {
     [ApiController]
-    [Route("cards")]
-    public class CardsController : BaseController
+    [Route("groups")]
+    public class GroupsController : BaseController
     {
-        public CardsController(IMediator mediator) : base(mediator) { }
+        public GroupsController(IMediator mediator) : base(mediator) { }
+
+        [HttpGet("{userId}")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> GetAll([FromRoute] GetGroups.Query query, CancellationToken cancellationToken)
+            => new JsonResult(await Mediator.Send(query, cancellationToken));
+
+        [HttpGet("{userId}/{groupId}")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Get([FromRoute] GetGroup.Query query, CancellationToken cancellationToken)
+            => new JsonResult(await Mediator.Send(query, cancellationToken));
 
         [HttpPost("add")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Add(AddCard.Command command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add(AddGroup.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
         [HttpPut("update")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Update(UpdateCard.Command command, CancellationToken cancellationToken)
-            => await HandleRequest(command, cancellationToken);
-
-        [HttpPut("enable")]
-        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Update(AddCardSide.Command command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(UpdateGroup.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
         [HttpDelete("delete")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Delete(DeleteCard.Command command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(DeleteGroup.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
         [HttpGet("dashboard/summary")]

@@ -25,7 +25,13 @@ namespace Cards.Infrastructure
                     x => RepeatCounter.Create(x));
 
             builder.Property(e => e.IsUsed).HasColumnName(nameof(CardSide.IsUsed));
-            builder.Property(e => e.NextRepeat).HasColumnName(nameof(CardSide.NextRepeat));
+
+            builder.Property(e => e.NextRepeat)
+                .HasColumnName(nameof(CardSide.NextRepeat))
+                .HasConversion(
+                        x => x.Value,
+                        x => NextRepeat.Restore(x));
+
             builder.Property(e => e.Side).HasColumnName(nameof(CardSide.Side));
 
             builder.HasOne(s => s.Card).WithMany(c => c.Sides).HasForeignKey("CardId");

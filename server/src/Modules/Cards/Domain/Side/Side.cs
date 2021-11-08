@@ -6,13 +6,14 @@ namespace Cards.Domain
         Back
     }
 
-    public class RepeatCounter
+    public class RepeatCounter : ValueObject
     {
+        public static RepeatCounter Initial = Create(MinValue);
         private const int MinValue = 0;
         public int Value { get; private set; }
-        public static RepeatCounter Initial = Create(MinValue);
+        protected override object GetAtomicValue => Value;
 
-        private RepeatCounter() { }
+        protected RepeatCounter() { }
 
         public static RepeatCounter Create(int value)
         {
@@ -27,9 +28,7 @@ namespace Cards.Domain
             };
         }
 
-        public void Increse()
-        {
-            Value++;
-        }
+        public RepeatCounter Increse()
+            => Create(Value + 1);
     }
 }

@@ -24,6 +24,8 @@ namespace Lessons.Application.Commands
                 if (performance is null) return ResponseBase<Response>.Create("performance is null");
 
                 var lessonStartDate = performance.StartLesson();
+
+                await _repository.Update(performance);
                 return ResponseBase<Response>.Create(new Response
                 {
                     StartDate = lessonStartDate,

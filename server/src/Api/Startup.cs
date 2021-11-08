@@ -18,6 +18,7 @@ using Lessons.Application;
 using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using Blueprints.Application.Services;
 using Blueprints.Infrastrcuture.Services;
+using Cards.Domain;
 
 namespace Api
 {
@@ -50,6 +51,7 @@ namespace Api
                 .AddUsersDomainModule()
                 .AddCardsInfrastructureModule(Configuration)
                 .AddCardsApplicationModule()
+                .AddCardDomainModule()
                 .AddLessonsInfrastructureModule(Configuration)
                 .AddLessonsApplicationModule()
                 .AddControllers()

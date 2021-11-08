@@ -22,6 +22,8 @@ namespace Lessons.Infrastructure.DataAccess
             => Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
 
         internal DbSet<Performance> Performances { get; set; }
+        internal DbSet<Lesson> Lessons { get; set; }
+        internal DbSet<Repeat> Repeats { get; set; }
 
         public LessonsContext(IConnectionStringProvider connectionStringProvider)
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Lessons.Domain;
@@ -22,10 +23,26 @@ namespace Lessons.Infrastructure
             await _context.SaveChangesAsync();
         }
 
+        public async Task Update(Performance performance)
+        {
+            _context.Performances.Update(performance);
+
+            var newLessons = performance.Lessons.Where(x => x.IsNew);
+            await _context.Lessons.AddRangeAsync(newLessons);
+
+            var newRepeats = performance.Lessons.Where(x => x.IsDirty).SelectMany(x => x.Repeats).Where(x => x.IsNew);
+            await _context.Repeats.AddRangeAsync(newRepeats);
+
+            await _context.SaveChangesAsync();
+        }
+
         public Task<Performance> Get(PerformanceId id, CancellationToken cancellationToken)
             => _context.Performances.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         public Task<Performance> GetByUserId(Guid userId, CancellationToken cancellationToken)
-            => _context.Performances.SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
+            => _context.Performances
+                .Include(p => p.Lessons)
+                .ThenInclude(l => l.Repeats)
+                .SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
     }
 }

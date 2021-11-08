@@ -39,17 +39,17 @@ namespace Cards.Domain
             CardId cardId,
             string frontValue,
             string frontExample,
-            int frontLanguage,
+            bool frontIsUsed,
             string backValue,
             string backExample,
-            int backLanguage,
+            bool backIsUsed,
             string comment)
         {
             var group = GetGroup(groupId);
 
             var card = group.Cards.FirstOrDefault(x => x.Id == cardId);
-            card.UpdateFront(frontValue, frontExample, frontLanguage);
-            card.UpdateBack(backValue, backExample, backLanguage);
+            card.UpdateFront(frontValue, frontExample, frontIsUsed);
+            card.UpdateBack(backValue, backExample, backIsUsed);
             card.UpdateComment(comment);
         }
 
@@ -73,8 +73,10 @@ namespace Cards.Domain
             GroupId groupId,
             string frontValue,
             string frontExample,
+            bool frontIsUsed,
             string backValue,
             string backExample,
+            bool backIsUsed,
             string comment)
         {
             CheckRule(new CreateCardFrontValueRule(frontValue));
@@ -87,7 +89,7 @@ namespace Cards.Domain
                 throw new Exception("group is null");
             }
 
-            var newCard = Card.Create(frontValue, frontExample, backValue, backExample, comment);
+            var newCard = Card.Create(frontValue, frontExample, frontIsUsed, backValue, backExample, backIsUsed, comment);
             group.AddCard(newCard);
 
             return newCard.Id;

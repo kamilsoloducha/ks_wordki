@@ -30,8 +30,10 @@ namespace Cards.Application.Commands
                     groupId,
                     request.Front.Value,
                     request.Front.Example,
+                    request.Front.IsUsed,
                     request.Back.Value,
                     request.Back.Example,
+                    request.Back.IsUsed,
                     request.Comment);
 
                 await _repository.Update(set, cancellationToken);
@@ -52,6 +54,7 @@ namespace Cards.Application.Commands
         {
             public string Value { get; set; }
             public string Example { get; set; }
+            public bool IsUsed { get; set; }
         }
 
         internal class CommandValidator : AbstractValidator<Command>

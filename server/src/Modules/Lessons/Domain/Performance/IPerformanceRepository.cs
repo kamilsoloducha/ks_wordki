@@ -7,6 +7,7 @@ namespace Lessons.Domain
     public interface IPerformanceRepository
     {
         Task Add(Performance newPerformance);
+        Task Update(Performance performance);
         Task<Performance> Get(PerformanceId id, CancellationToken cancellationToken);
         Task<Performance> GetByUserId(Guid userId, CancellationToken cancellationToken);
     }

@@ -30,8 +30,10 @@ namespace Lessons.Domain
 
         internal void RegisterAnswer(Guid cardId, int side, int result)
         {
-            Repeat.Create(cardId, side, result);
+            IsDirty = true;
+            var repeat = Repeat.Create(cardId, side, result);
             TimeCounter = (int)(DateTime.Now.Ticks - StartDate.Ticks / 1000);
+            Repeats.Add(repeat);
         }
     }
 }

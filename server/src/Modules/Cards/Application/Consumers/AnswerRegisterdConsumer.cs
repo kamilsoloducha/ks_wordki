@@ -3,9 +3,15 @@ using System.Threading.Tasks;
 using Cards.Domain;
 using Domain.IntegrationEvents;
 using MassTransit;
+using MassTransit.Definition;
 
 namespace Cards.Application
 {
+    internal class AnswerRegisteredDefinition : ConsumerDefinition<AnswerRegisterdConsumer>
+    {
+        public AnswerRegisteredDefinition() { }
+    }
+
     internal class AnswerRegisterdConsumer : IConsumer<AnswerRegistered>
     {
         private readonly ISetRepository _repository;
@@ -26,7 +32,7 @@ namespace Cards.Application
             var groupId = GroupId.Restore(context.Message.GroupId);
             var cardId = CardId.Restore(context.Message.CardId);
             var sideType = (Side)context.Message.Side;
-            var result = context.Message.result;
+            var result = context.Message.Result;
             set.RegisterAnswer(groupId, cardId, sideType, result, _nextRepeatCalculator);
 
             await _repository.Update(set, CancellationToken.None);

@@ -15,6 +15,10 @@ namespace Cards.Application
 
         public static void AddCardsConsumers(this ServiceCollectionBusConfigurator configurator)
         {
+            configurator.AddConsumer<AnswerRegisterdConsumer>(typeof(AnswerRegisteredDefinition)).Endpoint(e =>
+            {
+                e.Name = $"cards-{nameof(AnswerRegistered)}";
+            });
             configurator.AddConsumer<UserCreatedConsumer>(typeof(UserCreatedDefinition)).Endpoint(e =>
             {
                 e.Name = $"cards-{nameof(UserCreated)}";

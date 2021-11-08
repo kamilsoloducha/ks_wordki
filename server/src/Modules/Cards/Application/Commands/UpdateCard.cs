@@ -21,6 +21,12 @@ namespace Cards.Application.Commands
 
             public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var id1 = UserId.Restore(Guid.NewGuid());
+                var id2 = UserId.Restore(Guid.NewGuid());
+                if (id1 == id2)
+                {
+
+                }
                 var userId = UserId.Restore(request.UserId);
                 var set = await _repository.Get(userId, cancellationToken);
                 if (set is null) return ResponseBase<Unit>.Create("set is null");
@@ -33,10 +39,10 @@ namespace Cards.Application.Commands
                     cardId,
                     request.Front.Value,
                     request.Front.Example,
-                    request.Front.Language,
+                    request.Front.IsUsed,
                     request.Back.Value,
                     request.Back.Example,
-                    request.Back.Language,
+                    request.Back.IsUsed,
                     request.Comment);
 
                 await _repository.Update(set, cancellationToken);
@@ -58,7 +64,7 @@ namespace Cards.Application.Commands
         {
             public string Value { get; set; }
             public string Example { get; set; }
-            public int Language { get; set; }
+            public bool IsUsed { get; set; }
         }
 
         internal class CommandValidator : AbstractValidator<Command>

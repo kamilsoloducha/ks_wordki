@@ -32,8 +32,10 @@ namespace Cards.Application.Commands
                     cardsSet.AddCard(groupId,
                         item.FrontValue,
                         item.FrontExample,
+                        false,
                         item.BackValue,
                         item.BackExample,
+                        false,
                         item.Comment);
                 }
 

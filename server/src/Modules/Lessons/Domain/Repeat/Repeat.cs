@@ -22,7 +22,8 @@ namespace Lessons.Domain
                 CardId = cardId,
                 Side = side,
                 RepeatDate = DateTime.Now,
-                Result = result
+                Result = result,
+                IsNew = true
             };
         }
 

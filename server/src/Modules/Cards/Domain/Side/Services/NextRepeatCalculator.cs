@@ -11,7 +11,7 @@ namespace Cards.Domain
     {
         public DateTime Calculate(CardSide side, int result)
         {
-            return side.NextRepeat.Value.AddDays(2);
+            return DateTime.Now.AddDays(2);
         }
     }
 }
