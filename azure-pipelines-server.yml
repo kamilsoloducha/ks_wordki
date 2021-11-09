@@ -44,7 +44,7 @@ steps:
     inputs:
       containerregistrytype: "Container Registry"
       dockerRegistryEndpoint: "docker-hub"
-      dockerComposeFile: "server/build/docker/docker-compose.release.yml"
+      dockerComposeFile: "server/ci/docker/docker-compose.release.yml"
       action: "Run a Docker Compose command"
       dockerComposeCommand: build
   - task: Docker@2
