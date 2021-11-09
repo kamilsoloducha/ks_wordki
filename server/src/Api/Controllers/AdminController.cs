@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Blueprints.Infrastructure.DataAccess;
 using Cards.Infrastructure;
 using Lessons.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,15 @@ namespace Api.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly IServiceProvider serviceProvider;
+        private readonly IConnectionStringProvider connectionStringProvider;
 
-        public AdminController(IConfiguration configuration, IServiceProvider serviceProvider)
+        public AdminController(IConfiguration configuration,
+            IServiceProvider serviceProvider,
+            IConnectionStringProvider connectionStringProvider)
         {
             this.configuration = configuration;
             this.serviceProvider = serviceProvider;
+            this.connectionStringProvider = connectionStringProvider;
         }
 
 
@@ -36,5 +41,9 @@ namespace Api.Controllers
             await serviceProvider.CreateLessonsDb();
             return Ok();
         }
+
+        [HttpGet("connectionString")]
+        public IActionResult ConnectionString()
+            => new JsonResult(connectionStringProvider.ConnectionString);
     }
 }
