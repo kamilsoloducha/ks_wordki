@@ -1,0 +1,9 @@
+#info-group {
+    display: flex;
+    gap: 10px;
+
+    div {
+        flex-grow: 2;
+        flex-basis: 0;
+    }
+}

@@ -1,0 +1,21 @@
+.group-row-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 5px;
+    background-color: white;
+
+    &:hover {
+        background-color: rgb(240, 240, 240);
+    }
+
+    .group-row-name {
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .group-row-cards {
+        text-align: center;
+    }
+}

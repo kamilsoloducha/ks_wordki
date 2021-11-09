@@ -24,8 +24,6 @@ namespace Cards.Infrastructure
 
         public async Task Update(Set cardsSet, CancellationToken cancellationToken)
         {
-            _context.CardsSet.Update(cardsSet);
-
             var newGroups = cardsSet.Groups.Where(x => x.IsNew);
             await _context.Groups.AddRangeAsync(newGroups, cancellationToken);
 

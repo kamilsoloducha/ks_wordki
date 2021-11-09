@@ -30,9 +30,9 @@ namespace Api
         public async Task<IActionResult> Update(AddCardSide.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{userId}/{groupId}/{cardId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Delete(DeleteCard.Command command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete([FromRoute] DeleteCard.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
         [HttpGet("dashboard/summary")]

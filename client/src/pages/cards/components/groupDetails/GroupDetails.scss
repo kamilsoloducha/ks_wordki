@@ -1,0 +1,12 @@
+.group-details-container {
+    width: 100%;
+    display: flex;
+    border-radius: 5px;
+    flex-direction: row;
+    align-items: center;
+
+    .group-details-name {
+        margin: 10px 0 10px 30px;
+        font-size: 40px;
+    }
+}
