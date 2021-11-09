@@ -1,0 +1,10 @@
+version: "3.5"
+services:
+  wordki-client.ci.test:
+    container_name: wordki-client.ci.test
+    image: wordki-client/ci/build:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./build/docker/Dockerfile
+      target: build
+    command: sh -c "npm run test-headless"

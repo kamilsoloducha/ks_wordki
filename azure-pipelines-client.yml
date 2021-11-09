@@ -1,0 +1,86 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - "client/*"
+
+pool:
+  vmImage: "ubuntu-latest"
+
+steps:
+  - task: DockerCompose@0
+    displayName: Build
+    inputs:
+      containerregistrytype: "Container Registry"
+      dockerRegistryEndpoint: "docker-hub"
+      dockerComposeFile: "client/ci/docker/docker-compose.build.yml"
+      action: "Run a Docker Compose command"
+      dockerComposeCommand: up
+  # - task: DockerCompose@0
+  #   displayName: Run Tests
+  #   inputs:
+  #     containerregistrytype: "Container Registry"
+  #     dockerRegistryEndpoint: "docker-hub"
+  #     dockerComposeFile: "client/build/docker/docker-compose.test.yml"
+  #     action: "Run a Docker Compose command"
+  #     dockerComposeCommand: up
+  # - task: CmdLine@2
+  #   displayName: Copy test results
+  #   inputs:
+  #     script: |
+  #       docker ps -a
+  #       docker cp wordki-client.ci.test:/usr/src/app/dist/test $(System.DefaultWorkingDirectory)/test
+  #       ls $(System.DefaultWorkingDirectory)/test
+  #       ls $(System.DefaultWorkingDirectory)/test/results
+  # - task: DockerCompose@0
+  #   continueOnError: true
+  #   displayName: Run UI Tests
+  #   inputs:
+  #     containerregistrytype: "Container Registry"
+  #     dockerRegistryEndpoint: "docker-hub"
+  #     dockerComposeFile: "client/build/docker/docker-compose.e2e.yml"
+  #     action: "Run a Docker Compose command"
+  #     dockerComposeCommand: up --build --abort-on-container-exit
+  # - task: CmdLine@2
+  #   continueOnError: true
+  #   displayName: Copy ui test results
+  #   inputs:
+  #     script: |
+  #       docker ps -a
+  #       docker cp wordki.ci.e2etests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/test/results
+  #       docker cp wordki.ci.e2etests:/src/ $(System.DefaultWorkingDirectory)/temp
+  #       tree $(System.DefaultWorkingDirectory)
+  # - task: PublishTestResults@2
+  #   displayName: Publish test results
+  #   inputs:
+  #     testResultsFormat: "JUnit"
+  #     searchFolder: $(System.DefaultWorkingDirectory)/test/results
+  #     testResultsFiles: "TESTS-*.xml"
+  # - task: PublishCodeCoverageResults@1
+  #   displayName: Publish code coverage
+  #   inputs:
+  #     codeCoverageTool: "Cobertura"
+  #     summaryFileLocation: "$(System.DefaultWorkingDirectory)/test/coverage/cobertura-coverage.xml"
+  - task: DockerCompose@0
+    displayName: Release
+    inputs:
+      containerregistrytype: "Container Registry"
+      dockerRegistryEndpoint: "docker-hub"
+      dockerComposeFile: "client/ci/docker/docker-compose.release.yml"
+      action: "Run a Docker Compose command"
+      dockerComposeCommand: build
+  - task: Docker@2
+    displayName: Login to Docker Hub
+    inputs:
+      containerRegistry: "docker-hub"
+      command: "login"
+  - task: Docker@2
+    displayName: Push
+    inputs:
+      containerRegistry: "docker-hub"
+      repository: "kamilsoloducha/wordki-client"
+      command: "push"
+      tags: |
+        $(Build.BuildId)

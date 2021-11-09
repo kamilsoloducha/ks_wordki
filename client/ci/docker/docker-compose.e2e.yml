@@ -1,0 +1,23 @@
+version: "3.5"
+services:
+  wordki-client.ci.e2etests:
+    container_name: wordki-client.ci.e2etests
+    image: wordki-client/ci/build:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./build/docker/Dockerfile
+      target: e2e
+    expose:
+      - 81
+  wordki.ci.e2etests:
+    container_name: wordki.ci.e2etests
+    image: wordki.ci.e2etests
+    build:
+      context: ../../../testsUi/Wordki.Tests.UI
+      dockerfile: Dockerfile
+    expose:
+      - 5001
+    depends_on:
+      - wordki-client.ci.e2etests
+    environment:
+      - ClientUrl=http://wordki-client.ci.e2etests:81

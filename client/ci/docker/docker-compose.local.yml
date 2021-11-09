@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  wordki-client:
+    container_name: wordki-client
+    image: kamilsoloducha/wordki-client:latest
+    build:
+      context: ../../
+      dockerfile: ./build/docker/Dockerfile
+      target: release
+    ports:
+      - 80:80
+    environment:
+      - PORT=80
