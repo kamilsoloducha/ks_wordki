@@ -16,7 +16,7 @@ namespace Lessons.Infrastructure
 
             services.AddDbContext<LessonsContext>();
             services.AddScoped<IPerformanceRepository, PerformanceRepository>();
-            services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
+            // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
             return services;
         }
 

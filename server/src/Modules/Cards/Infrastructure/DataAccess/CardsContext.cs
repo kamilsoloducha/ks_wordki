@@ -26,7 +26,7 @@ namespace Cards.Infrastructure
         internal DbSet<Repeat> Repeats { get; set; }
         public CardsContext(IConnectionStringProvider connectionStringProvider)
         {
-            _connectionString = connectionStringProvider.ConnectrionString;
+            _connectionString = connectionStringProvider.ConnectionString;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

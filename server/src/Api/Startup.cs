@@ -19,6 +19,9 @@ using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using Blueprints.Application.Services;
 using Blueprints.Infrastrcuture.Services;
 using Cards.Domain;
+using Serilog;
+using Blueprints.Infrastructure.DataAccess;
+using Blueprints.Infrastrcuture;
 
 namespace Api
 {
@@ -34,6 +37,7 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureMassTransit();
+            services.AddIConnectionStringProvider(Configuration);
 
             var configurator = new ServiceCollectionBusConfigurator(services);
             configurator.AddCardsConsumers();
@@ -69,9 +73,7 @@ namespace Api
          IWebHostEnvironment env,
          IServiceProvider serviceProvider)
         {
-            // serviceProvider.CreateUsersDb().Wait();
-            // serviceProvider.CreateCardsDb().Wait();
-            // serviceProvider.CreateLessonsDb().Wait();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -93,5 +95,7 @@ namespace Api
                 endpoints.MapControllers();
             });
         }
+
+
     }
 }

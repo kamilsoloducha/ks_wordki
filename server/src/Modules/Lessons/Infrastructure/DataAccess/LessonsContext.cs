@@ -27,7 +27,7 @@ namespace Lessons.Infrastructure.DataAccess
 
         public LessonsContext(IConnectionStringProvider connectionStringProvider)
         {
-            _connectionString = connectionStringProvider.ConnectrionString;
+            _connectionString = connectionStringProvider.ConnectionString;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

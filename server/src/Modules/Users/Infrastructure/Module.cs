@@ -21,7 +21,7 @@ namespace Users.Infrastructure
             services.AddDbContext<UsersContext>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPasswordManager, PasswordManager>();
-            services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
+            // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<AdminAccountCreator>();
             return services;

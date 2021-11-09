@@ -17,7 +17,7 @@ namespace Cards.Infrastructure
             services.AddDbContext<CardsContext>();
             services.AddScoped<ISetRepository, SetRepository>();
             services.AddScoped<IQueryRepository, QueryRepository>();
-            services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
+            // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
 
             return services;
         }

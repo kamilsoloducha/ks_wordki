@@ -19,7 +19,7 @@ namespace Users.Infrastructure
         public DbSet<User> Users { get; set; }
         public UsersContext(IConnectionStringProvider connectionStringProvider)
         {
-            _connectionString = connectionStringProvider.ConnectrionString;
+            _connectionString = connectionStringProvider.ConnectionString;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
