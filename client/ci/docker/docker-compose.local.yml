@@ -5,7 +5,7 @@ services:
     image: kamilsoloducha/wordki-client:latest
     build:
       context: ../../
-      dockerfile: ./build/docker/Dockerfile
+      dockerfile: ./ci/docker/Dockerfile
       target: release
     ports:
       - 80:80
