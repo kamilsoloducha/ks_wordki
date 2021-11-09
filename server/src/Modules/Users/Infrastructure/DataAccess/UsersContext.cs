@@ -1,5 +1,7 @@
 using Blueprints.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Users.Domain;
 using Users.Infrastructure.DataAccess;
@@ -36,6 +38,9 @@ namespace Users.Infrastructure
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new RoleEntityConfiguration());
         }
+
+        internal RelationalDatabaseCreator Creator
+            => Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
 
     }
 }

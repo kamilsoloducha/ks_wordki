@@ -29,15 +29,13 @@ namespace Users.Infrastructure
 
         public static async Task CreateUsersDb(this IServiceProvider services)
         {
+
             var usersContext = services.GetService<UsersContext>();
-            await usersContext.Database.EnsureDeletedAsync();
-            if (await usersContext.Database.EnsureCreatedAsync())
-            {
-                var adminUserCreator = services.GetService<AdminAccountCreator>();
-                await adminUserCreator.CreateAdminUser();
-            }
+            var creator = usersContext.Creator;
+            await creator.CreateTablesAsync();
 
-
+            var adminUserCreator = services.GetService<AdminAccountCreator>();
+            await adminUserCreator.CreateAdminUser();
         }
     }
 }
