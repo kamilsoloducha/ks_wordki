@@ -1,0 +1,9 @@
+version: "3.5"
+services:
+  wordki-server.ci.build:
+    container_name: wordki-server.ci.build
+    image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./ci/docker/Dockerfile
+      target: build

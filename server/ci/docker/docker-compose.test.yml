@@ -1,0 +1,32 @@
+version: "3.5"
+services:
+  wordki-server.ci.e2e:
+    container_name: wordki-server.ci.e2e
+    image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./build/docker/Dockerfile
+      target: integration-tests
+    links:
+      - wordki-postgres
+    env_file:
+      - secrets.E2E.env
+    environment:
+      - DatabaseConfig__Server=wordki-postgres
+      - WAIT_HOSTS=wordki-postgres:5432
+      - WAIT_HOSTS_TIMEOUT=60
+      - WAIT_BEFORE_HOSTS=10
+      - WAIT_SLEEP_INTERVAL=5
+    command: sh -c "/wait && dotnet test --test-adapter-path:. --logger:"junit""
+  wordki-postgres:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: mydb
+volumes:
+  dbvol:
+    external: false
