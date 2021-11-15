@@ -19,17 +19,7 @@ namespace Cards.Domain
             };
         }
 
-        internal void Increse()
-        {
-            if (Value < MaxValue)
-                Value++;
-        }
-
-        internal void Reset()
-        {
-            Value = MinValue;
-        }
-
-
+        public static Drawer Increse(Drawer drawer)
+            => drawer.Value <= MaxValue ? drawer : Create(drawer.Value + 1);
     }
 }

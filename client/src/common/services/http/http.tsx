@@ -1,7 +1,9 @@
 import axios from "axios";
 
-// export const API_PATH = "http://localhost:5000";
-export const API_PATH = "https://wordki-server.herokuapp.com";
+export const API_PATH = process.env["REACT_APP_API_HOST"];
+if (API_PATH === undefined) {
+  console.error("REACT_APP_API_HOST is not set");
+}
 
 const instance = axios.create({
   baseURL: API_PATH,

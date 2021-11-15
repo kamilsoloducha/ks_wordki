@@ -15,9 +15,9 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
     <Formik
       initialValues={
         {
-          name: group.name ?? "",
-          front: group.front ?? 0,
-          back: group.back ?? 0,
+          name: group?.name ?? "",
+          front: group?.front ?? 0,
+          back: group?.back ?? 0,
         } as FormModel
       }
       onSubmit={onsubmit}

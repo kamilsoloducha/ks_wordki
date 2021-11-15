@@ -1,4 +1,5 @@
 @host = http://localhost:5000
+@host = https://wordki-server.herokuapp.com
 
 ### logining user
 # @name login
@@ -6,7 +7,7 @@ PUT {{host}}/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "user_name",
+    "userName": "kamil",
     "password": "pass"
 }
 
@@ -35,7 +36,7 @@ Authorization: {{authToken}}
 
 
 ### add group
-POST {{host}}/cards/add/group HTTP/1.1
+POST {{host}}/groups/add HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
 

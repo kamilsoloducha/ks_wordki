@@ -82,3 +82,7 @@ export async function deleteCard(
   );
   return { data: response.data };
 }
+
+export function addGroup(userId: string, card: any): any {
+  throw new Error("Function not implemented.");
+}

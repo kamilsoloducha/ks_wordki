@@ -8,6 +8,8 @@ export enum DailyActionEnum {
   GET_CARDS = "[LESSON] GET_CARDS",
   GET_CARDS_SUCCESS = "[LESSON] GET_CARDS_SUCCESS",
 
+  SET_ANSWER = "[LESSON] SET_ANSWER",
+
   LESSON_START = "[LESSON] LESSON_START",
   LESSON_PAUSE = "[LESSON] LESSON_PAUSE",
   LESSON_CHECK = "[LESSON] LESSON_CHECK",
@@ -22,7 +24,6 @@ export interface LessonAction {
 }
 
 export interface Reset extends LessonAction {}
-
 export function reset(): Reset {
   return {
     type: DailyActionEnum.RESET,
@@ -35,7 +36,6 @@ export function reset(): Reset {
 export interface GetCards extends LessonAction {
   count: number;
 }
-
 export function getCards(count: number): GetCards {
   return {
     count,
@@ -47,7 +47,6 @@ export function getCards(count: number): GetCards {
 }
 
 export interface GetCardsSuccess extends LessonAction {}
-
 export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
   return {
     type: DailyActionEnum.GET_CARDS_SUCCESS,
@@ -63,7 +62,6 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
 }
 
 export interface StartLesson extends LessonAction {}
-
 export function startLesson(): StartLesson {
   return {
     type: DailyActionEnum.LESSON_START,
@@ -74,7 +72,6 @@ export function startLesson(): StartLesson {
 }
 
 export interface PauseLesson extends LessonAction {}
-
 export function pauseLesson(): PauseLesson {
   return {
     type: DailyActionEnum.LESSON_PAUSE,
@@ -85,12 +82,16 @@ export function pauseLesson(): PauseLesson {
 }
 
 export interface Check extends LessonAction {}
-
 export function check(): Check {
   return {
     type: DailyActionEnum.LESSON_CHECK,
     reduce: (state: LessonState): LessonState => {
-      return { ...state, lessonState: LessonStateEnum.AnswerPending };
+      const isCorrect = state.repeats[0].answerValue === state.answer;
+      return {
+        ...state,
+        lessonState: LessonStateEnum.AnswerPending,
+        isCorrect: isCorrect,
+      };
     },
   };
 }
@@ -101,7 +102,6 @@ export interface Correct extends LessonAction {
   side: number;
   result: number;
 }
-
 export function correct(
   groupId: string,
   cardId: string,
@@ -116,7 +116,12 @@ export function correct(
     type: DailyActionEnum.LESSON_CORRECT,
     reduce: (state: LessonState): LessonState => {
       const repeats = state.repeats.slice(1);
-      return { ...state, lessonState: LessonStateEnum.CheckPending, repeats };
+      return {
+        ...state,
+        lessonState: LessonStateEnum.CheckPending,
+        repeats,
+        isCorrect: null,
+      };
     },
   };
 }
@@ -127,7 +132,6 @@ export interface Wrong extends LessonAction {
   side: number;
   result: number;
 }
-
 export function wrong(groupId: string, cardId: string, side: number): Wrong {
   return {
     groupId,
@@ -139,18 +143,32 @@ export function wrong(groupId: string, cardId: string, side: number): Wrong {
       const currentRepeat = state.repeats[0];
       const repeats = state.repeats.slice(1);
       repeats.push(currentRepeat);
-      return { ...state, lessonState: LessonStateEnum.CheckPending, repeats };
+      return {
+        ...state,
+        lessonState: LessonStateEnum.CheckPending,
+        repeats,
+        isCorrect: null,
+      };
     },
   };
 }
 
 export interface FinishLesson extends LessonAction {}
-
 export function finishLesson(): FinishLesson {
   return {
     type: DailyActionEnum.LESSON_FINISH,
     reduce: (state: LessonState): LessonState => {
       return { ...state, lessonState: LessonStateEnum.FinishPending };
+    },
+  };
+}
+
+export interface SetAnswer extends LessonAction {}
+export function setAnswer(answer: string): SetAnswer {
+  return {
+    type: DailyActionEnum.SET_ANSWER,
+    reduce: (state: LessonState): LessonState => {
+      return { ...state, answer };
     },
   };
 }

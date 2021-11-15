@@ -4,7 +4,6 @@ import { ReactElement, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { selectUserId } from "store/user/selectors";
-import RegisterRequest from "./models/registerRequest";
 
 function RegisterPage(): ReactElement {
   const userId = useSelector(selectUserId);
@@ -20,17 +19,8 @@ function RegisterPage(): ReactElement {
     return <Redirect to="/dashboard" />;
   }
 
-  const onSubmit = async (values: FormModel) => {
-    const registerRequest: RegisterRequest = { ...values };
-    try {
-      return <Redirect to="login" />;
-    } catch (error) {
-      toast.current?.show({
-        severity: "error",
-        detail: JSON.stringify(error),
-        summary: "Bład połaczenia",
-      });
-    }
+  const onSubmit = async (_: FormModel) => {
+    return <Redirect to="login" />;
   };
 
   return (

@@ -5,7 +5,7 @@ import * as api from "pages/lesson/services/repeatsApi";
 
 function* answer(action: Correct | Wrong) {
   const userId: string = yield select(selectUserId);
-  const { data }: { data: any; error: any } = yield call(() =>
+  yield call(() =>
     api.registerAnswer(
       userId,
       action.groupId,

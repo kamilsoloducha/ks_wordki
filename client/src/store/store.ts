@@ -15,6 +15,8 @@ import userReducer from "./user/reducer";
 import loginUserEffect from "./user/sagas/loginUser";
 import { correctEffect, wrongEffect } from "./lesson/sagas/answer";
 import deleteCardEffect from "./cards/sagas/deleteCard";
+import addGroupEffect from "./groups/sagas/addGroup";
+import updateGroupEffect from "./groups/sagas/updateGroup";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -48,5 +50,7 @@ sagaMiddleware.run(getCardsEffectDaily);
 sagaMiddleware.run(correctEffect);
 sagaMiddleware.run(wrongEffect);
 sagaMiddleware.run(deleteCardEffect);
+sagaMiddleware.run(addGroupEffect);
+sagaMiddleware.run(updateGroupEffect);
 
 export type MainState = ReturnType<typeof store.getState>;

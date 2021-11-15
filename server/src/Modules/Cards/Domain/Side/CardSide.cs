@@ -76,9 +76,8 @@ namespace Cards.Domain
 
             var nextRepatDate = nextRepeatCalculator.Calculate(this, result);
             NextRepeat = NextRepeat.Restore(nextRepatDate);
-            // UpdateDrawer(result);
-            Drawer = Drawer.Create(Drawer.Value);
-            Repeats = RepeatCounter.Create(Repeats.Value + 1);
+            UpdateDrawer(result);
+            Repeats = Repeats.Increse();
         }
 
         internal void ChangeUsage()
@@ -92,11 +91,11 @@ namespace Cards.Domain
         {
             if (result > 0)
             {
-                Drawer.Increse();
+                Drawer = Drawer.Increse(Drawer);
             }
             else
             {
-                Drawer.Reset();
+                Drawer = Drawer.Initial;
             }
         }
     }

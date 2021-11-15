@@ -10,9 +10,27 @@ function* getCards(action: GetCards) {
     api.repeats(action.count)
   );
   yield call(() => api.startLesson(userId));
-  yield put(getCardsSuccess(data.repeats));
+  const repeats = shuffle(data.repeats);
+  yield put(getCardsSuccess(repeats));
 }
 
 export default function* getCardsEffect() {
   yield takeLatest(DailyActionEnum.GET_CARDS, getCards);
+}
+
+function shuffle<T>(array: T[]): T[] {
+  let currentIndex = array.length,
+    randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
 }

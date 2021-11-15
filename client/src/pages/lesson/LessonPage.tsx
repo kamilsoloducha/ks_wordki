@@ -3,19 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCards, reset } from "store/lesson/actions";
 import {
   selectCurrectRepeat,
+  selectIsCorrect,
   selectLessonState,
   selectRepeats,
 } from "store/lesson/selectors";
-import Fiszka from "./components/fiszka/Fiszka";
+import Inserting from "./components/inserting/Inserting";
 import LessonController from "./components/lessonController/LessonController";
 import RepeatsController from "./components/repeatsController/RepeatsController";
 import { BeforeLoading, LessonState } from "./models/lessonState";
 
-function DailyPage(): ReactElement {
+function LessonPage(): ReactElement {
   const dispatch = useDispatch();
   const questions = useSelector(selectRepeats);
   const lessonState = useSelector(selectLessonState);
   const currectRepeat = useSelector(selectCurrectRepeat);
+  const isCorrect = useSelector(selectIsCorrect);
   const state = LessonState.getState(lessonState);
 
   useEffect(() => {
@@ -25,16 +27,16 @@ function DailyPage(): ReactElement {
     return () => {
       dispatch(reset());
     };
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <>
       <div>Pozostało: {questions.length}</div>
       <LessonController lessonState={state} />
-      <Fiszka lessonState={state} repeat={currectRepeat} />
+      <Inserting state={state} isCorrect={isCorrect} repeat={currectRepeat} />
       <RepeatsController lessonState={state} />
     </>
   );
 }
 
-export default DailyPage;
+export default LessonPage;

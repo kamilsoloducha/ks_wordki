@@ -9,6 +9,7 @@ export enum LessonStateEnum {
 }
 
 export const BeforeLoading = {
+  type: LessonStateEnum.BeforeLoading,
   btnStart: false,
   btnCheck: false,
   btnCorrect: false,
@@ -20,6 +21,7 @@ export const BeforeLoading = {
 } as LessonState;
 
 export const Loading = {
+  type: LessonStateEnum.Loading,
   btnStart: false,
   btnCheck: false,
   btnCorrect: false,
@@ -31,6 +33,7 @@ export const Loading = {
 } as LessonState;
 
 export const StartLessonPending = {
+  type: LessonStateEnum.StartLessonPending,
   btnStart: true,
   btnCheck: false,
   btnCorrect: false,
@@ -42,6 +45,7 @@ export const StartLessonPending = {
 } as LessonState;
 
 export const CheckPending = {
+  type: LessonStateEnum.CheckPending,
   btnStart: false,
   btnCheck: true,
   btnCorrect: false,
@@ -50,9 +54,11 @@ export const CheckPending = {
   btnWrong: false,
   card: true,
   answer: false,
+  inserting: true,
 } as LessonState;
 
 export const AnswerPending = {
+  type: LessonStateEnum.AnswerPending,
   btnStart: false,
   btnCheck: false,
   btnCorrect: true,
@@ -64,6 +70,7 @@ export const AnswerPending = {
 } as LessonState;
 
 export const Pause = {
+  type: LessonStateEnum.Pause,
   btnStart: true,
   btnCheck: false,
   btnCorrect: false,
@@ -75,6 +82,7 @@ export const Pause = {
 } as LessonState;
 
 export const FinishPending = {
+  type: LessonStateEnum.FinishPending,
   btnStart: false,
   btnCheck: false,
   btnCorrect: false,
@@ -97,6 +105,7 @@ export class LessonState {
   ]);
 
   constructor(
+    public readonly type: LessonStateEnum,
     public readonly btnStart: boolean,
     public readonly btnCheck: boolean,
     public readonly btnCorrect: boolean,
@@ -104,7 +113,8 @@ export class LessonState {
     public readonly btnPause: boolean,
     public readonly btnFinish: boolean,
     public readonly card: boolean,
-    public readonly answer: boolean
+    public readonly answer: boolean,
+    public readonly inserting = false
   ) {}
 
   public static getState(state: LessonStateEnum): LessonState {

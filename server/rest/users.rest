@@ -1,7 +1,7 @@
 @id = 4663083a-ead9-44dd-acf4-11810aaa78da
 
 @host = http://localhost:5000/users
-//@host = https://wordki-server.herokuapp.com/users
+@host = https://wordki-server.herokuapp.com/users
 
 ### registering user
 # @name register
@@ -9,7 +9,7 @@ POST {{host}}/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "user_name",
+    "name": "kamil",
     "password": "pass",
     "email": "user@mail.com",
     "firstName": null,
@@ -32,8 +32,8 @@ PUT {{host}}/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "admin",
-    "password": "adminpass"
+    "userName": "kamil",
+    "password": "pass"
 }
 
 ###

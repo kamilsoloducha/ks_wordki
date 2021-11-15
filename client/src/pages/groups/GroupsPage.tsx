@@ -2,7 +2,13 @@ import GroupDetails from "common/components/groupDialog/groupDetails";
 import GroupDialog from "common/components/groupDialog/GroupDialog";
 import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroupsSummary, selectItem } from "store/groups/actions";
+import {
+  addGroup,
+  getGroupsSummary,
+  resetSelectedItem,
+  selectItem,
+  updateGroup,
+} from "store/groups/actions";
 import {
   selectGroups,
   selectIsLoading,
@@ -28,9 +34,12 @@ function GroupsPage(): ReactElement {
     return <>Loading...</>;
   }
 
-  const onhide = () => {};
+  const onhide = () => {
+    dispatch(resetSelectedItem());
+  };
+
   const onsubmit = (group: GroupDetails) => {
-    console.log(group);
+    dispatch(group.id ? updateGroup(group) : addGroup(group));
   };
 
   const onaddgroup = () => {
