@@ -1,33 +1,32 @@
-using System;
 using Blueprints.Domain;
 
 namespace Cards.Domain
 {
 
-    public class NextRepeat
+    public readonly struct SideLabel
     {
-        public static readonly NextRepeat NullValue = Restore(null);
-        public DateTime? Value { get; private set; }
+        public string Value { get; }
+        private SideLabel(string value)
+        {
+            Value = value;
+        }
 
-        private NextRepeat() { }
+        public static SideLabel Create(string labal)
+        {
+            var trimmedLabel = labal.Trim();
+            if (string.IsNullOrEmpty(trimmedLabel))
+            {
+                throw new System.Exception("Side label is required");
+            }
 
-        public static NextRepeat Restore(DateTime? dateTime)
-            => dateTime.HasValue
-            ? new NextRepeat { Value = dateTime?.Date }
-            : NextRepeat.NullValue;
-
-        public static NextRepeat Create()
-                => new NextRepeat
-                {
-                    Value = DateTime.Now.Date
-                };
-
+            return new SideLabel(trimmedLabel);
+        }
     }
 
     public class CardSide : Entity
     {
         public CardId CardId { get; private set; }
-        public string Value { get; private set; }
+        public SideLabel Value { get; private set; }
         public string Example { get; private set; }
         public Drawer Drawer { get; private set; }
         public bool IsUsed { get; private set; }
@@ -40,13 +39,13 @@ namespace Cards.Domain
 
         private CardSide() { }
 
-        internal static CardSide CreateFront(Card card, string value, string example, bool isUsed)
+        internal static CardSide CreateFront(Card card, SideLabel value, string example, bool isUsed)
             => Create(card, value, example, isUsed, Side.Front);
 
-        internal static CardSide CreateBack(Card card, string value, string example, bool isUsed)
+        internal static CardSide CreateBack(Card card, SideLabel value, string example, bool isUsed)
             => Create(card, value, example, isUsed, Side.Back);
 
-        internal void Update(string value, string example, bool isUsed)
+        internal void Update(SideLabel value, string example, bool isUsed)
         {
             Value = value;
             Example = example;
@@ -55,7 +54,7 @@ namespace Cards.Domain
                 NextRepeat = NextRepeat.Create();
         }
 
-        private static CardSide Create(Card card, string value, string example, bool isUsed, Side side)
+        private static CardSide Create(Card card, SideLabel value, string example, bool isUsed, Side side)
         => new CardSide
         {
             CardId = card.Id,

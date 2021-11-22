@@ -9,7 +9,7 @@ namespace Cards.Domain
     public class Group : Entity
     {
         public GroupId Id { get; private set; }
-        public string Name { get; private set; }
+        public GroupName Name { get; private set; }
         public Language FrontLanguage { get; private set; }
         public Language BackLanguage { get; private set; }
         public DateTime CreationDate { get; private set; }
@@ -19,7 +19,7 @@ namespace Cards.Domain
 
         private Group() { }
 
-        internal static Group Create(string name, LanguageType front, LanguageType back)
+        internal static Group Create(GroupName name, LanguageType front, LanguageType back)
             => new Group
             {
                 Id = GroupId.Create(),
@@ -31,10 +31,8 @@ namespace Cards.Domain
                 IsNew = true,
             };
 
-        public void Update(string groupName, LanguageType front, LanguageType back)
+        public void Update(GroupName groupName, LanguageType front, LanguageType back)
         {
-            CheckRule(new UpdateGroupNameNameRule(groupName));
-
             Name = groupName;
             FrontLanguage = Language.Create(front);
             BackLanguage = Language.Create(back);

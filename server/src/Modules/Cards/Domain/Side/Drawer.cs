@@ -1,25 +1,28 @@
 namespace Cards.Domain
 {
-    public class Drawer : ValueObject
+    public readonly struct Drawer
     {
         public static int MaxValue = 5;
         public static int MinValue = 1;
         public static Drawer Initial = Create(1);
 
-        public int Value { get; private set; }
-        protected override object GetAtomicValue => Value;
+        public int Value { get; }
 
-        private Drawer() { }
+        private Drawer(int value)
+        {
+            Value = value;
+        }
 
         public static Drawer Create(int value)
         {
-            return new Drawer
+            if (value < MinValue || value > MaxValue)
             {
-                Value = value
-            };
+                throw new System.Exception("Drawer value exceeded valid range");
+            }
+            return new Drawer(value);
         }
 
         public static Drawer Increse(Drawer drawer)
-            => drawer.Value <= MaxValue ? drawer : Create(drawer.Value + 1);
+            => drawer.Value < MaxValue ? Create(drawer.Value + 1) : drawer;
     }
 }

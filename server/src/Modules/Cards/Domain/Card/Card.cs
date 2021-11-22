@@ -18,10 +18,10 @@ namespace Cards.Domain
 
         private Card() { }
         internal static Card Create(
-                string frontValue,
+                SideLabel frontValue,
                 string frontExample,
                 bool frontIsUsed,
-                string backValue,
+                SideLabel backValue,
                 string backExample,
                 bool backIsUsed,
                 string comment
@@ -54,15 +54,15 @@ namespace Cards.Domain
             Sides = sides;
         }
 
-        internal void UpdateBack(string value, string example, bool isUsed)
+        internal void UpdateBack(SideLabel value, string example, bool isUsed)
             => UpdateSide(value, example, isUsed, Side.Back);
 
 
 
-        internal void UpdateFront(string value, string example, bool isUsed)
+        internal void UpdateFront(SideLabel value, string example, bool isUsed)
             => UpdateSide(value, example, isUsed, Side.Front);
 
-        private void UpdateSide(string value, string example, bool isUsed, Side side)
+        private void UpdateSide(SideLabel value, string example, bool isUsed, Side side)
         {
             var cardSide = GetSide(side);
             cardSide.Update(value, example, isUsed);
@@ -73,7 +73,7 @@ namespace Cards.Domain
             Comment = comment;
         }
 
-        internal void RegisterAnswer(Side sideType, int result, INextRepeatCalculator nextRepeatCalculator)
+        public void RegisterAnswer(Side sideType, int result, INextRepeatCalculator nextRepeatCalculator)
         {
             var side = GetSide(sideType);
             side.RegisterAnswer(nextRepeatCalculator, result);

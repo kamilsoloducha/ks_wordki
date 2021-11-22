@@ -55,7 +55,7 @@ namespace Cards.Application.Queries
             private CardSide CreateCardSide(Domain.CardSide side)
                 => new CardSide
                 {
-                    Value = side.Value,
+                    Value = side.Value.Value,
                     Example = side.Example,
                     Drawer = side.Drawer.Value,
                     IsUsed = side.IsUsed

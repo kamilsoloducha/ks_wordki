@@ -26,12 +26,15 @@ namespace Cards.Application.Commands
 
                 var groupId = GroupId.Restore(request.GroupId);
 
+                var frontLabel = SideLabel.Create(request.Front.Value);
+                var backLabel = SideLabel.Create(request.Back.Value);
+
                 var cardId = set.AddCard(
                     groupId,
-                    request.Front.Value,
+                    frontLabel,
                     request.Front.Example,
                     request.Front.IsUsed,
-                    request.Back.Value,
+                    backLabel,
                     request.Back.Example,
                     request.Back.IsUsed,
                     request.Comment);

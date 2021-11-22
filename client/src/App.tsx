@@ -62,19 +62,21 @@ export default function App() {
             </ul>
             <hr />
           </div>
-          <Suspense fallback={<LoadingPage></LoadingPage>}>
-            <Switch>
-              <Route path="/logout" component={LogoutPage} />
-              <Route path="/login" component={LoginPage} />
-              <Route path="/register" component={RegisterPage} />
-              <Route path="/dashboard" component={DashboardPage} />
-              <Route path="/groups" component={GroupsPage} />
-              <Route path="/cards/:groupId" component={GroupDetails} />
-              <Route path="/cards" component={CardsPage} />
-              <Route path="/error" component={ErrorPage} />
-              <Route path="/lesson" component={LessonPage} />
-            </Switch>
-          </Suspense>
+          <div className="content">
+            <Suspense fallback={<LoadingPage></LoadingPage>}>
+              <Switch>
+                <Route path="/logout" component={LogoutPage} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/register" component={RegisterPage} />
+                <Route path="/dashboard" component={DashboardPage} />
+                <Route path="/groups" component={GroupsPage} />
+                <Route path="/cards/:groupId" component={GroupDetails} />
+                <Route path="/cards" component={CardsPage} />
+                <Route path="/error" component={ErrorPage} />
+                <Route path="/lesson" component={LessonPage} />
+              </Switch>
+            </Suspense>
+          </div>
         </BrowserRouter>
       </AxiosEx>
     </>

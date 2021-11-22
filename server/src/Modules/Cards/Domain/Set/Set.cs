@@ -37,10 +37,10 @@ namespace Cards.Domain
         public void UpdateCard(
             GroupId groupId,
             CardId cardId,
-            string frontValue,
+            SideLabel frontValue,
             string frontExample,
             bool frontIsUsed,
-            string backValue,
+            SideLabel backValue,
             string backExample,
             bool backIsUsed,
             string comment)
@@ -59,10 +59,8 @@ namespace Cards.Domain
             group.RemoveCard(cardId);
         }
 
-        public GroupId AddGroup(string groupName, LanguageType front, LanguageType back)
+        public GroupId AddGroup(GroupName groupName, LanguageType front, LanguageType back)
         {
-            CheckRule(new CreateGroupNameRule(groupName));
-
             var newGroup = Group.Create(groupName, front, back);
             Groups.Add(newGroup);
 
@@ -71,17 +69,14 @@ namespace Cards.Domain
 
         public CardId AddCard(
             GroupId groupId,
-            string frontValue,
+            SideLabel frontValue,
             string frontExample,
             bool frontIsUsed,
-            string backValue,
+            SideLabel backValue,
             string backExample,
             bool backIsUsed,
             string comment)
         {
-            CheckRule(new CreateCardFrontValueRule(frontValue));
-            CheckRule(new CreateCardBackValueRule(backValue));
-
             var group = Groups.SingleOrDefault(x => x.Id == groupId);
 
             if (group is null)

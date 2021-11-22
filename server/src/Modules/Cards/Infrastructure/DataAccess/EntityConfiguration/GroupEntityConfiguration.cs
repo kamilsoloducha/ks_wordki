@@ -18,7 +18,13 @@ namespace Cards.Infrastructure
                     x => x.Value,
                     x => GroupId.Restore(x));
 
-            builder.Property(e => e.Name).HasColumnName(nameof(Group.Name));
+            builder.Property(e => e.Name)
+                .HasColumnName(nameof(Group.Name))
+                .HasConversion(
+                    x => x.Value,
+                    x => GroupName.Create(x)
+                );
+
             builder
                 .Property(e => e.FrontLanguage)
                 .HasColumnName(nameof(Group.FrontLanguage))

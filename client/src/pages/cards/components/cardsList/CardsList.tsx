@@ -10,7 +10,7 @@ function CardsList({ cards, onItemSelected }: Model) {
     <>
       {cards.map((x) => (
         <div className="card-item" key={x.id} onClick={() => onClick(x)}>
-          <CardItem card={x} />
+          <CardItem card={x} direction={1} />
         </div>
       ))}
     </>

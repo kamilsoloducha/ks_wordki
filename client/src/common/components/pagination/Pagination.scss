@@ -1,0 +1,46 @@
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+
+    .pagination-left {}
+
+    .pagination-middle {
+        display: flex;
+
+    }
+
+    .pagination-right {}
+}
+
+.selected {
+    background-color: red;
+}
+
+.button {
+    background-color: white;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+    border-radius: 3px;
+    text-align: center;
+    line-height: 50px;
+
+    &.disabled {
+        cursor: default;
+        background-color: white;
+
+        &:hover {
+            background-color: white;
+        }
+    }
+
+    &.selected {
+        cursor: default;
+        background-color: rgb(255, 215, 215);
+    }
+
+    &:hover {
+        background-color: rgb(170, 170, 170);
+    }
+}

@@ -1,3 +1,8 @@
 #router-container {
   background-color: white;
 }
+
+.content {
+  width: 75%;
+  margin: auto;
+}

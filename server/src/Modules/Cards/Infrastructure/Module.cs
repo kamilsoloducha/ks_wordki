@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Blueprints.Infrastructure.DataAccess;
 using Cards.Application.Services;
 using Cards.Domain;
+using Cards.Domain.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,7 @@ namespace Cards.Infrastructure
 
             services.AddDbContext<CardsContext>();
             services.AddScoped<ISetRepository, SetRepository>();
+            services.AddScoped<ICardRepository, CardRepository>();
             services.AddScoped<IQueryRepository, QueryRepository>();
             // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
 

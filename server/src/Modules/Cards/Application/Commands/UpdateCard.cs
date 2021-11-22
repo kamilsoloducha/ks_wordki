@@ -21,12 +21,6 @@ namespace Cards.Application.Commands
 
             public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var id1 = UserId.Restore(Guid.NewGuid());
-                var id2 = UserId.Restore(Guid.NewGuid());
-                if (id1 == id2)
-                {
-
-                }
                 var userId = UserId.Restore(request.UserId);
                 var set = await _repository.Get(userId, cancellationToken);
                 if (set is null) return ResponseBase<Unit>.Create("set is null");
@@ -34,13 +28,16 @@ namespace Cards.Application.Commands
                 var groupId = GroupId.Restore(request.GroupId);
                 var cardId = CardId.Restore(request.CardId);
 
+                var frontLabel = SideLabel.Create(request.Front.Value);
+                var backLabel = SideLabel.Create(request.Back.Value);
+
                 set.UpdateCard(
                     groupId,
                     cardId,
-                    request.Front.Value,
+                    frontLabel,
                     request.Front.Example,
                     request.Front.IsUsed,
-                    request.Back.Value,
+                    backLabel,
                     request.Back.Example,
                     request.Back.IsUsed,
                     request.Comment);

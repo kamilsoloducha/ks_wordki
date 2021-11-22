@@ -11,7 +11,14 @@ namespace Cards.Infrastructure
             builder.ToTable("CardSides");
 
             builder.HasKey(e => new { e.CardId, e.Side });
-            builder.Property(e => e.Value).HasColumnName(nameof(CardSide.Value));
+
+            builder.Property(e => e.Value)
+            .HasColumnName(nameof(CardSide.Value))
+            .HasConversion(
+                x => x.Value,
+                x => SideLabel.Create(x)
+            );
+
             builder.Property(e => e.Example).HasColumnName(nameof(CardSide.Example));
 
             builder.Property(e => e.Drawer)

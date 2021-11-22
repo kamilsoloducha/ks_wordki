@@ -9,7 +9,6 @@ namespace Cards.Domain
             Type = type;
         }
 
-        public static Language Create(LanguageType type)
-            => new Language(type);
+        public static Language Create(LanguageType type) => new Language(type);
     }
 }

@@ -1,20 +1,27 @@
 import "./CardItem.scss";
 import { CardSummary } from "pages/cards/models/groupDetailsSummary";
 
-function CardItem({ card }: Model) {
+function CardItem({ card, direction }: Model) {
+  const [first, second] =
+    direction == 1 ? [card.front, card.back] : [card.back, card.front];
   return (
     <div className="card-item-container">
-      <div className="card-item-side">
-        <div className="card-item-value">{card.front.value}</div>
-        <div className="card-item-example">{card.front.example}</div>
-        <div className="card-item-drawer">{card.front.drawer}</div>
+      <div className="card-item-value">
+        <b>{first.value}</b>
+        <b>{second.value}</b>
       </div>
-      <div className="card-item-side">
-        <div className="card-item-value">{card.back.value}</div>
-        <div className="card-item-example">{card.back.example}</div>
-        <div className="card-item-drawer">{card.back.drawer}</div>
-      </div>
-      <div className="card-item-comment">{card.comment}</div>
+      {first.example && second.example && (
+        <>
+          <hr />
+          <div className="card-item-example">
+            &bull;
+            <div className="card-item-example-container">
+              <div className="card-item-example-first">{first.example}</div>
+              <div className="card-item-example-second">{second.example}</div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -23,4 +30,5 @@ export default CardItem;
 
 export interface Model {
   card: CardSummary;
+  direction: number;
 }

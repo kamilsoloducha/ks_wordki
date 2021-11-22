@@ -25,15 +25,20 @@ namespace Cards.Application.Commands
                 var cardsSet = await _repository.Get(userId, cancellationToken);
                 if (cardsSet is null) return ResponseBase<Guid>.Create("cardsSet is null");
 
-                var groupId = cardsSet.AddGroup(request.GroupName, request.Front, request.Back);
+                var groupName = GroupName.Create(request.GroupName);
+
+                var groupId = cardsSet.AddGroup(groupName, request.Front, request.Back);
 
                 foreach (var item in request.Cards)
                 {
+                    var frontLabel = SideLabel.Create(item.FrontValue);
+                    var backLabel = SideLabel.Create(item.BackValue);
+
                     cardsSet.AddCard(groupId,
-                        item.FrontValue,
+                        frontLabel,
                         item.FrontExample,
                         false,
-                        item.BackValue,
+                        backLabel,
                         item.BackExample,
                         false,
                         item.Comment);

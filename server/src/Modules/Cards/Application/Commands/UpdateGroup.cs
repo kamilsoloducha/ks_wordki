@@ -28,7 +28,10 @@ namespace Cards.Application.Commands
                 var groupId = GroupId.Restore(request.GroupId);
 
                 var group = set.GetGroup(groupId);
-                group.Update(request.GroupName, request.Front, request.Back);
+
+                var groupName = GroupName.Create(request.GroupName);
+
+                group.Update(groupName, request.Front, request.Back);
 
                 await _repository.Update(set, cancellationToken);
                 return ResponseBase<Unit>.Create(Unit.Value);

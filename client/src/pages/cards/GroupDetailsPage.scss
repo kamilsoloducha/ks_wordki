@@ -1,3 +1,14 @@
+.group-detail-main-container {
+    background-color: rgb(73, 73, 73);
+    border-radius: 5px;
+
+    .group-details-card-list-container {
+        padding-left: 3%;
+        padding-right: 3%;
+        padding-bottom: 3%;
+    }
+}
+
 #group-details {
     padding: 0px 50px;
 }
