@@ -8,6 +8,11 @@ export async function repeats(count: number) {
   return { data: response.data };
 }
 
+export async function repeatsCount() {
+  const response = await http.get<number>(`/repeats/count`);
+  return { data: response.data };
+}
+
 export async function startLesson(userId: string) {
   const request = { userId } as StartLessonRequest;
   const response = await http.post<{}>("/lesson/start", request);

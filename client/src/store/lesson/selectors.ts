@@ -9,3 +9,6 @@ export const selectCurrectRepeat = (state: MainState) =>
 
 export const selectIsCorrect = (state: MainState) =>
   state.lessonReducer.isCorrect;
+
+export const selectCardsCount = (state: MainState) =>
+  state.lessonReducer.cardsCount;

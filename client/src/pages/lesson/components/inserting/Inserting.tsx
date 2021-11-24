@@ -1,3 +1,4 @@
+import "./Inserting.scss";
 import { LessonState, LessonStateEnum } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
@@ -63,7 +64,7 @@ function Inserting({ state, repeat, isCorrect }: Model): ReactElement {
     },
     [dispatch]
   );
-
+  console.log(modelRef.current.isCorrect);
   if (!state.card || !repeat) {
     return <></>;
   }
@@ -88,7 +89,9 @@ function Inserting({ state, repeat, isCorrect }: Model): ReactElement {
         />
         {state.answer && (
           <>
-            <div>Poprawna odpowiedź: {repeat.answerValue}</div>
+            <div className={isCorrect ? "correct" : "wrong"}>
+              Poprawna odpowiedź: {repeat.answerValue}
+            </div>
           </>
         )}
       </div>

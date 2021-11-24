@@ -3,7 +3,7 @@ import { CardSummary } from "pages/cards/models/groupDetailsSummary";
 
 function CardItem({ card, direction }: Model) {
   const [first, second] =
-    direction == 1 ? [card.front, card.back] : [card.back, card.front];
+    direction === 1 ? [card.front, card.back] : [card.back, card.front];
   return (
     <div className="card-item-container">
       <div className="card-item-value">

@@ -17,4 +17,9 @@ public class RepeatsController : BaseController
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
     public async Task<IActionResult> GetRepeats([FromRoute] GetRepeats.Query query, CancellationToken cancellationToken)
         => new JsonResult(await Mediator.Send(query, cancellationToken));
+
+    [HttpGet("count")]
+    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+    public async Task<IActionResult> GetRepeatsCount([FromRoute] GetRepeatsCount.Query query, CancellationToken cancellationToken)
+        => new JsonResult(await Mediator.Send(query, cancellationToken));
 }

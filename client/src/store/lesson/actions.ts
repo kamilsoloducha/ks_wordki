@@ -1,9 +1,13 @@
 import { LessonStateEnum } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
+import { compare } from "pages/lesson/services/answerComparer";
 import LessonState, { initialState } from "./state";
 
 export enum DailyActionEnum {
   RESET = "[LESSON] RESET",
+
+  GET_CARDS_COUNT = "[LESSON] GET_CARDS_COUNT",
+  GET_CARDS_COUNT_SUCCESS = "[LESSON] GET_CARDS_COUNT_SUCCESS",
 
   GET_CARDS = "[LESSON] GET_CARDS",
   GET_CARDS_SUCCESS = "[LESSON] GET_CARDS_SUCCESS",
@@ -61,6 +65,29 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
   };
 }
 
+export interface GetCardsCount extends LessonAction {}
+export function getCardsCount(): GetCardsCount {
+  return {
+    type: DailyActionEnum.GET_CARDS_COUNT,
+    reduce: (state: LessonState): LessonState => {
+      return { ...state };
+    },
+  };
+}
+
+export interface GetCardsCountSuccess extends LessonAction {}
+export function getCardsCountSuccess(count: number): GetCardsCountSuccess {
+  return {
+    type: DailyActionEnum.GET_CARDS_COUNT_SUCCESS,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        cardsCount: count,
+      };
+    },
+  };
+}
+
 export interface StartLesson extends LessonAction {}
 export function startLesson(): StartLesson {
   return {
@@ -86,7 +113,7 @@ export function check(): Check {
   return {
     type: DailyActionEnum.LESSON_CHECK,
     reduce: (state: LessonState): LessonState => {
-      const isCorrect = state.repeats[0].answerValue === state.answer;
+      const isCorrect = compare(state.repeats[0].answerValue, state.answer);
       return {
         ...state,
         lessonState: LessonStateEnum.AnswerPending,

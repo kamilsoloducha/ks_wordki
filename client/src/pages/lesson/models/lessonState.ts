@@ -1,4 +1,5 @@
 export enum LessonStateEnum {
+  SetLesson,
   BeforeLoading,
   Loading,
   StartLessonPending,
@@ -7,6 +8,18 @@ export enum LessonStateEnum {
   Pause,
   FinishPending,
 }
+
+export const SetLesson = {
+  type: LessonStateEnum.SetLesson,
+  btnStart: false,
+  btnCheck: false,
+  btnCorrect: false,
+  btnFinish: false,
+  btnPause: false,
+  btnWrong: false,
+  card: false,
+  answer: false,
+} as LessonState;
 
 export const BeforeLoading = {
   type: LessonStateEnum.BeforeLoading,
@@ -95,6 +108,7 @@ export const FinishPending = {
 
 export class LessonState {
   private static directory = new Map<LessonStateEnum, LessonState>([
+    [LessonStateEnum.SetLesson, SetLesson],
     [LessonStateEnum.BeforeLoading, BeforeLoading],
     [LessonStateEnum.Loading, Loading],
     [LessonStateEnum.StartLessonPending, StartLessonPending],

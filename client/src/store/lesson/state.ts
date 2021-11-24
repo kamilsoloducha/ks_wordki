@@ -6,11 +6,13 @@ export default interface LessonState {
   lessonState: LessonStateEnum;
   isCorrect: boolean | null;
   answer: string;
+  cardsCount: number;
 }
 
 export const initialState: LessonState = {
   repeats: [],
-  lessonState: LessonStateEnum.BeforeLoading,
+  lessonState: LessonStateEnum.SetLesson,
   isCorrect: null,
   answer: "",
+  cardsCount: 0,
 };

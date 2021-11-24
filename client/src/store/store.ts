@@ -17,6 +17,7 @@ import { correctEffect, wrongEffect } from "./lesson/sagas/answer";
 import deleteCardEffect from "./cards/sagas/deleteCard";
 import addGroupEffect from "./groups/sagas/addGroup";
 import updateGroupEffect from "./groups/sagas/updateGroup";
+import getCardsCountEffect from "./lesson/sagas/getCardsCount";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -47,6 +48,7 @@ sagaMiddleware.run(getCardsEffect);
 sagaMiddleware.run(updateCardEffect);
 sagaMiddleware.run(addCardEffect);
 sagaMiddleware.run(getCardsEffectDaily);
+sagaMiddleware.run(getCardsCountEffect);
 sagaMiddleware.run(correctEffect);
 sagaMiddleware.run(wrongEffect);
 sagaMiddleware.run(deleteCardEffect);

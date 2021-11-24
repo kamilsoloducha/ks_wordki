@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import LoadingPage from "common/components/loadingPage/LoadingPage";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLoginUserSuccess } from "store/user/actions";
 import { UserData } from "common/models/userModel";
 import { selectIsLogin } from "store/user/selectors";
+import TopBar from "common/components/topBar/TopBar";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
 const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
@@ -37,31 +38,7 @@ export default function App() {
     <>
       <AxiosEx>
         <BrowserRouter>
-          <div id="router-container">
-            <ul>
-              {isLogin && (
-                <>
-                  <li>
-                    <Link to="/logout">Logout</Link>
-                  </li>
-                  <li>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </li>
-                </>
-              )}
-              {!isLogin && (
-                <>
-                  <li>
-                    <Link to="/register">Register</Link>
-                  </li>
-                  <li>
-                    <Link to="/login">Login</Link>
-                  </li>
-                </>
-              )}
-            </ul>
-            <hr />
-          </div>
+          <TopBar isLogin={isLogin} />
           <div className="content">
             <Suspense fallback={<LoadingPage></LoadingPage>}>
               <Switch>
