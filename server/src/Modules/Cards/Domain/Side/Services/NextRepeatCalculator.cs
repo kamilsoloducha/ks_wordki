@@ -10,7 +10,6 @@ namespace Cards.Domain
 
     public class StandartCalculator : INextRepeatCalculator
     {
-        private const double powerBase = 1.65;
         public DateTime Calculate(CardSide side, int result)
         {
             var daysToAdded = 0;
@@ -19,8 +18,10 @@ namespace Cards.Domain
             else if (result == 0)
                 daysToAdded = 2;
             else
-                daysToAdded = (int)Math.Ceiling(Math.Pow(powerBase, side.Drawer.RealValue));
+                daysToAdded = Helpers.GetFibbonacciNumber(side.Drawer.RealValue);
             return SystemClock.Now.AddDays(daysToAdded);
         }
+
+
     }
 }

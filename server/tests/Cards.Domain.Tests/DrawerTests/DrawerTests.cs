@@ -13,6 +13,8 @@ namespace Cards.Domain.Tests.DrawerTests
         {
             var initial = Drawer.Initial;
             initial.Value.Should().Be(1);
+            initial.RealValue.Should().Be(1);
+
         }
 
         [Test]
@@ -22,6 +24,17 @@ namespace Cards.Domain.Tests.DrawerTests
             var drawer = Drawer.Create(initValue);
 
             drawer.Value.Should().Be(initValue);
+            drawer.RealValue.Should().Be(initValue);
+        }
+
+        [Test]
+        public void CreateDrawerOverMaxValue()
+        {
+            const int initValue = 10;
+            var drawer = Drawer.Create(initValue);
+
+            drawer.Value.Should().Be(Drawer.MaxValue);
+            drawer.RealValue.Should().Be(initValue);
         }
 
         [Test]
@@ -32,6 +45,7 @@ namespace Cards.Domain.Tests.DrawerTests
 
             drawer = drawer.Increse();
             drawer.Value.Should().Be(initValue + 1);
+            drawer.RealValue.Should().Be(initValue + 1);
         }
 
         [Test]
@@ -42,21 +56,13 @@ namespace Cards.Domain.Tests.DrawerTests
 
             drawer = drawer.Increse();
             drawer.Value.Should().Be(initValue);
+            drawer.RealValue.Should().Be(initValue + 1);
         }
 
         [Test]
         public void ExceptionWhenValueIsTooSmall()
         {
             const int initValue = 0;
-            Action action = () => Drawer.Create(initValue);
-
-            action.Should().Throw<Exception>();
-        }
-
-        [Test]
-        public void ExceptionWhenValueIsTooBig()
-        {
-            const int initValue = 6;
             Action action = () => Drawer.Create(initValue);
 
             action.Should().Throw<Exception>();
