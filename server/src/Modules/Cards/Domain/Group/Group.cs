@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blueprints.Domain;
+using Utils;
 
 namespace Cards.Domain
 {
@@ -26,7 +27,7 @@ namespace Cards.Domain
                 Name = name,
                 FrontLanguage = Language.Create(front),
                 BackLanguage = Language.Create(back),
-                CreationDate = DateTime.Now,
+                CreationDate = SystemClock.Now,
                 Cards = new List<Card>(),
                 IsNew = true,
             };

@@ -1,5 +1,5 @@
 import "./GroupDetailsPage.scss";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import CardsList from "./components/cardsList/CardsList";
 import GroupDetails from "./components/groupDetails/GroupDetails";
 import { CardSummary } from "./models/groupDetailsSummary";
@@ -8,7 +8,6 @@ import {
   selectCards,
   selectGroupDetails,
   selectIsLoading,
-  selectSelectedCard,
 } from "store/cards/selectors";
 import { useParams } from "react-router";
 import {
@@ -22,14 +21,16 @@ import {
 import CardDialog from "common/components/cardDialog/CardDialog";
 import Pagination from "common/components/pagination/Pagination";
 import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
+import { FormModel } from "common/components/cardDialog/CardForm";
 
 function GroupDetailsPage(): ReactElement {
+  const [formItem, setFormItem] = useState<FormModel | null>(null);
   const { groupId } = useParams<{ groupId: string }>();
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const cards = useSelector(selectCards);
   const groupDetails = useSelector(selectGroupDetails);
-  const selectedItem = useSelector(selectSelectedCard);
+  // const selectedItem = useSelector(selectSelectedCard);
 
   useEffect(() => {
     dispatch(getCards(groupId));
@@ -37,31 +38,52 @@ function GroupDetailsPage(): ReactElement {
 
   const onItemSelected = (item: CardSummary) => {
     dispatch(selectCard(item));
+    setFormItem(getFormModelFromCardSummary(item));
   };
 
-  const onFormSubmit = (item: CardSummary): void => {
-    if (item.id) {
-      dispatch(updateCard(item));
+  const onFormSubmit = (item: FormModel): void => {
+    const udpdatedCard = {
+      id: item.cardId,
+      comment: item.comment,
+      front: {
+        value: item.frontValue,
+        example: item.frontExample,
+        isUsed: item.frontEnabled,
+      },
+      back: {
+        value: item.backValue,
+        example: item.backExample,
+        isUsed: item.backEnabled,
+      },
+    } as CardSummary;
+    if (udpdatedCard.id) {
+      dispatch(updateCard(udpdatedCard));
+      setFormItem(null);
     } else {
-      dispatch(addCard(item));
+      dispatch(addCard(udpdatedCard));
+      onAddCard();
     }
   };
 
   const onDelete = () => {
     dispatch(deleteCard());
+    setFormItem(null);
   };
 
   const onCancel = () => {
     dispatch(resetSelectedCard());
+    setFormItem(null);
   };
 
   const onAddCard = () => {
     const cardTemplate = {
+      id: "",
       front: { value: "", example: "", isUsed: false },
       back: { value: "", example: "", isUsed: false },
       comment: "",
     } as CardSummary;
     dispatch(selectCard(cardTemplate));
+    setFormItem(getFormModelFromCardSummary(cardTemplate));
   };
 
   const onPageChagned = (event: PageChangedEvent) => {
@@ -87,7 +109,7 @@ function GroupDetailsPage(): ReactElement {
         <CardsList cards={cards} onItemSelected={onItemSelected} />
       </div>
       <CardDialog
-        card={selectedItem}
+        card={formItem}
         onHide={onCancel}
         onSubmit={onFormSubmit}
         onDelete={onDelete}
@@ -97,3 +119,16 @@ function GroupDetailsPage(): ReactElement {
 }
 
 export default GroupDetailsPage;
+
+function getFormModelFromCardSummary(card: CardSummary): FormModel {
+  return {
+    cardId: card.id,
+    frontValue: card.front.value,
+    frontExample: card.front.example,
+    frontEnabled: card.front.isUsed,
+    backValue: card.back.value,
+    backExample: card.back.example,
+    backEnabled: card.back.isUsed,
+    comment: card.comment,
+  } as FormModel;
+}

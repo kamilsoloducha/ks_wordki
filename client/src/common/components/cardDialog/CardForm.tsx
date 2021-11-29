@@ -1,85 +1,131 @@
-import { Field, Form, Formik } from "formik";
-import { CardSummary } from "pages/cards/models/groupDetailsSummary";
+import { useFormik } from "formik";
+import { useCallback, useEffect, useRef } from "react";
 
 export default function CardForm({ card, onSubmit }: Model) {
-  const onsubmit = (values: FormModel) => {
-    const updated = !card
-      ? ({ back: {}, front: {} } as CardSummary)
-      : { ...card };
+  const firstInputRef = useRef<any>(null);
 
-    updated.front.value = values.frontValue;
-    updated.front.example = values.frontExample;
-    updated.front.isUsed = values.frontEnabled;
+  const onsubmit = useCallback(
+    (values: FormModel) => {
+      onSubmit(values);
+      if (firstInputRef.current) firstInputRef.current.focus();
+    },
+    [onSubmit]
+  );
 
-    updated.back.value = values.backValue;
-    updated.back.example = values.backExample;
-    updated.back.isUsed = values.backEnabled;
+  const formik = useFormik({
+    initialValues: card as FormModel,
+    onSubmit: (values) => onsubmit(values),
+    enableReinitialize: true,
+  });
 
-    updated.comment = values.comment;
-    onSubmit(updated);
-  };
+  useEffect(() => {
+    formik.resetForm();
+  }, [card, formik]);
+
+  if (!card) return <></>;
 
   return (
-    <Formik
-      initialValues={
-        {
-          frontValue: card?.front.value ?? "",
-          frontExample: card?.front.example ?? "",
-          frontEnabled: card?.front.isUsed,
-          backValue: card?.back.value ?? "",
-          backExample: card?.back.example ?? "",
-          backEnabled: card?.back.isUsed,
-          comment: card?.comment ?? "",
-        } as FormModel
-      }
-      onSubmit={onsubmit}
-      enableReinitialize={true}
-    >
-      <Form id="form">
+    <>
+      <form id="form" onSubmit={formik.handleSubmit} autoComplete="off">
         <div>
           <label>Front value</label>
-          <Field id="frontValue" name="frontValue" autoComplete="off" />
+          <input
+            ref={firstInputRef}
+            id="frontValue"
+            name="frontValue"
+            autoComplete="off"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.frontValue}
+          />
         </div>
+
         <div>
           <label>Back value</label>
-          <Field id="backValue" name="backValue" autoComplete="off" />
+          <input
+            id="backValue"
+            name="backValue"
+            autoComplete="off"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.backValue}
+          />
         </div>
+
         <div>
           <label>Front example</label>
-          <Field id="frontExample" name="frontExample" autoComplete="off" />
+          <input
+            id="frontExample"
+            name="frontExample"
+            autoComplete="off"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.frontExample}
+          />
         </div>
+
         <div>
           <label>Back example</label>
-          <Field id="backExample" name="backExample" autoComplete="off" />
+          <input
+            id="backExample"
+            name="backExample"
+            autoComplete="off"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.backExample}
+          />
         </div>
+
         <div>
           <label>Front used</label>
-          <Field type="checkbox" name="frontEnabled" autoComplete="off" />
+          <input
+            id="frontEnabled"
+            name="frontEnabled"
+            type="checkbox"
+            onChange={formik.handleChange}
+            checked={formik.values.frontEnabled}
+          />
         </div>
+
         <div>
           <label>Back used</label>
-          <Field type="checkbox" name="backEnabled" autoComplete="off" />
+          <input
+            id="backEnabled"
+            name="backEnabled"
+            type="checkbox"
+            onChange={formik.handleChange}
+            checked={formik.values.backEnabled}
+          />
         </div>
+
         <div>
           <label>Comment</label>
-          <Field id="comment" name="comment" autoComplete="off" />
+          <input
+            id="comment"
+            name="comment"
+            type="text"
+            autoComplete="off"
+            onChange={formik.handleChange}
+            value={formik.values.comment}
+          />
         </div>
-      </Form>
-    </Formik>
+      </form>
+    </>
   );
 }
 
-interface FormModel {
+export interface FormModel {
+  cardId: string;
   frontValue: string;
   frontExample: string;
-  frontEnabled: boolean;
+  frontEnabled: any;
   backValue: string;
   backExample: string;
-  backEnabled: boolean;
+  backEnabled: any;
   comment: string;
 }
 
 interface Model {
-  card: CardSummary | null;
-  onSubmit: (item: CardSummary) => void;
+  card: FormModel | null;
+  onSubmit: (item: FormModel) => void;
 }

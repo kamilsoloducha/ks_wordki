@@ -1,5 +1,6 @@
 ﻿using System;
 using Blueprints.Domain;
+using Utils;
 
 namespace Lessons.Domain
 {
@@ -21,7 +22,7 @@ namespace Lessons.Domain
                 Id = Guid.NewGuid(),
                 CardId = cardId,
                 Side = side,
-                RepeatDate = DateTime.Now,
+                RepeatDate = SystemClock.Now,
                 Result = result,
                 IsNew = true
             };

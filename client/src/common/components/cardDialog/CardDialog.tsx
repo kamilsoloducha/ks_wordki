@@ -1,9 +1,8 @@
 import "./CardDialog.scss";
 import { ReactElement } from "react";
 import { Dialog } from "primereact/dialog";
-import { CardSummary } from "pages/cards/models/cardSummary";
 import Footer from "./Footer";
-import CardForm from "./CardForm";
+import CardForm, { FormModel } from "./CardForm";
 
 export default function CardDialog({
   card,
@@ -12,7 +11,7 @@ export default function CardDialog({
   onDelete,
 }: Model): ReactElement {
   const visible = card !== null;
-  const isEditing = card?.id;
+  const isEditing = card?.cardId;
   const header = isEditing ? "Editing Card" : "Creating Card";
 
   const ondelete: () => void = () => {
@@ -39,8 +38,8 @@ export default function CardDialog({
 }
 
 interface Model {
-  card: CardSummary | null;
+  card: FormModel | null;
   onHide: () => void;
-  onSubmit: (item: CardSummary) => void;
-  onDelete?: (item: CardSummary | null) => void;
+  onSubmit: (item: FormModel) => void;
+  onDelete?: (item: FormModel | null) => void;
 }

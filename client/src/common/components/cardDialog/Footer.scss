@@ -1,0 +1,37 @@
+button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 30px;
+    cursor: pointer;
+}
+
+.delete {
+    background-color: rgb(255, 81, 0);
+    color: whitesmoke;
+
+    &:hover {
+        background-color: rgb(228, 72, 0);
+    }
+}
+
+.cancel {
+    background-color: rgb(117, 117, 117);
+    color: whitesmoke;
+
+    &:hover {
+        background-color: rgb(95, 95, 95);
+    }
+}
+
+.save {
+    background-color: rgb(20, 117, 20);
+    color: whitesmoke;
+
+    &:hover {
+        background-color: rgb(16, 100, 16);
+    }
+}
+
+.p-dialog .p-dialog-footer {
+    background-color: rgb(68, 68, 68);
+}

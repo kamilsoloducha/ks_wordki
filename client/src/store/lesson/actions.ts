@@ -1,5 +1,6 @@
 import { LessonStateEnum } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
+import Results from "pages/lesson/models/results";
 import { compare } from "pages/lesson/services/answerComparer";
 import LessonState, { initialState } from "./state";
 
@@ -59,6 +60,7 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
       return {
         ...state,
         repeats: allRepeats,
+        lessonCount: allRepeats.length,
         lessonState: LessonStateEnum.StartLessonPending,
       };
     },
@@ -93,7 +95,16 @@ export function startLesson(): StartLesson {
   return {
     type: DailyActionEnum.LESSON_START,
     reduce: (state: LessonState): LessonState => {
-      return { ...state, lessonState: LessonStateEnum.CheckPending };
+      const results = {
+        correct: 0,
+        accept: 0,
+        wrong: 0,
+      } as Results;
+      return {
+        ...state,
+        results: results,
+        lessonState: LessonStateEnum.CheckPending,
+      };
     },
   };
 }
@@ -143,10 +154,25 @@ export function correct(
     type: DailyActionEnum.LESSON_CORRECT,
     reduce: (state: LessonState): LessonState => {
       const repeats = state.repeats.slice(1);
+      const lessonState =
+        repeats.length > 0
+          ? LessonStateEnum.CheckPending
+          : LessonStateEnum.FinishPending;
+
+      const correct = state.isCorrect
+        ? state.results?.correct + 1
+        : state.results?.correct;
+
+      const accept = !state.isCorrect
+        ? state.results?.accept + 1
+        : state.results?.accept;
+
+      const results = { ...state.results, correct, accept };
       return {
         ...state,
-        lessonState: LessonStateEnum.CheckPending,
+        lessonState: lessonState,
         repeats,
+        results,
         isCorrect: null,
       };
     },
@@ -170,10 +196,12 @@ export function wrong(groupId: string, cardId: string, side: number): Wrong {
       const currentRepeat = state.repeats[0];
       const repeats = state.repeats.slice(1);
       repeats.push(currentRepeat);
+      const results = { ...state.results, wrong: state.results.wrong + 1 };
       return {
         ...state,
         lessonState: LessonStateEnum.CheckPending,
         repeats,
+        results,
         isCorrect: null,
       };
     },

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Utils;
 
 namespace Api.Configuration
 {
@@ -20,13 +21,13 @@ namespace Api.Configuration
         public async Task Invoke(HttpContext context)
         {
             var stopWatch = new Stopwatch();
-            _logger.LogInformation("Start handling {request} at {startTime}", context.Request.Path, DateTime.Now);
+            _logger.LogInformation("Start handling {request} at {startTime}", context.Request.Path, SystemClock.Now);
             stopWatch.Start();
 
             await _next(context);
 
             stopWatch.Stop();
-            _logger.LogInformation("Finish handling {request} at {startTime}.Execution time: {executionTime}", context.Request.Path, DateTime.Now, stopWatch.ElapsedMilliseconds);
+            _logger.LogInformation("Finish handling {request} at {startTime}.Execution time: {executionTime}", context.Request.Path, SystemClock.Now, stopWatch.ElapsedMilliseconds);
         }
 
     }

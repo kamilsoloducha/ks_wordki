@@ -5,6 +5,7 @@ using Blueprints.Application.Services;
 using Cards.Application.Services;
 using Cards.Domain;
 using MediatR;
+using Utils;
 
 namespace Cards.Application.Queries
 {
@@ -26,7 +27,7 @@ namespace Cards.Application.Queries
             {
                 var userIdValue = _userDataProvider.GetUserId();
                 var userId = UserId.Restore(userIdValue);
-                var dateTime = DateTime.Now.Date;
+                var dateTime = SystemClock.Now.Date;
 
                 var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(userId, dateTime, cancellationToken);
                 var groupsCount = await _queryRepository.GetGroupsCount(userId, cancellationToken);

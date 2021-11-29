@@ -6,11 +6,14 @@ export default function Settigs({
 }: Model): ReactElement {
   const [inputValue, setInputValue] = useState(0);
 
-  const onInputChanged = useCallback((event: any) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-    selectionChanged(newValue);
-  }, []);
+  const onInputChanged = useCallback(
+    (event: any) => {
+      const newValue = event.target.value;
+      setInputValue(newValue);
+      selectionChanged(newValue);
+    },
+    [selectionChanged]
+  );
 
   return (
     <>

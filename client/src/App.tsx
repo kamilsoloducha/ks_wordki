@@ -20,7 +20,11 @@ const DashboardPage = lazy(() => import("pages/dashboard/DashbaordPage"));
 const GroupsPage = lazy(() => import("pages/groups/GroupsPage"));
 const GroupDetails = lazy(() => import("pages/cards/GroupDetailsPage"));
 const CardsPage = lazy(() => import("pages/cards/CardsPage"));
+const LessonSettingsPage = lazy(
+  () => import("pages/lessonSettings/LessonSetting")
+);
 const LessonPage = lazy(() => import("pages/lesson/LessonPage"));
+const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));
 
 export default function App() {
   const isLogin = useSelector(selectIsLogin);
@@ -50,7 +54,10 @@ export default function App() {
                 <Route path="/cards/:groupId" component={GroupDetails} />
                 <Route path="/cards" component={CardsPage} />
                 <Route path="/error" component={ErrorPage} />
+                <Route path="/lesson-settings" component={LessonSettingsPage} />
+                <Route path="/lesson-result" component={LessonResultPage} />
                 <Route path="/lesson" component={LessonPage} />
+                <Route path="/" component={DashboardPage} />
               </Switch>
             </Suspense>
           </div>

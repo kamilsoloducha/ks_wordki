@@ -34,7 +34,7 @@ function DashboardPage(): ReactElement {
   };
 
   const navigateLesson = () => {
-    history.push("/lesson");
+    history.push("/lesson-settings");
   };
 
   return (

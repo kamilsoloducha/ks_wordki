@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Blueprints.Domain;
+using Utils;
 
 namespace Lessons.Domain
 {
@@ -19,7 +20,7 @@ namespace Lessons.Domain
         {
             return new Lesson
             {
-                StartDate = DateTime.Now,
+                StartDate = SystemClock.Now,
                 UserId = performence.UserId,
                 Type = type,
                 TimeCounter = 0,
@@ -32,7 +33,7 @@ namespace Lessons.Domain
         {
             IsDirty = true;
             var repeat = Repeat.Create(cardId, side, result);
-            TimeCounter = (int)(DateTime.Now.Ticks - StartDate.Ticks / 1000);
+            TimeCounter = (int)(SystemClock.Now.Ticks - StartDate.Ticks / 1000);
             Repeats.Add(repeat);
         }
     }

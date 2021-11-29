@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blueprints.Domain;
+using Utils;
 
 namespace Cards.Domain
 {
@@ -31,7 +32,7 @@ namespace Cards.Domain
             {
                 Id = CardId.Create(),
                 Comment = comment,
-                CreationDate = DateTime.Now,
+                CreationDate = SystemClock.Now,
                 IsNew = true
             };
 

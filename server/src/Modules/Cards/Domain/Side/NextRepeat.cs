@@ -1,4 +1,5 @@
 using System;
+using Utils;
 
 namespace Cards.Domain
 {
@@ -18,7 +19,7 @@ namespace Cards.Domain
             : NextRepeat.NullValue;
 
         public static NextRepeat Create()
-            => new NextRepeat(DateTime.Now.Date);
+            => new NextRepeat(SystemClock.Now.Date);
 
         public static bool operator ==(NextRepeat v1, NextRepeat v2) => v1.Value == v2.Value;
         public static bool operator !=(NextRepeat v1, NextRepeat v2) => v1.Value != v2.Value;

@@ -64,10 +64,11 @@ function Inserting({ state, repeat, isCorrect }: Model): ReactElement {
     },
     [dispatch]
   );
-  console.log(modelRef.current.isCorrect);
+
   if (!state.card || !repeat) {
     return <></>;
   }
+
   return (
     <div>
       Question:
@@ -88,11 +89,16 @@ function Inserting({ state, repeat, isCorrect }: Model): ReactElement {
           disabled={!state.inserting}
         />
         {state.answer && (
-          <>
-            <div className={isCorrect ? "correct" : "wrong"}>
-              Poprawna odpowiedź: {repeat.answerValue}
+          <div className="correct-answer">
+            <div className="correct-answer-header">Poprawna odpowiedź</div>
+            <div
+              className={`correct-answer-value ${
+                isCorrect ? "correct" : "wrong"
+              }`}
+            >
+              {repeat.answerValue}
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

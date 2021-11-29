@@ -1,3 +1,4 @@
+import "./Footer.scss";
 import { ReactElement } from "react";
 
 export default function Footer({
@@ -7,14 +8,14 @@ export default function Footer({
   return (
     <div className="card-dialog-footer">
       {ondelete && (
-        <button className="float-left" onClick={ondelete}>
+        <button className="float-left delete" onClick={ondelete}>
           Delete
         </button>
       )}
-      <button type="submit" form="form" className="float-right">
+      <button type="submit" form="form" className="float-right save">
         Save
       </button>
-      <button className="float-right" onClick={onhide}>
+      <button className="float-right cancel" onClick={onhide}>
         Cancel
       </button>
     </div>
