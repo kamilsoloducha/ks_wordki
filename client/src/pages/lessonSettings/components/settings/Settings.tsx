@@ -15,12 +15,18 @@ export default function Settigs({
     [selectionChanged]
   );
 
+  const onAllClick = useCallback(() => {
+    setInputValue(questionCount);
+    selectionChanged(questionCount);
+  }, [questionCount, selectionChanged]);
+
   return (
     <>
       <p>Available: {questionCount}</p>
       <p>
         Selected:
         <input type="number" value={inputValue} onChange={onInputChanged} />
+        <button onClick={onAllClick}>All</button>
       </p>
     </>
   );

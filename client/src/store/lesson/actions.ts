@@ -5,7 +5,9 @@ import { compare } from "pages/lesson/services/answerComparer";
 import LessonState, { initialState } from "./state";
 
 export enum DailyActionEnum {
-  RESET = "[LESSON] RESET",
+  RESET_ALL = "[LESSON] RESET_ALL",
+  RESET_LESSON = "[LESSON] RESET_LESSON",
+  RESET_SETTINGS = "[LESSON] RESET_SETTINGS",
 
   GET_CARDS_COUNT = "[LESSON] GET_CARDS_COUNT",
   GET_CARDS_COUNT_SUCCESS = "[LESSON] GET_CARDS_COUNT_SUCCESS",
@@ -29,11 +31,37 @@ export interface LessonAction {
 }
 
 export interface Reset extends LessonAction {}
-export function reset(): Reset {
+export function resetAll(): Reset {
   return {
-    type: DailyActionEnum.RESET,
+    type: DailyActionEnum.RESET_ALL,
     reduce: (_: LessonState): LessonState => {
       return initialState;
+    },
+  };
+}
+
+export interface ResetLesson extends LessonAction {}
+export function resetLesson(): ResetLesson {
+  return {
+    type: DailyActionEnum.RESET_LESSON,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        repeats: [],
+        answer: "",
+      };
+    },
+  };
+}
+
+export interface ResetSettings extends LessonAction {}
+export function resetSettings(): ResetSettings {
+  return {
+    type: DailyActionEnum.RESET_SETTINGS,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+      };
     },
   };
 }

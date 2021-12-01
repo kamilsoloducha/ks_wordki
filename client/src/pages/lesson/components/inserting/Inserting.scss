@@ -14,18 +14,3 @@
     outline: none;
     padding: 10px;
 }
-
-.correct-answer {
-    display: flex;
-    flex-direction: column;
-
-    .correct-answer-header {
-        width: 100%;
-    }
-
-    .correct-answer-value {
-        width: 100%;
-        text-align: center;
-        font-size: 30px;
-    }
-}

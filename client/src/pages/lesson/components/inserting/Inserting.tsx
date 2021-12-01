@@ -1,53 +1,27 @@
 import "./Inserting.scss";
-import { LessonState, LessonStateEnum } from "pages/lesson/models/lessonState";
+import { LessonState } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-  check,
-  correct,
-  wrong,
-  setAnswer as setAnswerAction,
-} from "store/lesson/actions";
+import { ReactElement, useCallback, useEffect, useRef } from "react";
 import Question from "../question/Question";
+import Answer from "../answer/Answer";
 
-function Inserting({ state, repeat, isCorrect }: Model): ReactElement {
-  const [answer, setAnswer] = useState("");
+export default function Inserting({
+  state,
+  repeat,
+  isCorrect,
+  insertedValue,
+  onValueChanged,
+  onEnterClick,
+}: Model): ReactElement {
   const inputRef = useRef<any>(null);
-  const modelRef = usePropRef({ state, repeat, isCorrect });
-  const dispatch = useDispatch();
 
   const handleEventEvent = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === "Enter") {
-        switch (modelRef.current.state.type) {
-          case LessonStateEnum.CheckPending: {
-            dispatch(check());
-            return;
-          }
-          case LessonStateEnum.AnswerPending: {
-            dispatch(
-              modelRef.current.isCorrect
-                ? correct(
-                    modelRef.current.repeat.groupId,
-                    modelRef.current.repeat.cardId,
-                    modelRef.current.repeat.questionSide,
-                    1
-                  )
-                : wrong(
-                    modelRef.current.repeat.groupId,
-                    modelRef.current.repeat.cardId,
-                    modelRef.current.repeat.questionSide
-                  )
-            );
-            setAnswer("");
-            if (inputRef.current) inputRef.current.focus();
-            return;
-          }
-        }
-      }
+      if (event.key !== "Enter") return;
+      onEnterClick();
+      inputRef.current?.focus();
     },
-    [dispatch, modelRef]
+    [onEnterClick]
   );
 
   useEffect(() => {
@@ -59,10 +33,9 @@ function Inserting({ state, repeat, isCorrect }: Model): ReactElement {
 
   const onAnswerChanged = useCallback(
     (event: any) => {
-      setAnswer(event.target.value);
-      dispatch(setAnswerAction(event.target.value));
+      onValueChanged(event.target.value);
     },
-    [dispatch]
+    [onValueChanged]
   );
 
   if (!state.card || !repeat) {
@@ -82,23 +55,16 @@ function Inserting({ state, repeat, isCorrect }: Model): ReactElement {
         <input
           ref={inputRef}
           id="answer"
-          name="answer"
-          value={answer}
+          value={insertedValue}
           onChange={onAnswerChanged}
           autoComplete="off"
           disabled={!state.inserting}
         />
         {state.answer && (
-          <div className="correct-answer">
-            <div className="correct-answer-header">Poprawna odpowiedź</div>
-            <div
-              className={`correct-answer-value ${
-                isCorrect ? "correct" : "wrong"
-              }`}
-            >
-              {repeat.answerValue}
-            </div>
-          </div>
+          <Answer
+            userAnswer={insertedValue}
+            correctAnswer={repeat.answerValue}
+          />
         )}
       </div>
     </div>
@@ -109,16 +75,17 @@ interface Model {
   state: LessonState;
   repeat: Repeat;
   isCorrect: boolean | null;
+  insertedValue: string;
+  onValueChanged: (value: string) => void;
+  onEnterClick: () => void;
 }
 
-export default Inserting;
+// function usePropRef<T = any>(props: T) {
+//   const propRef = useRef<T>(props);
 
-function usePropRef<T = any>(props: T) {
-  const propRef = useRef<T>(props);
+//   useEffect(() => {
+//     propRef.current = props;
+//   }, [props]);
 
-  useEffect(() => {
-    propRef.current = props;
-  }, [props]);
-
-  return propRef;
-}
+//   return propRef;
+// }
