@@ -124,6 +124,7 @@ export function startLesson(): StartLesson {
     type: DailyActionEnum.LESSON_START,
     reduce: (state: LessonState): LessonState => {
       const results = {
+        answers: 0,
         correct: 0,
         accept: 0,
         wrong: 0,
@@ -187,15 +188,21 @@ export function correct(
           ? LessonStateEnum.CheckPending
           : LessonStateEnum.FinishPending;
 
-      const correct = state.isCorrect
-        ? state.results?.correct + 1
-        : state.results?.correct;
+      const shouldResultIncrease = state.lessonCount > state.results.answers;
 
-      const accept = !state.isCorrect
-        ? state.results?.accept + 1
-        : state.results?.accept;
+      const correct =
+        state.isCorrect && shouldResultIncrease
+          ? state.results?.correct + 1
+          : state.results?.correct;
 
-      const results = { ...state.results, correct, accept };
+      const accept =
+        !state.isCorrect && shouldResultIncrease
+          ? state.results?.accept + 1
+          : state.results?.accept;
+
+      const answers = state.results?.answers + 1;
+
+      const results = { ...state.results, correct, accept, answers };
       return {
         ...state,
         lessonState: lessonState,
@@ -224,7 +231,14 @@ export function wrong(groupId: string, cardId: string, side: number): Wrong {
       const currentRepeat = state.repeats[0];
       const repeats = state.repeats.slice(1);
       repeats.push(currentRepeat);
-      const results = { ...state.results, wrong: state.results.wrong + 1 };
+
+      const answers = state.results?.answers + 1;
+      const wrong =
+        state.lessonCount > state.results.answers
+          ? state.results?.wrong + 1
+          : state.results?.wrong;
+      const results = { ...state.results, wrong, answers };
+
       return {
         ...state,
         lessonState: LessonStateEnum.CheckPending,

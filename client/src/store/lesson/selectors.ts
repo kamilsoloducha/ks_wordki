@@ -14,7 +14,6 @@ export const selectCardsCount = (state: MainState) =>
   state.lessonReducer.cardsCount;
 
 export const selectShouldSendAnswer = (state: MainState) =>
-  state.lessonReducer.lessonCount >=
-  state.lessonReducer.results.accept +
-    state.lessonReducer.results.correct +
-    state.lessonReducer.results.wrong;
+  state.lessonReducer.lessonCount >= state.lessonReducer.results.answers;
+
+export const selectResults = (state: MainState) => state.lessonReducer.results;
