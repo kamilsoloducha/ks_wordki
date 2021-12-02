@@ -1,3 +1,4 @@
+import "./CardForm.scss";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useRef } from "react";
 
@@ -20,7 +21,7 @@ export default function CardForm({ card, onSubmit }: Model) {
 
   useEffect(() => {
     formik.resetForm();
-  }, [card, formik]);
+  }, [card]); // eslint-disable-next-line
 
   if (!card) return <></>;
 
