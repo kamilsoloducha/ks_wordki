@@ -2,6 +2,10 @@ import { LessonStateEnum } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
 import { compare } from "pages/lesson/services/answerComparer";
+import {
+  calculateResultsForCorrect,
+  calculateResultsForWrong,
+} from "./helpers/resultsHelpers";
 import LessonState, { initialState } from "./state";
 
 export enum DailyActionEnum {
@@ -188,21 +192,12 @@ export function correct(
           ? LessonStateEnum.CheckPending
           : LessonStateEnum.FinishPending;
 
-      const shouldResultIncrease = state.lessonCount > state.results.answers;
+      const results = calculateResultsForCorrect(
+        state.results,
+        state.isCorrect || false,
+        state.lessonCount
+      );
 
-      const correct =
-        state.isCorrect && shouldResultIncrease
-          ? state.results?.correct + 1
-          : state.results?.correct;
-
-      const accept =
-        !state.isCorrect && shouldResultIncrease
-          ? state.results?.accept + 1
-          : state.results?.accept;
-
-      const answers = state.results?.answers + 1;
-
-      const results = { ...state.results, correct, accept, answers };
       return {
         ...state,
         lessonState: lessonState,
@@ -232,12 +227,10 @@ export function wrong(groupId: string, cardId: string, side: number): Wrong {
       const repeats = state.repeats.slice(1);
       repeats.push(currentRepeat);
 
-      const answers = state.results?.answers + 1;
-      const wrong =
-        state.lessonCount > state.results.answers
-          ? state.results?.wrong + 1
-          : state.results?.wrong;
-      const results = { ...state.results, wrong, answers };
+      const results = calculateResultsForWrong(
+        state.results,
+        state.lessonCount
+      );
 
       return {
         ...state,
