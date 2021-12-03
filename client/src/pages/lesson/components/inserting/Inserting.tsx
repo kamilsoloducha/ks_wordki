@@ -1,5 +1,5 @@
 import "./Inserting.scss";
-import { LessonState } from "pages/lesson/models/lessonState";
+import { CheckPending, LessonState } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import { ReactElement, useCallback, useEffect, useRef } from "react";
 import Question from "../question/Question";
@@ -30,6 +30,12 @@ export default function Inserting({
       document.removeEventListener("keydown", handleEventEvent);
     };
   }, [handleEventEvent]);
+
+  useEffect(() => {
+    if (state === CheckPending) {
+      inputRef.current?.focus();
+    }
+  }, [state, inputRef]);
 
   const onAnswerChanged = useCallback(
     (event: any) => {
