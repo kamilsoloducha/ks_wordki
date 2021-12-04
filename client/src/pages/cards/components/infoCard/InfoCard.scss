@@ -1,0 +1,48 @@
+.info-card-container {
+    height: 120px;
+    width: 250px;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+
+    .info-card-label {
+        width: 100%;
+        margin-left: 10px;
+        color: rgb(175, 175, 175);
+    }
+
+    .info-card-value {
+        width: 100%;
+        margin-left: 10px;
+        font-weight: 600;
+        font-size: 50px;
+        color: white;
+    }
+
+    svg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    &.clickable {
+
+        &:hover {
+            filter: brightness(70%);
+            -webkit-filter: brightness(70%);
+            -webkit-transition: all 0.1s ease;
+            -moz-transition: all 0.1s ease;
+            -o-transition: all 0.1s ease;
+            -ms-transition: all 0.1s ease;
+            transition: all 0.1s ease;
+        }
+    }
+}
+
+.info-card-disabled {
+    cursor: default;
+}

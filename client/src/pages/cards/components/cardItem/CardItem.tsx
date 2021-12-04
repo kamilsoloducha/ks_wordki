@@ -1,5 +1,6 @@
 import "./CardItem.scss";
 import { CardSummary } from "pages/cards/models/groupDetailsSummary";
+import { selectResults } from "store/lesson/selectors";
 
 function CardItem({ card, direction }: Model) {
   const [first, second] =
@@ -7,8 +8,12 @@ function CardItem({ card, direction }: Model) {
   return (
     <div className="card-item-container">
       <div className="card-item-value">
-        <b>{first.value}</b>
-        <b>{second.value}</b>
+        <b>
+          ({first.isUsed ? first.drawer : ""}) {first.value}{" "}
+        </b>
+        <b>
+          {second.value} ({second.isUsed ? second.drawer : " "})
+        </b>
       </div>
       {first.example && second.example && (
         <>

@@ -1,14 +1,48 @@
 .group-detail-main-container {
-    background-color: rgb(73, 73, 73);
-    border-radius: 5px;
 
     .group-details-card-list-container {
-        padding-left: 3%;
-        padding-right: 3%;
         padding-bottom: 3%;
+    }
+
+    .group-details-cards-info-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .group-details-info-card {
+            margin-bottom: 10px;
+        }
     }
 }
 
-#group-details {
-    padding: 0px 50px;
+.info-card-green {
+    background-color: green !important;
+}
+
+.info-card-blue {
+    background-color: blue !important;
+}
+
+.info-card-yellow {
+    background-color: yellow !important;
+}
+
+.info-card-drawer-1 {
+    background-color: red !important;
+}
+
+.info-card-drawer-2 {
+    background-color: orange !important;
+}
+
+.info-card-drawer-3 {
+    background-color: yellow !important;
+}
+
+.info-card-drawer-4 {
+    background-color: limegreen !important;
+}
+
+.info-card-drawer-5 {
+    background-color: green !important;
 }
