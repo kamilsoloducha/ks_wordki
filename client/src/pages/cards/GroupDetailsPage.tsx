@@ -24,21 +24,31 @@ import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent"
 import { FormModel } from "common/components/cardDialog/CardForm";
 import InfoCard from "./components/infoCard/InfoCard";
 import { CardsFilter } from "./models/cardsFilter";
+import Expandable from "common/components/expandable/Expandable";
 
 export default function GroupDetailsPage(): ReactElement {
   const [formItem, setFormItem] = useState<FormModel | null>(null);
   const [filter, setFilter] = useState(CardsFilter.All);
+  const [page, setPage] = useState(1);
+  const [filteredCardsCount, setFilteredCardsCount] = useState(0);
+  const [cards, setCards] = useState<CardSummary[]>([]);
   const { groupId } = useParams<{ groupId: string }>();
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const cardsFromStore = useSelector(selectCards);
   const groupDetails = useSelector(selectGroupDetails);
-  // const selectedItem = useSelector(selectSelectedCard);
-  const cards = filterCards(cardsFromStore, filter);
 
   useEffect(() => {
     dispatch(getCards(groupId));
   }, [groupId, dispatch]);
+
+  useEffect(() => {
+    const filteredCards = filterCards(cardsFromStore, filter);
+    setFilteredCardsCount(filteredCards.length);
+    const first = (page - 1) * 10;
+    const last = first + 10;
+    setCards(filteredCards.slice(first, last));
+  }, [filter, cardsFromStore, page]);
 
   const onItemSelected = (item: CardSummary) => {
     dispatch(selectCard(item));
@@ -83,16 +93,9 @@ export default function GroupDetailsPage(): ReactElement {
     console.log("openMore");
   }, []);
 
-  const onClickDrawerInfo = useCallback(
-    (drawer: number) => {
-      setFilter(3 + drawer);
-    },
-    [setFilter]
-  );
-
-  const onClickFilterAll = useCallback(() => {
-    setFilter(CardsFilter.All);
-  }, [setFilter]);
+  const onClickSetFilter = (filter: CardsFilter) => {
+    setFilter(filter);
+  };
 
   const onAddCard = () => {
     const cardTemplate = {
@@ -105,7 +108,9 @@ export default function GroupDetailsPage(): ReactElement {
     setFormItem(getFormModelFromCardSummary(cardTemplate));
   };
 
-  const onPageChagned = (event: PageChangedEvent) => {};
+  const onPageChagned = (event: PageChangedEvent) => {
+    setPage(event.currectPage);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -125,7 +130,7 @@ export default function GroupDetailsPage(): ReactElement {
             label="all cards"
             value={cardsFromStore.length}
             classNameOverriden="info-card-blue"
-            onClick={onClickFilterAll}
+            onClick={() => onClickSetFilter(CardsFilter.All)}
           />
         </div>
         <div className="group-details-info-card">
@@ -133,20 +138,34 @@ export default function GroupDetailsPage(): ReactElement {
             label="learning"
             value={getLearningCard(cardsFromStore)}
             classNameOverriden="info-card-green"
+            onClick={() => onClickSetFilter(CardsFilter.Learning)}
           />
         </div>
         {drawers.map((item) => (
-          <div className="group-details-info-card">
+          <div className="group-details-info-card" key={item}>
             <InfoCard
               label={"drawer " + item}
               value={getCardsCountFromDrawer(cardsFromStore, item)}
               classNameOverriden={"info-card-drawer-" + item}
-              onClick={() => onClickDrawerInfo(item)}
+              onClick={() => onClickSetFilter(3 + item)}
             />
           </div>
         ))}
       </div>
-      <Pagination totalCount={cards.length} onPageChagned={onPageChagned} />
+      <Expandable>
+        <div className="group-details-info-card">
+          <InfoCard
+            label="waiting"
+            value={2 * cardsFromStore.length - getLearningCard(cardsFromStore)}
+            classNameOverriden="info-card-green"
+            onClick={() => onClickSetFilter(CardsFilter.Waiting)}
+          />
+        </div>
+      </Expandable>
+      <Pagination
+        totalCount={filteredCardsCount}
+        onPageChagned={onPageChagned}
+      />
       <div className="group-details-card-list-container">
         <CardsList cards={cards} onItemSelected={onItemSelected} />
       </div>
@@ -192,22 +211,37 @@ function getCardsCountFromDrawer(cards: CardSummary[], drawer: number): number {
 }
 
 function filterCards(cards: CardSummary[], filter: CardsFilter): CardSummary[] {
+  let result = [];
   switch (filter) {
     case CardsFilter.All:
-      return cards;
+      result = cards;
+      break;
+    case CardsFilter.Learning:
+      result = cards.filter((item) => isCardInUsed(item));
+      break;
+    case CardsFilter.Waiting:
+      result = cards.filter((item) => isCardNotInUsed(item));
+      break;
     case CardsFilter.Drawer1:
-      return cards.filter((item) => isCardFromDrawer(item, 1));
+      result = cards.filter((item) => isCardFromDrawer(item, 1));
+      break;
     case CardsFilter.Drawer2:
-      return cards.filter((item) => isCardFromDrawer(item, 2));
+      result = cards.filter((item) => isCardFromDrawer(item, 2));
+      break;
     case CardsFilter.Drawer3:
-      return cards.filter((item) => isCardFromDrawer(item, 3));
+      result = cards.filter((item) => isCardFromDrawer(item, 3));
+      break;
     case CardsFilter.Drawer4:
-      return cards.filter((item) => isCardFromDrawer(item, 4));
+      result = cards.filter((item) => isCardFromDrawer(item, 4));
+      break;
     case CardsFilter.Drawer5:
-      return cards.filter((item) => isCardFromDrawer(item, 5));
+      result = cards.filter((item) => isCardFromDrawer(item, 5));
+      break;
     default:
-      return cards;
+      result = cards;
+      break;
   }
+  return result;
 }
 
 function isSideFromDrawer(side: SideSummary, drawer: number): boolean {
@@ -218,6 +252,14 @@ function isCardFromDrawer(card: CardSummary, drawer: number): boolean {
   return (
     isSideFromDrawer(card.front, drawer) || isSideFromDrawer(card.back, drawer)
   );
+}
+
+function isCardInUsed(card: CardSummary): boolean {
+  return card.front.isUsed || card.back.isUsed;
+}
+
+function isCardNotInUsed(card: CardSummary): boolean {
+  return !card.front.isUsed || !card.back.isUsed;
 }
 
 const drawers = [1, 2, 3, 4, 5];

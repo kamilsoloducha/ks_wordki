@@ -39,7 +39,7 @@ namespace Cards.Application.Queries
                     Name = group.Name,
                     Front = group.FrontLanguage.Type,
                     Back = group.BackLanguage.Type,
-                    Cards = group.Cards.Select(CreateCard)
+                    Cards = group.Cards.OrderBy(x => x.CreationDate).Select(CreateCard)
                 };
             }
 

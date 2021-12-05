@@ -21,7 +21,7 @@ export default function CardForm({ card, onSubmit }: Model) {
 
   useEffect(() => {
     formik.resetForm();
-  }, [card]); // eslint-disable-next-line
+  }, [card]); // eslint-disable-line
 
   if (!card) return <></>;
 

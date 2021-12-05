@@ -1,6 +1,5 @@
 import "./CardItem.scss";
 import { CardSummary } from "pages/cards/models/groupDetailsSummary";
-import { selectResults } from "store/lesson/selectors";
 
 function CardItem({ card, direction }: Model) {
   const [first, second] =

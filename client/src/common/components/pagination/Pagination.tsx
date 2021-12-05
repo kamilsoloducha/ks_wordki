@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PageChangedEvent } from "./pageChagnedEvent";
 import "./Pagination.scss";
 
@@ -9,15 +9,22 @@ export default function Pagination({ totalCount, onPageChagned }: Model) {
   const totalPages = Math.ceil(totalCount / pageSize);
   const buttons = getPagesToDispaly(totalPages, currectPage);
 
-  const changePage = (page: number) => {
-    if (page <= 0 || page > totalPages || page === currectPage) return;
-    setCurrectPage(page);
-    onPageChagned({
-      currectPage: page,
-      count: pageSize,
-      first: (page - 1) * pageSize + 1,
-    });
-  };
+  const changePage = useCallback(
+    (page: number) => {
+      if (page <= 0 || page > totalPages || page === currectPage) return;
+      setCurrectPage(page);
+      onPageChagned({
+        currectPage: page,
+        count: pageSize,
+        first: (page - 1) * pageSize + 1,
+      });
+    },
+    [setCurrectPage, onPageChagned, totalPages, currectPage]
+  );
+
+  useEffect(() => {
+    changePage(1);
+  }, [totalCount]); // eslint-disable-line
 
   return (
     <div className="pagination-container">
@@ -38,9 +45,7 @@ export default function Pagination({ totalCount, onPageChagned }: Model) {
         {buttons.map((x) => {
           return (
             <div
-              className={`button ${currectPage === 1 ? "disabled" : ""} ${
-                currectPage === x ? "selected" : ""
-              }`}
+              className={`button ${currectPage === x ? "selected" : ""}`}
               key={x}
               onClick={() => changePage(x)}
             >
