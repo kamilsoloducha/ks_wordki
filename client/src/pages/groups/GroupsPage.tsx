@@ -4,8 +4,10 @@ import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addGroup,
+  connectGroups,
   getGroupsSummary,
   resetSelectedItem,
+  selectionChanged,
   selectItem,
   updateGroup,
 } from "store/groups/actions";
@@ -46,14 +48,24 @@ function GroupsPage(): ReactElement {
     dispatch(selectItem({} as GroupSummary));
   };
 
+  const onConnectGroups = () => {
+    dispatch(connectGroups());
+  };
+
   const selectGroup = (group: GroupSummary) => {
     dispatch(selectItem(group));
+  };
+
+  const onGroupSelected = (id: string, isSelected: boolean) => {
+    console.log(id, isSelected);
+    dispatch(selectionChanged(id, isSelected));
   };
 
   return (
     <>
       Groups
       <button onClick={onaddgroup}>Add Group</button>
+      <button onClick={onConnectGroups}>Connect Groups</button>
       {groups.map((x) => (
         <div key={x.id} onClick={() => selectGroup(x)}>
           <GroupRow
@@ -61,6 +73,7 @@ function GroupsPage(): ReactElement {
             name={x.name}
             cardsCount={x.cardsCount}
             cardsEnalbed={x.cardsEnabled}
+            onSelectionChanged={onGroupSelected}
           />
         </div>
       ))}

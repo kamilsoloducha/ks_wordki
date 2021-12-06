@@ -35,6 +35,11 @@ namespace Api
         public async Task<IActionResult> Update(UpdateGroup.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
+        [HttpPut("merge")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Merge(MergeGroups.Command command, CancellationToken cancellationToken)
+            => await HandleRequest(command, cancellationToken);
+
         [HttpDelete("delete")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Delete(DeleteGroup.Command command, CancellationToken cancellationToken)

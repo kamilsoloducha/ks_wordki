@@ -1,32 +1,45 @@
 import { SyntheticEvent } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { selectItemById } from "store/groups/actions";
 import "./GroupRow.scss";
-import Model from "./model";
 
-function GroupRow({ id, name, cardsCount, cardsEnalbed }: Model) {
+export default function GroupRow({
+  id,
+  name,
+  cardsCount,
+  cardsEnalbed,
+  onSelectionChanged,
+}: Model) {
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const navigateToCards = (e: SyntheticEvent) => {
     history.push("/cards/" + id);
-    e.stopPropagation();
   };
 
-  const editGroup = () => {
-    dispatch(selectItemById(id));
+  const onCheckboxClick = (e: any) => {
+    if (onSelectionChanged) onSelectionChanged(id, e.target.checked);
   };
 
   return (
-    <div className="group-row-container" onClick={editGroup}>
+    <div className="group-row-container" onClick={navigateToCards}>
+      <input
+        type="checkbox"
+        onChange={onCheckboxClick}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      />
       <div className="group-row-name">{name}</div>
       <div className="group-row-cards">
         {cardsCount}/{cardsEnalbed}
       </div>
-      <button onClick={navigateToCards}>Karty</button>
     </div>
   );
 }
 
-export default GroupRow;
+interface Model {
+  id: string;
+  name: string;
+  cardsCount: number;
+  cardsEnalbed: number;
+  onSelectionChanged?: (id: string, isSelected: boolean) => void;
+}

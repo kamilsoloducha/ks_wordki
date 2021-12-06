@@ -1,21 +1,31 @@
 .group-row-container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
+    width: 100%;
     padding: 10px 5px;
     background-color: white;
+    display: flex;
+    align-items: center;
 
     &:hover {
         background-color: rgb(240, 240, 240);
     }
 
     .group-row-name {
-        font-size: 30px;
+        margin-left: 10px;
+        font-size: 40px;
         text-align: center;
     }
 
     .group-row-cards {
-        text-align: center;
+        margin-left: auto;
+        margin-right: 20px;
+    }
+
+    input[type=checkbox] {
+        -ms-transform: scale(2);
+        -moz-transform: scale(2);
+        -webkit-transform: scale(2);
+        -o-transform: scale(2);
+        transform: scale(2);
+        padding: 10px;
     }
 }

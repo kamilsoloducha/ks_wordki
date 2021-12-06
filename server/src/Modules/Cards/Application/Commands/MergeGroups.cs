@@ -9,12 +9,10 @@ using MediatR;
 
 namespace Cards.Application.Commands
 {
-    public class ConnectGroups
+    public class MergeGroups
     {
-
         internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
-
             private readonly ISetRepository _repository;
 
             public CommandHandler(ISetRepository repository)
@@ -28,7 +26,7 @@ namespace Cards.Application.Commands
                 var set = await _repository.Get(userId, cancellationToken);
 
                 var groupIds = request.GroupIds.Select(x => GroupId.Restore(x));
-                set.ConnectGroups(groupIds);
+                set.MergeGroups(groupIds);
 
                 await _repository.Update(set, cancellationToken);
 

@@ -4,10 +4,12 @@ export default interface GroupsState {
   isLoading: boolean;
   groups: GroupSummary[];
   selectedItem: GroupSummary | null;
+  selectedItems: string[];
 }
 
 export const initialState: GroupsState = {
   isLoading: true,
   groups: [],
   selectedItem: null,
+  selectedItems: [],
 };

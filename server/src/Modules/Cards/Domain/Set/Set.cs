@@ -22,9 +22,9 @@ namespace Cards.Domain
             Groups.Remove(item);
         }
 
-        public void ConnectGroups(IEnumerable<GroupId> groupIds)
+        public void MergeGroups(IEnumerable<GroupId> groupIds)
         {
-            var groups = Groups.Where(x => groupIds.Contains(x.Id));
+            var groups = Groups.Where(x => groupIds.Contains(x.Id)).ToList();
 
             var frontLanguage = UnifyLanguage(groups.Select(x => x.FrontLanguage.Type));
             var backLanguage = UnifyLanguage(groups.Select(x => x.BackLanguage.Type));
@@ -38,6 +38,13 @@ namespace Cards.Domain
             {
                 newGroup.AddCard(card);
             }
+
+            foreach (var group in groups)
+            {
+                Groups.Remove(group);
+            }
+            Groups.Add(newGroup);
+
 
             LanguageType UnifyLanguage(IEnumerable<LanguageType> languageTypes)
                 => languageTypes.GroupBy(x => x).Count() == 1

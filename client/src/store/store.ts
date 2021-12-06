@@ -18,6 +18,7 @@ import deleteCardEffect from "./cards/sagas/deleteCard";
 import addGroupEffect from "./groups/sagas/addGroup";
 import updateGroupEffect from "./groups/sagas/updateGroup";
 import getCardsCountEffect from "./lesson/sagas/getCardsCount";
+import connectGroupsEffect from "./groups/sagas/connectGroups";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -54,5 +55,6 @@ sagaMiddleware.run(wrongEffect);
 sagaMiddleware.run(deleteCardEffect);
 sagaMiddleware.run(addGroupEffect);
 sagaMiddleware.run(updateGroupEffect);
+sagaMiddleware.run(connectGroupsEffect);
 
 export type MainState = ReturnType<typeof store.getState>;
