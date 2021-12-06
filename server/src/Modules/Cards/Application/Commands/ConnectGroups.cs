@@ -1,18 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
 using Cards.Domain;
-using FluentValidation;
 using MediatR;
 
 namespace Cards.Application.Commands
 {
-
-    public class DeleteCard
+    public class ConnectGroups
     {
+
         internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
+
             private readonly ISetRepository _repository;
 
             public CommandHandler(ISetRepository repository)
@@ -24,14 +26,12 @@ namespace Cards.Application.Commands
             {
                 var userId = UserId.Restore(request.UserId);
                 var set = await _repository.Get(userId, cancellationToken);
-                if (set is null) return ResponseBase<Unit>.Create("set is null");
 
-                var groupId = GroupId.Restore(request.GroupId);
-                var cardId = CardId.Restore(request.CardId);
-
-                set.RemoveCard(groupId, cardId);
+                var groupIds = request.GroupIds.Select(x => GroupId.Restore(x));
+                set.ConnectGroups(groupIds);
 
                 await _repository.Update(set, cancellationToken);
+
                 return ResponseBase<Unit>.Create(Unit.Value);
             }
         }
@@ -39,18 +39,7 @@ namespace Cards.Application.Commands
         public class Command : RequestBase<Unit>
         {
             public Guid UserId { get; set; }
-            public Guid GroupId { get; set; }
-            public Guid CardId { get; set; }
-        }
-
-        internal class CommandValidator : AbstractValidator<Command>
-        {
-            public CommandValidator()
-            {
-                RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
-                RuleFor(x => x.GroupId).Must(x => x != Guid.Empty);
-                RuleFor(x => x.CardId).Must(x => x != Guid.Empty);
-            }
+            public IEnumerable<Guid> GroupIds { get; set; }
         }
     }
 }

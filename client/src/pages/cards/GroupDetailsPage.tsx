@@ -1,5 +1,5 @@
 import "./GroupDetailsPage.scss";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import CardsList from "./components/cardsList/CardsList";
 import GroupDetails from "./components/groupDetails/GroupDetails";
 import { CardSummary, SideSummary } from "./models/groupDetailsSummary";
@@ -27,6 +27,7 @@ import { CardsFilter } from "./models/cardsFilter";
 import Expandable from "common/components/expandable/Expandable";
 
 export default function GroupDetailsPage(): ReactElement {
+  const containerRef = useRef<any>(null);
   const [formItem, setFormItem] = useState<FormModel | null>(null);
   const [filter, setFilter] = useState(CardsFilter.All);
   const [page, setPage] = useState(1);
@@ -37,6 +38,7 @@ export default function GroupDetailsPage(): ReactElement {
   const isLoading = useSelector(selectIsLoading);
   const cardsFromStore = useSelector(selectCards);
   const groupDetails = useSelector(selectGroupDetails);
+  console.log();
 
   useEffect(() => {
     dispatch(getCards(groupId));
@@ -91,6 +93,7 @@ export default function GroupDetailsPage(): ReactElement {
 
   const onSettingsClick = useCallback(() => {
     console.log("openMore");
+    onAddCard();
   }, []);
 
   const onClickSetFilter = (filter: CardsFilter) => {
@@ -117,7 +120,7 @@ export default function GroupDetailsPage(): ReactElement {
   }
 
   return (
-    <div className="group-detail-main-container">
+    <div className="group-detail-main-container" ref={containerRef}>
       <GroupDetails
         name={groupDetails.name}
         front={groupDetails.language1}
@@ -157,18 +160,22 @@ export default function GroupDetailsPage(): ReactElement {
           <InfoCard
             label="waiting"
             value={2 * cardsFromStore.length - getLearningCard(cardsFromStore)}
-            classNameOverriden="info-card-green"
+            classNameOverriden="info-card-gray"
             onClick={() => onClickSetFilter(CardsFilter.Waiting)}
           />
         </div>
       </Expandable>
-      <Pagination
-        totalCount={filteredCardsCount}
-        onPageChagned={onPageChagned}
-      />
+      <div className="group-details-paginator">
+        <Pagination
+          totalCount={filteredCardsCount}
+          onPageChagned={onPageChagned}
+        />
+      </div>
+
       <div className="group-details-card-list-container">
         <CardsList cards={cards} onItemSelected={onItemSelected} />
       </div>
+
       <CardDialog
         card={formItem}
         onHide={onCancel}
