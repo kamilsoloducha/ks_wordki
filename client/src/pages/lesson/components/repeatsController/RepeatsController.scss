@@ -1,0 +1,55 @@
+.repeats-controller-container {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    button {
+        font-size: large;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        width: 300px;
+        padding: 30px;
+
+
+        &.correct {
+            background-color: rgb(3, 68, 3);
+
+            &.focused {
+                background-color: rgb(53, 172, 53);
+            }
+
+            &:hover {
+                background-color: rgb(53, 172, 53);
+            }
+        }
+
+        &.check {
+            background-color: rgb(63, 63, 5);
+
+            &.focused {
+                background-color: rgb(97, 97, 15);
+            }
+
+            &:hover {
+                background-color: rgb(97, 97, 15);
+            }
+        }
+
+        &.wrong {
+            background-color: rgb(75, 20, 20);
+
+            &.focused {
+                background-color: rgb(155, 10, 10);
+            }
+
+            &:hover {
+                background-color: rgb(155, 10, 10);
+            }
+        }
+
+    }
+
+
+}

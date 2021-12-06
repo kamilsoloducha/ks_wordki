@@ -1,3 +1,4 @@
+import "./LessonController.scss";
 import { LessonState } from "pages/lesson/models/lessonState";
 import { ReactElement } from "react";
 import { useDispatch } from "react-redux";

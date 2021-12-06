@@ -103,6 +103,7 @@ export default function LessonPage(): ReactElement {
         onCorrectClick={correct}
         onWrongClick={wrong}
         lessonState={state}
+        isCorrect={isCorrect}
       />
     </>
   );

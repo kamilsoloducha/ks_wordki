@@ -70,6 +70,7 @@ export default function Inserting({
           <Answer
             userAnswer={insertedValue}
             correctAnswer={repeat.answerValue}
+            exampleAnswer={"to jest jakis przykład dla odpowiedzi"}
           />
         )}
       </div>

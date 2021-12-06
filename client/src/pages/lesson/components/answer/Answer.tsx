@@ -6,6 +6,7 @@ import { AnswerLetter } from "pages/lesson/models/answer";
 export default function Answer({
   userAnswer,
   correctAnswer,
+  exampleAnswer,
 }: Model): ReactElement {
   const answerLetters = getAnswerLetters(correctAnswer, userAnswer);
   console.log(answerLetters);
@@ -18,12 +19,13 @@ export default function Answer({
             key={i}
             className={`correct-answer-value ${
               item.isCorrect ? "correct" : "wrong"
-            }`}
+            } ${item.isAdditional ? "additional" : ""}`}
           >
             {item.letter}
           </span>
         ))}
       </div>
+      <div className="example-answer">{exampleAnswer}</div>
     </div>
   );
 }
@@ -31,4 +33,5 @@ export default function Answer({
 interface Model {
   userAnswer: string;
   correctAnswer: string;
+  exampleAnswer: string;
 }
