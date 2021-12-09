@@ -36,16 +36,16 @@ namespace Cards.Application.Queries
                 var cardsCount = await _queryRepository.GetCardsCount(userId, cancellationToken);
                 var repeatCounts = await _queryRepository.GetRepeatsCountSummary(userId, request.DateFrom, request.DateTo, cancellationToken);
 
-                var todayCount = repeatCounts.Where(x => x.Date <= dateTime).Aggregate((x1, x2) => new RepeatCount { Count = x1.Count + x2.Count, Date = dateTime, UserId = x2.UserId });
-                var allRepeatsCount = new List<RepeatCount>() { todayCount };
-                allRepeatsCount.AddRange(repeatCounts.Where(x => x.Date > dateTime));
+                // var todayCount = repeatCounts.Where(x => x.Date <= dateTime).Aggregate((x1, x2) => new RepeatCount { Count = x1.Count + x2.Count, Date = dateTime, UserId = x2.UserId });
+                // var allRepeatsCount = new List<RepeatCount>() { todayCount };
+                // allRepeatsCount.AddRange(repeatCounts.Where(x => x.Date > dateTime));
 
                 return new Response
                 {
                     DailyRepeats = dailyRepeats,
                     GroupsCount = groupsCount,
                     CardsCount = cardsCount,
-                    RepeatsCounts = allRepeatsCount.Select(x => new RepeatsCount { Count = x.Count, Date = x.Date })
+                    // RepeatsCounts = allRepeatsCount.Select(x => new RepeatsCount { Count = x.Count, Date = x.Date })
                 };
             }
         }
