@@ -2,7 +2,6 @@ using System;
 
 namespace Cards.Application.Queries
 {
-
     public class Repeat
     {
         public Guid CardId { get; set; }

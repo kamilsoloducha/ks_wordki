@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg viewBox="0 0 10 5" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <clipPath id="clip-0">
-      <rect x="0" y="0" width="10" height="5" />
-    </clipPath>
-  </defs>
-  <circle style="fill: #ffffff22; clip-path: url(#clip-0);" cx="3" cy="7" r="6"/>
-</svg>

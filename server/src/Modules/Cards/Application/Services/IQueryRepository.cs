@@ -13,5 +13,6 @@ namespace Cards.Application.Services
         Task<int> GetDailyRepeatsCount(UserId userId, DateTime dateTime, CancellationToken cancellationToken);
         Task<int> GetGroupsCount(UserId userId, CancellationToken cancellationToken);
         Task<int> GetCardsCount(UserId userId, CancellationToken cancellationToken);
+        Task<IEnumerable<RepeatCount>> GetRepeatsCountSummary(UserId userId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken);
     }
 }

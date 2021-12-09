@@ -1,8 +1,14 @@
 import "./CardForm.scss";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useRef } from "react";
+import Language from "common/models/languages";
 
-export default function CardForm({ card, onSubmit }: Model) {
+export default function CardForm({
+  card,
+  onSubmit,
+  frontLanguage,
+  backLanguage,
+}: Model) {
   const firstInputRef = useRef<any>(null);
 
   const onsubmit = useCallback(
@@ -28,9 +34,17 @@ export default function CardForm({ card, onSubmit }: Model) {
   return (
     <>
       <form id="form" onSubmit={formik.handleSubmit} autoComplete="off">
-        <div>
-          <label>Front value</label>
+        <div className="form-item">
+          <label className="form-label">Front value</label>
+          {frontLanguage && (
+            <img
+              className="input-flag"
+              src={frontLanguage?.icon}
+              width="24px"
+            />
+          )}
           <input
+            className="form-text-input"
             ref={firstInputRef}
             id="frontValue"
             name="frontValue"
@@ -41,9 +55,13 @@ export default function CardForm({ card, onSubmit }: Model) {
           />
         </div>
 
-        <div>
-          <label>Back value</label>
+        <div className="form-item">
+          <label className="form-label">Back value</label>
+          {backLanguage && (
+            <img className="input-flag" src={backLanguage?.icon} width="24px" />
+          )}
           <input
+            className="form-text-input"
             id="backValue"
             name="backValue"
             autoComplete="off"
@@ -53,9 +71,10 @@ export default function CardForm({ card, onSubmit }: Model) {
           />
         </div>
 
-        <div>
-          <label>Front example</label>
+        <div className="form-item">
+          <label className="form-label">Front example</label>
           <input
+            className="form-text-input"
             id="frontExample"
             name="frontExample"
             autoComplete="off"
@@ -65,9 +84,10 @@ export default function CardForm({ card, onSubmit }: Model) {
           />
         </div>
 
-        <div>
-          <label>Back example</label>
+        <div className="form-item">
+          <label className="form-label">Back example</label>
           <input
+            className="form-text-input"
             id="backExample"
             name="backExample"
             autoComplete="off"
@@ -78,7 +98,7 @@ export default function CardForm({ card, onSubmit }: Model) {
         </div>
 
         <div>
-          <label>Front used</label>
+          <label className="form-label">Front used</label>
           <input
             id="frontEnabled"
             name="frontEnabled"
@@ -89,7 +109,7 @@ export default function CardForm({ card, onSubmit }: Model) {
         </div>
 
         <div>
-          <label>Back used</label>
+          <label className="form-label">Back used</label>
           <input
             id="backEnabled"
             name="backEnabled"
@@ -99,9 +119,10 @@ export default function CardForm({ card, onSubmit }: Model) {
           />
         </div>
 
-        <div>
-          <label>Comment</label>
+        <div className="form-item">
+          <label className="form-label">Comment</label>
           <input
+            className="form-text-input"
             id="comment"
             name="comment"
             type="text"
@@ -129,4 +150,6 @@ export interface FormModel {
 interface Model {
   card: FormModel | null;
   onSubmit: (item: FormModel) => void;
+  frontLanguage?: Language;
+  backLanguage?: Language;
 }

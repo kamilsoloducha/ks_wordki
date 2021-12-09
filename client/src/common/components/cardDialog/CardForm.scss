@@ -1,11 +1,32 @@
-form {
-    label {
-        width: 25%;
-    }
+#form {
 
-    input[type=text] {
-        width: 75%;
-        font-size: large;
-        padding: 5px 5px;
+    .form-item {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        position: relative;
+
+        .form-label {
+            width: 100%;
+            color: white;
+        }
+
+
+        .form-text-input {
+            background-color: #0000;
+            border: none;
+            color: #fff;
+            border-bottom: 1px solid white;
+            outline: none;
+            width: 100%;
+            font-size: x-large;
+            padding: 5px 5px;
+            text-align: center;
+        }
+
+        .input-flag {
+            position: absolute;
+            top: 50%
+        }
     }
 }

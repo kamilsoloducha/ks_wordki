@@ -38,5 +38,8 @@ namespace Cards.Infrastructure
         public async Task<int> GetCardsCount(UserId userId, CancellationToken cancellationToken)
             => await _context.Sides
                 .CountAsync(x => x.Card.Group.CardsSet.UserId == userId, cancellationToken);
+
+        public async Task<IEnumerable<RepeatCount>> GetRepeatsCountSummary(UserId userId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
+            => await _context.RepeatCounts.Where(x => x.UserId == userId.Value && x.Date >= dateFrom && x.Date <= dateTo).ToListAsync(cancellationToken);
     }
 }

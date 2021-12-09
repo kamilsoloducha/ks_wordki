@@ -1,12 +1,13 @@
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
-import { AddGroup, getGroupsSummary, GroupsActionEnum } from "../actions";
+import { GroupsActionEnum, UpdateGroup } from "../actions";
 import * as api from "pages/groups/services/groupsApi";
 import { ApiResponse } from "common/models/response";
 import UpdateGroupRequest from "pages/groups/models/updateGroupRequest";
+import { getCards } from "store/cards/actions";
 
-function* updateGroup({ group }: AddGroup) {
+function* updateGroup({ group }: UpdateGroup) {
   const userId: string = yield select(selectUserId);
 
   const request = {
@@ -19,7 +20,7 @@ function* updateGroup({ group }: AddGroup) {
   const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
     () => api.updateGroup(request)
   );
-  yield put(data ? getGroupsSummary() : requestFailed(error));
+  yield put(data ? getCards(group.id) : requestFailed(error));
 }
 
 export default function* updateGroupEffect() {

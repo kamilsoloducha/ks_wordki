@@ -1,4 +1,7 @@
-import { Field, Form, Formik } from "formik";
+import "./GroupForm.scss";
+import Language, { Languages } from "common/models/languages";
+import { useFormik } from "formik";
+import { Dropdown } from "primereact/dropdown";
 import { ReactElement } from "react";
 import GroupDetails from "./groupDetails";
 
@@ -11,41 +14,67 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
     onSubmit(updated);
   };
 
+  const formik = useFormik({
+    initialValues: {
+      name: group?.name,
+      front: group?.front,
+      back: group?.back,
+    },
+    onSubmit: onsubmit,
+  });
+
+  const options = Languages;
+
+  const languageOptions = (option: Language) => {
+    return (
+      <div className="language-options-item">
+        <img className="flag" src={option.icon} width="24px" />
+        {option.label}
+      </div>
+    );
+  };
+
   return (
-    <Formik
-      initialValues={
-        {
-          name: group?.name ?? "",
-          front: group?.front ?? 0,
-          back: group?.back ?? 0,
-        } as FormModel
-      }
-      onSubmit={onsubmit}
-    >
-      <Form id="form">
-        <div>
-          <label>Group name</label>
-          <Field id="name" name="name" autoComplete="off" />
-          <Field as="select" id="front" name="front">
-            <option key={0} value={0}>
-              {0}
-            </option>
-            <option key={1} value={1}>
-              {1}
-            </option>
-            <option key={2} value={2}>
-              {2}
-            </option>
-          </Field>
-        </div>
-      </Form>
-    </Formik>
+    <form id="form" onSubmit={formik.handleSubmit} autoComplete="off">
+      <div>
+        <label>Name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          onChange={formik.handleChange}
+          value={formik.values.name}
+        />
+      </div>
+      <div>
+        <Dropdown
+          value={formik.values.front}
+          options={options}
+          onChange={(e) => formik.setFieldValue("front", e.value)}
+          optionLabel="label"
+          optionValue="type"
+          itemTemplate={languageOptions}
+          valueTemplate={languageOptions}
+        />
+      </div>
+      <div>
+        <Dropdown
+          value={formik.values.back}
+          options={options}
+          onChange={(e) => formik.setFieldValue("back", e.value)}
+          optionLabel="label"
+          optionValue="type"
+          itemTemplate={languageOptions}
+          valueTemplate={languageOptions}
+        />
+      </div>
+    </form>
   );
 }
 
 interface FormModel {
   name: string;
-  front: number;
+  front: any;
   back: number;
 }
 

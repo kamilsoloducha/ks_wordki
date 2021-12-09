@@ -41,6 +41,8 @@ namespace Cards.Application.Queries
                 {
                     Id = group.Id.Value,
                     Name = group.Name,
+                    Front = (int)group.FrontLanguage.Type,
+                    Back = (int)group.BackLanguage.Type,
                     CardsCount = group.Cards.Count,
                     CardsEnabled = group.Cards.SelectMany(x => x.Sides).Where(x => x.IsUsed).Count(),
                 };
@@ -63,6 +65,8 @@ namespace Cards.Application.Queries
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
+            public int Front { get; set; }
+            public int Back { get; set; }
             public int CardsCount { get; set; }
             public int CardsEnabled { get; set; }
         }

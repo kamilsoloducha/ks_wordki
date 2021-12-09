@@ -41,12 +41,16 @@ function DashboardPage(): ReactElement {
     <>
       <div id="info-group">
         <Info
-          title="Powtórzenia"
+          title="Repeats"
           value={data.dailyRepeats}
           onClick={navigateLesson}
         />
-        <Info title="Grupy" value={data.groupsCount} onClick={navigateGroups} />
-        <Info title="Karty" value={data.cardsCount} onClick={navigateCards} />
+        <Info
+          title="Groups"
+          value={data.groupsCount}
+          onClick={navigateGroups}
+        />
+        <Info title="Cards" value={data.cardsCount} onClick={navigateCards} />
       </div>
     </>
   );

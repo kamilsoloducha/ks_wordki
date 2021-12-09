@@ -24,6 +24,7 @@ namespace Cards.Infrastructure
         internal DbSet<CardSide> Sides { get; set; }
 
         internal DbSet<Repeat> Repeats { get; set; }
+        internal DbSet<RepeatCount> RepeatCounts { get; set; }
         public CardsContext(IConnectionStringProvider connectionStringProvider)
         {
             _connectionString = connectionStringProvider.ConnectionString;
@@ -46,6 +47,7 @@ namespace Cards.Infrastructure
             modelBuilder.ApplyConfiguration(new CardSideEntityConfiguration());
 
             modelBuilder.ApplyConfiguration(new RepeatEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RepeatCountsEntityConfiguration());
         }
 
         internal RelationalDatabaseCreator Creator => Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;

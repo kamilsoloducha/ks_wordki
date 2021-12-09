@@ -19,7 +19,7 @@ import {
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
 
-function GroupsPage(): ReactElement {
+export default function GroupsPage(): ReactElement {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const groups = useSelector(selectGroups);
@@ -57,7 +57,6 @@ function GroupsPage(): ReactElement {
   };
 
   const onGroupSelected = (id: string, isSelected: boolean) => {
-    console.log(id, isSelected);
     dispatch(selectionChanged(id, isSelected));
   };
 
@@ -81,5 +80,3 @@ function GroupsPage(): ReactElement {
     </>
   );
 }
-
-export default GroupsPage;

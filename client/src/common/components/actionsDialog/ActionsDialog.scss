@@ -1,0 +1,23 @@
+.actions-dialog-container {
+    width: 100%;
+    position: relative;
+
+    .actions-dialog-item {
+        width: 100%;
+        border: none;
+        margin-bottom: 1px;
+        outline: none;
+        background-color: rgb(58, 44, 99);
+        color: rgb(209, 209, 209);
+        font-size: large;
+        padding: 10px;
+
+        &:last-child {
+            background-color: rgb(179, 26, 26);
+        }
+
+        &:hover {
+            filter: brightness(90%);
+        }
+    }
+}

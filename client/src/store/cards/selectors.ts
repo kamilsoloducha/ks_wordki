@@ -7,6 +7,7 @@ export const selectCards = (state: MainState) => state.cardsReducer.cards;
 export const selectGroupId = (state: MainState) => state.cardsReducer.id;
 export const selectGroupDetails = (state: MainState) => {
   return {
+    id: state.cardsReducer.id,
     name: state.cardsReducer.name,
     language1: state.cardsReducer.language1,
     language2: state.cardsReducer.language2,

@@ -1,30 +1,24 @@
 import "./GroupDetailsPage.scss";
 import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import CardsList from "./components/cardsList/CardsList";
-import GroupDetails from "./components/groupDetails/GroupDetails";
 import { CardSummary, SideSummary } from "./models/groupDetailsSummary";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectCards,
-  selectGroupDetails,
-  selectIsLoading,
-} from "store/cards/selectors";
+import * as selectors from "store/cards/selectors";
+import * as actions from "store/cards/actions";
+import * as groupActions from "store/groups/actions";
 import { useParams } from "react-router";
-import {
-  addCard,
-  deleteCard,
-  getCards,
-  resetSelectedCard,
-  selectCard,
-  updateCard,
-} from "store/cards/actions";
 import CardDialog from "common/components/cardDialog/CardDialog";
 import Pagination from "common/components/pagination/Pagination";
+import InfoCard from "./components/infoCard/InfoCard";
+import Expandable from "common/components/expandable/Expandable";
 import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
 import { FormModel } from "common/components/cardDialog/CardForm";
-import InfoCard from "./components/infoCard/InfoCard";
 import { CardsFilter } from "./models/cardsFilter";
-import Expandable from "common/components/expandable/Expandable";
+import ActionsDialog from "common/components/actionsDialog/ActionsDialog";
+import GroupDialog from "common/components/groupDialog/GroupDialog";
+import GroupDetails from "common/components/groupDialog/groupDetails";
+import GroupDetailsComponent from "./components/groupDetails/GroupDetails";
+import { Languages } from "common/models/languages";
 
 export default function GroupDetailsPage(): ReactElement {
   const containerRef = useRef<any>(null);
@@ -35,13 +29,14 @@ export default function GroupDetailsPage(): ReactElement {
   const [cards, setCards] = useState<CardSummary[]>([]);
   const { groupId } = useParams<{ groupId: string }>();
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const cardsFromStore = useSelector(selectCards);
-  const groupDetails = useSelector(selectGroupDetails);
-  console.log();
+  const isLoading = useSelector(selectors.selectIsLoading);
+  const cardsFromStore = useSelector(selectors.selectCards);
+  const groupDetails = useSelector(selectors.selectGroupDetails);
+  const [actionsVisible, setActionsVisible] = useState(false);
+  const [editedGroup, setEditedGroup] = useState<any>(null);
 
   useEffect(() => {
-    dispatch(getCards(groupId));
+    dispatch(actions.getCards(groupId));
   }, [groupId, dispatch]);
 
   useEffect(() => {
@@ -53,7 +48,7 @@ export default function GroupDetailsPage(): ReactElement {
   }, [filter, cardsFromStore, page]);
 
   const onItemSelected = (item: CardSummary) => {
-    dispatch(selectCard(item));
+    dispatch(actions.selectCard(item));
     setFormItem(getFormModelFromCardSummary(item));
   };
 
@@ -73,28 +68,23 @@ export default function GroupDetailsPage(): ReactElement {
       },
     } as CardSummary;
     if (udpdatedCard.id) {
-      dispatch(updateCard(udpdatedCard));
+      dispatch(actions.updateCard(udpdatedCard));
       setFormItem(null);
     } else {
-      dispatch(addCard(udpdatedCard));
+      dispatch(actions.addCard(udpdatedCard));
       onAddCard();
     }
   };
 
   const onDelete = () => {
-    dispatch(deleteCard());
+    dispatch(actions.deleteCard());
     setFormItem(null);
   };
 
   const onCancel = () => {
-    dispatch(resetSelectedCard());
+    dispatch(actions.resetSelectedCard());
     setFormItem(null);
   };
-
-  const onSettingsClick = useCallback(() => {
-    console.log("openMore");
-    onAddCard();
-  }, []);
 
   const onClickSetFilter = (filter: CardsFilter) => {
     setFilter(filter);
@@ -107,7 +97,7 @@ export default function GroupDetailsPage(): ReactElement {
       back: { value: "", example: "", isUsed: false },
       comment: "",
     } as CardSummary;
-    dispatch(selectCard(cardTemplate));
+    dispatch(actions.selectCard(cardTemplate));
     setFormItem(getFormModelFromCardSummary(cardTemplate));
   };
 
@@ -115,17 +105,45 @@ export default function GroupDetailsPage(): ReactElement {
     setPage(event.currectPage);
   };
 
+  const onActionsVisible = () => {
+    setActionsVisible(false);
+  };
+
+  const onEditGroup = () => {
+    const group = {
+      id: groupDetails.id,
+      name: groupDetails.name,
+      front: groupDetails.language1,
+      back: groupDetails.language2,
+    };
+    setEditedGroup(group);
+  };
+
+  const onHideGroupDialog = () => {
+    setEditedGroup(null);
+  };
+
+  const onSubmitGroupDialog = (group: GroupDetails) => {
+    dispatch(groupActions.updateGroup(group));
+    onHideGroupDialog();
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  const acts = [
+    { label: "Add card", action: onAddCard },
+    { label: "Edit group", action: onEditGroup },
+  ];
+
   return (
     <div className="group-detail-main-container" ref={containerRef}>
-      <GroupDetails
+      <GroupDetailsComponent
         name={groupDetails.name}
         front={groupDetails.language1}
         back={groupDetails.language2}
-        onSettingsClick={onSettingsClick}
+        onSettingsClick={() => setActionsVisible(true)}
       />
       <div className="group-details-cards-info-container">
         <div className="group-details-info-card">
@@ -171,16 +189,26 @@ export default function GroupDetailsPage(): ReactElement {
           onPageChagned={onPageChagned}
         />
       </div>
-
       <div className="group-details-card-list-container">
         <CardsList cards={cards} onItemSelected={onItemSelected} />
       </div>
-
       <CardDialog
         card={formItem}
         onHide={onCancel}
         onSubmit={onFormSubmit}
         onDelete={onDelete}
+        frontLanguage={Languages[groupDetails.language1]}
+        backLanguage={Languages[groupDetails.language2]}
+      />
+      <GroupDialog
+        group={editedGroup}
+        onHide={onHideGroupDialog}
+        onSubmit={onSubmitGroupDialog}
+      />
+      <ActionsDialog
+        isVisible={actionsVisible}
+        onHide={onActionsVisible}
+        actions={acts}
       />
     </div>
   );

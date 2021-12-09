@@ -3,12 +3,15 @@ import { ReactElement } from "react";
 import { Dialog } from "primereact/dialog";
 import Footer from "./Footer";
 import CardForm, { FormModel } from "./CardForm";
+import Language from "common/models/languages";
 
 export default function CardDialog({
   card,
   onHide,
   onSubmit,
   onDelete,
+  frontLanguage,
+  backLanguage,
 }: Model): ReactElement {
   const visible = card !== null;
   const isEditing = card?.cardId;
@@ -24,7 +27,6 @@ export default function CardDialog({
 
   return (
     <Dialog
-      style={{ width: "50vw" }}
       footer={footer}
       visible={visible}
       onHide={onHide}
@@ -32,7 +34,12 @@ export default function CardDialog({
       draggable={false}
       dismissableMask={true}
     >
-      <CardForm card={card} onSubmit={onSubmit} />
+      <CardForm
+        card={card}
+        onSubmit={onSubmit}
+        frontLanguage={frontLanguage}
+        backLanguage={backLanguage}
+      />
     </Dialog>
   );
 }
@@ -42,4 +49,6 @@ interface Model {
   onHide: () => void;
   onSubmit: (item: FormModel) => void;
   onDelete?: (item: FormModel | null) => void;
+  frontLanguage?: Language;
+  backLanguage?: Language;
 }
