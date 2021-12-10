@@ -4,15 +4,15 @@ q."CardId" as "CardId",
 q."Value" as "QuestionValue",
 q."Example" as "QuestionExample",
 q."Side" as "QuestionSide",
+case when q."Side" = 1 then g."FrontLanguage" else g."BackLanguage" end as "QuestionLanguage",
 q."NextRepeat" as "NextRepeat",
 a."Value" as "AnswerValue",
 a."Example" as "AnswerExample",
+case when a."Side" = 1 then g."FrontLanguage" else g."BackLanguage" end as "AnswerLanguage",
 a."Side" as "AnswerSide",
 c."Comment" as "Comment",
-g."FrontLanguage" as "FrontLanguage",
-g."BackLanguage" as "BackLanguage",
 s."UserId" as "UserId",
-g."Id" as "GroupId",
+g."Id" as "GroupId"
 from cards."CardSides" q
 join cards."CardSides" a on q."CardId" = a."CardId" and q."Side" <> a."Side"
 join cards."Cards" c ON c."Id" = q."CardId"

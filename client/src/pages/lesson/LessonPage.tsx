@@ -2,12 +2,8 @@ import { ReactElement, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import * as actions from "store/lesson/actions";
-import {
-  selectCurrectRepeat,
-  selectIsCorrect,
-  selectLessonState,
-  selectRepeats,
-} from "store/lesson/selectors";
+import * as sel from "store/lesson/selectors";
+import Fiszka from "./components/fiszka/Fiszka";
 import Inserting from "./components/inserting/Inserting";
 import LessonController from "./components/lessonController/LessonController";
 import RepeatsController from "./components/repeatsController/RepeatsController";
@@ -15,10 +11,11 @@ import { LessonState, LessonStateEnum } from "./models/lessonState";
 
 export default function LessonPage(): ReactElement {
   const [insertedValue, setInsertedValue] = useState("");
-  const questions = useSelector(selectRepeats);
-  const lessonState = useSelector(selectLessonState);
-  const currectRepeat = useSelector(selectCurrectRepeat);
-  const isCorrect = useSelector(selectIsCorrect);
+  const questions = useSelector(sel.selectRepeats);
+  const lessonState = useSelector(sel.selectLessonState);
+  const currectRepeat = useSelector(sel.selectCurrectRepeat);
+  const isCorrect = useSelector(sel.selectIsCorrect);
+  const lessonType = useSelector(sel.selectLessonType);
   const state = LessonState.getState(lessonState);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -86,10 +83,8 @@ export default function LessonPage(): ReactElement {
     }
   }, [state, check, correct, wrong, isCorrect]);
 
-  return (
-    <>
-      <div>Pozostało: {questions.length}</div>
-      <LessonController lessonState={state} />
+  const mainComponent =
+    lessonType === 2 ? (
       <Inserting
         insertedValue={insertedValue}
         onValueChanged={onValueChanged}
@@ -98,6 +93,15 @@ export default function LessonPage(): ReactElement {
         isCorrect={isCorrect}
         repeat={currectRepeat}
       />
+    ) : (
+      <Fiszka lessonState={state} repeat={currectRepeat} />
+    );
+
+  return (
+    <>
+      <div>Pozostało: {questions.length}</div>
+      <LessonController lessonState={state} />
+      {mainComponent}
       <RepeatsController
         onCheckClick={check}
         onCorrectClick={correct}

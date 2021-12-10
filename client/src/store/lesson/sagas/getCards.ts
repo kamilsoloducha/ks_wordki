@@ -3,13 +3,24 @@ import { GetRepeatsResponse } from "pages/lesson/models/getRepeatsResponse";
 import { DailyActionEnum, GetCards, getCardsSuccess } from "../actions";
 import * as api from "pages/lesson/services/repeatsApi";
 import { selectUserId } from "store/user/selectors";
+import GetRepeatsRequest from "pages/lesson/models/getRepeatsRequest";
+import { selectLessonType } from "../selectors";
+import StartLessonRequest from "pages/lesson/models/startLessonRequest";
 
 function* getCards(action: GetCards) {
-  const userId: string = yield select(selectUserId);
+  const getRepeatsRequest = {
+    count: action.count,
+    questionLanguage: action.questionLanguage,
+  } as GetRepeatsRequest;
+
   const { data }: { data: GetRepeatsResponse; error: any } = yield call(() =>
-    api.repeats(action.count)
+    api.repeats(getRepeatsRequest)
   );
-  yield call(() => api.startLesson(userId));
+  const userId: string = yield select(selectUserId);
+  const lessonType: number = yield select(selectLessonType);
+  const startLessonRequest = { userId, lessonType } as StartLessonRequest;
+
+  yield call(() => api.startLesson(startLessonRequest));
   const repeats = shuffle(data.repeats);
   yield put(getCardsSuccess(repeats));
 }

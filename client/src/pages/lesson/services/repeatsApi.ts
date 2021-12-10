@@ -1,20 +1,25 @@
 import http from "common/services/http/http";
+import GetRepeatsCountRequest from "../models/getRepeatsCountRequest";
+import GetRepeatsRequest from "../models/getRepeatsRequest";
 import { GetRepeatsResponse } from "../models/getRepeatsResponse";
 import RegisterAnswerRequest from "../models/registerAnswerRequest";
 import StartLessonRequest from "../models/startLessonRequest";
 
-export async function repeats(count: number) {
-  const response = await http.get<GetRepeatsResponse>(`/repeats/${count}`);
+export async function repeats(request: GetRepeatsRequest) {
+  const response = await http.get<GetRepeatsResponse>(`/repeats/`, {
+    params: request,
+  });
   return { data: response.data };
 }
 
-export async function repeatsCount() {
-  const response = await http.get<number>(`/repeats/count`);
+export async function repeatsCount(request: GetRepeatsCountRequest) {
+  const response = await http.get<number>(`/repeats/count`, {
+    params: request,
+  });
   return { data: response.data };
 }
 
-export async function startLesson(userId: string) {
-  const request = { userId } as StartLessonRequest;
+export async function startLesson(request: StartLessonRequest) {
   const response = await http.post<{}>("/lesson/start", request);
   return { data: response.data };
 }

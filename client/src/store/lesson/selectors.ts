@@ -17,3 +17,5 @@ export const selectShouldSendAnswer = (state: MainState) =>
   state.lessonReducer.lessonCount >= state.lessonReducer.results.answers;
 
 export const selectResults = (state: MainState) => state.lessonReducer.results;
+export const selectLessonType = (state: MainState) =>
+  state.lessonReducer.lessonType;

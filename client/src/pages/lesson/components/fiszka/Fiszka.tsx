@@ -3,7 +3,10 @@ import { Repeat } from "pages/lesson/models/repeat";
 import { ReactElement } from "react";
 import Question from "../question/Question";
 
-function Fiszka({ lessonState: state, repeat }: Model): ReactElement {
+export default function Fiszka({
+  lessonState: state,
+  repeat,
+}: Model): ReactElement {
   if (!state.card || !repeat) {
     return <></>;
   }
@@ -26,8 +29,6 @@ function Fiszka({ lessonState: state, repeat }: Model): ReactElement {
     </div>
   );
 }
-
-export default Fiszka;
 
 interface Model {
   lessonState: LessonState;

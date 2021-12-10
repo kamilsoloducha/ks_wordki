@@ -1,31 +1,39 @@
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { getCards, getCardsCount } from "store/lesson/actions";
+import * as act from "store/lesson/actions";
 import { selectCardsCount, selectRepeats } from "store/lesson/selectors";
-import Settings from "./components/settings/Settings";
+import Settings, { LessonSettingsForm } from "./components/settings/Settings";
 
 export default function LessonSettings(): ReactElement {
-  const [selectedCount, setSelectedCount] = useState(0);
+  const [lessonSettingsForm, setLessonSettingsForm] =
+    useState<LessonSettingsForm>();
   const cardsCount = useSelector(selectCardsCount);
   const repeats = useSelector(selectRepeats);
   const dispatch = useDispatch();
   const history = useHistory();
 
+  useEffect(() => {
+    if (!lessonSettingsForm) return;
+    dispatch(act.getCardsCount(lessonSettingsForm.languageType));
+  }, [lessonSettingsForm?.languageType]);
+
   const selectionChanged = useCallback(
-    (value: number) => {
-      setSelectedCount(value);
+    (value: LessonSettingsForm) => {
+      setLessonSettingsForm(value);
     },
-    [setSelectedCount]
+    [setLessonSettingsForm]
   );
 
-  const startLesson = () => {
-    dispatch(getCards(selectedCount));
-  };
+  const startLesson = useCallback(() => {
+    if (!lessonSettingsForm) return;
+    dispatch(act.setSettings(lessonSettingsForm.lessonType));
+    dispatch(
+      act.getCards(lessonSettingsForm.count, lessonSettingsForm.languageType)
+    );
+  }, [lessonSettingsForm]);
 
-  useEffect(() => {
-    dispatch(getCardsCount());
-  }, []); // eslint-disable-line
+  useEffect(() => {}, []); // eslint-disable-line
 
   useEffect(() => {
     if (repeats.length > 0) {

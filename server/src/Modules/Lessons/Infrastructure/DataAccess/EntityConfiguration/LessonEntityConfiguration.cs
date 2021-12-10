@@ -13,7 +13,14 @@ namespace Lessons.Infrastructure.DataAccess
             builder.HasKey(x => new { x.UserId, x.StartDate });
             builder.Property(x => x.UserId).HasColumnName(nameof(Lesson.UserId));
             builder.Property(x => x.StartDate).HasColumnName(nameof(Lesson.StartDate));
-            builder.Property(x => x.Type).HasColumnName(nameof(Lesson.Type));
+
+            builder.Property(x => x.Type)
+                .HasColumnName(nameof(Lesson.Type))
+                .HasConversion(
+                    x => (int)x.Type,
+                    x => LessonType.Create(x)
+                );
+
             builder.Property(x => x.TimeCounter).HasColumnName(nameof(Lesson.TimeCounter));
 
             builder.HasMany(x => x.Repeats).WithOne(x => x.Lesson);

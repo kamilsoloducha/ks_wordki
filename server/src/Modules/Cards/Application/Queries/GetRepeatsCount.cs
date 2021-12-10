@@ -25,16 +25,25 @@ namespace Cards.Application.Queries
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
+                if (!request.QuestionLanguage.HasValue)
+                {
+                    throw new Exception($"{nameof(request.QuestionLanguage)} is not defined");
+                }
+                // todo move validation to fluentValidation
+
                 var userIdValue = _userDataProvider.GetUserId();
                 var userId = UserId.Restore(userIdValue);
                 var now = SystemClock.Now.Date;
 
-                var repeats = await _queryRepository.GetDailyRepeatsCount(userId, now, cancellationToken);
+                var repeats = await _queryRepository.GetDailyRepeatsCount(userId, now, request.QuestionLanguage.Value, cancellationToken);
 
                 return repeats;
             }
         }
 
-        public class Query : IRequest<int> { }
+        public class Query : IRequest<int>
+        {
+            public int? QuestionLanguage { get; set; }
+        }
     }
 }

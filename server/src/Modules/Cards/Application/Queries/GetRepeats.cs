@@ -26,10 +26,13 @@ namespace Cards.Application.Queries
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
+                if (!request.Count.HasValue) throw new Exception($"{nameof(request.Count)} must be defined");
+                if (!request.QuestionLanguage.HasValue) throw new Exception($"{nameof(request.QuestionLanguage)} must be defined");
+
                 var userIdValue = _userDataProvider.GetUserId();
                 var userId = UserId.Restore(userIdValue);
                 var now = SystemClock.Now.Date;
-                var repeats = await _queryRepository.GetRepeats2(userId, now, request.Count, cancellationToken);
+                var repeats = await _queryRepository.GetRepeats2(userId, now, request.Count.Value, request.QuestionLanguage.Value, cancellationToken);
 
                 return new Response
                 {
@@ -40,7 +43,8 @@ namespace Cards.Application.Queries
 
         public class Query : IRequest<Response>
         {
-            public int Count { get; set; }
+            public int? Count { get; set; }
+            public int? QuestionLanguage { get; set; }
         }
 
         public class Response

@@ -10,6 +10,8 @@ export default interface LessonState {
   cardsCount: number;
   results: Results;
   lessonCount: number;
+
+  lessonType: number;
 }
 
 export const initialState: LessonState = {
@@ -20,4 +22,5 @@ export const initialState: LessonState = {
   cardsCount: 0,
   results: {} as Results,
   lessonCount: 0,
+  lessonType: 0,
 };

@@ -128,6 +128,19 @@ export default function GroupDetailsPage(): ReactElement {
     onHideGroupDialog();
   };
 
+  const onUsageChanged = useCallback(
+    (cardId: string, side: number) => {
+      const original = cardsFromStore.find((x) => x.id === cardId);
+      if (!original) return;
+      const updatedCard = { ...original };
+      if (side === 1) updatedCard.front.isUsed = !updatedCard.front.isUsed;
+      else if (side === 2) updatedCard.back.isUsed = !updatedCard.back.isUsed;
+
+      dispatch(actions.updateCard(updatedCard));
+    },
+    [cardsFromStore, dispatch]
+  );
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -190,7 +203,11 @@ export default function GroupDetailsPage(): ReactElement {
         />
       </div>
       <div className="group-details-card-list-container">
-        <CardsList cards={cards} onItemSelected={onItemSelected} />
+        <CardsList
+          cards={cards}
+          onItemSelected={onItemSelected}
+          onChangeUsage={onUsageChanged}
+        />
       </div>
       <CardDialog
         card={formItem}

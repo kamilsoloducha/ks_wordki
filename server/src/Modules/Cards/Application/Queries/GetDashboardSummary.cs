@@ -31,7 +31,7 @@ namespace Cards.Application.Queries
                 var userId = UserId.Restore(userIdValue);
                 var dateTime = SystemClock.Now.Date;
 
-                var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(userId, dateTime, cancellationToken);
+                var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(userId, dateTime, 0, cancellationToken);
                 var groupsCount = await _queryRepository.GetGroupsCount(userId, cancellationToken);
                 var cardsCount = await _queryRepository.GetCardsCount(userId, cancellationToken);
                 var repeatCounts = await _queryRepository.GetRepeatsCountSummary(userId, request.DateFrom, request.DateTo, cancellationToken);

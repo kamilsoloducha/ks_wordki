@@ -19,17 +19,24 @@ namespace Cards.Infrastructure
             _context = context;
         }
 
-        public async Task<IEnumerable<Repeat>> GetRepeats2(UserId userId, DateTime dateTime, int count, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Repeat>> GetRepeats2(UserId userId, DateTime dateTime, int count, int questionLanguage, CancellationToken cancellationToken)
         {
             return await _context.Repeats
-                .Where(x => x.UserId == userId.Value && x.NextRepeat <= dateTime)
+                .Where(x =>
+                    x.UserId == userId.Value &&
+                    x.NextRepeat <= dateTime &&
+                    (questionLanguage == 0 || x.QuestionLanguage == questionLanguage))
                 .Take(count)
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<int> GetDailyRepeatsCount(UserId userId, DateTime dateTime, CancellationToken cancellationToken)
+        public async Task<int> GetDailyRepeatsCount(UserId userId, DateTime dateTime, int questionLanguage, CancellationToken cancellationToken)
             => await _context.Repeats
-                .CountAsync(x => x.UserId == userId.Value && x.NextRepeat <= dateTime, cancellationToken);
+                .CountAsync(x =>
+                    x.UserId == userId.Value &&
+                    x.NextRepeat <= dateTime &&
+                    (questionLanguage == 0 || x.QuestionLanguage == questionLanguage),
+                cancellationToken);
 
         public async Task<int> GetGroupsCount(UserId userId, CancellationToken cancellationToken)
             => await _context.Groups

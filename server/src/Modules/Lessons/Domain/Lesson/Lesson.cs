@@ -9,14 +9,14 @@ namespace Lessons.Domain
     {
         public DateTime StartDate { get; private set; }
         public Guid UserId { get; private set; }
-        public int Type { get; private set; }
+        public LessonType Type { get; private set; }
         public int TimeCounter { get; private set; }
         public IList<Repeat> Repeats { get; private set; }
         public Performance Performence { get; private set; }
 
         private Lesson() { }
 
-        internal static Lesson NewLesson(Performance performence, int type)
+        internal static Lesson NewLesson(Performance performence, LessonType type)
         {
             return new Lesson
             {

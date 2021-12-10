@@ -24,9 +24,9 @@ namespace Lessons.Domain
             };
         }
 
-        public DateTime StartLesson()
+        public DateTime StartLesson(LessonType type)
         {
-            var newLesson = Lesson.NewLesson(this, 1);
+            var newLesson = Lesson.NewLesson(this, type);
             Lessons.Add(newLesson);
             return newLesson.StartDate;
         }

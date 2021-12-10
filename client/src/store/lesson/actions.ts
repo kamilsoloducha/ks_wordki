@@ -13,6 +13,8 @@ export enum DailyActionEnum {
   RESET_LESSON = "[LESSON] RESET_LESSON",
   RESET_SETTINGS = "[LESSON] RESET_SETTINGS",
 
+  SET_SETTINGS = "[LESSON] SET_SETTINGS",
+
   GET_CARDS_COUNT = "[LESSON] GET_CARDS_COUNT",
   GET_CARDS_COUNT_SUCCESS = "[LESSON] GET_CARDS_COUNT_SUCCESS",
 
@@ -58,6 +60,19 @@ export function resetLesson(): ResetLesson {
   };
 }
 
+export interface SetSettings extends LessonAction {}
+export function setSettings(lessonType: number): SetSettings {
+  return {
+    type: DailyActionEnum.SET_SETTINGS,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        lessonType,
+      };
+    },
+  };
+}
+
 export interface ResetSettings extends LessonAction {}
 export function resetSettings(): ResetSettings {
   return {
@@ -72,10 +87,12 @@ export function resetSettings(): ResetSettings {
 
 export interface GetCards extends LessonAction {
   count: number;
+  questionLanguage: number;
 }
-export function getCards(count: number): GetCards {
+export function getCards(count: number, questionLanguage: number): GetCards {
   return {
     count,
+    questionLanguage,
     type: DailyActionEnum.GET_CARDS,
     reduce: (state: LessonState): LessonState => {
       return { ...state, lessonState: LessonStateEnum.Loading };
@@ -99,13 +116,16 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
   };
 }
 
-export interface GetCardsCount extends LessonAction {}
-export function getCardsCount(): GetCardsCount {
+export interface GetCardsCount extends LessonAction {
+  questionLanguage: number;
+}
+export function getCardsCount(questionLanguage: number): GetCardsCount {
   return {
     type: DailyActionEnum.GET_CARDS_COUNT,
     reduce: (state: LessonState): LessonState => {
       return { ...state };
     },
+    questionLanguage,
   };
 }
 
@@ -157,7 +177,10 @@ export function check(): Check {
   return {
     type: DailyActionEnum.LESSON_CHECK,
     reduce: (state: LessonState): LessonState => {
-      const isCorrect = compare(state.repeats[0].answerValue, state.answer);
+      const isCorrect =
+        state.lessonType === 1
+          ? true
+          : compare(state.repeats[0].answerValue, state.answer);
       return {
         ...state,
         lessonState: LessonStateEnum.AnswerPending,

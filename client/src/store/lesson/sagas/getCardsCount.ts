@@ -1,10 +1,14 @@
 import { call, put, takeLatest } from "@redux-saga/core/effects";
-import { DailyActionEnum, getCardsCountSuccess } from "../actions";
+import {
+  DailyActionEnum,
+  GetCardsCount,
+  getCardsCountSuccess,
+} from "../actions";
 import * as api from "pages/lesson/services/repeatsApi";
 
-function* getCardsCount() {
+function* getCardsCount({ questionLanguage }: GetCardsCount) {
   const { data }: { data: number; error: any } = yield call(() =>
-    api.repeatsCount()
+    api.repeatsCount({ questionLanguage: questionLanguage })
   );
   yield put(getCardsCountSuccess(data));
 }

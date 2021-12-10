@@ -23,7 +23,9 @@ namespace Lessons.Application.Commands
                 var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
                 if (performance is null) return ResponseBase<Response>.Create("performance is null");
 
-                var lessonStartDate = performance.StartLesson();
+                var lessonType = LessonType.Create(request.LessonType);
+
+                var lessonStartDate = performance.StartLesson(lessonType);
 
                 await _repository.Update(performance);
                 return ResponseBase<Response>.Create(new Response
@@ -36,6 +38,7 @@ namespace Lessons.Application.Commands
         public class Command : RequestBase<Response>
         {
             public Guid UserId { get; set; }
+            public int LessonType { get; set; }
         }
 
         public class Response
@@ -48,6 +51,8 @@ namespace Lessons.Application.Commands
             public CommandValidator()
             {
                 RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
+
+                RuleFor(x => x.LessonType).Must(x => x > 0);
             }
         }
     }
