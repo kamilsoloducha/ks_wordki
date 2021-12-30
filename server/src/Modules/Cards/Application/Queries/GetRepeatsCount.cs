@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Services;
@@ -44,6 +45,8 @@ namespace Cards.Application.Queries
         public class Query : IRequest<int>
         {
             public int? QuestionLanguage { get; set; }
+            public IEnumerable<Guid> GroupIds { get; set; }
+            public bool IsUsed { get; set; }
         }
     }
 }

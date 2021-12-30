@@ -49,7 +49,8 @@ namespace Cards.Application.Queries
                     Id = card.Id.Value,
                     Front = CreateCardSide(card.Front),
                     Back = CreateCardSide(card.Back),
-                    Comment = card.Comment
+                    Comment = card.Comment,
+                    IsTicked = card.IsTicked
                 };
 
             private CardSide CreateCardSide(Domain.CardSide side)
@@ -77,6 +78,7 @@ namespace Cards.Application.Queries
             public CardSide Front { get; set; }
             public CardSide Back { get; set; }
             public string Comment { get; set; }
+            public bool IsTicked { get; set; }
         }
         public class CardSide
         {

@@ -5,4 +5,5 @@ export interface CardSummary {
   front: CardSide;
   back: CardSide;
   comment: string;
+  isTicked: boolean;
 }

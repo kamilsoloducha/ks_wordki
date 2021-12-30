@@ -16,6 +16,8 @@ export enum CardsActionEnum {
 
   DELETE_CARD = "[CARDS] DELETE_CARD",
   DELETE_CARD_SUCCESS = "[CARDS] DELETE_CARD_SUCCESS",
+
+  APPEND_CARD = "[CARDS] DELETE_CARD",
 }
 
 export interface CardsAction {
@@ -157,12 +159,32 @@ export function deleteCardSuccess(cardId: string): DeleteCardSuccess {
 }
 
 export interface ResetSelectedItem extends CardsAction {}
-
 export function resetSelectedCard(): ResetSelectedItem {
   return {
     type: CardsActionEnum.RESET_SELECTED_CARD,
     reduce: (state: CardsState): CardsState => {
       return { ...state, selectedItem: null };
     },
+  };
+}
+
+export interface AppendCard extends CardsAction {
+  groupId: string;
+  count: number;
+  languages: number;
+}
+export function appendCard(
+  groupId: string,
+  count: number,
+  languages: number
+): AppendCard {
+  return {
+    type: CardsActionEnum.APPEND_CARD,
+    reduce: (state: CardsState): CardsState => {
+      return { ...state };
+    },
+    groupId,
+    count,
+    languages,
   };
 }

@@ -32,7 +32,7 @@ namespace Cards.Application.Queries
                 var userIdValue = _userDataProvider.GetUserId();
                 var userId = UserId.Restore(userIdValue);
                 var now = SystemClock.Now.Date;
-                var repeats = await _queryRepository.GetRepeats2(userId, now, request.Count.Value, request.QuestionLanguage.Value, cancellationToken);
+                var repeats = await _queryRepository.GetRepeats(userId, now, request.Count.Value, request.QuestionLanguage.Value, cancellationToken);
 
                 return new Response
                 {

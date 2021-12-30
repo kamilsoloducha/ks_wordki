@@ -19,7 +19,7 @@ namespace Cards.Infrastructure
             _context = context;
         }
 
-        public async Task<IEnumerable<Repeat>> GetRepeats2(UserId userId, DateTime dateTime, int count, int questionLanguage, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Repeat>> GetRepeats(UserId userId, DateTime dateTime, int count, int questionLanguage, CancellationToken cancellationToken)
         {
             return await _context.Repeats
                 .Where(x =>
@@ -35,6 +35,7 @@ namespace Cards.Infrastructure
                 .CountAsync(x =>
                     x.UserId == userId.Value &&
                     x.NextRepeat <= dateTime &&
+                    x.IsUsed &&
                     (questionLanguage == 0 || x.QuestionLanguage == questionLanguage),
                 cancellationToken);
 
@@ -48,5 +49,14 @@ namespace Cards.Infrastructure
 
         public async Task<IEnumerable<RepeatCount>> GetRepeatsCountSummary(UserId userId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
             => await _context.RepeatCounts.Where(x => x.UserId == userId.Value && x.Date >= dateFrom && x.Date <= dateTo).ToListAsync(cancellationToken);
+
+        public async Task<int> GetNewRepeatsCount(UserId userId, int questionLanguage, Guid? groupId, CancellationToken cancellationToken)
+            => await _context.Repeats
+                .CountAsync(x =>
+                    x.UserId == userId.Value &&
+                    !x.IsUsed &&
+                    (!groupId.HasValue || x.GroupId == groupId) &&
+                    (questionLanguage == 0 || x.QuestionLanguage == questionLanguage),
+                cancellationToken);
     }
 }

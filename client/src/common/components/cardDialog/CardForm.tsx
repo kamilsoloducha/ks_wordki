@@ -131,6 +131,17 @@ export default function CardForm({
             value={formik.values.comment}
           />
         </div>
+
+        <div>
+          <label className="form-label">Is Ticked</label>
+          <input
+            id="isTicked"
+            name="isTicked"
+            type="checkbox"
+            onChange={formik.handleChange}
+            checked={formik.values.isTicked}
+          />
+        </div>
       </form>
     </>
   );
@@ -145,6 +156,7 @@ export interface FormModel {
   backExample: string;
   backEnabled: any;
   comment: string;
+  isTicked: any;
 }
 
 interface Model {

@@ -3,6 +3,7 @@ import http from "common/services/http/http";
 import { CardSummary } from "../models/cardSummary";
 import { GroupDetailsResponse } from "../models/groupDetailsResponse";
 import { AddCardRequest } from "../models/requests/addCardRequest";
+import AppendCardsRequest from "../models/requests/appendCardsRequest";
 import { UpdateCardRequest } from "../models/requests/updateCardRequest";
 
 export async function groupDetails(userId: string, groupId: string) {
@@ -32,6 +33,7 @@ export async function updateCard(
       isUsed: card.back.isUsed,
     },
     comment: card.comment,
+    isTicked: card.isTicked,
   } as UpdateCardRequest;
   try {
     const response = await http.put<{}>(`/cards/update`, request);
@@ -85,4 +87,19 @@ export async function deleteCard(
 
 export function addGroup(userId: string, card: any): any {
   throw new Error("Function not implemented.");
+}
+
+export async function appendCards(
+  userId: string,
+  groupId: string,
+  count: number,
+  langauges: number
+) {
+  const request = { userId, groupId, count, langauges } as AppendCardsRequest;
+  try {
+    const response = await http.put<{}>(`/cards/append`, request);
+    return { data: response.data };
+  } catch (error) {
+    return { error };
+  }
 }

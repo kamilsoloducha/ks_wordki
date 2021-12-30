@@ -21,6 +21,8 @@ export enum DailyActionEnum {
   GET_CARDS = "[LESSON] GET_CARDS",
   GET_CARDS_SUCCESS = "[LESSON] GET_CARDS_SUCCESS",
 
+  TICK_CARD = "[LESSON] TICK_CARD",
+
   SET_ANSWER = "[LESSON] SET_ANSWER",
 
   LESSON_START = "[LESSON] LESSON_START",
@@ -139,6 +141,23 @@ export function getCardsCountSuccess(count: number): GetCardsCountSuccess {
         cardsCount: count,
       };
     },
+  };
+}
+
+export interface TickCard extends LessonAction {
+  groupId: string;
+  cardId: string;
+}
+export function tickCard(groupId: string, cardId: string): TickCard {
+  return {
+    type: DailyActionEnum.TICK_CARD,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+      };
+    },
+    groupId,
+    cardId,
   };
 }
 

@@ -25,6 +25,11 @@ namespace Api
         public async Task<IActionResult> Update(UpdateCard.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
+        [HttpPut("tick")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Tick(TickCard.Command command, CancellationToken cancellationToken)
+            => await HandleRequest(command, cancellationToken);
+
         [HttpPut("enable")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Update(AddCardSide.Command command, CancellationToken cancellationToken)
@@ -39,5 +44,10 @@ namespace Api
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
             => new JsonResult(await Mediator.Send(new GetDashboardSummary.Query(), cancellationToken));
+
+        [HttpPut("append")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Append(AppendCards.Command command, CancellationToken cancellationToken)
+            => await HandleRequest(command, cancellationToken);
     }
 }

@@ -4,6 +4,7 @@ import GetRepeatsRequest from "../models/getRepeatsRequest";
 import { GetRepeatsResponse } from "../models/getRepeatsResponse";
 import RegisterAnswerRequest from "../models/registerAnswerRequest";
 import StartLessonRequest from "../models/startLessonRequest";
+import TickCardRequest from "../models/tickCardRequest";
 
 export async function repeats(request: GetRepeatsRequest) {
   const response = await http.get<GetRepeatsResponse>(`/repeats/`, {
@@ -39,5 +40,10 @@ export async function registerAnswer(
     result,
   } as RegisterAnswerRequest;
   const response = await http.post<{}>("/lesson/answer", request);
+  return { data: response.data };
+}
+
+export async function tickCard(request: TickCardRequest) {
+  const response = await http.put<{}>("/cards/tick", request);
   return { data: response.data };
 }

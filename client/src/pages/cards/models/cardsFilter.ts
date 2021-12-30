@@ -7,4 +7,5 @@ export enum CardsFilter {
   Drawer3,
   Drawer4,
   Drawer5,
+  Ticked,
 }

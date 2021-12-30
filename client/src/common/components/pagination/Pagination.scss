@@ -2,16 +2,33 @@ $bottom-border: red solid 3px;
 
 .pagination-container {
     display: flex;
-    justify-content: space-between;
 
-    .pagination-left {}
-
-    .pagination-middle {
+    .pagination-left {
         display: flex;
+        width: 33.3%;
+        align-content: center;
+
+        input {
+            background-color: #0000;
+            border: none;
+            color: #fff;
+            border-bottom: 1px solid white;
+            outline: none;
+            margin: 10px;
+        }
 
     }
 
-    .pagination-right {}
+    .pagination-middle {
+        display: flex;
+        justify-content: center;
+        width: 33.3%;
+        text-align: center;
+    }
+
+    .pagination-right {
+        width: 33.3%;
+    }
 }
 
 

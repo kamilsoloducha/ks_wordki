@@ -15,6 +15,7 @@ namespace Cards.Application.Queries
         public int AnswerSide { get; set; }
         public int AnswerLanguage { get; set; }
         public string Comment { get; set; }
+        public bool IsUsed { get; set; }
         public Guid UserId { get; set; }
         public Guid GroupId { get; set; }
     }

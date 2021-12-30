@@ -73,7 +73,8 @@ namespace Cards.Domain
             SideLabel backValue,
             string backExample,
             bool backIsUsed,
-            string comment)
+            string comment,
+            bool isTicked)
         {
             var group = GetGroup(groupId);
 
@@ -81,12 +82,19 @@ namespace Cards.Domain
             card.UpdateFront(frontValue, frontExample, frontIsUsed);
             card.UpdateBack(backValue, backExample, backIsUsed);
             card.UpdateComment(comment);
+            card.UpdateIsTicked(isTicked);
         }
 
         public void RemoveCard(GroupId groupId, CardId cardId)
         {
             var group = GetGroup(groupId);
             group.RemoveCard(cardId);
+        }
+
+        public void TickCard(GroupId groupId, CardId cardId)
+        {
+            var group = GetGroup(groupId);
+            group.TickCard(cardId);
         }
 
         public GroupId AddGroup(GroupName groupName, LanguageType front, LanguageType back)
@@ -133,6 +141,12 @@ namespace Cards.Domain
             var card = Groups.SelectMany(x => x.Cards).SingleOrDefault(x => x.Id == cardId);
             var cardSide = card.GetSide(side);
             cardSide.ChangeUsage();
+        }
+
+        public void AppendCards(GroupId groupId, int count, int langauges)
+        {
+            var group = GetGroup(groupId);
+            group.AppendCards(count, langauges);
         }
     }
 }

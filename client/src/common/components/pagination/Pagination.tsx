@@ -4,8 +4,13 @@ import "./Pagination.scss";
 
 const pageSize = 10;
 
-export default function Pagination({ totalCount, onPageChagned }: Model) {
+export default function Pagination({
+  totalCount,
+  onPageChagned,
+  onSearchChanged,
+}: Model) {
   const [currectPage, setCurrectPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
   const totalPages = Math.ceil(totalCount / pageSize);
   const buttons = getPagesToDispaly(totalPages, currectPage);
 
@@ -22,13 +27,32 @@ export default function Pagination({ totalCount, onPageChagned }: Model) {
     [setCurrectPage, onPageChagned, totalPages, currectPage]
   );
 
+  const onSearchTextChanged = useCallback(
+    (event: any) => {
+      const text = event.target.value;
+      setSearchText(text);
+      if (onSearchChanged) {
+        onSearchChanged(text);
+      }
+    },
+    [setSearchText, onSearchChanged]
+  );
+
   useEffect(() => {
     changePage(1);
   }, [totalCount]); // eslint-disable-line
 
   return (
     <div className="pagination-container">
-      <div className="pagination-left"></div>
+      <div className="pagination-left">
+        {onSearchChanged && (
+          <input
+            placeholder="Search"
+            value={searchText}
+            onChange={onSearchTextChanged}
+          />
+        )}
+      </div>
       <div className="pagination-middle">
         <div
           className={`button ${currectPage === 1 ? "disabled" : ""}`}
@@ -74,6 +98,7 @@ export default function Pagination({ totalCount, onPageChagned }: Model) {
 interface Model {
   totalCount: number;
   onPageChagned: (event: PageChangedEvent) => void;
+  onSearchChanged?: (text: string) => void;
 }
 
 function getPagesToDispaly(totalPages: number, currectPage: number): number[] {

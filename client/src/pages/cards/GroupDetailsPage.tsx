@@ -19,11 +19,13 @@ import GroupDialog from "common/components/groupDialog/GroupDialog";
 import GroupDetails from "common/components/groupDialog/groupDetails";
 import GroupDetailsComponent from "./components/groupDetails/GroupDetails";
 import { Languages } from "common/models/languages";
+import AppendToLessonDialog from "./components/appendToLessonDialog/AppendToLessonDialog";
 
 export default function GroupDetailsPage(): ReactElement {
   const containerRef = useRef<any>(null);
   const [formItem, setFormItem] = useState<FormModel | null>(null);
   const [filter, setFilter] = useState(CardsFilter.All);
+  const [appendDialog, setAppendDialog] = useState(false);
   const [page, setPage] = useState(1);
   const [filteredCardsCount, setFilteredCardsCount] = useState(0);
   const [cards, setCards] = useState<CardSummary[]>([]);
@@ -56,6 +58,7 @@ export default function GroupDetailsPage(): ReactElement {
     const udpdatedCard = {
       id: item.cardId,
       comment: item.comment,
+      isTicked: item.isTicked,
       front: {
         value: item.frontValue,
         example: item.frontExample,
@@ -105,6 +108,15 @@ export default function GroupDetailsPage(): ReactElement {
     setPage(event.currectPage);
   };
 
+  const onSearchChanged = useCallback(
+    (text: string) => {
+      const filteredItems = filterByText(text, cardsFromStore);
+      console.log(filteredItems);
+      setCards(filteredItems);
+    },
+    [cardsFromStore, setCards]
+  );
+
   const onActionsVisible = () => {
     setActionsVisible(false);
   };
@@ -117,6 +129,10 @@ export default function GroupDetailsPage(): ReactElement {
       back: groupDetails.language2,
     };
     setEditedGroup(group);
+  };
+
+  const onAppendCard = () => {
+    setAppendDialog(true);
   };
 
   const onHideGroupDialog = () => {
@@ -141,6 +157,15 @@ export default function GroupDetailsPage(): ReactElement {
     [cardsFromStore, dispatch]
   );
 
+  const appendDialogSubmit = (count: number, languages: number) => {
+    dispatch(actions.appendCard(groupId, count, languages));
+    setAppendDialog(false);
+  };
+
+  const appendDialogHide = () => {
+    setAppendDialog(false);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -148,6 +173,7 @@ export default function GroupDetailsPage(): ReactElement {
   const acts = [
     { label: "Add card", action: onAddCard },
     { label: "Edit group", action: onEditGroup },
+    { label: "Append card to lesson", action: onAppendCard },
   ];
 
   return (
@@ -195,11 +221,20 @@ export default function GroupDetailsPage(): ReactElement {
             onClick={() => onClickSetFilter(CardsFilter.Waiting)}
           />
         </div>
+        <div className="group-details-info-card">
+          <InfoCard
+            label="ticked"
+            value={getTickedCard(cards)}
+            classNameOverriden="info-card-gray"
+            onClick={() => onClickSetFilter(CardsFilter.Ticked)}
+          />
+        </div>
       </Expandable>
       <div className="group-details-paginator">
         <Pagination
           totalCount={filteredCardsCount}
           onPageChagned={onPageChagned}
+          onSearchChanged={onSearchChanged}
         />
       </div>
       <div className="group-details-card-list-container">
@@ -227,6 +262,11 @@ export default function GroupDetailsPage(): ReactElement {
         onHide={onActionsVisible}
         actions={acts}
       />
+      <AppendToLessonDialog
+        isVisible={appendDialog}
+        onHide={appendDialogHide}
+        onSubmit={appendDialogSubmit}
+      />
     </div>
   );
 }
@@ -241,6 +281,7 @@ function getFormModelFromCardSummary(card: CardSummary): FormModel {
     backExample: card.back.example,
     backEnabled: card.back.isUsed,
     comment: card.comment,
+    isTicked: card.isTicked,
   } as FormModel;
 }
 
@@ -249,6 +290,14 @@ function getLearningCard(cards: CardSummary[]): number {
   cards.forEach((item) => {
     if (item.front.isUsed) result++;
     if (item.back.isUsed) result++;
+  });
+  return result;
+}
+
+function getTickedCard(cards: CardSummary[]): number {
+  let result = 0;
+  cards.forEach((item) => {
+    if (item.isTicked) result++;
   });
   return result;
 }
@@ -289,6 +338,9 @@ function filterCards(cards: CardSummary[], filter: CardsFilter): CardSummary[] {
     case CardsFilter.Drawer5:
       result = cards.filter((item) => isCardFromDrawer(item, 5));
       break;
+    case CardsFilter.Ticked:
+      result = cards.filter((item) => item.isTicked);
+      break;
     default:
       result = cards;
       break;
@@ -312,6 +364,15 @@ function isCardInUsed(card: CardSummary): boolean {
 
 function isCardNotInUsed(card: CardSummary): boolean {
   return !card.front.isUsed || !card.back.isUsed;
+}
+
+function filterByText(text: string, cards: CardSummary[]): CardSummary[] {
+  const searchValue = text.toLowerCase();
+  return cards.filter(
+    (item) =>
+      item.front.value.toLowerCase().indexOf(searchValue) >= 0 ||
+      item.back.value.toLowerCase().indexOf(searchValue) >= 0
+  );
 }
 
 const drawers = [1, 2, 3, 4, 5];

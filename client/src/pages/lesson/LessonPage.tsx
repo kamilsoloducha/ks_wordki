@@ -8,6 +8,7 @@ import Inserting from "./components/inserting/Inserting";
 import LessonController from "./components/lessonController/LessonController";
 import RepeatsController from "./components/repeatsController/RepeatsController";
 import { LessonState, LessonStateEnum } from "./models/lessonState";
+import { Repeat } from "./models/repeat";
 
 export default function LessonPage(): ReactElement {
   const [insertedValue, setInsertedValue] = useState("");
@@ -83,6 +84,13 @@ export default function LessonPage(): ReactElement {
     }
   }, [state, check, correct, wrong, isCorrect]);
 
+  const tickCard = useCallback(
+    (repeat: Repeat) => {
+      dispatch(actions.tickCard(repeat.groupId, repeat.cardId));
+    },
+    [dispatch]
+  );
+
   const mainComponent =
     lessonType === 2 ? (
       <Inserting
@@ -101,6 +109,13 @@ export default function LessonPage(): ReactElement {
     <>
       <div>Pozostało: {questions.length}</div>
       <LessonController lessonState={state} />
+      <button
+        onClick={() => {
+          tickCard(currectRepeat);
+        }}
+      >
+        Tick the card
+      </button>
       {mainComponent}
       <RepeatsController
         onCheckClick={check}

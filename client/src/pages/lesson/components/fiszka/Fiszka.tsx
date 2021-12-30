@@ -21,9 +21,11 @@ export default function Fiszka({
       {state.answer && (
         <>
           Answer:
-          <div>
-            {repeat.answerValue} : {repeat.answerExample}
-          </div>
+          <Question
+            value={repeat.answerValue}
+            example={repeat.answerExample}
+            language={1}
+          />
         </>
       )}
     </div>

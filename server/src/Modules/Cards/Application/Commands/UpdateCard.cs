@@ -8,6 +8,7 @@ using MediatR;
 
 namespace Cards.Application.Commands
 {
+
     public class UpdateCard
     {
         internal class CommandHandler : RequestHandlerBase<Command, Unit>
@@ -40,7 +41,8 @@ namespace Cards.Application.Commands
                     backLabel,
                     request.Back.Example,
                     request.Back.IsUsed,
-                    request.Comment);
+                    request.Comment,
+                    request.IsTicked);
 
                 await _repository.Update(set, cancellationToken);
                 return ResponseBase<Unit>.Create(Unit.Value);
@@ -55,6 +57,7 @@ namespace Cards.Application.Commands
             public CardSide Front { get; set; }
             public CardSide Back { get; set; }
             public string Comment { get; set; }
+            public bool IsTicked { get; set; }
         }
 
         public class CardSide

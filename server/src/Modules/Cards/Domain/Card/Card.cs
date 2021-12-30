@@ -10,6 +10,7 @@ namespace Cards.Domain
     {
         public CardId Id { get; private set; }
         public string Comment { get; private set; }
+        public bool IsTicked { get; private set; }
         public DateTime CreationDate { get; private set; }
         public IEnumerable<CardSide> Sides { get; private set; }
         public Group Group { get; private set; }
@@ -33,6 +34,7 @@ namespace Cards.Domain
                 Id = CardId.Create(),
                 Comment = comment,
                 CreationDate = SystemClock.Now,
+                IsTicked = false,
                 IsNew = true
             };
 
@@ -53,6 +55,11 @@ namespace Cards.Domain
             CheckRule(new SetSidesSidesRule(sides, Side.Back));
 
             Sides = sides;
+        }
+
+        internal void Tick()
+        {
+            IsTicked = true;
         }
 
         internal void UpdateBack(SideLabel value, string example, bool isUsed)
@@ -78,6 +85,11 @@ namespace Cards.Domain
         {
             var side = GetSide(sideType);
             side.RegisterAnswer(nextRepeatCalculator, result);
+        }
+
+        internal void UpdateIsTicked(bool isTicked)
+        {
+            IsTicked = isTicked;
         }
 
         internal CardSide GetSide(Side side)

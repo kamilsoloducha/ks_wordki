@@ -1,0 +1,21 @@
+@host = http://localhost:5000
+
+### logining user
+# @name login
+PUT {{host}}/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "user_name",
+    "password": "pass"
+}
+
+#
+@authToken = Bearer {{login.response.body.$.response.token}}
+@userId = {{login.response.body.$.response.id}}
+
+### get repeats by userId
+# @name newRepeats
+GET {{host}}/repeats/new/count?userId={{userId}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}

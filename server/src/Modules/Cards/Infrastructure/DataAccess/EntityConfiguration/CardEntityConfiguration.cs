@@ -16,6 +16,7 @@ namespace Cards.Infrastructure
                 .HasConversion(x => x.Value, x => CardId.Restore(x));
 
             builder.Property(e => e.Comment).HasColumnName(nameof(Card.Comment));
+            builder.Property(e => e.IsTicked).HasColumnName(nameof(Card.IsTicked));
             builder.Property(e => e.CreationDate).HasColumnName(nameof(Card.CreationDate));
 
             builder.HasMany(c => c.Sides).WithOne(s => s.Card).OnDelete(DeleteBehavior.Cascade);

@@ -11,6 +11,7 @@ export interface CardSummary {
   front: SideSummary;
   back: SideSummary;
   comment: string;
+  isTicked: boolean;
 }
 
 export interface SideSummary {
