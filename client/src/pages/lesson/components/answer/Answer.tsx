@@ -4,14 +4,14 @@ import { ReactElement } from "react";
 import { AnswerLetter } from "pages/lesson/models/answer";
 
 export default function Answer({
+  isVisible,
   userAnswer,
   correctAnswer,
   exampleAnswer,
 }: Model): ReactElement {
   const answerLetters = getAnswerLetters(correctAnswer, userAnswer);
-  console.log(answerLetters);
   return (
-    <div className="correct-answer">
+    <div className={`correct-answer `}>
       <div className="correct-answer-header">Poprawna odpowiedź</div>
       <div className="correct-answer-value">
         {answerLetters.map((item: AnswerLetter, i: number) => (
@@ -19,18 +19,22 @@ export default function Answer({
             key={i}
             className={`correct-answer-value ${
               item.isCorrect ? "correct" : "wrong"
-            } ${item.isAdditional ? "additional" : ""}`}
+            } ${item.isAdditional ? "additional" : ""}
+            ${isVisible ? "" : "invisible"}`}
           >
             {item.letter}
           </span>
         ))}
       </div>
-      <div className="example-answer">{exampleAnswer}</div>
+      <div className={`example-answer ${isVisible ? "" : "invisible"}`}>
+        {exampleAnswer}
+      </div>
     </div>
   );
 }
 
 interface Model {
+  isVisible: boolean;
   userAnswer: string;
   correctAnswer: string;
   exampleAnswer: string;

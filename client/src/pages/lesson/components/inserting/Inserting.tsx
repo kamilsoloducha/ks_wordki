@@ -66,13 +66,12 @@ export default function Inserting({
           autoComplete="off"
           disabled={!state.inserting}
         />
-        {state.answer && (
-          <Answer
-            userAnswer={insertedValue}
-            correctAnswer={repeat.answerValue}
-            exampleAnswer={"to jest jakis przykład dla odpowiedzi"}
-          />
-        )}
+        <Answer
+          isVisible={state.answer}
+          userAnswer={insertedValue}
+          correctAnswer={repeat.answerValue}
+          exampleAnswer={repeat.answerExample}
+        />
       </div>
     </div>
   );

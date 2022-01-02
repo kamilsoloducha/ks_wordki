@@ -32,7 +32,7 @@ export default function CardDialog({
       onHide={onHide}
       header={header}
       draggable={false}
-      dismissableMask={true}
+      dismissableMask={false}
     >
       <CardForm
         card={card}

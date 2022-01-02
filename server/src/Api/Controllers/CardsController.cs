@@ -20,6 +20,11 @@ namespace Api
         public async Task<IActionResult> Add(AddCard.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
+        [HttpPost("add/file")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Add(AddCardsFromFile.Command command, CancellationToken cancellationToken)
+            => await HandleRequest(command, cancellationToken);
+
         [HttpPut("update")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Update(UpdateCard.Command command, CancellationToken cancellationToken)

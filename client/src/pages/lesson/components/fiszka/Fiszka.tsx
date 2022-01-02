@@ -1,6 +1,7 @@
 import { LessonState } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import { ReactElement } from "react";
+import Answer from "../answer/Answer";
 import Question from "../question/Question";
 
 export default function Fiszka({
@@ -18,16 +19,12 @@ export default function Fiszka({
         example={repeat.questionExample}
         language={1}
       />
-      {state.answer && (
-        <>
-          Answer:
-          <Question
-            value={repeat.answerValue}
-            example={repeat.answerExample}
-            language={1}
-          />
-        </>
-      )}
+      <Answer
+        isVisible={state.answer}
+        correctAnswer={repeat.answerValue}
+        exampleAnswer={repeat.answerExample}
+        userAnswer={repeat.answerValue}
+      />
     </div>
   );
 }
