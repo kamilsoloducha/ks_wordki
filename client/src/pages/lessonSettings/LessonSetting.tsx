@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import * as act from "store/lesson/actions";
 import { selectCardsCount, selectRepeats } from "store/lesson/selectors";
-import ExtendLesson from "./components/extendLesson/ExtendLesson";
 import Settings, { LessonSettingsForm } from "./components/settings/Settings";
 
 export default function LessonSettings(): ReactElement {

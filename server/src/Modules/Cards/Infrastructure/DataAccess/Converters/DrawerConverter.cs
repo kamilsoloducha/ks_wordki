@@ -7,7 +7,7 @@ namespace Cards.Infrastructure
 {
     internal class DrawerConverter : ValueConverter<Drawer, int>
     {
-        private static Expression<Func<Drawer, int>> _toDbValue => drawer => drawer.Value;
+        private static Expression<Func<Drawer, int>> _toDbValue => drawer => drawer.RealValue;
         private static Expression<Func<int, Drawer>> _fromDbValue => dbValue => Drawer.Create(dbValue);
         public DrawerConverter() : base(_toDbValue, _fromDbValue, null) { }
     }
