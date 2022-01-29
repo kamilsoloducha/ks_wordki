@@ -60,4 +60,3 @@ steps:
       command: 'push'
       tags: |
         $(Build.BuildId)
-        latest
