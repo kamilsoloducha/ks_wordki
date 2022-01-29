@@ -16,10 +16,10 @@ namespace Blueprints.Infrastrcuture
                 Log.Error($"There is no {envTag} in configuration");
                 throw new System.Exception($"There is no {envTag} in configuration");
             }
-
-            return envrionment.Equals("Production")
-                ? services.AddSingleton<IConnectionStringProvider, HerokuConnectionStringProvider>()
-                : services.AddSingleton<IConnectionStringProvider, ConnectionStringProvider>();
+            return services.AddSingleton<IConnectionStringProvider, HerokuConnectionStringProvider>();
+            // return envrionment.Equals("Production")
+            //     ? services.AddSingleton<IConnectionStringProvider, HerokuConnectionStringProvider>()
+            //     : services.AddSingleton<IConnectionStringProvider, ConnectionStringProvider>();
         }
     }
 }
