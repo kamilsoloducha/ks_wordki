@@ -5,12 +5,23 @@ namespace Blueprints.Infrastructure.DataAccess
 {
     public class HerokuConnectionStringProvider : IConnectionStringProvider
     {
-        private readonly string PostgressTag = "DATABASE_URL";
+        private const string PostgressTag = "DATABASE_URL";
         public string ConnectionString { get; }
 
         public HerokuConnectionStringProvider(IConfiguration configuration, ILogger<HerokuConnectionStringProvider> logger)
         {
+            ConnectionString = CreateConnectionString(configuration, logger);
+        }
+
+        private static string CreateConnectionString(IConfiguration configuration, ILogger<HerokuConnectionStringProvider> logger)
+        {
             var value = configuration.GetValue<string>(PostgressTag);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                logger.LogWarning($"There is no {PostgressTag} value in settings. Connection to db may be impossible.");
+                return string.Empty;
+            }
             logger.LogInformation(value);
             value = value.Remove(0, "postgres://".Length);
             var counter = value.IndexOf(':');
@@ -31,8 +42,7 @@ namespace Blueprints.Infrastructure.DataAccess
 
             var database = value;
 
-            ConnectionString = $"Host={host};Port={port};Database={database};User Id={user};Password={password};SslMode=Require;Trust Server Certificate=true";
-            logger.LogInformation(ConnectionString);
+            return $"Host={host};Port={port};Database={database};User Id={user};Password={password};SslMode=Require;Trust Server Certificate=true";
         }
     }
 }
