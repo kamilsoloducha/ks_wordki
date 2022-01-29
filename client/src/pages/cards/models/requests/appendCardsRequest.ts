@@ -1,6 +1,6 @@
 export default interface AppendCardsRequest {
   userId: string;
-  groupId: string;
+  groupId: number;
   count: number;
   langauges: number;
 }

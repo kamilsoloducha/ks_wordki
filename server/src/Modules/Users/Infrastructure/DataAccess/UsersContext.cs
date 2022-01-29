@@ -19,6 +19,12 @@ namespace Users.Infrastructure
         private readonly string _connectionString;
 
         public DbSet<User> Users { get; set; }
+
+        // public UsersContext()
+        // {
+        //     _connectionString = $"Host=localhost;Port=5432;Database=Wordki;User Id=root;Password=changeme;";
+        // }
+
         public UsersContext(IConnectionStringProvider connectionStringProvider)
         {
             _connectionString = connectionStringProvider.ConnectionString;
@@ -29,7 +35,7 @@ namespace Users.Infrastructure
             optionsBuilder
                 .UseLoggerFactory(loggerFactory)
                 .EnableSensitiveDataLogging()
-                .UseNpgsql(_connectionString, x => x.MigrationsAssembly("Api"));
+                .UseNpgsql(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

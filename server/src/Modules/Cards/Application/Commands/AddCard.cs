@@ -2,52 +2,55 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
-using Cards.Domain;
+using Cards.Domain2;
 using FluentValidation;
 
 namespace Cards.Application.Commands
 {
     public class AddCard
     {
-        internal class CommandHandler : RequestHandlerBase<Command, Guid>
+        internal class CommandHandler : RequestHandlerBase<Command, long>
         {
-            private readonly ISetRepository _repository;
+            private readonly ICardsRepository _repository;
+            private readonly ISequenceGenerator _sequenceGenerator;
 
-            public CommandHandler(ISetRepository repository)
+            public CommandHandler(ICardsRepository repository, ISequenceGenerator sequenceGenerator)
             {
                 _repository = repository;
+                _sequenceGenerator = sequenceGenerator;
             }
 
-            public async override Task<ResponseBase<Guid>> Handle(Command request, CancellationToken cancellationToken)
+            public async override Task<ResponseBase<long>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var userId = UserId.Restore(request.UserId);
-                var set = await _repository.Get(userId, cancellationToken);
-                if (set is null) return ResponseBase<Guid>.Create("(set is null");
+                var ownerId = OwnerId.Restore(request.UserId);
+                var owner = await _repository.Get(ownerId, cancellationToken);
+                if (owner is null) return ResponseBase<long>.Create("(set is null");
 
                 var groupId = GroupId.Restore(request.GroupId);
+                var frontValue = Label.Create(request.Front.Value);
+                var backValue = Label.Create(request.Back.Value);
+                var frontComment = Comment.Create(request.Comment);
+                var backComment = Comment.Create(request.Comment);
 
-                var frontLabel = SideLabel.Create(request.Front.Value);
-                var backLabel = SideLabel.Create(request.Back.Value);
-
-                var cardId = set.AddCard(
+                var cardId = owner.AddCard(
                     groupId,
-                    frontLabel,
+                    frontValue,
+                    backValue,
                     request.Front.Example,
-                    request.Front.IsUsed,
-                    backLabel,
                     request.Back.Example,
-                    request.Back.IsUsed,
-                    request.Comment);
+                    frontComment,
+                    backComment,
+                    _sequenceGenerator);
 
-                await _repository.Update(set, cancellationToken);
-                return ResponseBase<Guid>.Create(cardId.Value);
+                await _repository.Update(owner, cancellationToken);
+                return ResponseBase<long>.Create(cardId.Value);
             }
         }
 
-        public class Command : RequestBase<Guid>
+        public class Command : RequestBase<long>
         {
             public Guid UserId { get; set; }
-            public Guid GroupId { get; set; }
+            public long GroupId { get; set; }
             public CardSide Front { get; set; }
             public CardSide Back { get; set; }
             public string Comment { get; set; }
@@ -64,7 +67,7 @@ namespace Cards.Application.Commands
         {
             public CommandValidator()
             {
-                RuleFor(x => x.GroupId).Must(x => x != Guid.Empty);
+                RuleFor(x => x.GroupId).Must(x => x != 0);
                 RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
                 RuleFor(x => x.Front.Value).NotEmpty();
                 RuleFor(x => x.Back.Value).NotEmpty();

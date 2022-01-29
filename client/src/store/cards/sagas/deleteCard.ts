@@ -9,7 +9,7 @@ import { CardSummary } from "pages/cards/models/cardSummary";
 
 function* deleteCard() {
   const userId: string = yield select(selectUserId);
-  const groupId: string = yield select(selectGroupId);
+  const groupId: number = yield select(selectGroupId);
   const selectedItem: CardSummary = yield select(selectSelectedCard);
 
   const { data, error }: { data: ApiResponse<string>; error: any } = yield call(

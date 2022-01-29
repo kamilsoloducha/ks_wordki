@@ -37,7 +37,7 @@ namespace Api.Controllers
         public async Task<IActionResult> Init()
         {
             await serviceProvider.CreateUsersDb();
-            await serviceProvider.CreateCardsDb();
+            // await serviceProvider.CreateCardsDb();
             await serviceProvider.CreateLessonsDb();
             return Ok();
         }

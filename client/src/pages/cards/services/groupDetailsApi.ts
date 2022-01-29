@@ -1,23 +1,37 @@
 import { ApiResponse } from "common/models/response";
 import http from "common/services/http/http";
 import { CardSummary } from "../models/cardSummary";
-import { GroupDetailsResponse } from "../models/groupDetailsResponse";
+import { CardsSummaryResponse } from "../models/cardsSummaryResponse";
 import { AddCardRequest } from "../models/requests/addCardRequest";
 import AppendCardsRequest from "../models/requests/appendCardsRequest";
 import { UpdateCardRequest } from "../models/requests/updateCardRequest";
+import { GroupDetailsResponse } from "../models/groupDetailsSummary";
 
-export async function groupDetails(userId: string, groupId: string) {
+export async function groupDetails(
+  groupId: number
+): Promise<GroupDetailsResponse> {
   const response = await http.get<GroupDetailsResponse>(
-    `/groups/${userId}/${groupId}`
+    `/groups/details/${groupId}`
   );
-  return { data: response.data };
+  return response.data;
+}
+
+export async function cardsSummary(
+  userId: string,
+  groupId: number
+): Promise<CardsSummaryResponse> {
+  const response = await http.get<CardsSummaryResponse>(
+    `/cards/${userId}/${groupId}`
+  );
+  return response.data;
 }
 
 export async function updateCard(
   userId: string,
-  groupId: string,
+  groupId: number,
   card: CardSummary
 ) {
+  debugger;
   const request = {
     userId,
     groupId,
@@ -26,14 +40,14 @@ export async function updateCard(
       value: card.front.value,
       example: card.front.example,
       isUsed: card.front.isUsed,
+      isTicked: card.front.isTicked,
     },
     back: {
       value: card.back.value,
       example: card.back.example,
       isUsed: card.back.isUsed,
+      isTicked: card.back.isTicked,
     },
-    comment: card.comment,
-    isTicked: card.isTicked,
   } as UpdateCardRequest;
   try {
     const response = await http.put<{}>(`/cards/update`, request);
@@ -61,7 +75,6 @@ export async function addCard(
       example: card.back.example,
       isUsed: card.back.isUsed,
     },
-    comment: card.comment,
   } as AddCardRequest;
   try {
     const response = await http.post<ApiResponse<string>>(
@@ -76,8 +89,8 @@ export async function addCard(
 
 export async function deleteCard(
   userId: string,
-  groupId: string,
-  cardId: string
+  groupId: number,
+  cardId: number
 ) {
   const response = await http.delete<{}>(
     `/cards/delete/${userId}/${groupId}/${cardId}`
@@ -91,7 +104,7 @@ export function addGroup(userId: string, card: any): any {
 
 export async function appendCards(
   userId: string,
-  groupId: string,
+  groupId: number,
   count: number,
   langauges: number
 ) {

@@ -3,49 +3,38 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
-using Cards.Domain;
+using Cards.Domain2;
 using FluentValidation;
 
 namespace Cards.Application.Commands
 {
     public class AddGroup
     {
-        internal class CommandHandler : RequestHandlerBase<Command, Guid>
+        internal class CommandHandler : RequestHandlerBase<Command, long>
         {
-            private readonly ISetRepository _repository;
+            private readonly ICardsRepository _repository;
+            private readonly ISequenceGenerator _sequenceGenerator;
 
-            public CommandHandler(ISetRepository repository)
+            public CommandHandler(ICardsRepository repository, ISequenceGenerator sequenceGenerator)
             {
                 _repository = repository;
+                _sequenceGenerator = sequenceGenerator;
             }
 
-            public async override Task<ResponseBase<Guid>> Handle(Command request, CancellationToken cancellationToken)
+            public async override Task<ResponseBase<long>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var userId = UserId.Restore(request.UserId);
-                var cardsSet = await _repository.Get(userId, cancellationToken);
-                if (cardsSet is null) return ResponseBase<Guid>.Create("cardsSet is null");
+                var userId = OwnerId.Restore(request.UserId);
+                var owner = await _repository.Get(userId, cancellationToken);
+                if (owner is null) return ResponseBase<long>.Create("cardsSet is null");
 
                 var groupName = GroupName.Create(request.GroupName);
+                var front = Language.Create(request.Front);
+                var back = Language.Create(request.Back);
 
-                var groupId = cardsSet.AddGroup(groupName, request.Front, request.Back);
+                var groupId = owner.AddGroup(groupName, front, back, _sequenceGenerator);
 
-                foreach (var item in request.Cards)
-                {
-                    var frontLabel = SideLabel.Create(item.FrontValue);
-                    var backLabel = SideLabel.Create(item.BackValue);
-
-                    cardsSet.AddCard(groupId,
-                        frontLabel,
-                        item.FrontExample,
-                        false,
-                        backLabel,
-                        item.BackExample,
-                        false,
-                        item.Comment);
-                }
-
-                await _repository.Update(cardsSet, cancellationToken);
-                return ResponseBase<Guid>.Create(groupId.Value);
+                await _repository.Update(owner, cancellationToken);
+                return ResponseBase<long>.Create(groupId.Value);
             }
         }
 
@@ -54,12 +43,12 @@ namespace Cards.Application.Commands
 
         }
 
-        public class Command : RequestBase<Guid>
+        public class Command : RequestBase<long>
         {
             public Guid UserId { get; set; }
             public string GroupName { get; set; }
-            public LanguageType Front { get; set; }
-            public LanguageType Back { get; set; }
+            public int Front { get; set; }
+            public int Back { get; set; }
             public IEnumerable<Card> Cards { get; set; } = new Card[0];
         }
 

@@ -2,36 +2,35 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
-using Cards.Domain;
+using Cards.Domain2;
 using FluentValidation;
 using MediatR;
 
 namespace Cards.Application.Commands
 {
-
     public class DeleteCard
     {
         internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
-            private readonly ISetRepository _repository;
+            private readonly ICardsRepository _repository;
 
-            public CommandHandler(ISetRepository repository)
+            public CommandHandler(ICardsRepository repository)
             {
                 _repository = repository;
             }
 
             public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var userId = UserId.Restore(request.UserId);
-                var set = await _repository.Get(userId, cancellationToken);
-                if (set is null) return ResponseBase<Unit>.Create("set is null");
+                var ownerId = OwnerId.Restore(request.UserId);
+                var owner = await _repository.Get(ownerId, cancellationToken);
+                if (owner is null) return ResponseBase<Unit>.Create("set is null");
 
                 var groupId = GroupId.Restore(request.GroupId);
                 var cardId = CardId.Restore(request.CardId);
 
-                set.RemoveCard(groupId, cardId);
+                owner.RemoveCard(groupId, cardId);
 
-                await _repository.Update(set, cancellationToken);
+                await _repository.Update(owner, cancellationToken);
                 return ResponseBase<Unit>.Create(Unit.Value);
             }
         }
@@ -39,8 +38,8 @@ namespace Cards.Application.Commands
         public class Command : RequestBase<Unit>
         {
             public Guid UserId { get; set; }
-            public Guid GroupId { get; set; }
-            public Guid CardId { get; set; }
+            public long GroupId { get; set; }
+            public long CardId { get; set; }
         }
 
         internal class CommandValidator : AbstractValidator<Command>
@@ -48,8 +47,8 @@ namespace Cards.Application.Commands
             public CommandValidator()
             {
                 RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
-                RuleFor(x => x.GroupId).Must(x => x != Guid.Empty);
-                RuleFor(x => x.CardId).Must(x => x != Guid.Empty);
+                RuleFor(x => x.GroupId).Must(x => x != 0);
+                RuleFor(x => x.CardId).Must(x => x != 0);
             }
         }
     }

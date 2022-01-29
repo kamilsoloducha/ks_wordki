@@ -52,7 +52,7 @@ export default function Inserting({
     <div>
       Question:
       <Question
-        value={repeat.questionValue}
+        value={repeat.question}
         example={repeat.questionExample}
         language={1}
       />
@@ -69,7 +69,7 @@ export default function Inserting({
         <Answer
           isVisible={state.answer}
           userAnswer={insertedValue}
-          correctAnswer={repeat.answerValue}
+          correctAnswer={repeat.answer}
           exampleAnswer={repeat.answerExample}
         />
       </div>

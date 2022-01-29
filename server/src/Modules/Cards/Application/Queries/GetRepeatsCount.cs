@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Blueprints.Application.Services;
 using Cards.Application.Services;
-using Cards.Domain;
+using Cards.Domain2;
 using MediatR;
 using Utils;
 
@@ -15,13 +14,10 @@ namespace Cards.Application.Queries
         internal class QueryHandler : IRequestHandler<Query, int>
         {
             private readonly IQueryRepository _queryRepository;
-            private readonly IUserDataProvider _userDataProvider;
 
-            public QueryHandler(IQueryRepository queryRepository,
-                IUserDataProvider userDataProvider)
+            public QueryHandler(IQueryRepository queryRepository)
             {
                 _queryRepository = queryRepository;
-                _userDataProvider = userDataProvider;
             }
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
@@ -32,11 +28,10 @@ namespace Cards.Application.Queries
                 }
                 // todo move validation to fluentValidation
 
-                var userIdValue = _userDataProvider.GetUserId();
-                var userId = UserId.Restore(userIdValue);
+                var ownerId = OwnerId.Restore(request.UserId);
                 var now = SystemClock.Now.Date;
 
-                var repeats = await _queryRepository.GetDailyRepeatsCount(userId, now, request.QuestionLanguage.Value, cancellationToken);
+                var repeats = await _queryRepository.GetDailyRepeatsCount(ownerId, now, request.QuestionLanguage.Value, cancellationToken);
 
                 return repeats;
             }
@@ -44,6 +39,7 @@ namespace Cards.Application.Queries
 
         public class Query : IRequest<int>
         {
+            public Guid UserId { get; set; }
             public int? QuestionLanguage { get; set; }
             public IEnumerable<Guid> GroupIds { get; set; }
             public bool IsUsed { get; set; }

@@ -3,10 +3,10 @@ import { DailyActionEnum, TickCard } from "../actions";
 import * as api from "pages/lesson/services/repeatsApi";
 import { selectUserId } from "store/user/selectors";
 
-function* tickCard({ cardId, groupId }: TickCard) {
+function* tickCard({ sideId }: TickCard) {
   const userId: string = yield select(selectUserId);
   const { data }: { data: number; error: any } = yield call(() =>
-    api.tickCard({ userId, cardId, groupId })
+    api.tickCard({ userId, sideId })
   );
 }
 

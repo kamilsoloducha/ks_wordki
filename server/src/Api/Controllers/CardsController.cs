@@ -15,6 +15,11 @@ namespace Api
     {
         public CardsController(IMediator mediator) : base(mediator) { }
 
+        [HttpGet("{ownerId}/{groupId}")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Get([FromRoute] GetCardSummaries.Query query, CancellationToken cancellationToken)
+            => new JsonResult(await Mediator.Send(query, cancellationToken));
+
         [HttpPost("add")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Add(AddCard.Command command, CancellationToken cancellationToken)
@@ -45,10 +50,10 @@ namespace Api
         public async Task<IActionResult> Delete([FromRoute] DeleteCard.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
-        [HttpGet("dashboard/summary")]
+        [HttpGet("dashboard/summary/{userId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Get(CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(new GetDashboardSummary.Query(), cancellationToken));
+        public async Task<IActionResult> Get([FromRoute] GetDashboardSummary.Query query, CancellationToken cancellationToken)
+            => new JsonResult(await Mediator.Send(query, cancellationToken));
 
         [HttpPut("append")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]

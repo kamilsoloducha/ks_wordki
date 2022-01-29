@@ -37,9 +37,9 @@ export default function GroupRow({
 }
 
 interface Model {
-  id: string;
+  id: number;
   name: string;
   cardsCount: number;
   cardsEnalbed: number;
-  onSelectionChanged?: (id: string, isSelected: boolean) => void;
+  onSelectionChanged?: (id: number, isSelected: boolean) => void;
 }

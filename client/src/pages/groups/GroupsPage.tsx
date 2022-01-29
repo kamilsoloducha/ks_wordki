@@ -56,7 +56,7 @@ export default function GroupsPage(): ReactElement {
     dispatch(selectItem(group));
   };
 
-  const onGroupSelected = (id: string, isSelected: boolean) => {
+  const onGroupSelected = (id: number, isSelected: boolean) => {
     dispatch(selectionChanged(id, isSelected));
   };
 

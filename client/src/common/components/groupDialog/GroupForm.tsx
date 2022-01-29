@@ -16,7 +16,7 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
 
   const formik = useFormik({
     initialValues: {
-      name: group?.name,
+      name: group?.name ?? "",
       front: group?.front,
       back: group?.back,
     },
@@ -26,11 +26,13 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
   const options = Languages;
 
   const languageOptions = (option: Language) => {
-    return (
+    return option ? (
       <div className="language-options-item">
         <img className="flag" src={option.icon} width="24px" />
         {option.label}
       </div>
+    ) : (
+      <div></div>
     );
   };
 

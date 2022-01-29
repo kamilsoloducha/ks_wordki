@@ -6,6 +6,6 @@ namespace Cards.Application.Queries
     {
         public int Count { get; set; }
         public DateTime Date { get; set; }
-        public Guid UserId { get; set; }
+        public Guid OwnerId { get; set; }
     }
 }

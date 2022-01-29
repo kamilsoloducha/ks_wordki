@@ -19,8 +19,6 @@ using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using Blueprints.Application.Services;
 using Blueprints.Infrastrcuture.Services;
 using Cards.Domain;
-using Serilog;
-using Blueprints.Infrastructure.DataAccess;
 using Blueprints.Infrastrcuture;
 
 namespace Api
@@ -74,6 +72,8 @@ namespace Api
          IServiceProvider serviceProvider)
         {
 
+            // serviceProvider.CreateCardsDb().Wait();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -95,7 +95,5 @@ namespace Api
                 endpoints.MapControllers();
             });
         }
-
-
     }
 }

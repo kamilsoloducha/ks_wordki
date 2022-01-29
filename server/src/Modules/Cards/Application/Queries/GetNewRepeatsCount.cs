@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Services;
-using Cards.Domain;
+using Cards.Domain2;
 using MediatR;
 
 namespace Cards.Application.Queries
@@ -21,9 +20,9 @@ namespace Cards.Application.Queries
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
-                var userId = UserId.Restore(request.UserId);
+                var ownerId = OwnerId.Restore(request.UserId);
 
-                var repeats = await _queryRepository.GetNewRepeatsCount(userId, request.QuestionLanguage ?? 0, request.GroupId, cancellationToken);
+                var repeats = await _queryRepository.GetNewRepeatsCount(ownerId, request.QuestionLanguage ?? 0, request.GroupId.Value, cancellationToken);
 
                 return repeats;
             }
@@ -32,7 +31,7 @@ namespace Cards.Application.Queries
         public class Query : IRequest<int>
         {
             public Guid UserId { get; set; }
-            public Guid? GroupId { get; set; }
+            public long? GroupId { get; set; }
             public int? QuestionLanguage { get; set; }
         }
 

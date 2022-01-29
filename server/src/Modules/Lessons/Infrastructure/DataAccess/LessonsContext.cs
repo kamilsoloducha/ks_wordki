@@ -23,7 +23,11 @@ namespace Lessons.Infrastructure.DataAccess
 
         internal DbSet<Performance> Performances { get; set; }
         internal DbSet<Lesson> Lessons { get; set; }
-        internal DbSet<Repeat> Repeats { get; set; }
+
+        public LessonsContext()
+        {
+            _connectionString = $"Host=localhost;Port=5432;Database=Wordki;User Id=root;Password=changeme;";
+        }
 
         public LessonsContext(IConnectionStringProvider connectionStringProvider)
         {
@@ -43,7 +47,6 @@ namespace Lessons.Infrastructure.DataAccess
             modelBuilder.HasDefaultSchema("lessons");
             modelBuilder.ApplyConfiguration(new PerformanceEntityConfiguration());
             modelBuilder.ApplyConfiguration(new LessonEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new RepeatEntityConfiguration());
         }
 
     }

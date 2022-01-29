@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Domain;
-using Cards.Domain.Repositories;
+using Cards.Domain2;
 using Domain.IntegrationEvents;
 using MassTransit;
 using MassTransit.Definition;
@@ -15,32 +15,27 @@ namespace Cards.Application
 
     internal class AnswerRegisterdConsumer : IConsumer<AnswerRegistered>
     {
-        private readonly ISetRepository _repository;
         private readonly INextRepeatCalculator _nextRepeatCalculator;
-        private readonly ICardRepository _cardRepository;
+        private readonly ICardsRepository _cardsRepository;
 
-        public AnswerRegisterdConsumer(ISetRepository repository,
-        INextRepeatCalculator nextRepeatCalculator,
-        ICardRepository cardRepository)
+        public AnswerRegisterdConsumer(INextRepeatCalculator nextRepeatCalculator,
+            ICardsRepository cardsRepository)
         {
-            _repository = repository;
             _nextRepeatCalculator = nextRepeatCalculator;
-            _cardRepository = cardRepository;
+            _cardsRepository = cardsRepository;
         }
 
         public async Task Consume(ConsumeContext<AnswerRegistered> context)
         {
-            var userId = UserId.Restore(context.Message.UserId);
-            var cardId = CardId.Restore(context.Message.CardId);
+            var userId = OwnerId.Restore(context.Message.UserId);
+            var sideId = SideId.Restore(context.Message.SideId);
 
-            var card = await _cardRepository.GetCard(userId, cardId, CancellationToken.None);
-
-            var sideType = (Side)context.Message.Side;
+            var detail = await _cardsRepository.Get(userId, sideId, CancellationToken.None);
             var result = context.Message.Result;
 
-            card.RegisterAnswer(sideType, result, _nextRepeatCalculator);
+            detail.RegisterAnswer(result, _nextRepeatCalculator);
 
-            await _cardRepository.Update(CancellationToken.None);
+            await _cardsRepository.Update(CancellationToken.None);
         }
     }
 }

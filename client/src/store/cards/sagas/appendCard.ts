@@ -7,7 +7,7 @@ import * as api from "pages/cards/services/groupDetailsApi";
 
 function* appendCards(action: AppendCard) {
   const userId: string = yield select(selectUserId);
-  const id: string = yield select(selectGroupId);
+  const id: number = yield select(selectGroupId);
 
   const { data, error }: { data: {}; error: any } = yield call(() =>
     api.appendCards(userId, id, action.count, action.languages)

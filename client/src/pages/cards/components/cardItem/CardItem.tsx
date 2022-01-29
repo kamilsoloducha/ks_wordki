@@ -1,8 +1,5 @@
 import "./CardItem.scss";
-import {
-  CardSummary,
-  SideSummary,
-} from "pages/cards/models/groupDetailsSummary";
+import { CardSummary } from "pages/cards/models/groupDetailsSummary";
 import Drawer from "../drawer/Drawer";
 
 function CardItem({ card, direction, onChangeUsage }: Model) {
@@ -55,5 +52,5 @@ export default CardItem;
 export interface Model {
   card: CardSummary;
   direction: number;
-  onChangeUsage?: (cardId: string, side: number) => void;
+  onChangeUsage?: (cardId: number, side: number) => void;
 }

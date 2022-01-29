@@ -1,5 +1,5 @@
 export interface GroupSummary {
-  id: string;
+  id: number;
   name: string;
   cardsCount: number;
   cardsEnabled: number;

@@ -38,7 +38,7 @@ export default function GroupDetailsPage(): ReactElement {
   const [editedGroup, setEditedGroup] = useState<any>(null);
 
   useEffect(() => {
-    dispatch(actions.getCards(groupId));
+    dispatch(actions.getCards(parseInt(groupId)));
   }, [groupId, dispatch]);
 
   useEffect(() => {
@@ -57,20 +57,20 @@ export default function GroupDetailsPage(): ReactElement {
   const onFormSubmit = (item: FormModel): void => {
     const udpdatedCard = {
       id: item.cardId,
-      comment: item.comment,
-      isTicked: item.isTicked,
       front: {
         value: item.frontValue,
         example: item.frontExample,
         isUsed: item.frontEnabled,
+        isTicked: item.isTicked,
       },
       back: {
         value: item.backValue,
         example: item.backExample,
         isUsed: item.backEnabled,
+        isTicked: item.isTicked,
       },
     } as CardSummary;
-    if (udpdatedCard.id) {
+    if (udpdatedCard.id !== 0) {
       dispatch(actions.updateCard(udpdatedCard));
       setFormItem(null);
     } else {
@@ -95,10 +95,9 @@ export default function GroupDetailsPage(): ReactElement {
 
   const onAddCard = () => {
     const cardTemplate = {
-      id: "",
+      id: 0,
       front: { value: "", example: "", isUsed: false },
       back: { value: "", example: "", isUsed: false },
-      comment: "",
     } as CardSummary;
     dispatch(actions.selectCard(cardTemplate));
     setFormItem(getFormModelFromCardSummary(cardTemplate));
@@ -145,7 +144,7 @@ export default function GroupDetailsPage(): ReactElement {
   };
 
   const onUsageChanged = useCallback(
-    (cardId: string, side: number) => {
+    (cardId: number, side: number) => {
       const original = cardsFromStore.find((x) => x.id === cardId);
       if (!original) return;
       const updatedCard = { ...original };
@@ -280,8 +279,7 @@ function getFormModelFromCardSummary(card: CardSummary): FormModel {
     backValue: card.back.value,
     backExample: card.back.example,
     backEnabled: card.back.isUsed,
-    comment: card.comment,
-    isTicked: card.isTicked,
+    isTicked: card.front.isTicked,
   } as FormModel;
 }
 
@@ -297,7 +295,7 @@ function getLearningCard(cards: CardSummary[]): number {
 function getTickedCard(cards: CardSummary[]): number {
   let result = 0;
   cards.forEach((item) => {
-    if (item.isTicked) result++;
+    if (false) result++;
   });
   return result;
 }
@@ -339,7 +337,9 @@ function filterCards(cards: CardSummary[], filter: CardsFilter): CardSummary[] {
       result = cards.filter((item) => isCardFromDrawer(item, 5));
       break;
     case CardsFilter.Ticked:
-      result = cards.filter((item) => item.isTicked);
+      result = cards.filter(
+        (item) => item.front.isTicked || item.back.isTicked
+      );
       break;
     default:
       result = cards;

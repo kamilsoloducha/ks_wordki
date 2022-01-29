@@ -27,16 +27,12 @@ export async function startLesson(request: StartLessonRequest) {
 
 export async function registerAnswer(
   userId: string,
-  groupId: string,
-  cardId: string,
-  side: number,
+  sideId: number,
   result: number
 ) {
   const request = {
     userId,
-    groupId,
-    cardId,
-    side,
+    sideId,
     result,
   } as RegisterAnswerRequest;
   const response = await http.post<{}>("/lesson/answer", request);
