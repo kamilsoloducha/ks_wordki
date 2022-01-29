@@ -55,8 +55,9 @@ steps:
   - task: Docker@2
     displayName: Push
     inputs:
-      containerRegistry: "docker-hub"
-      repository: "kamilsoloducha/wordki-server"
-      command: "push"
+      containerRegistry: 'docker-hub'
+      repository: 'kamilsoloducha/wordki-server'
+      command: 'push'
       tags: |
         $(Build.BuildId)
+        latest
