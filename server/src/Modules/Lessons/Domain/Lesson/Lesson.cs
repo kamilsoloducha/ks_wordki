@@ -11,7 +11,6 @@ namespace Lessons.Domain
         public Guid UserId { get; private set; }
         public LessonType Type { get; private set; }
         public int TimeCounter { get; private set; }
-        public IList<Repeat> Repeats { get; private set; }
         public Performance Performence { get; private set; }
 
         private Lesson() { }
@@ -24,7 +23,6 @@ namespace Lessons.Domain
                 UserId = performence.UserId,
                 Type = type,
                 TimeCounter = 0,
-                Repeats = new List<Repeat>(),
                 Performence = performence
             };
         }
@@ -32,9 +30,7 @@ namespace Lessons.Domain
         internal void RegisterAnswer(Guid cardId, int side, int result)
         {
             IsDirty = true;
-            var repeat = Repeat.Create(cardId, side, result);
             TimeCounter = (int)(SystemClock.Now.Ticks - StartDate.Ticks / 1000);
-            Repeats.Add(repeat);
         }
     }
 }

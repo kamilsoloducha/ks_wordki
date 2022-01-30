@@ -30,9 +30,6 @@ namespace Lessons.Infrastructure
             var newLessons = performance.Lessons.Where(x => x.IsNew);
             await _context.Lessons.AddRangeAsync(newLessons);
 
-            var newRepeats = performance.Lessons.Where(x => x.IsDirty).SelectMany(x => x.Repeats).Where(x => x.IsNew);
-            await _context.Repeats.AddRangeAsync(newRepeats);
-
             await _context.SaveChangesAsync();
         }
 
@@ -42,7 +39,6 @@ namespace Lessons.Infrastructure
         public Task<Performance> GetByUserId(Guid userId, CancellationToken cancellationToken)
             => _context.Performances
                 .Include(p => p.Lessons)
-                .ThenInclude(l => l.Repeats)
                 .SingleOrDefaultAsync(x => x.UserId == userId, cancellationToken);
     }
 }

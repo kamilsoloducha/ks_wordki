@@ -15,15 +15,15 @@ export default function Fiszka({
     <div>
       Question:
       <Question
-        value={repeat.questionValue}
+        value={repeat.question}
         example={repeat.questionExample}
         language={1}
       />
       <Answer
         isVisible={state.answer}
-        correctAnswer={repeat.answerValue}
+        correctAnswer={repeat.answer}
         exampleAnswer={repeat.answerExample}
-        userAnswer={repeat.answerValue}
+        userAnswer={repeat.answer}
       />
     </div>
   );

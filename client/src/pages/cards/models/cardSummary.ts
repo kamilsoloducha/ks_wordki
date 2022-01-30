@@ -1,9 +1,7 @@
 import { CardSide } from "./cardSide";
 
 export interface CardSummary {
-  id: string;
+  id: number;
   front: CardSide;
   back: CardSide;
-  comment: string;
-  isTicked: boolean;
 }

@@ -45,25 +45,12 @@ export default function LessonPage(): ReactElement {
   );
 
   const correct = useCallback(() => {
-    dispatch(
-      actions.correct(
-        currectRepeat.groupId,
-        currectRepeat.cardId,
-        currectRepeat.questionSide,
-        1
-      )
-    );
+    dispatch(actions.correct(currectRepeat.sideId, 1));
     setInsertedValue("");
   }, [dispatch, currectRepeat]);
 
   const wrong = useCallback(() => {
-    dispatch(
-      actions.wrong(
-        currectRepeat.groupId,
-        currectRepeat.cardId,
-        currectRepeat.questionSide
-      )
-    );
+    dispatch(actions.wrong(currectRepeat.sideId));
     setInsertedValue("");
   }, [dispatch, currectRepeat]);
 
@@ -86,7 +73,7 @@ export default function LessonPage(): ReactElement {
 
   const tickCard = useCallback(
     (repeat: Repeat) => {
-      dispatch(actions.tickCard(repeat.groupId, repeat.cardId));
+      dispatch(actions.tickCard(repeat.sideId));
     },
     [dispatch]
   );

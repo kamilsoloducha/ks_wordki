@@ -26,7 +26,7 @@ namespace Lessons.Application.Commands
                 var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
                 if (performance is null) return ResponseBase<Resposne>.Create("performance is null");
 
-                performance.RegisterAnswer(request.CardId, request.GroupId, request.Side, request.Result);
+                performance.RegisterAnswer(request.SideId, request.Result);
                 await _repository.Update(performance);
                 await _publishEndpoint.Publish(performance.Events.First(), cancellationToken);
 
@@ -38,15 +38,10 @@ namespace Lessons.Application.Commands
         {
             public DateTime StartLessonDate { get; set; } // usually it will be the latest, always??
             public Guid UserId { get; set; }
-            public Guid GroupId { get; set; }
-            public Guid CardId { get; set; }
-            public int Side { get; set; }
+            public long SideId { get; set; }
             public int Result { get; set; }
         }
 
-        public class Resposne
-        {
-
-        }
+        public class Resposne { }
     }
 }

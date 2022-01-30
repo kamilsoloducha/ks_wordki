@@ -1,3 +1,10 @@
+export interface GroupDetailsResponse {
+  id: number;
+  name: string;
+  front: number;
+  back: number;
+}
+
 export default interface GroupDetailsSummary {
   id: string;
   name: string;
@@ -7,16 +14,17 @@ export default interface GroupDetailsSummary {
 }
 
 export interface CardSummary {
-  id: string;
+  id: number;
   front: SideSummary;
   back: SideSummary;
-  comment: string;
-  isTicked: boolean;
 }
 
 export interface SideSummary {
+  type: number;
   value: string;
   example: string;
+  comment: string;
   drawer: number;
   isUsed: boolean;
+  isTicked: boolean;
 }

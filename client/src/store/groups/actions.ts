@@ -53,7 +53,7 @@ export function getGroupsSummarySuccess(
 
 export interface SelectionChanged extends GroupsAction {}
 export function selectionChanged(
-  id: string,
+  id: number,
   isSelected: boolean
 ): SelectionChanged {
   return {
@@ -77,7 +77,7 @@ export function selectItem(selectedItem: GroupSummary): SelectItem {
   };
 }
 
-export function selectItemById(groupId: string): SelectItem {
+export function selectItemById(groupId: number): SelectItem {
   return {
     type: GroupsActionEnum.SELECT_ITEM,
     reduce: (state: GroupsState): GroupsState => {

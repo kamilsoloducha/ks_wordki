@@ -26,10 +26,10 @@ export interface CardsAction {
 }
 
 export interface GetCards extends CardsAction {
-  groupId: string;
+  groupId: number;
 }
 
-export function getCards(groupId: string): GetCards {
+export function getCards(groupId: number): GetCards {
   return {
     groupId,
     type: CardsActionEnum.GET_CARDS,
@@ -44,7 +44,7 @@ export interface GetCardsSuccess extends CardsAction {
 }
 
 export function getCardsSuccess(
-  id: string,
+  id: number,
   name: string,
   language1: number,
   language2: number,
@@ -148,7 +148,7 @@ export function deleteCard(): DeleteCard {
 
 export interface DeleteCardSuccess extends CardsAction {}
 
-export function deleteCardSuccess(cardId: string): DeleteCardSuccess {
+export function deleteCardSuccess(cardId: number): DeleteCardSuccess {
   return {
     type: CardsActionEnum.DELETE_CARD_SUCCESS,
     reduce: (state: CardsState): CardsState => {

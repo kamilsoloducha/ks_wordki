@@ -22,5 +22,5 @@ export default CardsList;
 interface Model {
   cards: CardSummary[];
   onItemSelected?: (item: CardSummary) => void;
-  onChangeUsage?: (cardId: string, side: number) => void;
+  onChangeUsage?: (cardId: number, side: number) => void;
 }

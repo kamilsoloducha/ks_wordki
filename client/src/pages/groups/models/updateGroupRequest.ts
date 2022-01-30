@@ -1,6 +1,6 @@
 export default interface UpdateGroupRequest {
   userId: string;
-  groupId: string;
+  groupId: number;
   groupName: string;
   front: number;
   back: number;

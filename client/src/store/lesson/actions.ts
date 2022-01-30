@@ -145,10 +145,9 @@ export function getCardsCountSuccess(count: number): GetCardsCountSuccess {
 }
 
 export interface TickCard extends LessonAction {
-  groupId: string;
-  cardId: string;
+  sideId: number;
 }
-export function tickCard(groupId: string, cardId: string): TickCard {
+export function tickCard(sideId: number): TickCard {
   return {
     type: DailyActionEnum.TICK_CARD,
     reduce: (state: LessonState): LessonState => {
@@ -156,8 +155,7 @@ export function tickCard(groupId: string, cardId: string): TickCard {
         ...state,
       };
     },
-    groupId,
-    cardId,
+    sideId,
   };
 }
 
@@ -199,7 +197,7 @@ export function check(): Check {
       const isCorrect =
         state.lessonType === 1
           ? true
-          : compare(state.repeats[0].answerValue, state.answer);
+          : compare(state.repeats[0].answer, state.answer);
       return {
         ...state,
         lessonState: LessonStateEnum.AnswerPending,
@@ -210,21 +208,12 @@ export function check(): Check {
 }
 
 export interface Correct extends LessonAction {
-  groupId: string;
-  cardId: string;
-  side: number;
+  sideId: number;
   result: number;
 }
-export function correct(
-  groupId: string,
-  cardId: string,
-  side: number,
-  result: number
-): Correct {
+export function correct(sideId: number, result: number): Correct {
   return {
-    groupId,
-    cardId,
-    side,
+    sideId,
     result,
     type: DailyActionEnum.LESSON_CORRECT,
     reduce: (state: LessonState): LessonState => {
@@ -252,16 +241,12 @@ export function correct(
 }
 
 export interface Wrong extends LessonAction {
-  groupId: string;
-  cardId: string;
-  side: number;
+  sideId: number;
   result: number;
 }
-export function wrong(groupId: string, cardId: string, side: number): Wrong {
+export function wrong(sideId: number): Wrong {
   return {
-    groupId,
-    cardId,
-    side,
+    sideId,
     result: -1,
     type: DailyActionEnum.LESSON_WRONG,
     reduce: (state: LessonState): LessonState => {

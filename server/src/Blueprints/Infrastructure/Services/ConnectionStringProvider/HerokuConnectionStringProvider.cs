@@ -44,5 +44,10 @@ namespace Blueprints.Infrastructure.DataAccess
 
             return $"Host={host};Port={port};Database={database};User Id={user};Password={password};SslMode=Require;Trust Server Certificate=true";
         }
+
+        public static bool IsHerokuEnv(IConfiguration configuration)
+        {
+            return !string.IsNullOrEmpty(configuration.GetValue<string>(PostgressTag));
+        }
     }
 }

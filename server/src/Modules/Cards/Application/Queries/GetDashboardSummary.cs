@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Blueprints.Application.Services;
 using Cards.Application.Services;
-using Cards.Domain;
+using Cards.Domain2;
 using MediatR;
 using Utils;
 
@@ -16,25 +14,21 @@ namespace Cards.Application.Queries
         internal class QueryHandler : IRequestHandler<Query, Response>
         {
             private readonly IQueryRepository _queryRepository;
-            private readonly IUserDataProvider _userDataProvider;
 
-            public QueryHandler(IQueryRepository queryRepository,
-                IUserDataProvider userDataProvider)
+            public QueryHandler(IQueryRepository queryRepository)
             {
                 _queryRepository = queryRepository;
-                _userDataProvider = userDataProvider;
             }
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var userIdValue = _userDataProvider.GetUserId();
-                var userId = UserId.Restore(userIdValue);
+                var ownerId = OwnerId.Restore(request.UserId);
                 var dateTime = SystemClock.Now.Date;
 
-                var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(userId, dateTime, 0, cancellationToken);
-                var groupsCount = await _queryRepository.GetGroupsCount(userId, cancellationToken);
-                var cardsCount = await _queryRepository.GetCardsCount(userId, cancellationToken);
-                var repeatCounts = await _queryRepository.GetRepeatsCountSummary(userId, request.DateFrom, request.DateTo, cancellationToken);
+                var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, dateTime, 0, cancellationToken);
+                var groupsCount = await _queryRepository.GetGroupsCount(ownerId, cancellationToken);
+                var cardsCount = await _queryRepository.GetCardsCount(ownerId, cancellationToken);
+                var repeatCounts = await _queryRepository.GetRepeatsCountSummary(ownerId, request.DateFrom, request.DateTo, cancellationToken);
 
                 // var todayCount = repeatCounts.Where(x => x.Date <= dateTime).Aggregate((x1, x2) => new RepeatCount { Count = x1.Count + x2.Count, Date = dateTime, UserId = x2.UserId });
                 // var allRepeatsCount = new List<RepeatCount>() { todayCount };
@@ -52,6 +46,7 @@ namespace Cards.Application.Queries
 
         public class Query : IRequest<Response>
         {
+            public Guid UserId { get; set; }
             public DateTime DateFrom { get; set; } = new DateTime(1);
             public DateTime DateTo { get; set; } = new DateTime(3000, 1, 1);
         }

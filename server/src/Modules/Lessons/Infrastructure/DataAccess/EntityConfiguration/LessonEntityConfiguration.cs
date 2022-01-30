@@ -23,7 +23,6 @@ namespace Lessons.Infrastructure.DataAccess
 
             builder.Property(x => x.TimeCounter).HasColumnName(nameof(Lesson.TimeCounter));
 
-            builder.HasMany(x => x.Repeats).WithOne(x => x.Lesson);
             builder.HasOne(x => x.Performence).WithMany(x => x.Lessons);
 
             builder.Ignore(x => x.IsDirty);

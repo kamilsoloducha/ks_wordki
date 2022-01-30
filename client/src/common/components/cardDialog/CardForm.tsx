@@ -148,7 +148,7 @@ export default function CardForm({
 }
 
 export interface FormModel {
-  cardId: string;
+  cardId: number;
   frontValue: string;
   frontExample: string;
   frontEnabled: any;

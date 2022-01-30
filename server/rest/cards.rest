@@ -1,5 +1,5 @@
 @host = http://localhost:5000
-@host = https://wordki-server.herokuapp.com
+//@host = https://wordki-server.herokuapp.com
 
 ### logining user
 # @name login
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ### get groups by userId
 # @name allGroups
-GET {{host}}/cards/{{userId}} HTTP/1.1
+GET {{host}}/groups/{{userId}} HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
 
@@ -42,18 +42,10 @@ Authorization: {{authToken}}
 
 {
     "userId": "{{userId}}",
-    "groupName":"group1",
+    "groupName":"prof - praca",
     "front":1,
     "back":2,
-    "cards":[
-        {
-            "frontValue":"front value1",
-            "frontExampe":"front Example1",
-            "backValue":"back value1",
-            "backExampe":"back Example1",
-            "comment":"comment1"
-            
-        }        
+    "cards":[     
     ]
 }
 
@@ -81,7 +73,7 @@ Authorization: {{authToken}}
 }
 
 ### add card
-POST {{host}}/cards/add/card HTTP/1.1
+POST {{host}}/cards/add HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
 

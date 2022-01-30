@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
-using Cards.Domain;
+using Cards.Domain2;
 using MediatR;
 
 namespace Cards.Application.Commands
@@ -11,26 +11,26 @@ namespace Cards.Application.Commands
     {
         internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
-            private readonly ISetRepository _repository;
+            private readonly ICardsRepository _repository;
 
-            public CommandHandler(ISetRepository repository)
+            public CommandHandler(ICardsRepository repository)
             {
                 _repository = repository;
             }
 
             public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var userId = UserId.Restore(request.UserId);
-                var set = await _repository.Get(userId, cancellationToken);
-                if (set is null) return ResponseBase<Unit>.Create("set is null");
+                var ownerId = OwnerId.Restore(request.UserId);
+                var sideId = SideId.Restore(request.SideId);
 
-                var groupId = GroupId.Restore(request.GroupId);
-                var cardId = CardId.Restore(request.CardId);
+                var side = await _repository.Get(ownerId, sideId, cancellationToken);
+                if (side is null) return ResponseBase<Unit>.Create("side is null");
 
-                set.TickCard(groupId, cardId);
+                if (side.IsTicked) return ResponseBase<Unit>.Create(Unit.Value);
 
-                await _repository.Update(set, cancellationToken);
+                side.Tick();
 
+                await _repository.Update(cancellationToken);
                 return ResponseBase<Unit>.Create(Unit.Value);
             }
         }
@@ -38,8 +38,8 @@ namespace Cards.Application.Commands
         public class Command : RequestBase<Unit>
         {
             public Guid UserId { get; set; }
-            public Guid GroupId { get; set; }
-            public Guid CardId { get; set; }
+            public long SideId { get; set; }
+
         }
     }
 }

@@ -9,15 +9,7 @@ function* answer(action: Correct | Wrong) {
   if (!shouldUpdate) return;
 
   const userId: string = yield select(selectUserId);
-  yield call(() =>
-    api.registerAnswer(
-      userId,
-      action.groupId,
-      action.cardId,
-      action.side,
-      action.result
-    )
-  );
+  yield call(() => api.registerAnswer(userId, action.sideId, action.result));
 }
 
 export function* correctEffect() {

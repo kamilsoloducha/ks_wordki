@@ -15,14 +15,14 @@ namespace Api
     {
         public GroupsController(IMediator mediator) : base(mediator) { }
 
-        [HttpGet("{userId}")]
+        [HttpGet("{ownerId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> GetAll([FromRoute] GetGroups.Query query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll([FromRoute] GetGroupsSummary.Query query, CancellationToken cancellationToken)
             => new JsonResult(await Mediator.Send(query, cancellationToken));
 
-        [HttpGet("{userId}/{groupId}")]
+        [HttpGet("details/{groupId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Get([FromRoute] GetGroup.Query query, CancellationToken cancellationToken)
+        public async Task<IActionResult> Get([FromRoute] GetGroupDetails.Query query, CancellationToken cancellationToken)
             => new JsonResult(await Mediator.Send(query, cancellationToken));
 
         [HttpPost("add")]

@@ -1,7 +1,5 @@
 export default interface RegisterAnswerRequest {
   userId: string;
-  groupId: string;
-  cardId: string;
-  side: number;
+  sideId: number;
   result: number;
 }
