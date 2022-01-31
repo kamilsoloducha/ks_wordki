@@ -13,7 +13,9 @@ export enum DailyActionEnum {
   RESET_LESSON = "[LESSON] RESET_LESSON",
   RESET_SETTINGS = "[LESSON] RESET_SETTINGS",
 
-  SET_SETTINGS = "[LESSON] SET_SETTINGS",
+  SET_SETTING_LANGUAGE = "[LESSON] SET_SETTING_LANGUAGE",
+  SET_SETTING_COUNT = "[LESSON] SET_SETTING_COUNT",
+  SET_SETTING_TYPE = "[LESSON] SET_SETTING_TYPE",
 
   GET_CARDS_COUNT = "[LESSON] GET_CARDS_COUNT",
   GET_CARDS_COUNT_SUCCESS = "[LESSON] GET_CARDS_COUNT_SUCCESS",
@@ -62,14 +64,50 @@ export function resetLesson(): ResetLesson {
   };
 }
 
-export interface SetSettings extends LessonAction {}
-export function setSettings(lessonType: number): SetSettings {
+export interface SetSettingCount extends LessonAction {}
+export function setSettingCount(count: number): SetSettingCount {
   return {
-    type: DailyActionEnum.SET_SETTINGS,
+    type: DailyActionEnum.SET_SETTING_COUNT,
     reduce: (state: LessonState): LessonState => {
       return {
         ...state,
-        lessonType,
+        settings: {
+          ...state.settings,
+          count: count,
+        },
+      };
+    },
+  };
+}
+
+export interface SetSettingLangauge extends LessonAction {}
+export function setSettingLanguage(language: number): SetSettingCount {
+  return {
+    type: DailyActionEnum.SET_SETTING_LANGUAGE,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          language: language,
+        },
+      };
+    },
+  };
+}
+
+export interface SetSettingType extends LessonAction {}
+export function setSettingType(type: number): SetSettingCount {
+  return {
+    type: DailyActionEnum.SET_SETTING_TYPE,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        lessonType: type,
+        settings: {
+          ...state.settings,
+          language: type,
+        },
       };
     },
   };
@@ -87,14 +125,9 @@ export function resetSettings(): ResetSettings {
   };
 }
 
-export interface GetCards extends LessonAction {
-  count: number;
-  questionLanguage: number;
-}
-export function getCards(count: number, questionLanguage: number): GetCards {
+export interface GetCards extends LessonAction {}
+export function getCards(): GetCards {
   return {
-    count,
-    questionLanguage,
     type: DailyActionEnum.GET_CARDS,
     reduce: (state: LessonState): LessonState => {
       return { ...state, lessonState: LessonStateEnum.Loading };
@@ -118,16 +151,13 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
   };
 }
 
-export interface GetCardsCount extends LessonAction {
-  questionLanguage: number;
-}
-export function getCardsCount(questionLanguage: number): GetCardsCount {
+export interface GetCardsCount extends LessonAction {}
+export function getCardsCount(): GetCardsCount {
   return {
     type: DailyActionEnum.GET_CARDS_COUNT,
     reduce: (state: LessonState): LessonState => {
       return { ...state };
     },
-    questionLanguage,
   };
 }
 

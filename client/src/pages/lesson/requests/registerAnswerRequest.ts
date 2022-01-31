@@ -1,4 +1,4 @@
-export default interface RegisterAnswerRequest {
+export interface RegisterAnswerRequest {
   userId: string;
   sideId: number;
   result: number;

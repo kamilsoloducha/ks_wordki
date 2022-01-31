@@ -19,3 +19,6 @@ export const selectShouldSendAnswer = (state: MainState) =>
 export const selectResults = (state: MainState) => state.lessonReducer.results;
 export const selectLessonType = (state: MainState) =>
   state.lessonReducer.lessonType;
+
+export const selectSettings = (state: MainState) =>
+  state.lessonReducer.settings;

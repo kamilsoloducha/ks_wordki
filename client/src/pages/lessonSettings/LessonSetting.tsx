@@ -1,44 +1,28 @@
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import * as act from "store/lesson/actions";
-import { selectCardsCount, selectRepeats } from "store/lesson/selectors";
-import Settings, { LessonSettingsForm } from "./components/settings/Settings";
+import {
+  selectCardsCount,
+  selectRepeats,
+  selectSettings,
+} from "store/lesson/selectors";
+import Settings from "./components/settings/Settings";
 
 export default function LessonSettings(): ReactElement {
-  const [lessonSettingsForm, setLessonSettingsForm] =
-    useState<LessonSettingsForm>();
-  const [source, setSource] = useState<string>("repeat");
   const cardsCount = useSelector(selectCardsCount);
+  const settings = useSelector(selectSettings);
   const repeats = useSelector(selectRepeats);
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    if (!lessonSettingsForm) return;
-    dispatch(act.getCardsCount(lessonSettingsForm.languageType));
-  }, [lessonSettingsForm?.languageType]);
-
-  const selectionChanged = useCallback(
-    (value: LessonSettingsForm) => {
-      setLessonSettingsForm(value);
-    },
-    [setLessonSettingsForm]
-  );
+    dispatch(act.getCardsCount());
+  }, [dispatch]);
 
   const startLesson = useCallback(() => {
-    if (!lessonSettingsForm) return;
-    dispatch(act.setSettings(lessonSettingsForm.lessonType));
-    dispatch(
-      act.getCards(lessonSettingsForm.count, lessonSettingsForm.languageType)
-    );
-  }, [lessonSettingsForm]);
-
-  const onSourceChanged = useCallback((value: string) => {
-    setSource(value);
-  }, []);
-
-  useEffect(() => {}, []); // eslint-disable-line
+    dispatch(act.getCards());
+  }, [dispatch]);
 
   useEffect(() => {
     if (repeats.length > 0) {
@@ -48,35 +32,15 @@ export default function LessonSettings(): ReactElement {
 
   return (
     <>
-      {/* <form>
-        <input
-          type="radio"
-          name="cardsSource"
-          id="langPol"
-          value="repeat"
-          checked={source === "repeat"}
-          onChange={() => onSourceChanged("repeat")}
-        />
-        <label htmlFor="langPol">Repeat</label>
-        <input
-          type="radio"
-          name="cardsSource"
-          id="langEng"
-          value="new"
-          checked={source === "new"}
-          onChange={() => onSourceChanged("new")}
-        />
-        <label htmlFor="langEng">New Words</label>
-      </form> */}
-
       <Settings
-        questionCount={cardsCount}
-        selectionChanged={selectionChanged}
+        settings={settings}
+        questionCount={cardsCount ? cardsCount : 0}
+        countChanged={(value: number) => dispatch(act.setSettingCount(value))}
+        languageChanged={(value: number) =>
+          dispatch(act.setSettingLanguage(value))
+        }
+        typeChanged={(value: number) => dispatch(act.setSettingType(value))}
       />
-      {/* <ExtendLesson
-          questionCount={cardsCount}
-          selectionChanged={selectionChanged}
-        /> */}
       <button onClick={startLesson}>Start</button>
     </>
   );

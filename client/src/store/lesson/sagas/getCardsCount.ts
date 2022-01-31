@@ -1,18 +1,22 @@
 import { call, put, takeLatest, select } from "@redux-saga/core/effects";
-import {
-  DailyActionEnum,
-  GetCardsCount,
-  getCardsCountSuccess,
-} from "../actions";
+import { DailyActionEnum, getCardsCountSuccess } from "../actions";
 import * as api from "pages/lesson/services/repeatsApi";
 import { selectUserId } from "store/user/selectors";
+import { ApiResponse } from "common/models/response";
+import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
+import { selectSettings } from "../selectors";
 
-function* getCardsCount({ questionLanguage }: GetCardsCount) {
+function* getCardsCount() {
   const userId: string = yield select(selectUserId);
-  const { data }: { data: number; error: any } = yield call(() =>
-    api.repeatsCount({ questionLanguage: questionLanguage, userId: userId })
+  const settings: LessonSettings = yield select(selectSettings);
+  const apiResposne: ApiResponse<number> = yield call(
+    async () =>
+      await api.repeatsCount({
+        questionLanguage: settings.language ?? 0,
+        userId: userId,
+      })
   );
-  yield put(getCardsCountSuccess(data));
+  yield put(getCardsCountSuccess(apiResposne.response));
 }
 
 export default function* getCardsCountEffect() {

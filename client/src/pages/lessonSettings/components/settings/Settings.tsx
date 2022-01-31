@@ -1,37 +1,36 @@
+import { ReactElement, useCallback, useState } from "react";
 import * as lang from "common/models/languages";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 
-export default function Settigs({
+export default function Settings({
+  settings,
   questionCount,
-  selectionChanged,
+  languageChanged: languageChanged,
+  countChanged,
+  typeChanged,
 }: Model): ReactElement {
-  const [inputValue, setInputValue] = useState(0);
-  const [lessonType, setLessonType] = useState(0);
-  const [languageType, setLanguageType] = useState(0);
-
-  useEffect(() => {
-    selectionChanged({
-      count: inputValue,
-      lessonType,
-      languageType,
-    });
-  }, [inputValue, lessonType, languageType]);
-
-  const onInputChanged = useCallback((event: any) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-  }, []);
+  const [inputValue, setInputValue] = useState(settings.count);
+  const [lessonType, setLessonType] = useState(settings.type);
+  const [languageType, setLanguageType] = useState(settings.language);
 
   const onAllClick = useCallback(() => {
     setInputValue(questionCount);
+    countChanged(questionCount);
   }, [questionCount]);
+
+  const onInputChanged = useCallback((event: any) => {
+    setInputValue(event.target.value);
+    countChanged(event.target.value);
+  }, []);
 
   const onLessonTypeChanged = (lessonType: number) => {
     setLessonType(lessonType);
+    typeChanged(lessonType);
   };
 
   const onQuestionLanguageChanged = (value: number) => {
     setLanguageType(value);
+    languageChanged(value);
   };
 
   return (
@@ -87,12 +86,9 @@ export default function Settigs({
 }
 
 interface Model {
+  settings: LessonSettings;
   questionCount: number;
-  selectionChanged: (value: LessonSettingsForm) => void;
-}
-
-export interface LessonSettingsForm {
-  count: number;
-  lessonType: number;
-  languageType: number;
+  languageChanged: (value: number) => void;
+  countChanged: (value: number) => void;
+  typeChanged: (value: number) => void;
 }

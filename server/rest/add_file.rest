@@ -7,7 +7,7 @@ PUT {{host}}/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "kamil",
+    "userName": "magda",
     "password": "pass"
 }
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 #
-@groupId = {{allGroups.response.body.$.groups[1].id}}
+@groupId = {{allGroups.response.body.$.groups[0].id}}
 
 
 ### get group by userId and groupId
