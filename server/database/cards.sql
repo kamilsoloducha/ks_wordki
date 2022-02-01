@@ -144,5 +144,5 @@ CREATE OR REPLACE VIEW cards.cardsummary AS
      LEFT JOIN cards.cards c ON c."Id" = gc."CardsId"
      JOIN cards.sides f ON f."Id" = c."FrontId"
      JOIN cards.details fd ON fd."SideId" = f."Id"
-     JOIN cards.sides b ON b."Id" = c."FrontId"
+     JOIN cards.sides b ON b."Id" = c."BackId"
      JOIN cards.details bd ON bd."SideId" = b."Id";
