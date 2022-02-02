@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
-using Cards.Domain2;
+using Cards.Domain;
 using FluentValidation;
 
 namespace Cards.Application.Commands
@@ -11,10 +11,10 @@ namespace Cards.Application.Commands
     {
         internal class CommandHandler : RequestHandlerBase<Command, long>
         {
-            private readonly ICardsRepository _repository;
+            private readonly IOwnerRepository _repository;
             private readonly ISequenceGenerator _sequenceGenerator;
 
-            public CommandHandler(ICardsRepository repository, ISequenceGenerator sequenceGenerator)
+            public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator)
             {
                 _repository = repository;
                 _sequenceGenerator = sequenceGenerator;

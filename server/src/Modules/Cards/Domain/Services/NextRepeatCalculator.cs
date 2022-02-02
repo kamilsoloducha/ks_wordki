@@ -1,5 +1,4 @@
 using System;
-using Cards.Domain2;
 using Utils;
 
 namespace Cards.Domain
@@ -19,7 +18,7 @@ namespace Cards.Domain
             else if (result == 0)
                 daysToAdded = 2;
             else
-                daysToAdded = Helpers.GetFibbonacciNumber(side.Drawer.CorrectRepeat + 1);
+                daysToAdded = Helpers.GetFibbonacciNumber(side.Drawer.CorrectRepeat + 3);
             return SystemClock.Now.AddDays(daysToAdded);
         }
     }

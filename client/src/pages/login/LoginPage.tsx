@@ -1,15 +1,17 @@
+import "./LoginPage.scss";
 import { Toast } from "primereact/toast";
 import { useFormik } from "formik";
 import { ReactElement, useRef } from "react";
 import { Redirect } from "react-router";
-import LoginRequest from "./models/loginRequest";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoginUser } from "store/user/actions";
-import { selectUserId } from "store/user/selectors";
+import { selectIsLoading, selectUserId } from "store/user/selectors";
 
 function LoginPage(): ReactElement {
   const toast = useRef<Toast>(null);
   const userId = useSelector(selectUserId);
+  const isLoading = useSelector(selectIsLoading);
+
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -22,17 +24,20 @@ function LoginPage(): ReactElement {
     return <Redirect to="/dashboard" />;
   }
 
-  const onSubmit = async (values: FormModel) => {
-    const request: LoginRequest = { ...values };
-    dispatch(getLoginUser(request.userName, request.password));
+  const onSubmit = (values: FormModel) => {
+    dispatch(getLoginUser(values.userName, values.password));
   };
 
   return (
-    <>
-      <h1>Logowanie</h1>
-      <form onSubmit={formik.handleSubmit} autoComplete="off">
-        <div>
-          <label htmlFor="userName">Nazwa użytkownika</label>
+    <div className="login-page-container">
+      <form
+        className="login-form"
+        onSubmit={formik.handleSubmit}
+        autoComplete="off"
+      >
+        <div className="login-form-header">Login</div>
+
+        <div className="login-input-item">
           <input
             id="userName"
             name="userName"
@@ -40,13 +45,14 @@ function LoginPage(): ReactElement {
             onChange={formik.handleChange}
             value={formik.values.userName}
             autoComplete="off"
+            placeholder="User Name"
+            disabled={isLoading}
           />
           {formik.errors.userName && formik.touched.userName ? (
-            <div>{formik.errors.userName}</div>
+            <div className="error-message">{formik.errors.userName}</div>
           ) : null}
         </div>
-        <div>
-          <label htmlFor="password">Hasło</label>
+        <div className="login-input-item">
           <input
             id="password"
             name="password"
@@ -54,15 +60,17 @@ function LoginPage(): ReactElement {
             onChange={formik.handleChange}
             value={formik.values.password}
             autoComplete="off"
+            placeholder="Password"
+            disabled={isLoading}
           />
           {formik.errors.password && formik.touched.password ? (
-            <div>{formik.errors.password}</div>
+            <div className="error-message">{formik.errors.password}</div>
           ) : null}
         </div>
-        <input type="submit" value="Zaloguj" />
+        <input type="submit" value="Login" disabled={isLoading} />
       </form>
       <Toast ref={toast} />
-    </>
+    </div>
   );
 }
 
@@ -74,17 +82,17 @@ interface FormModel {
 }
 
 const initialValues: FormModel = {
-  userName: "user_name",
-  password: "pass",
+  userName: "",
+  password: "",
 };
 
 const validate = (values: FormModel): FormModel => {
   const errors = {} as FormModel;
   if (!values.userName?.length) {
-    errors.userName = "Pole jest wymagane";
+    errors.userName = "Field is required";
   }
   if (!values.password?.length) {
-    errors.password = "Pole jest wymagane";
+    errors.password = "Field is required";
   }
   return errors;
 };

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Cards.Application.Queries;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
-using Cards.Domain2;
+using Cards.Domain;
 using Cards.Infrastructure2;
 using Microsoft.EntityFrameworkCore;
 

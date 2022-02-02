@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 
+[assembly: InternalsVisibleTo("Cards.Domain.Tests")]
 namespace Cards.Domain
 {
     public static class Module

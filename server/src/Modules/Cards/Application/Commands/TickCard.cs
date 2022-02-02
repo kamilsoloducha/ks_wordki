@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
-using Cards.Domain2;
+using Cards.Domain;
 using MediatR;
 
 namespace Cards.Application.Commands
@@ -11,9 +11,9 @@ namespace Cards.Application.Commands
     {
         internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
-            private readonly ICardsRepository _repository;
+            private readonly IOwnerRepository _repository;
 
-            public CommandHandler(ICardsRepository repository)
+            public CommandHandler(IOwnerRepository repository)
             {
                 _repository = repository;
             }

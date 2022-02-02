@@ -53,7 +53,8 @@ namespace Api
         [HttpGet("dashboard/summary/{userId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromRoute] GetDashboardSummary.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+
+        => new JsonResult(await Mediator.Send(query, cancellationToken));
 
         [HttpPut("append")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]

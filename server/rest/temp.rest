@@ -1,0 +1,451 @@
+@host = http://localhost:5000
+//@host = https://wordki-server.herokuapp.com
+
+### logining user
+# @name login
+PUT {{host}}/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "kamil",
+    "password": "pass"
+}
+
+#
+@authToken = Bearer {{login.response.body.$.response.token}}
+@userId = {{login.response.body.$.response.id}}
+
+### get groups by userId
+# @name allGroups
+GET {{host}}/groups/{{userId}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+#
+@groupId = {{allGroups.response.body.$.groups[0].id}}
+
+
+### get group by userId and groupId
+# @name group
+GET {{host}}/groups/{{userId}}/{{groupId}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+#
+@cardId = {{group.response.body.$.cards[0].id}}
+
+
+### add cards from file
+
+PUT {{host}}/cards/temp HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "groupId": "3",
+    "itemSeparator":"|",
+    "elementSeparator":"=",
+    "itemsOrder":["FV","BV"],
+    "content":"fix=ustalać, wyznaczać (termin)===1,1|
+hazard=niebezpieczeństwo; ryzyko===1,1|
+skilfully=umiejętnie===4,4|
+high-powered job=odpowiedzialna praca===1,1|
+intentional=umyślny, intencjonalny===1,1|
+input=wkład (np. pracy)===1,1|
+infer=dawać do zrozumienia, wywnioskować===1,1|
+inclusive=włącznie===1,1|
+inclination=skłonność, inklinacja===1,1|
+impressed=pod wrażeniem===1,1|
+impress=wywrzeć wrażenie===1,1|
+implementation=zastosowanie, wprowadzenie w życie===1,1|
+implement=zastosować, wprowadzić w życie (np. nową technologię)===1,1|
+hold a position=zajmować stanowisko===1,1|
+fisherman=rybak===1,1|
+fire=zwolnić===1,1|
+do a survey=prowadzić sondaż===1,1|
+distract=rozpraszać, oderwać (np. od pracy)===1,1|
+disruption=przerwanie w trakcie czegoś (zakłócenie)===1,1|
+display=ekran monitora===1,1|
+dispatch=wysyłać (towar)===1,1|
+dismiss=zwolnić (kogoś); odsuwać; lekceważyć===1,1|
+discharge sb from their duties=zwolnić kogoś z pełnienia obowiązków===1,1|
+directive=dyrektywa===1,1|
+developed=rozwinięty===1,1|
+miner=górnik===4,4|
+memorandum=memo, notatka===4,4|
+deputy=zastępca===1,1|
+supervise=nadzorować===4,4|
+drudgery=harówka===1,1|
+earn=zasłużyć sobie (na coś)===1,1|
+file=segregator===1,1|
+farming=uprawa ziemi===1,1|
+facsimile copy=faks (wiadomość)===1,1|
+extensive=rozległy (np. uszkodzenie)===1,1|
+exertion=wysiłek, trud===1,1|
+overview=przegląd===3,4|
+workplace=miejsce pracy===1,1|
+enclose=załączyć===1,1|
+efficiently=wydajnie, sprawnie===1,1|
+efficient=wydajny, sprawny===1,1|
+efficiency=wydajność, sprawność===1,1|
+economist=ekonomista===1,1|
+exempt from=zwolniony z (obowiązku, powinności)===1,1|
+assessor=rzeczoznawca===1,1|
+chimney-sweep=kominiarz===1,1|
+placement=lokowanie, umieszczanie; posada===4,4|
+processing=przetwarzanie, obróbka (np. danych)===4,4|
+chief=główny===1,1|
+accurately=dokładnie (np. coś wymierzyć)===2,1|
+assign=przydzielić (np. zadanie)===1,1|
+clear differentiation of responsibilities=jasny podział obowiązków===2,1|
+be in a meeting=być na zebraniu===2,1|
+aspire=dążyć, mieć ambicję===2,1|
+regulator=regulator, nadzorca===4,4|
+agenda=agenda, porządek dzienny===2,1|
+clear differentiation of roles=jasny podział ról===2,1|
+be highly motivated=mieć silną motywację===2,1|
+approval=aprobata===2,1|
+auditor=kontroler (np. finansowy)===2,1|
+accountable=odpowiedzialny===1,1|
+answering machine=automatyczna sekretarka===1,1|
+power supply=źródło prądu===4,4|
+chase up=popędzać, ponaglać===2,1|
+air conditioner=klimatyzator===2,1|
+blue-collar worker=pracownik fizyczny===1,1|
+railwayman=kolejarz===4,4|
+unreliable=niesolidny, niepewny===1,1|
+accountant=księgowy===2,1|
+shipbuilding=budownictwo okrętowe===4,4|
+productive=wydajny===3,4|
+peasant=chłop (wieśniak)===4,4|
+brewery=browar===1,1|
+shipbuilding=budownictwo okrętowe===1,1|
+tippex=korektor===3,4|
+progress=postępować, iść naprzód===2,2|
+shift=zmiana (w pracy), zmiana zdania===4,4|
+shredder=niszczarka===3,4|
+work on commission=pracować na prowizji===1,2|
+shift=zmiana (w pracy), zmiana zdania===1,1|
+seasonal job=praca sezonowa===1,1|
+point of view=punkt widzenia===4,4|
+professionally=zawodowo===4,2|
+paste=wklejać (np. skopiowany wcześniej tekst)===4,4|
+planner=planista, projektant===4,3|
+plumber=hydraulik===4,4|
+supervisor=kierownik, nadzorca===4,4|
+strain=napięcie, stres===3,4|
+removal=usunięcie, zwolnienie===4,4|
+scheme=plan, schemat===1,1|
+trade union=związek zawodowy===3,3|
+unreliable=niesolidny, niepewny===3,3|
+save=zapisać, zachować (dane)===1,1|
+unemployment benefit=zasiłek dla bezrobotnych===1,1|
+undo=cofnąć, odwołać polecenie===1,1|
+retirement=emerytura===4,4|
+salesman=sprzedawca===1,1|
+TV announcer=prezenter TV===3,3|
+work overtime=pracować po godzinach===3,3|
+workmanship=fachowość===1,1|
+resign=rezygnować===4,4|
+work permit=pozwolenie na pracę===3,3|
+vendor=sprzedawca (np. ziemi)===2,2|
+wireless=bezprzewodowy===3,3|
+trained=przeszkolony===3,3|
+wages=tygodniówka===2,3|
+sack=wywalić (np. z pracy)===1,1|
+undertake=podejmować (np. pracę)===2,2|
+warden=nadzorca, strażnik===2,1|
+rivalry=rywalizacja===1,1|
+undo=cofnąć, odwołać polecenie===3,3|
+odd job=drobna, dorywcza praca===4,4|
+unemployment benefit=zasiłek dla bezrobotnych===3,3|
+output=produkcja (ilość)===4,4|
+undertake=podejmować (np. pracę)===1,1|
+workforce=siła robocza, pracownicy===1,2|
+word processor=edytor tekstów (program komputerowy)===2,2|
+warehouse controller=magazynier===2,1|
+retirement=emerytura===1,1|
+sketch=szkic===1,1|
+skilfully=umiejętnie===1,1|
+striker=strajkujący (osoba)===1,1|
+strain=napięcie, stres===1,1|
+store=przechowywać (np. w magazynie)===1,1|
+spreadsheet=arkusz kalkulacyjny (program komputerowy)===4,4|
+storage=magazyn===1,1|
+interpreter=tłumacz ustny===4,4|
+start a business=założyć firmę===1,1|
+interfere=przeszkadzać, wtrącać się===1,2|
+TV announcer=prezenter TV===1,1|
+constructor=budowniczy===5,5|
+configure=konfigurować===5,4|
+copywriter=autor tekstów reklamowych===5,4|
+trained=przeszkolony===1,1|
+tradesman's entrance=wejście służbowe, wejście dla dostawców===1,1|
+trader=handlowiec===1,1|
+trade union=związek zawodowy===1,1|
+day shift=zmiana dzienna===5,5|
+tippex=korektor===1,1|
+task=zadanie (np. do wykonania)===1,1|
+congratulate=pogratulować===5,5|
+degradation=degradacja===5,5|
+darkroom=ciemnia===5,5|
+computer skills=znajomość obsługi komputera===5,5|
+cover letter=list motywacyjny===5,5|
+delegate=delegować===5,5|
+conduct a survey=prowadzić sondaż===5,5|
+co-worker=współpracownik===5,5|
+stamp=pieczątka===1,1|
+specialised=wyspecjalizowany===2,2|
+spreadsheet=arkusz kalkulacyjny (program komputerowy)===1,1|
+speciality=specjalność===1,1|
+speciality=specjalność===4,4|
+specialised=wyspecjalizowany===1,1|
+sort=sortować===1,1|
+confer=naradzać się===5,5|
+proceed=kontynuować===3,2|
+constable=funkcjonariusz brytyjskiej policji===5,5|
+conduct negotiations=prowadzić negocjacje===5,1|
+conduct=prowadzić (np. spotkanie)===5,5|
+corresponding=odpowiedni, odpowiadający czemuś===5,5|
+stamp=pieczątka===4,4|
+contributory=przyczyniający się, mający udział===5,1|
+storage=magazyn===4,4|
+sort=sortować===4,4|
+conscientious=sumienny===5,5|
+start a business=założyć firmę===4,4|
+interpreter=tłumacz ustny===1,1|
+vendor=sprzedawca (np. ziemi)===1,1|
+wages=tygodniówka===1,1|
+workmanship=fachowość===1,1|
+interfere=przeszkadzać, wtrącać się===1,1|
+workforce=siła robocza, pracownicy===1,1|
+workaholic=pracoholik===1,1|
+work permit=pozwolenie na pracę===1,1|
+work overtime=pracować po godzinach===1,1|
+work on commission=pracować na prowizji===1,1|
+word processor=edytor tekstów (program komputerowy)===1,1|
+configure=konfigurować===1,1|
+confer=naradzać się===1,1|
+conduct negotiations=prowadzić negocjacje===1,1|
+conduct a survey=prowadzić sondaż===1,1|
+conduct=prowadzić (np. spotkanie)===1,1|
+hard disc=twardy dysk===5,5|
+implementation=zastosowanie, wprowadzenie w życie===4,4|
+impressed=pod wrażeniem===4,4|
+impress=wywrzeć wrażenie===4,4|
+deputy=zastępca===5,5|
+do a survey=prowadzić sondaż===5,5|
+developed=rozwinięty===5,5|
+go back to the drawing board=zacząć robić coś ponownie od początku===5,2|
+facsimile copy=faks (wiadomość)===5,4|
+inclusive=włącznie===4,4|
+file=segregator===5,5|
+wireless=bezprzewodowy===1,1|
+function=funkcjonować, działać===5,4|
+distract=rozpraszać, oderwać (np. od pracy)===5,4|
+deprive=pozbawiać, zabierać===1,5|
+intentional=umyślny, intencjonalny===4,4|
+warehouse controller=magazynier===1,1|
+warden=nadzorca, strażnik===1,1|
+earn=zasłużyć sobie (na coś)===5,4|
+resign=rezygnować===1,1|
+supervisor=kierownik, nadzorca===1,1|
+competitive=konkurencyjny===1,1|
+supervise=nadzorować===1,1|
+sick leave=zwolnienie lekarskie===1,1|
+competence=kompetencje===2,1|
+compassionate leave=urlop okolicznościowy===1,1|
+commute=dojeżdżać (np. do pracy)===1,1|
+plasterer=tynkarz===4,3|
+compete=konkurować===2,1|
+infer=dawać do zrozumienia, wywnioskować===2,4|
+fix=ustalać, wyznaczać (termin)===5,4|
+dispatch=wysyłać (towar)===5,3|
+shredder=niszczarka===1,1|
+dismiss=zwolnić (kogoś); odsuwać; lekceważyć===5,4|
+implement=zastosować, wprowadzić w życie (np. nową technologię)===4,4|
+farming=uprawa ziemi===5,5|
+builder=budowniczy (osoba)===2,1|
+computer skills=znajomość obsługi komputera===1,1|
+congratulate=pogratulować===1,1|
+delegate=delegować===1,1|
+degradation=degradacja===1,1|
+inclination=skłonność, inklinacja===1,4|
+input=wkład (np. pracy)===2,4|
+clip=zapiąć, spiąć, przypiąć===1,1|
+chase up=popędzać, ponaglać===5,5|
+accurately=dokładnie (np. coś wymierzyć)===6,5|
+jobseeker=szukający pracy===4,4|
+assign=przydzielić (np. zadanie)===6,6|
+clear differentiation of roles=jasny podział ról===6,5|
+answering machine=automatyczna sekretarka===5,6|
+brewery=browar===5,5|
+clip=zapiąć, spiąć, przypiąć===5,6|
+tradesman's entrance=wejście służbowe, wejście dla dostawców===3,2|
+approval=aprobata===6,5|
+chauffeur=szofer===5,4|
+carry out a survey=prowadzić sondaż===5,6|
+commute=dojeżdżać (np. do pracy)===6,6|
+workaholic=pracoholik===3,2|
+be highly motivated=mieć silną motywację===6,5|
+builder=budowniczy (osoba)===6,6|
+competitive=konkurencyjny===5,6|
+auditor=kontroler (np. finansowy)===6,5|
+agenda=agenda, porządek dzienny===6,6|
+receiver=odbiorca===4,3|
+assessor=rzeczoznawca===5,5|
+competence=kompetencje===6,2|
+compassionate leave=urlop okolicznościowy===5,4|
+maker=producent===4,4|
+enclose=załączyć===5,5|
+chief=główny===5,5|
+aspire=dążyć, mieć ambicję===5,5|
+be in a meeting=być na zebraniu===6,4|
+accountant=księgowy===5,6|
+workplace=miejsce pracy===3,3|
+blue-collar worker=pracownik fizyczny===5,5|
+accountable=odpowiedzialny===5,5|
+accomplish=osiągnąć (dokonać), ukończyć===1,1|
+letter of reference=list polecający===4,4|
+carry out a survey=prowadzić sondaż===1,1|
+chauffeur=szofer===1,1|
+process=przerabiać, przetwarzać===4,4|
+manufacturer=wytwórca, fabrykant===4,4|
+air conditioner=klimatyzator===6,6|
+trader=handlowiec===2,4|
+rivalry=rywalizacja===3,2|
+chimney-sweep=kominiarz===6,3|
+compete=konkurować===5,6|
+pull one's weight=przykładać się do pracy===4,3|
+day shift=zmiana dzienna===1,1|
+darkroom=ciemnia===1,1|
+load=wczytać, załadować (dane)===4,4|
+co-worker=współpracownik===1,1|
+cover letter=list motywacyjny===1,1|
+clear differentiation of responsibilities=jasny podział obowiązków===6,5|
+have a background in sth=mieć doświadczenie w czymś===5,3|
+demanding=wymagający===5,5|
+minimum wage=płaca minimalna===4,4|
+job description=zakres obowiązków===4,3|
+hazard=niebezpieczeństwo; ryzyko===5,5|
+task=zadanie (np. do wykonania)===4,4|
+handle=obchodzić się z, radzić sobie===5,5|
+fire=zwolnić===5,5|
+occupy=zajmować (się czymś)===4,4|
+flexitime=ruchomy czas pracy===5,4|
+pile=sterta, stos===4,4|
+porter=bagażowy (osoba), tragarz===4,3|
+fisherman=rybak===5,5|
+discharge sb from their duties=zwolnić kogoś z pełnienia obowiązków===5,2|
+job offer=oferta pracy===4,4|
+economist=ekonomista===5,5|
+necessarily=z konieczności===4,1|
+extensive=rozległy (np. uszkodzenie)===5,5|
+lumberjack=drwal===4,4|
+groundwork=prace przygotowawcze===4,5|
+milkman=mleczarz===4,4|
+salesman=sprzedawca===3,4|
+store=przechowywać (np. w magazynie)===4,4|
+sketch=szkic===4,2|
+accomplish=osiągnąć (dokonać), ukończyć===6,6|
+efficiency=wydajność, sprawność===5,5|
+sick leave=zwolnienie lekarskie===4,4|
+drudgery=harówka===5,3|
+guardian=strażnik===5,4|
+efficient=wydajny, sprawny===5,5|
+quit=przestać, rzucić (np. palenie, pracę)===4,4|
+exertion=wysiłek, trud===4,4|
+directive=dyrektywa===5,5|
+occupational=zawodowy (związany z zawodem)===4,4|
+exempt from=zwolniony z (obowiązku, powinności)===1,2|
+recruitment=rekrutacja===4,4|
+disruption=przerwanie w trakcie czegoś (zakłócenie)===5,2|
+labourer=robotnik===4,2|
+efficiently=wydajnie, sprawnie===5,2|
+night shift=zmiana nocna===4,4|
+display=ekran monitora===5,5|
+promote=awansować===4,4|
+hard drive=twardy dysk===5,5|
+hold a position=zajmować stanowisko===5,4|
+gossip=plotkować===5,5|
+processing=przetwarzanie, obróbka (np. danych)===1,1|
+high-powered job=odpowiedzialna praca===5,4|
+process=przerabiać, przetwarzać===1,1|
+proceed=kontynuować===1,1|
+occupational hazard=ryzyko zawodowe===4,4|
+pursue=dążyć===3,4|
+seasonal job=praca sezonowa===4,4|
+letter of application=list motywacyjny, podanie===4,2|
+power supply=źródło prądu===1,1|
+porter=bagażowy (osoba), tragarz===1,1|
+point of view=punkt widzenia===1,1|
+plumber=hydraulik===1,1|
+plasterer=tynkarz===1,1|
+planner=planista, projektant===1,1|
+placement=lokowanie, umieszczanie; posada===1,1|
+pile=sterta, stos===1,1|
+productive=wydajny===1,1|
+professionally=zawodowo===1,1|
+qualified=wykwalifikowany===4,4|
+scheme=plan, schemat===4,1|
+save=zapisać, zachować (dane)===4,4|
+sack=wywalić (np. z pracy)===3,4|
+regulator=regulator, nadzorca===1,1|
+recruitment=rekrutacja===1,1|
+receiver=odbiorca===1,1|
+railwayman=kolejarz===1,1|
+quit=przestać, rzucić (np. palenie, pracę)===1,1|
+qualified=wykwalifikowany===1,1|
+pursue=dążyć===1,1|
+pull one's weight=przykładać się do pracy===1,1|
+promote=awansować===1,1|
+progress=postępować, iść naprzód===1,1|
+removal=usunięcie, zwolnienie===1,1|
+peasant=chłop (wieśniak)===1,1|
+paste=wklejać (np. skopiowany wcześniej tekst)===1,1|
+memorandum=memo, notatka===1,1|
+manufacturer=wytwórca, fabrykant===1,1|
+striker=strajkujący (osoba)===3,4|
+maker=producent===1,1|
+lumberjack=drwal===1,1|
+load=wczytać, załadować (dane)===1,1|
+letter of reference=list polecający===1,1|
+letter of application=list motywacyjny, podanie===1,1|
+labourer=robotnik===1,1|
+jobseeker=szukający pracy===1,1|
+job offer=oferta pracy===1,1|
+job description=zakres obowiązków===1,1|
+milkman=mleczarz===1,1|
+miner=górnik===1,1|
+overview=przegląd===1,1|
+overtime=nadgodziny===1,1|
+output=produkcja (ilość)===1,1|
+odd job=drobna, dorywcza praca===1,1|
+occupy=zajmować (się czymś)===1,1|
+occupational hazard=ryzyko zawodowe===1,1|
+occupational=zawodowy (związany z zawodem)===1,1|
+night shift=zmiana nocna===1,1|
+necessarily=z konieczności===1,1|
+minimum wage=płaca minimalna===1,1|
+corresponding=odpowiedni, odpowiadający czemuś===1,1|
+copywriter=autor tekstów reklamowych===1,1|
+contributory=przyczyniający się, mający udział===1,1|
+constructor=budowniczy===1,1|
+constable=funkcjonariusz brytyjskiej policji===1,1|
+conscientious=sumienny===1,1|
+demanding=wymagający===1,1|
+deprive=pozbawiać, zabierać===1,1|
+have a background in sth=mieć doświadczenie w czymś===1,1|
+hard drive=twardy dysk===1,1|
+hard disc=twardy dysk===1,1|
+handle=obchodzić się z, radzić sobie===1,1|
+guardian=strażnik===1,1|
+groundwork=prace przygotowawcze===1,1|
+gossip=plotkować===1,1|
+go back to the drawing board=zacząć robić coś ponownie od początku===1,1|
+overtime=nadgodziny===4,4|
+function=funkcjonować, działać===1,1|
+flexitime=ruchomy czas pracy===1,1"
+
+}

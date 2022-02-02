@@ -1,6 +1,6 @@
 using Blueprints.Infrastructure.DataAccess;
 using Cards.Application.Services;
-using Cards.Domain2;
+using Cards.Domain;
 using Cards.Infrastructure2;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +14,7 @@ namespace Cards.Infrastructure
             services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
 
             services.AddDbContext<CardsContextNew>();
-            services.AddScoped<ICardsRepository, CardsRepository>();
+            services.AddScoped<IOwnerRepository, CardsRepository>();
             services.AddScoped<IQueryRepository, QueryRepository>();
             services.AddScoped<ISequenceGenerator, DbSequenceGenerator>();
 

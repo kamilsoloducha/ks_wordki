@@ -98,17 +98,18 @@ export async function deleteCard(
   return { data: response.data };
 }
 
-export function addGroup(userId: string, card: any): any {
-  throw new Error("Function not implemented.");
-}
-
 export async function appendCards(
   userId: string,
   groupId: number,
   count: number,
   langauges: number
 ) {
-  const request = { userId, groupId, count, langauges } as AppendCardsRequest;
+  const request = {
+    ownerId: userId,
+    groupId,
+    count,
+    langauges,
+  } as AppendCardsRequest;
   try {
     const response = await http.put<{}>(`/cards/append`, request);
     return { data: response.data };

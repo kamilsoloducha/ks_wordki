@@ -1,6 +1,6 @@
 using System;
 
-namespace Cards.Domain2
+namespace Cards.Domain
 {
     public readonly struct Drawer
     {
@@ -24,7 +24,7 @@ namespace Cards.Domain2
             return new Drawer(correctRepeat);
         }
 
-        public Drawer Increase()
-            => Create(CorrectRepeat + 1);
+        public Drawer Increase(int step = 1)
+            => Create(CorrectRepeat + step);
     }
 }

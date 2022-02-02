@@ -1,5 +1,5 @@
 using System;
-using Cards.Domain2;
+using Cards.Domain;
 
 namespace Cards.Application.Queries.Models
 {

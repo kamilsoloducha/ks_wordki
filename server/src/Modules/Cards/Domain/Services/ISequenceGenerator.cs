@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Cards.Domain2
+namespace Cards.Domain
 {
     public interface ISequenceGenerator
     {

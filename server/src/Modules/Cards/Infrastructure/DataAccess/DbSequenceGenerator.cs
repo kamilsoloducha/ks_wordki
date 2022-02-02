@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Cards.Domain2;
+using Cards.Domain;
 
 namespace Cards.Infrastructure2
 {

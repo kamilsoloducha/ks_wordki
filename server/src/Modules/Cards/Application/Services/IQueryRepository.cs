@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Queries;
 using Cards.Application.Queries.Models;
-using Cards.Domain2;
+using Cards.Domain;
 
 namespace Cards.Application.Services
 {

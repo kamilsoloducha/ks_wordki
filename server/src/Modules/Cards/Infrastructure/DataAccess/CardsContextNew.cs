@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Blueprints.Infrastructure.DataAccess;
 using Cards.Application.Queries;
 using Cards.Application.Queries.Models;
-using Cards.Domain2;
+using Cards.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

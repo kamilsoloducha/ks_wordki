@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Domain;
-using Cards.Domain2;
 using Domain.IntegrationEvents;
 using MassTransit;
 using MassTransit.Definition;
@@ -16,10 +15,10 @@ namespace Cards.Application
     internal class AnswerRegisterdConsumer : IConsumer<AnswerRegistered>
     {
         private readonly INextRepeatCalculator _nextRepeatCalculator;
-        private readonly ICardsRepository _cardsRepository;
+        private readonly IOwnerRepository _cardsRepository;
 
         public AnswerRegisterdConsumer(INextRepeatCalculator nextRepeatCalculator,
-            ICardsRepository cardsRepository)
+            IOwnerRepository cardsRepository)
         {
             _nextRepeatCalculator = nextRepeatCalculator;
             _cardsRepository = cardsRepository;

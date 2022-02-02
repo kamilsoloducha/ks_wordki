@@ -3,6 +3,7 @@ import UserState, { initialState } from "./state";
 export enum UserActionEnum {
   LOGIN = "[USER] LOGIN",
   LOGIN_SUCCESS = "[USER] LOGIN_SUCCESS",
+  LOGIN_FAILED = "[USER] LOGIN_FAILED",
   REGISTER = "[USER] REGISTER",
   REGISTER_SUCCESS = "[USER] REGISTER_SUCCESS",
   LOGOUT = "[USER] LOGOUT",
@@ -17,7 +18,6 @@ export interface LoginUser extends UserAction {
   name: string;
   password: string;
 }
-
 export function getLoginUser(name: string, password: string): LoginUser {
   return {
     name,
@@ -46,6 +46,19 @@ export function getLoginUserSuccess(
         expirationDate,
         isLoading: false,
         isLogin: true,
+      };
+    },
+  };
+}
+
+export interface LoginUserFailed extends UserAction {}
+export function getLoginUserFailed(): LoginUserSuccess {
+  return {
+    type: UserActionEnum.LOGIN_SUCCESS,
+    reduce: (state: UserState): UserState => {
+      return {
+        ...state,
+        isLoading: false,
       };
     },
   };

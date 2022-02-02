@@ -1,6 +1,6 @@
 using System;
 
-namespace Cards.Domain2
+namespace Cards.Domain
 {
     public readonly struct GroupName
     {

@@ -1,5 +1,5 @@
 using System;
-using Cards.Domain2;
+using Cards.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 using Utils;
@@ -23,15 +23,7 @@ namespace Cards.Domain.Tests.NextRepeatTests
         {
             var nextRepeat = NextRepeatMarker.New();
 
-            nextRepeat.Date.Should().Be(new DateTime(2021, 1, 2));
-        }
-
-        [Test]
-        public void NullValue()
-        {
-            // var nullObject = NextRepeatMarker.NullValue;
-
-            // nullObject.Value.Should().BeNull();
+            nextRepeat.Date.Should().Be(DateTime.MinValue);
         }
 
         [Test]
@@ -44,41 +36,33 @@ namespace Cards.Domain.Tests.NextRepeatTests
         }
 
         [Test]
-        public void RestoreNullValue()
-        {
-            // var nextRepeat = NextRepeatMarker.Restore(null);
-
-            // nextRepeat.Should().Be(NextRepeat.NullValue);
-        }
-
-        [Test]
         public void OperatorEqueal()
         {
-            // var nextRepeat1 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 5));
-            // var nextRepeat2 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 5));
-            // var result = nextRepeat1 == nextRepeat2;
+            var nextRepeat1 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 5));
+            var nextRepeat2 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 5));
+            var result = nextRepeat1.Equals(nextRepeat2);
 
-            // result.Should().BeTrue();
+            result.Should().BeTrue();
         }
 
         [Test]
         public void OperatorEqueal2()
         {
-            // var nextRepeat1 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 5));
-            // var nextRepeat2 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 6));
-            // var result = nextRepeat1 == nextRepeat2;
+            var nextRepeat1 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 5));
+            var nextRepeat2 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2, 3, 4, 6));
+            var result = nextRepeat1.Equals(nextRepeat2);
 
-            // result.Should().BeTrue();
+            result.Should().BeTrue();
         }
 
         [Test]
         public void OperatorEqueal3()
         {
-            // var nextRepeat1 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2));
-            // var nextRepeat2 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2));
-            // var result = nextRepeat1 == nextRepeat2;
+            var nextRepeat1 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2));
+            var nextRepeat2 = NextRepeatMarker.Restore(new DateTime(2021, 1, 2));
+            var result = nextRepeat1.Equals(nextRepeat2);
 
-            // result.Should().BeTrue();
+            result.Should().BeTrue();
         }
     }
 }

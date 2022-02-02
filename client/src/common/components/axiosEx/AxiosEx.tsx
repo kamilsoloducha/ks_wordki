@@ -1,14 +1,13 @@
 import { ReactElement, ReactNode } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { selectToken } from "store/user/selectors";
 import http from "../../services/http/http";
 
-interface Model {
-  children: ReactNode;
-}
-
-function AxiosEx({ children }: Model) {
+export default function AxiosEx({ children }: Model) {
   const token = useSelector(selectToken);
+  const history = useHistory();
+
   http.interceptors.request.use(
     (req) => {
       if (token) {
@@ -23,7 +22,19 @@ function AxiosEx({ children }: Model) {
       console.error(error);
     }
   );
+
+  http.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error?.response?.status == 401) {
+        history?.push("/logout");
+      }
+      return error;
+    }
+  );
   return children as ReactElement<any>;
 }
 
-export default AxiosEx;
+interface Model {
+  children: ReactNode;
+}

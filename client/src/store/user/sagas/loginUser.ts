@@ -1,37 +1,40 @@
 import { call, put, takeLatest } from "@redux-saga/core/effects";
 import { ApiResponse } from "common/models/response";
 import { UserData } from "common/models/userModel";
-import http from "common/services/http/http";
-import LoginResponse from "pages/login/models/loginResponse";
-import { requestFailed } from "store/root/actions";
-import { getLoginUserSuccess, LoginUser, UserActionEnum } from "../actions";
-
-function fetchData(userName: string, password: string) {
-  const request = { userName, password };
-  return http
-    .put<ApiResponse<LoginResponse>>("/users/login", request)
-    .then((response) => ({ data: response.data }))
-    .catch((error: Error) => ({ error }));
-}
+import { LoginRequest, LoginResponse } from "pages/login/requests";
+import login from "pages/login/services/loginApi";
+import {
+  getLoginUserFailed,
+  getLoginUserSuccess,
+  LoginUser,
+  UserActionEnum,
+} from "../actions";
 
 function* loginUser(action: LoginUser) {
-  const { data, error }: { data: ApiResponse<LoginResponse>; error: any } =
-    yield call(() => fetchData(action.name, action.password));
-  if (data.isCorrect) {
+  const request = {
+    userName: action.name,
+    password: action.password,
+  } as LoginRequest;
+  const apiResponse: ApiResponse<LoginResponse> = yield call(() =>
+    login(request)
+  );
+
+  if (apiResponse.isCorrect) {
     const userData: UserData = {
-      id: data.response.id,
-      token: data.response.token,
+      id: apiResponse.response.id,
+      token: apiResponse.response.token,
     };
     localStorage.setItem("user", JSON.stringify(userData));
   }
+
   yield put(
-    data
+    apiResponse.isCorrect
       ? getLoginUserSuccess(
-          data.response.token,
-          data.response.id,
+          apiResponse.response.token,
+          apiResponse.response.id,
           new Date(1100)
         )
-      : requestFailed(error)
+      : getLoginUserFailed()
   );
 }
 

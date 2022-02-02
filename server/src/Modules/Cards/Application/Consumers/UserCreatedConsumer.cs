@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Cards.Domain2;
+using Cards.Domain;
 using Domain.IntegrationEvents;
 using MassTransit;
 using MassTransit.Definition;
@@ -16,10 +16,10 @@ namespace Cards.Application
     internal class UserCreatedConsumer : IConsumer<UserCreated>
     {
         private readonly ILogger<UserCreatedConsumer> _logger;
-        private readonly ICardsRepository _repository;
+        private readonly IOwnerRepository _repository;
 
         public UserCreatedConsumer(ILogger<UserCreatedConsumer> logger,
-        ICardsRepository repository)
+        IOwnerRepository repository)
         {
             _logger = logger;
             _repository = repository;

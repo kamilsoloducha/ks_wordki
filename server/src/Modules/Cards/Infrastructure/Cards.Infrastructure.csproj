@@ -7,11 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="../Application/Cards.Application.csproj" />
     <ProjectReference Include="../../../Blueprints/Infrastructure/Infrastructure.csproj" />
-
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.13">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
 </Project>

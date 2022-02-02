@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Services;
-using Cards.Domain2;
+using Cards.Domain;
 using MediatR;
 using Utils;
 
