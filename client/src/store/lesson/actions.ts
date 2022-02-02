@@ -106,7 +106,7 @@ export function setSettingType(type: number): SetSettingCount {
         lessonType: type,
         settings: {
           ...state.settings,
-          language: type,
+          type: type,
         },
       };
     },
