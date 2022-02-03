@@ -1,6 +1,7 @@
-import { LessonStateEnum } from "pages/lesson/models/lessonState";
+import * as l from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
+import UserRepeat from "pages/lesson/models/userRepeat";
 import { compare } from "pages/lesson/services/answerComparer";
 import {
   calculateResultsForCorrect,
@@ -59,6 +60,7 @@ export function resetLesson(): ResetLesson {
         ...state,
         repeats: [],
         answer: "",
+        lessonHistory: [],
       };
     },
   };
@@ -130,7 +132,7 @@ export function getCards(): GetCards {
   return {
     type: DailyActionEnum.GET_CARDS,
     reduce: (state: LessonState): LessonState => {
-      return { ...state, lessonState: LessonStateEnum.Loading };
+      return { ...state, lessonState: l.Loading };
     },
   };
 }
@@ -145,7 +147,7 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
         ...state,
         repeats: allRepeats,
         lessonCount: allRepeats.length,
-        lessonState: LessonStateEnum.StartLessonPending,
+        lessonState: l.StartLessonPending,
       };
     },
   };
@@ -174,10 +176,8 @@ export function getCardsCountSuccess(count: number): GetCardsCountSuccess {
   };
 }
 
-export interface TickCard extends LessonAction {
-  sideId: number;
-}
-export function tickCard(sideId: number): TickCard {
+export interface TickCard extends LessonAction {}
+export function tickCard(): TickCard {
   return {
     type: DailyActionEnum.TICK_CARD,
     reduce: (state: LessonState): LessonState => {
@@ -185,7 +185,6 @@ export function tickCard(sideId: number): TickCard {
         ...state,
       };
     },
-    sideId,
   };
 }
 
@@ -203,7 +202,7 @@ export function startLesson(): StartLesson {
       return {
         ...state,
         results: results,
-        lessonState: LessonStateEnum.CheckPending,
+        lessonState: l.CheckPending,
       };
     },
   };
@@ -214,7 +213,7 @@ export function pauseLesson(): PauseLesson {
   return {
     type: DailyActionEnum.LESSON_PAUSE,
     reduce: (state: LessonState): LessonState => {
-      return { ...state, lessonState: LessonStateEnum.Pause };
+      return { ...state, lessonState: l.Pause };
     },
   };
 }
@@ -225,12 +224,11 @@ export function check(): Check {
     type: DailyActionEnum.LESSON_CHECK,
     reduce: (state: LessonState): LessonState => {
       const isCorrect =
-        state.lessonType === 1
-          ? true
-          : compare(state.repeats[0].answer, state.answer);
+        state.lessonType === 1 ||
+        compare(state.repeats[0].answer, state.answer);
       return {
         ...state,
-        lessonState: LessonStateEnum.AnswerPending,
+        lessonState: l.AnswerPending,
         isCorrect: isCorrect,
       };
     },
@@ -238,20 +236,20 @@ export function check(): Check {
 }
 
 export interface Correct extends LessonAction {
-  sideId: number;
   result: number;
 }
-export function correct(sideId: number, result: number): Correct {
+export function correct(result: number): Correct {
   return {
-    sideId,
     result,
     type: DailyActionEnum.LESSON_CORRECT,
     reduce: (state: LessonState): LessonState => {
+      const lessonHistory = [
+        ...state.lessonHistory,
+        { repeat: state.repeats[0], userAnswer: state.answer } as UserRepeat,
+      ];
+
       const repeats = state.repeats.slice(1);
-      const lessonState =
-        repeats.length > 0
-          ? LessonStateEnum.CheckPending
-          : LessonStateEnum.FinishPending;
+      const lessonState = repeats.length > 0 ? l.CheckPending : l.FinishPending;
 
       const results = calculateResultsForCorrect(
         state.results,
@@ -265,21 +263,24 @@ export function correct(sideId: number, result: number): Correct {
         repeats,
         results,
         isCorrect: null,
+        lessonHistory: lessonHistory,
       };
     },
   };
 }
 
 export interface Wrong extends LessonAction {
-  sideId: number;
   result: number;
 }
-export function wrong(sideId: number): Wrong {
+export function wrong(): Wrong {
   return {
-    sideId,
     result: -1,
     type: DailyActionEnum.LESSON_WRONG,
     reduce: (state: LessonState): LessonState => {
+      const lessonHistory = [
+        ...state.lessonHistory,
+        { repeat: state.repeats[0], userAnswer: state.answer } as UserRepeat,
+      ];
       const currentRepeat = state.repeats[0];
       const repeats = state.repeats.slice(1);
       repeats.push(currentRepeat);
@@ -291,10 +292,11 @@ export function wrong(sideId: number): Wrong {
 
       return {
         ...state,
-        lessonState: LessonStateEnum.CheckPending,
+        lessonState: l.CheckPending,
         repeats,
         results,
         isCorrect: null,
+        lessonHistory,
       };
     },
   };
@@ -305,7 +307,7 @@ export function finishLesson(): FinishLesson {
   return {
     type: DailyActionEnum.LESSON_FINISH,
     reduce: (state: LessonState): LessonState => {
-      return { ...state, lessonState: LessonStateEnum.FinishPending };
+      return { ...state, lessonState: l.FinishPending };
     },
   };
 }

@@ -26,7 +26,7 @@ export default function AxiosEx({ children }: Model) {
   http.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error?.response?.status == 401) {
+      if (error?.response?.status === 401) {
         history?.push("/logout");
       }
       return error;

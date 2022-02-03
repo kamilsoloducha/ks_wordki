@@ -1,27 +1,37 @@
+import * as select from "store/lesson/selectors";
+import * as act from "store/lesson/actions";
+import * as rt from "../../models/resultTypes";
 import "./Inserting.scss";
-import { CheckPending, LessonState } from "pages/lesson/models/lessonState";
-import { Repeat } from "pages/lesson/models/repeat";
-import { ReactElement, useCallback, useEffect, useRef } from "react";
+import { CheckPending, LessonStateEnum } from "pages/lesson/models/lessonState";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import Question from "../question/Question";
 import Answer from "../answer/Answer";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function Inserting({
-  state,
-  repeat,
-  isCorrect,
-  insertedValue,
-  onValueChanged,
-  onEnterClick,
-}: Model): ReactElement {
+export default function Inserting(): ReactElement {
+  const dispatch = useDispatch();
   const inputRef = useRef<any>(null);
+  const [answer, setAnswer] = useState("");
+  const repeat = useSelector(select.selectCurrectRepeat);
+  const status = useSelector(select.selectLessonState);
+  const isCorrect = useSelector(select.selectIsCorrect);
 
   const handleEventEvent = useCallback(
     (event: KeyboardEvent) => {
       if (event.key !== "Enter") return;
-      onEnterClick();
+      switch (status.type) {
+        case LessonStateEnum.CheckPending: {
+          dispatch(act.check());
+          return;
+        }
+        case LessonStateEnum.AnswerPending: {
+          dispatch(isCorrect ? act.correct(rt.Correct) : act.wrong());
+          return;
+        }
+      }
       inputRef.current?.focus();
     },
-    [onEnterClick]
+    [dispatch, isCorrect, status]
   );
 
   useEffect(() => {
@@ -32,19 +42,22 @@ export default function Inserting({
   }, [handleEventEvent]);
 
   useEffect(() => {
-    if (state === CheckPending) {
+    if (status === CheckPending) {
+      setAnswer("");
       inputRef.current?.focus();
     }
-  }, [state, inputRef]);
+  }, [status, inputRef]);
 
   const onAnswerChanged = useCallback(
     (event: any) => {
-      onValueChanged(event.target.value);
+      const answer = event.target.value;
+      dispatch(act.setAnswer(answer));
+      setAnswer(answer);
     },
-    [onValueChanged]
+    [dispatch, setAnswer]
   );
 
-  if (!state.card || !repeat) {
+  if (!status.card || !repeat) {
     return <></>;
   }
 
@@ -61,14 +74,14 @@ export default function Inserting({
         <input
           ref={inputRef}
           id="answer"
-          value={insertedValue}
+          value={answer}
           onChange={onAnswerChanged}
           autoComplete="off"
-          disabled={!state.inserting}
+          disabled={!status.inserting}
         />
         <Answer
-          isVisible={state.answer}
-          userAnswer={insertedValue}
+          isVisible={status.answer}
+          userAnswer={answer}
           correctAnswer={repeat.answer}
           exampleAnswer={repeat.answerExample}
         />
@@ -76,22 +89,3 @@ export default function Inserting({
     </div>
   );
 }
-
-interface Model {
-  state: LessonState;
-  repeat: Repeat;
-  isCorrect: boolean | null;
-  insertedValue: string;
-  onValueChanged: (value: string) => void;
-  onEnterClick: () => void;
-}
-
-// function usePropRef<T = any>(props: T) {
-//   const propRef = useRef<T>(props);
-
-//   useEffect(() => {
-//     propRef.current = props;
-//   }, [props]);
-
-//   return propRef;
-// }

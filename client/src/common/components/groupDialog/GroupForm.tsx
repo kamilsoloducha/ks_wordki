@@ -28,7 +28,12 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
   const languageOptions = (option: Language) => {
     return option ? (
       <div className="language-options-item">
-        <img className="flag" src={option.icon} width="24px" />
+        <img
+          className="flag"
+          src={option.icon}
+          width="24px"
+          alt={option.label}
+        />
         {option.label}
       </div>
     ) : (

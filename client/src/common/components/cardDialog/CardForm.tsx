@@ -41,6 +41,7 @@ export default function CardForm({
               className="input-flag"
               src={frontLanguage?.icon}
               width="24px"
+              alt={frontLanguage.label}
             />
           )}
           <input
@@ -58,7 +59,12 @@ export default function CardForm({
         <div className="form-item">
           <label className="form-label">Back value</label>
           {backLanguage && (
-            <img className="input-flag" src={backLanguage?.icon} width="24px" />
+            <img
+              className="input-flag"
+              src={backLanguage?.icon}
+              width="24px"
+              alt={backLanguage.label}
+            />
           )}
           <input
             className="form-text-input"

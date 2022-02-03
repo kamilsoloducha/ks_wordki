@@ -7,6 +7,9 @@ export const selectLessonState = (state: MainState) =>
 export const selectCurrectRepeat = (state: MainState) =>
   state.lessonReducer.repeats[0];
 
+export const selectLessonHistory = (state: MainState) =>
+  state.lessonReducer.lessonHistory;
+
 export const selectIsCorrect = (state: MainState) =>
   state.lessonReducer.isCorrect;
 

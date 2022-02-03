@@ -1,34 +1,31 @@
-import { ReactElement, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
 import * as actions from "store/lesson/actions";
 import * as sel from "store/lesson/selectors";
+import * as type from "./models/resultTypes";
+import { ReactElement, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import Fiszka from "./components/fiszka/Fiszka";
 import Inserting from "./components/inserting/Inserting";
 import LessonController from "./components/lessonController/LessonController";
 import RepeatsController from "./components/repeatsController/RepeatsController";
-import { LessonState, LessonStateEnum } from "./models/lessonState";
-import { Repeat } from "./models/repeat";
+import { FinishPending } from "./models/lessonState";
 
 export default function LessonPage(): ReactElement {
-  const [insertedValue, setInsertedValue] = useState("");
   const questions = useSelector(sel.selectRepeats);
-  const lessonState = useSelector(sel.selectLessonState);
-  const currectRepeat = useSelector(sel.selectCurrectRepeat);
+  const status = useSelector(sel.selectLessonState);
   const isCorrect = useSelector(sel.selectIsCorrect);
   const lessonType = useSelector(sel.selectLessonType);
-  const state = LessonState.getState(lessonState);
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    if (lessonState === LessonStateEnum.FinishPending) {
+    if (status === FinishPending) {
       history.push("lesson-result");
     }
-    if (questions.length <= 0 && state.type < LessonStateEnum.FinishPending) {
+    if (questions.length <= 0 && status.type < FinishPending.type) {
       history.push("");
     }
-  }, [lessonState, questions, history, state.type]);
+  }, [status, questions, history]);
 
   useEffect(() => {
     return () => {
@@ -36,69 +33,27 @@ export default function LessonPage(): ReactElement {
     };
   }, [dispatch]);
 
-  const onValueChanged = useCallback(
-    (value: string) => {
-      setInsertedValue(value);
-      dispatch(actions.setAnswer(value));
-    },
-    [setInsertedValue, dispatch]
-  );
-
   const correct = useCallback(() => {
-    dispatch(actions.correct(currectRepeat.sideId, 1));
-    setInsertedValue("");
-  }, [dispatch, currectRepeat]);
+    dispatch(actions.correct(isCorrect ? type.Correct : type.Accepted));
+  }, [dispatch, isCorrect]);
 
   const wrong = useCallback(() => {
-    dispatch(actions.wrong(currectRepeat.sideId));
-    setInsertedValue("");
-  }, [dispatch, currectRepeat]);
+    dispatch(actions.wrong());
+  }, [dispatch]);
 
   const check = useCallback(() => {
     dispatch(actions.check());
   }, [dispatch]);
 
-  const onEnterClick = useCallback(() => {
-    switch (state.type) {
-      case LessonStateEnum.CheckPending: {
-        check();
-        return;
-      }
-      case LessonStateEnum.AnswerPending: {
-        isCorrect ? correct() : wrong();
-        return;
-      }
-    }
-  }, [state, check, correct, wrong, isCorrect]);
-
-  const tickCard = useCallback(
-    (repeat: Repeat) => {
-      dispatch(actions.tickCard(repeat.sideId));
-    },
-    [dispatch]
-  );
-
-  const mainComponent =
-    lessonType === 2 ? (
-      <Inserting
-        insertedValue={insertedValue}
-        onValueChanged={onValueChanged}
-        onEnterClick={onEnterClick}
-        state={state}
-        isCorrect={isCorrect}
-        repeat={currectRepeat}
-      />
-    ) : (
-      <Fiszka lessonState={state} repeat={currectRepeat} />
-    );
+  const mainComponent = lessonType === 2 ? <Inserting /> : <Fiszka />;
 
   return (
     <>
       <div>Pozostało: {questions.length}</div>
-      <LessonController lessonState={state} />
+      <LessonController lessonState={status} />
       <button
         onClick={() => {
-          tickCard(currectRepeat);
+          dispatch(actions.tickCard());
         }}
       >
         Tick the card
@@ -108,7 +63,7 @@ export default function LessonPage(): ReactElement {
         onCheckClick={check}
         onCorrectClick={correct}
         onWrongClick={wrong}
-        lessonState={state}
+        lessonState={status}
         isCorrect={isCorrect}
       />
     </>

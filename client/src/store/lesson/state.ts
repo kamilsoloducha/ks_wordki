@@ -1,11 +1,12 @@
-import { LessonStateEnum } from "pages/lesson/models/lessonState";
+import { LessonStatus, SetLesson } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
+import UserRepeat from "pages/lesson/models/userRepeat";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 
 export default interface LessonState {
   repeats: Repeat[];
-  lessonState: LessonStateEnum;
+  lessonState: LessonStatus;
   isCorrect: boolean | null;
   answer: string;
   cardsCount: number | null;
@@ -14,11 +15,12 @@ export default interface LessonState {
 
   results: Results;
   settings: LessonSettings;
+  lessonHistory: UserRepeat[];
 }
 
 export const initialState: LessonState = {
   repeats: [],
-  lessonState: LessonStateEnum.SetLesson,
+  lessonState: SetLesson,
   isCorrect: null,
   answer: "",
   cardsCount: null,
@@ -30,4 +32,5 @@ export const initialState: LessonState = {
     language: null,
     type: -1,
   } as LessonSettings,
+  lessonHistory: [],
 };

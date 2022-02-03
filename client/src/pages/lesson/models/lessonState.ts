@@ -19,7 +19,7 @@ export const SetLesson = {
   btnWrong: false,
   card: false,
   answer: false,
-} as LessonState;
+} as LessonStatus;
 
 export const BeforeLoading = {
   type: LessonStateEnum.BeforeLoading,
@@ -31,7 +31,7 @@ export const BeforeLoading = {
   btnWrong: false,
   card: false,
   answer: false,
-} as LessonState;
+} as LessonStatus;
 
 export const Loading = {
   type: LessonStateEnum.Loading,
@@ -43,7 +43,7 @@ export const Loading = {
   btnWrong: false,
   card: false,
   answer: false,
-} as LessonState;
+} as LessonStatus;
 
 export const StartLessonPending = {
   type: LessonStateEnum.StartLessonPending,
@@ -55,7 +55,7 @@ export const StartLessonPending = {
   btnWrong: false,
   card: false,
   answer: false,
-} as LessonState;
+} as LessonStatus;
 
 export const CheckPending = {
   type: LessonStateEnum.CheckPending,
@@ -68,7 +68,7 @@ export const CheckPending = {
   card: true,
   answer: false,
   inserting: true,
-} as LessonState;
+} as LessonStatus;
 
 export const AnswerPending = {
   type: LessonStateEnum.AnswerPending,
@@ -80,7 +80,7 @@ export const AnswerPending = {
   btnWrong: true,
   card: true,
   answer: true,
-} as LessonState;
+} as LessonStatus;
 
 export const Pause = {
   type: LessonStateEnum.Pause,
@@ -92,7 +92,7 @@ export const Pause = {
   btnWrong: false,
   card: false,
   answer: false,
-} as LessonState;
+} as LessonStatus;
 
 export const FinishPending = {
   type: LessonStateEnum.FinishPending,
@@ -104,10 +104,10 @@ export const FinishPending = {
   btnWrong: false,
   card: false,
   answer: false,
-} as LessonState;
+} as LessonStatus;
 
-export class LessonState {
-  private static directory = new Map<LessonStateEnum, LessonState>([
+export class LessonStatus {
+  private static directory = new Map<LessonStateEnum, LessonStatus>([
     [LessonStateEnum.SetLesson, SetLesson],
     [LessonStateEnum.BeforeLoading, BeforeLoading],
     [LessonStateEnum.Loading, Loading],
@@ -131,7 +131,7 @@ export class LessonState {
     public readonly inserting = false
   ) {}
 
-  public static getState(state: LessonStateEnum): LessonState {
-    return this.directory.get(state) as LessonState;
+  public static getState(state: LessonStateEnum): LessonStatus {
+    return this.directory.get(state) as LessonStatus;
   }
 }

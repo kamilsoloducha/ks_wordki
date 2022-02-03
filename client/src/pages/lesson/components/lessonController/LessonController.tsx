@@ -1,5 +1,5 @@
 import "./LessonController.scss";
-import { LessonState } from "pages/lesson/models/lessonState";
+import { LessonStatus } from "pages/lesson/models/lessonState";
 import { ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { finishLesson, pauseLesson, startLesson } from "store/lesson/actions";
@@ -31,5 +31,5 @@ function LessonController({ lessonState }: Model): ReactElement {
 export default LessonController;
 
 interface Model {
-  lessonState: LessonState;
+  lessonState: LessonStatus;
 }

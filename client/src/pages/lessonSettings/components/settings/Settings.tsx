@@ -5,23 +5,26 @@ import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 export default function Settings({
   settings,
   questionCount,
-  languageChanged: languageChanged,
+  languageChanged,
   countChanged,
   typeChanged,
 }: Model): ReactElement {
   const [inputValue, setInputValue] = useState(settings.count);
-  const [lessonType, setLessonType] = useState(settings.type);
-  const [languageType, setLanguageType] = useState(settings.language);
+  const [, setLessonType] = useState(settings.type);
+  const [, setLanguageType] = useState(settings.language);
 
   const onAllClick = useCallback(() => {
     setInputValue(questionCount);
     countChanged(questionCount);
-  }, [questionCount]);
+  }, [questionCount, setInputValue, countChanged]);
 
-  const onInputChanged = useCallback((event: any) => {
-    setInputValue(event.target.value);
-    countChanged(event.target.value);
-  }, []);
+  const onInputChanged = useCallback(
+    (event: any) => {
+      setInputValue(event.target.value);
+      countChanged(event.target.value);
+    },
+    [setInputValue, countChanged]
+  );
 
   const onLessonTypeChanged = (lessonType: number) => {
     setLessonType(lessonType);

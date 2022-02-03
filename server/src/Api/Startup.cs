@@ -20,6 +20,7 @@ using Blueprints.Application.Services;
 using Blueprints.Infrastrcuture.Services;
 using Cards.Domain;
 using Blueprints.Infrastrcuture;
+using Microsoft.Extensions.Logging;
 
 namespace Api
 {
@@ -65,6 +66,10 @@ namespace Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
             });
             services.AddMvc().AddFluentValidation();
+            services.AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.AddSeq(Configuration.GetSection("Seq"));
+                });
         }
 
         public void Configure(IApplicationBuilder app,

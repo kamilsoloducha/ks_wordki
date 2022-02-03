@@ -1,5 +1,5 @@
 import "./RepeatsController.scss";
-import { LessonState } from "pages/lesson/models/lessonState";
+import { LessonStatus } from "pages/lesson/models/lessonState";
 import { ReactElement } from "react";
 
 export default function RepeatsController({
@@ -38,7 +38,7 @@ export default function RepeatsController({
 
 interface Model {
   isCorrect: boolean | null;
-  lessonState: LessonState;
+  lessonState: LessonStatus;
   onCheckClick: () => void;
   onCorrectClick: () => void;
   onWrongClick: () => void;
