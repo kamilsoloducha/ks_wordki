@@ -10,7 +10,13 @@ namespace Cards.Application.Services
 {
     public interface IQueryRepository
     {
-        Task<IEnumerable<Repeat>> GetRepeats(OwnerId ownerId, DateTime dateTime, int count, int questionLanguage, CancellationToken cancellationToken);
+        Task<IEnumerable<Repeat>> GetRepeats(OwnerId ownerId,
+            DateTime dateTime,
+            int count,
+            int questionLanguage,
+            long groupId,
+            bool lessonIncluded,
+            CancellationToken cancellationToken);
         Task<int> GetDailyRepeatsCount(OwnerId ownerId, DateTime dateTime, int questionLanguage, CancellationToken cancellationToken);
         Task<int> GetNewRepeatsCount(OwnerId ownerId, int questionLanguage, long? groupId, CancellationToken cancellationToken);
         Task<int> GetGroupsCount(OwnerId ownerId, CancellationToken cancellationToken);
@@ -21,5 +27,6 @@ namespace Cards.Application.Services
         Task<IEnumerable<GroupSummary>> GetGroupSummaries(Guid ownerId, CancellationToken cancellationToken);
         Task<IEnumerable<CardSummary>> GetCardSummaries(Guid ownerId, long groupId, CancellationToken cancellationToken);
         Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken);
+        Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken);
     }
 }

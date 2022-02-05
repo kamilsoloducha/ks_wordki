@@ -16,6 +16,7 @@ export default interface LessonState {
   results: Results;
   settings: LessonSettings;
   lessonHistory: UserRepeat[];
+  moreCards: boolean;
 }
 
 export const initialState: LessonState = {
@@ -28,9 +29,14 @@ export const initialState: LessonState = {
   lessonCount: 0,
   lessonType: 0,
   settings: {
+    mode: 1,
     count: 0,
-    language: null,
+    language: -1,
     type: -1,
+    groups: [],
+    selectedGroup: null as any,
+    wrongLimit: 15,
   } as LessonSettings,
   lessonHistory: [],
+  moreCards: false,
 };

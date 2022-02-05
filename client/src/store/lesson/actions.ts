@@ -1,8 +1,10 @@
 import * as l from "pages/lesson/models/lessonState";
+import * as lessonMode from "pages/lessonSettings/models/lesson-mode";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
 import UserRepeat from "pages/lesson/models/userRepeat";
-import { compare } from "pages/lesson/services/answerComparer";
+import { compare } from "pages/lesson/services/compare";
+import { Group } from "pages/lessonSettings/models/group";
 import {
   calculateResultsForCorrect,
   calculateResultsForWrong,
@@ -17,12 +19,18 @@ export enum DailyActionEnum {
   SET_SETTING_LANGUAGE = "[LESSON] SET_SETTING_LANGUAGE",
   SET_SETTING_COUNT = "[LESSON] SET_SETTING_COUNT",
   SET_SETTING_TYPE = "[LESSON] SET_SETTING_TYPE",
+  SET_SETTING_MODE = "[LESSON] SET_SETTING_MODE",
+  SET_SETTING_GROUP = "[LESSON] SET_SETTING_GROUP",
+  SET_SETTING_LIMIT = "[LESSON] SET_SETTING_LIMIT",
 
   GET_CARDS_COUNT = "[LESSON] GET_CARDS_COUNT",
   GET_CARDS_COUNT_SUCCESS = "[LESSON] GET_CARDS_COUNT_SUCCESS",
 
   GET_CARDS = "[LESSON] GET_CARDS",
   GET_CARDS_SUCCESS = "[LESSON] GET_CARDS_SUCCESS",
+
+  GET_GROUPS = "[LESSON] GET_GROUPS",
+  GET_GROUPS_SUCCESS = "[LESSON] GET_GROUPS_SUCCESS",
 
   TICK_CARD = "[LESSON] TICK_CARD",
 
@@ -33,6 +41,7 @@ export enum DailyActionEnum {
   LESSON_CHECK = "[LESSON] LESSON_CHECK",
   LESSON_CORRECT = "[LESSON] LESSON_CORRECT",
   LESSON_WRONG = "[LESSON] LESSON_WRONG",
+  LESSON_NO_MORE_CARDS = "[LESSON] LESSON_NO_MORE_CARDS",
   LESSON_FINISH = "[LESSON] LESSON_FINISH",
 }
 
@@ -99,7 +108,7 @@ export function setSettingLanguage(language: number): SetSettingCount {
 }
 
 export interface SetSettingType extends LessonAction {}
-export function setSettingType(type: number): SetSettingCount {
+export function setSettingType(type: number): SetSettingType {
   return {
     type: DailyActionEnum.SET_SETTING_TYPE,
     reduce: (state: LessonState): LessonState => {
@@ -109,6 +118,53 @@ export function setSettingType(type: number): SetSettingCount {
         settings: {
           ...state.settings,
           type: type,
+        },
+      };
+    },
+  };
+}
+
+export interface SetSettingMode extends LessonAction {}
+export function setSettingMode(mode: number): SetSettingMode {
+  return {
+    type: DailyActionEnum.SET_SETTING_MODE,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          mode: mode,
+        },
+        moreCards: mode === lessonMode.New,
+      };
+    },
+  };
+}
+
+export function setSettingGroup(group: Group): LessonAction {
+  return {
+    type: DailyActionEnum.SET_SETTING_GROUP,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          selectedGroup: group,
+        },
+      };
+    },
+  };
+}
+
+export function setSettingWrongLimit(limit: number): LessonAction {
+  return {
+    type: DailyActionEnum.SET_SETTING_LIMIT,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          wrongLimit: limit,
         },
       };
     },
@@ -127,8 +183,7 @@ export function resetSettings(): ResetSettings {
   };
 }
 
-export interface GetCards extends LessonAction {}
-export function getCards(): GetCards {
+export function getCards(): LessonAction {
   return {
     type: DailyActionEnum.GET_CARDS,
     reduce: (state: LessonState): LessonState => {
@@ -148,6 +203,30 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
         repeats: allRepeats,
         lessonCount: allRepeats.length,
         lessonState: l.StartLessonPending,
+      };
+    },
+  };
+}
+
+export function getGroups(): LessonAction {
+  return {
+    type: DailyActionEnum.GET_GROUPS,
+    reduce: (state: LessonState): LessonState => {
+      return { ...state };
+    },
+  };
+}
+
+export function getGroupsSuccess(groups: Group[]): LessonAction {
+  return {
+    type: DailyActionEnum.GET_GROUPS_SUCCESS,
+    reduce: (state: LessonState): LessonState => {
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          groups: groups,
+        },
       };
     },
   };
@@ -302,8 +381,16 @@ export function wrong(): Wrong {
   };
 }
 
-export interface FinishLesson extends LessonAction {}
-export function finishLesson(): FinishLesson {
+export function noMoreCards(): LessonAction {
+  return {
+    type: DailyActionEnum.LESSON_FINISH,
+    reduce: (state: LessonState): LessonState => {
+      return { ...state, lessonState: l.FinishPending };
+    },
+  };
+}
+
+export function finishLesson(): LessonAction {
   return {
     type: DailyActionEnum.LESSON_FINISH,
     reduce: (state: LessonState): LessonState => {

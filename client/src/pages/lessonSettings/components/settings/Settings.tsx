@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import * as lang from "common/models/languages";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 
@@ -10,8 +10,14 @@ export default function Settings({
   typeChanged,
 }: Model): ReactElement {
   const [inputValue, setInputValue] = useState(settings.count);
-  const [, setLessonType] = useState(settings.type);
-  const [, setLanguageType] = useState(settings.language);
+  const [lessonType, setLessonType] = useState(settings.type);
+  const [language, setLanguage] = useState(settings.language);
+
+  useEffect(() => {
+    if (inputValue > questionCount) {
+      setInputValue(questionCount);
+    }
+  }, [questionCount, setInputValue, inputValue]);
 
   const onAllClick = useCallback(() => {
     setInputValue(questionCount);
@@ -20,10 +26,17 @@ export default function Settings({
 
   const onInputChanged = useCallback(
     (event: any) => {
-      setInputValue(event.target.value);
+      let value = event.target.value as number;
+      if (value < 0) {
+        value = 0;
+      }
+      if (value > questionCount) {
+        value = questionCount;
+      }
+      setInputValue(value);
       countChanged(event.target.value);
     },
-    [setInputValue, countChanged]
+    [setInputValue, countChanged, questionCount]
   );
 
   const onLessonTypeChanged = (lessonType: number) => {
@@ -32,7 +45,7 @@ export default function Settings({
   };
 
   const onQuestionLanguageChanged = (value: number) => {
-    setLanguageType(value);
+    setLanguage(value);
     languageChanged(value);
   };
 
@@ -48,6 +61,7 @@ export default function Settings({
           id="langPol"
           value={lang.Polish.type}
           onChange={() => onQuestionLanguageChanged(lang.Polish.type)}
+          checked={language === 1}
         />
         <label htmlFor="langPol">Polish</label> <br />
         <input
@@ -56,6 +70,7 @@ export default function Settings({
           id="langEng"
           value={lang.English.type}
           onChange={() => onQuestionLanguageChanged(lang.English.type)}
+          checked={language === 2}
         />
         <label htmlFor="langEng">English</label>
       </form>
@@ -73,6 +88,7 @@ export default function Settings({
           id="1"
           value="1"
           onChange={() => onLessonTypeChanged(1)}
+          checked={lessonType === 1}
         />
         <label htmlFor="1">Fiszki</label> <br />
         <input
@@ -81,6 +97,7 @@ export default function Settings({
           id="2"
           value="2"
           onChange={() => onLessonTypeChanged(2)}
+          checked={lessonType === 2}
         />
         <label htmlFor="2">Typing</label>
       </form>

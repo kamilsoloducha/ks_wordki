@@ -21,13 +21,22 @@ namespace Cards.Infrastructure
             _cardsContext = cardsContext;
         }
 
-        public async Task<IEnumerable<Repeat>> GetRepeats(OwnerId ownerId, DateTime dateTime, int count, int questionLanguage, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Repeat>> GetRepeats(
+            OwnerId ownerId,
+            DateTime dateTime,
+            int count,
+            int questionLanguage,
+            long groupId,
+            bool lessonIncluded,
+            CancellationToken cancellationToken)
         {
             return await _cardsContext.Repeats
                 .Where(x =>
                     x.OwnerId == ownerId.Value &&
                     x.NextRepeat <= dateTime &&
-                    (questionLanguage == 0 || x.QuestionLanguage == questionLanguage))
+                    x.LessonIncluded == lessonIncluded &&
+                    (questionLanguage == 0 || x.QuestionLanguage == questionLanguage) &&
+                    (groupId == 0 || x.GroupId == groupId))
                 .Take(count)
                 .ToListAsync(cancellationToken);
         }
@@ -37,6 +46,7 @@ namespace Cards.Infrastructure
                 .CountAsync(x =>
                     x.OwnerId == ownerId.Value &&
                     x.NextRepeat <= dateTime &&
+                    x.LessonIncluded == true &&
                     (questionLanguage == 0 || x.QuestionLanguage == questionLanguage),
                 cancellationToken);
 
@@ -55,6 +65,7 @@ namespace Cards.Infrastructure
             => await _cardsContext.Repeats
                 .CountAsync(x =>
                     x.OwnerId == ownerId.Value &&
+                    x.LessonIncluded == true &&
                     (!groupId.HasValue || x.GroupId == groupId) &&
                     (questionLanguage == 0 || x.QuestionLanguage == questionLanguage),
                 cancellationToken);
@@ -67,5 +78,8 @@ namespace Cards.Infrastructure
 
         public async Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken)
             => await _cardsContext.GroupSummaries.SingleOrDefaultAsync(x => x.Id == groupId, cancellationToken);
+
+        public async Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken)
+            => await _cardsContext.GroupsToLesson.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
     }
 }

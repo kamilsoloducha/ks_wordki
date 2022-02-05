@@ -10,6 +10,8 @@ namespace Cards.Application.Queries
         public long SideId { get; set; }
         public long CardId { get; set; }
         [JsonIgnore]
+        public bool LessonIncluded { get; set; }
+        [JsonIgnore]
         public DateTime NextRepeat { get; set; }
         public string Question { get; set; }
         public string QuestionExample { get; set; }

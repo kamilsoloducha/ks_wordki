@@ -12,6 +12,8 @@ import {
   TickCardRequest,
 } from "../requests";
 import { ApiResponse } from "common/models/response";
+import { GetGroupsToLessonRequest } from "../requests/getGroupsToLesson";
+import { GetGroupToLessonResponse } from "../requests/responses/getGroupsToLessonResponse";
 
 export async function repeats(
   request: GetRepeatsRequest
@@ -69,5 +71,18 @@ export async function tickCard(
     } as ApiResponse<any>;
   } catch (e: any) {
     return e;
+  }
+}
+
+export async function getGroups(
+  request: GetGroupsToLessonRequest
+): Promise<ApiResponse<GetGroupToLessonResponse>> {
+  try {
+    const response = await http.get<GetGroupToLessonResponse>(
+      `/groups/lesson/${request.ownerId}`
+    );
+    return createResponse(response.data);
+  } catch (e: any) {
+    return createErrorResponse("");
   }
 }

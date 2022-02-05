@@ -1,7 +1,7 @@
 import "./Answer.scss";
-import { getAnswerLetters } from "pages/lesson/services/answerComparer";
 import { ReactElement } from "react";
 import { AnswerLetter } from "pages/lesson/models/answer";
+import { getAnswerLetters } from "pages/lesson/services/getAnswerLetters";
 
 export default function Answer({
   isVisible,

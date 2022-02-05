@@ -90,6 +90,7 @@ random() AS "Random",
 d."OwnerId" as "OwnerId",
 d."SideId" as "SideId",
 c."Id" as "CardId",
+d."LessonIncluded" as "LessonIncluded",
 d."NextRepeat" as "NextRepeat",
 q."Value" AS "Question",
 q."Example" as "QuestionExample",
@@ -110,8 +111,8 @@ left join cards.cards c ON (q."Type" = 1 and c."FrontId" = q."Id") or (q."Type" 
 join cards.sides a on (q."Type" = 1 and c."BackId" = a."Id") or (q."Type" = 2 and c."FrontId" = a."Id")
 join cards.groups_cards gc ON gc."CardsId" = c."Id"
 join cards."groups" g ON g."Id" = gc."GroupsId"
-WHERE d."LessonIncluded" = true
 ORDER BY 1;
+
 
 
 CREATE OR REPLACE VIEW cards.RepeatsCountSummary AS
@@ -146,3 +147,20 @@ CREATE OR REPLACE VIEW cards.cardsummary AS
      JOIN cards.details fd ON fd."SideId" = f."Id"
      JOIN cards.sides b ON b."Id" = c."BackId"
      JOIN cards.details bd ON bd."SideId" = b."Id";
+
+
+CREATE OR REPLACE VIEW cards.grouptolesson AS
+SELECT
+g."OwnerId" as "OwnerId",
+g."Id" AS "Id",
+g."Name" AS "Name",
+g."Front" AS "Front",
+g."Back" AS "Back",
+COUNT(CASE fd."LessonIncluded" when true then null else 1 end) as "FrontCount",
+COUNT(CASE bd."LessonIncluded" when true then null else 1 end) as "BackCount"
+from cards."groups" g
+join cards.groups_cards gc ON gc."GroupsId" = g."Id"
+join cards.cards c ON c."Id" = gc."CardsId"
+join cards.details fd on fd."SideId" = c."FrontId"
+join cards.details bd on bd."SideId" = c."BackId"
+group by g."Id"

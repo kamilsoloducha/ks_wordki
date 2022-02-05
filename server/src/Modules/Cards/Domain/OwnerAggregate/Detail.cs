@@ -5,6 +5,7 @@ namespace Cards.Domain
     public class Detail
     {
         public OwnerId OwnerId { get; private set; }
+
         public SideId SideId { get; private set; }
         public Drawer Drawer { get; private set; }
         public int Counter { get; private set; }
@@ -42,6 +43,7 @@ namespace Cards.Domain
 
         public void RegisterAnswer(int result, INextRepeatCalculator nextRepeatCalculator)
         {
+            LessonIncluded = true;
             UpdateDrawer(result);
             NextRepeat = NextRepeatMarker.Restore(nextRepeatCalculator.Calculate(this, result));
             Counter++;

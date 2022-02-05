@@ -28,7 +28,7 @@ namespace Cards.Application.Queries
                 var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, dateTime, 0, cancellationToken);
                 var groupsCount = await _queryRepository.GetGroupsCount(ownerId, cancellationToken);
                 var cardsCount = await _queryRepository.GetCardsCount(ownerId, cancellationToken);
-                var repeatCounts = await _queryRepository.GetRepeatsCountSummary(ownerId, request.DateFrom, request.DateTo, cancellationToken);
+                // var repeatCounts = await _queryRepository.GetRepeatsCountSummary(ownerId, request.DateFrom, request.DateTo, cancellationToken);
 
                 // var todayCount = repeatCounts.Where(x => x.Date <= dateTime).Aggregate((x1, x2) => new RepeatCount { Count = x1.Count + x2.Count, Date = dateTime, UserId = x2.UserId });
                 // var allRepeatsCount = new List<RepeatCount>() { todayCount };
