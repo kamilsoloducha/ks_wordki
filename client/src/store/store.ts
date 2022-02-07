@@ -12,7 +12,7 @@ import groupsReducer from "./groups/reducer";
 import getGroupsSummaryEffect from "./groups/sagas/getGroupsSummary";
 import rootReducer from "./root/reducer";
 import userReducer from "./user/reducer";
-import loginUserEffect from "./user/sagas/loginUser";
+import { loginUserEffect } from "./user/sagas/loginUser";
 import { correctEffect, wrongEffect } from "./lesson/sagas/answer";
 import deleteCardEffect from "./cards/sagas/deleteCard";
 import addGroupEffect from "./groups/sagas/addGroup";
@@ -27,12 +27,8 @@ import getGroupsEffect from "./lesson/sagas/getGroups";
 const sagaMiddleware = createSagaMiddleware();
 
 export function configureStore() {
-  const composeEnhancers =
-    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
-  return createStore(
-    mainReducer,
-    composeEnhancers(applyMiddleware(sagaMiddleware))
-  );
+  const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
+  return createStore(mainReducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
 }
 
 const mainReducer = combineReducers({
@@ -46,9 +42,9 @@ const mainReducer = combineReducers({
 
 export const store = configureStore();
 
+sagaMiddleware.run(loginUserEffect);
 sagaMiddleware.run(getDashbaordSummaryEffect);
 sagaMiddleware.run(getGroupsSummaryEffect);
-sagaMiddleware.run(loginUserEffect);
 sagaMiddleware.run(getCardsEffect);
 sagaMiddleware.run(updateCardEffect);
 sagaMiddleware.run(addCardEffect);

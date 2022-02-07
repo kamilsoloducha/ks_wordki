@@ -1,23 +1,16 @@
-import { call, put, takeLatest } from "@redux-saga/core/effects";
+import { call, put, takeEvery, takeLatest, take } from "@redux-saga/core/effects";
 import { ApiResponse } from "common/models/response";
 import { UserData } from "common/models/userModel";
 import { LoginRequest, LoginResponse } from "pages/login/requests";
-import login from "pages/login/services/loginApi";
-import {
-  getLoginUserFailed,
-  getLoginUserSuccess,
-  LoginUser,
-  UserActionEnum,
-} from "../actions";
+import { login } from "pages/login/services/loginApi";
+import { getLoginUserFailed, getLoginUserSuccess, LoginUser, UserActionEnum } from "../actions";
 
-function* loginUser(action: LoginUser) {
+export function* loginUser(action: LoginUser) {
   const request = {
     userName: action.name,
     password: action.password,
   } as LoginRequest;
-  const apiResponse: ApiResponse<LoginResponse> = yield call(() =>
-    login(request)
-  );
+  const apiResponse: ApiResponse<LoginResponse> = yield call(() => login(request));
 
   if (apiResponse.isCorrect) {
     const userData: UserData = {
@@ -29,15 +22,11 @@ function* loginUser(action: LoginUser) {
 
   yield put(
     apiResponse.isCorrect
-      ? getLoginUserSuccess(
-          apiResponse.response.token,
-          apiResponse.response.id,
-          new Date(1100)
-        )
+      ? getLoginUserSuccess(apiResponse.response.token, apiResponse.response.id, new Date(1100))
       : getLoginUserFailed()
   );
 }
 
-export default function* loginUserEffect() {
-  yield takeLatest(UserActionEnum.LOGIN, loginUser);
+export function* loginUserEffect() {
+  yield takeEvery(UserActionEnum.LOGIN, loginUser);
 }

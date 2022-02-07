@@ -1,3 +1,4 @@
+import { Action } from "redux";
 import UserState, { initialState } from "./state";
 
 export enum UserActionEnum {
@@ -9,12 +10,7 @@ export enum UserActionEnum {
   LOGOUT = "[USER] LOGOUT",
 }
 
-export interface UserAction {
-  type: UserActionEnum;
-  reduce: (state: UserState) => UserState;
-}
-
-export interface LoginUser extends UserAction {
+export interface LoginUser extends Action {
   name: string;
   password: string;
 }
@@ -23,59 +19,62 @@ export function getLoginUser(name: string, password: string): LoginUser {
     name,
     password,
     type: UserActionEnum.LOGIN,
-    reduce: (state: UserState): UserState => {
-      return { ...state, isLoading: true };
-    },
   };
 }
+export function reduceLoginUser(state: UserState, _: LoginUser): UserState {
+  return { ...state, isLoading: true };
+}
 
-export interface LoginUserSuccess extends UserAction {}
-
-export function getLoginUserSuccess(
-  token: string,
-  id: string,
-  expirationDate: Date
-): LoginUserSuccess {
+export interface LoginUserSuccess extends Action {
+  token: string;
+  id: string;
+  expirationDate: Date;
+}
+export function getLoginUserSuccess(token: string, id: string, expirationDate: Date) {
   return {
     type: UserActionEnum.LOGIN_SUCCESS,
-    reduce: (state: UserState): UserState => {
-      return {
-        ...state,
-        id,
-        token,
-        expirationDate,
-        isLoading: false,
-        isLogin: true,
-      };
-    },
+    token,
+    id,
+    expirationDate,
   };
 }
 
-export interface LoginUserFailed extends UserAction {}
-export function getLoginUserFailed(): LoginUserSuccess {
+export function reduceLoginUserSuccess(state: UserState, action: LoginUserSuccess): UserState {
+  return {
+    ...state,
+    id: action.id,
+    token: action.token,
+    expirationDate: action.expirationDate,
+    isLoading: false,
+    isLogin: true,
+  };
+}
+
+export interface LoginUserFailed extends Action {}
+export function getLoginUserFailed(): LoginUserFailed {
   return {
     type: UserActionEnum.LOGIN_SUCCESS,
-    reduce: (state: UserState): UserState => {
-      return {
-        ...state,
-        isLoading: false,
-      };
-    },
+  };
+}
+export function reduceLoginUserFailed(state: UserState, _: LoginUserFailed): UserState {
+  return {
+    ...state,
+    isLoading: false,
   };
 }
 
-export interface Logout extends UserAction {}
+export interface Logout extends Action {}
 
 export function getLogoutUser(): Logout {
   return {
     type: UserActionEnum.LOGOUT,
-    reduce: (_: UserState): UserState => {
-      return initialState;
-    },
   };
 }
+export function reduce(_: UserState): UserState {
+  return initialState;
+}
 
-export interface RegisterUser extends UserAction {
+export interface RegisterUser extends Action {
   name: string;
   email: string;
   password: string;
@@ -94,8 +93,10 @@ export function getRegisterUser(
     password,
     passwordConfirmation,
     type: UserActionEnum.REGISTER,
-    reduce: (state: UserState): UserState => {
-      return state;
-    },
   };
 }
+export function reduceRegisterUser(state: UserState, _: RegisterUser): UserState {
+  return { ...state };
+}
+
+export type UserAction = LoginUser | LoginUserSuccess | LoginUserFailed | RegisterUser | Logout;

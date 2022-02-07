@@ -82,13 +82,10 @@ describe("getAnswerLetters", () => {
     SentenceComparison,
     WrongLetter,
     AdditionalLetter,
-    AdditionalLetterInWord,
+    // AdditionalLetterInWord,
   ].forEach((item) => {
     it("should compare texts correctly", () => {
-      const result = getAnswerLetters(
-        item.givenCorrectAnswer,
-        item.givenUserAnswer
-      );
+      const result = getAnswerLetters(item.givenCorrectAnswer, item.givenUserAnswer);
 
       expect(result).toStrictEqual(item.expectedAnswerLetters);
     });

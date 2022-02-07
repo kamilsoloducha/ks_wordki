@@ -2,9 +2,9 @@ import axios from "axios";
 import { ApiResponse } from "common/models/response";
 
 export const API_PATH = process.env["REACT_APP_API_HOST"];
-if (API_PATH === undefined) {
-  console.error("REACT_APP_API_HOST is not set");
-}
+// if (API_PATH === undefined) {
+//   console.error("REACT_APP_API_HOST is not set");
+// }
 
 const instance = axios.create({
   baseURL: API_PATH,

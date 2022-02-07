@@ -7,4 +7,4 @@ services:
       context: ../../
       dockerfile: ./build/docker/Dockerfile
       target: build
-    command: sh -c "npm run test-headless"
+    command: sh -c "yarn test:ci"

@@ -1,14 +1,12 @@
 import "./LoginPage.scss";
-import { Toast } from "primereact/toast";
 import { useFormik } from "formik";
-import { ReactElement, useRef } from "react";
+import { ReactElement } from "react";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoginUser } from "store/user/actions";
 import { selectIsLoading, selectUserId } from "store/user/selectors";
 
-function LoginPage(): ReactElement {
-  const toast = useRef<Toast>(null);
+export default function LoginPage(): ReactElement {
   const userId = useSelector(selectUserId);
   const isLoading = useSelector(selectIsLoading);
 
@@ -30,11 +28,7 @@ function LoginPage(): ReactElement {
 
   return (
     <div className="login-page-container">
-      <form
-        className="login-form"
-        onSubmit={formik.handleSubmit}
-        autoComplete="off"
-      >
+      <form className="login-form" onSubmit={formik.handleSubmit} autoComplete="off">
         <div className="login-form-header">Login</div>
 
         <div className="login-input-item">
@@ -69,12 +63,9 @@ function LoginPage(): ReactElement {
         </div>
         <input type="submit" value="Login" disabled={isLoading} />
       </form>
-      <Toast ref={toast} />
     </div>
   );
 }
-
-export default LoginPage;
 
 interface FormModel {
   userName: string;
