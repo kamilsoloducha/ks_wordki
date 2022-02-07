@@ -1,5 +1,5 @@
 function LoadingPage() {
-  return <></>;
+  return <>Loading module</>;
 }
 
 export default LoadingPage;

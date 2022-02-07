@@ -103,7 +103,7 @@ export function updateCardSuccess(card: CardSummary): UpdateCardSuccess {
     type: CardsActionEnum.UPDATE_CARD_SUCCESS,
     reduce: (state: CardsState): CardsState => {
       const cards = state.cards.map((item) => {
-        return item.id === card.id ? card : item;
+        return item.id === card.id ? { ...item, card } : item;
       });
       return { ...state, cards, selectedItem: null };
     },
@@ -173,11 +173,7 @@ export interface AppendCard extends CardsAction {
   count: number;
   languages: number;
 }
-export function appendCard(
-  groupId: string,
-  count: number,
-  languages: number
-): AppendCard {
+export function appendCard(groupId: string, count: number, languages: number): AppendCard {
   return {
     type: CardsActionEnum.APPEND_CARD,
     reduce: (state: CardsState): CardsState => {

@@ -12,6 +12,7 @@ import { getLoginUserSuccess } from "store/user/actions";
 import { UserData } from "common/models/userModel";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
+import GuardedRoute from "common/components/guardedRoute/GuardedRoute";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
 const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
@@ -20,9 +21,7 @@ const DashboardPage = lazy(() => import("pages/dashboard/DashbaordPage"));
 const GroupsPage = lazy(() => import("pages/groups/GroupsPage"));
 const GroupDetails = lazy(() => import("pages/cards/GroupDetailsPage"));
 const CardsPage = lazy(() => import("pages/cards/CardsPage"));
-const LessonSettingsPage = lazy(
-  () => import("pages/lessonSettings/LessonSetting")
-);
+const LessonSettingsPage = lazy(() => import("pages/lessonSettings/LessonSetting"));
 const LessonPage = lazy(() => import("pages/lesson/LessonPage"));
 const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));
 
@@ -33,9 +32,7 @@ export default function App() {
   let storageUser: UserData;
   if (storageValue) {
     storageUser = JSON.parse(storageValue);
-    dispatch(
-      getLoginUserSuccess(storageUser.token, storageUser.id, new Date(1))
-    );
+    dispatch(getLoginUserSuccess(storageUser.token, storageUser.id, new Date(1)));
   }
 
   return (
@@ -49,15 +46,19 @@ export default function App() {
                 <Route path="/logout" component={LogoutPage} />
                 <Route path="/login" component={LoginPage} />
                 <Route path="/register" component={RegisterPage} />
-                <Route path="/dashboard" component={DashboardPage} />
-                <Route path="/groups" component={GroupsPage} />
-                <Route path="/cards/:groupId" component={GroupDetails} />
-                <Route path="/cards" component={CardsPage} />
+                <GuardedRoute path="/dashboard" component={DashboardPage} auth={isLogin} />
+                <GuardedRoute path="/groups" component={GroupsPage} auth={isLogin} />
+                <GuardedRoute path="/cards/:groupId" component={GroupDetails} auth={isLogin} />
+                <GuardedRoute path="/cards" component={CardsPage} auth={isLogin} />
                 <Route path="/error" component={ErrorPage} />
-                <Route path="/lesson-settings" component={LessonSettingsPage} />
-                <Route path="/lesson-result" component={LessonResultPage} />
-                <Route path="/lesson" component={LessonPage} />
-                <Route path="/" component={DashboardPage} />
+                <GuardedRoute
+                  path="/lesson-settings"
+                  component={LessonSettingsPage}
+                  auth={isLogin}
+                />
+                <GuardedRoute path="/lesson-result" component={LessonResultPage} auth={isLogin} />
+                <GuardedRoute path="/lesson" component={LessonPage} auth={isLogin} />
+                <GuardedRoute path="/" component={DashboardPage} auth={isLogin} />
               </Switch>
             </Suspense>
           </div>

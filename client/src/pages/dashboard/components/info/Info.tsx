@@ -1,6 +1,6 @@
 import "./Info.scss";
 
-function Info({ title, value, onClick }: Model) {
+export function Info({ title, value, onClick }: Model) {
   return (
     <div className="info-container" onClick={onClick}>
       <div className="info-title">{title}</div>
@@ -8,8 +8,6 @@ function Info({ title, value, onClick }: Model) {
     </div>
   );
 }
-
-export default Info;
 
 interface Model {
   title: string;

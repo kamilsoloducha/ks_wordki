@@ -1,59 +1,34 @@
 import "./DashboardPage.scss";
 import { ReactElement, useEffect } from "react";
-import { Redirect, useHistory } from "react-router";
-import Info from "./components/info/Info";
+import * as router from "react-router-dom";
+import { Info } from "./components/info/Info";
 import { useDispatch, useSelector } from "react-redux";
 import { getDashboardSummary } from "store/dashboard/actions";
 import { selectData } from "store/dashboard/selectors";
-import { selectUserId } from "store/user/selectors";
+import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 
-function DashboardPage(): ReactElement {
-  const userId = useSelector(selectUserId);
+export default function DashboardPage(): ReactElement {
   const data = useSelector(selectData);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = router.useHistory();
 
   useEffect(() => {
     dispatch(getDashboardSummary());
   }, [dispatch]);
 
-  if (!userId) {
-    return <Redirect to="login" />;
-  }
-
   if (data.isLoading) {
-    return <>Loading...</>;
+    return <LoadingSpinner />;
   }
-
-  const navigateGroups = () => {
-    history.push("/groups");
-  };
-
-  const navigateCards = () => {
-    history.push("/cards");
-  };
-
-  const navigateLesson = () => {
-    history.push("/lesson-settings");
-  };
 
   return (
-    <>
-      <div id="info-group">
-        <Info
-          title="Repeats"
-          value={data.dailyRepeats}
-          onClick={navigateLesson}
-        />
-        <Info
-          title="Groups"
-          value={data.groupsCount}
-          onClick={navigateGroups}
-        />
-        <Info title="Cards" value={data.cardsCount} onClick={navigateCards} />
-      </div>
-    </>
+    <div id="info-group">
+      <Info
+        title="Repeats"
+        value={data.dailyRepeats}
+        onClick={() => history.push("/lesson-settings")}
+      />
+      <Info title="Groups" value={data.groupsCount} onClick={() => history.push("/groups")} />
+      <Info title="Cards" value={data.cardsCount} onClick={() => history.push("/cards")} />
+    </div>
   );
 }
-
-export default DashboardPage;

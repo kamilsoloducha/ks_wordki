@@ -1,7 +1,7 @@
 import http from "common/services/http/http";
 import DashboardSummaryResponse from "../models/dashboardSummaryResponse";
 
-export default async function dashbaord(): Promise<DashboardSummaryResponse> {
-  const response = await http.get<DashboardSummaryResponse>("/users/login");
-  return response.data;
+export async function getDashboardSummaryApi(userId: string): Promise<DashboardSummaryResponse> {
+  const response = await http.get<DashboardSummaryResponse>(`cards/dashboard/summary/${userId}`);
+  return response as any;
 }
