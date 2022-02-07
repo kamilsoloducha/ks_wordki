@@ -31,9 +31,9 @@ steps:
     inputs:
       script: |
         docker ps -a
-        docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/testresult/junit.xml
-        ls $(System.DefaultWorkingDirectory)/test
-        ls $(System.DefaultWorkingDirectory)/test/results
+        docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/junit.xml
+        docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
+        ls $(System.DefaultWorkingDirectory)
   # - task: DockerCompose@0
   #   continueOnError: true
   #   displayName: Run UI Tests
@@ -52,17 +52,17 @@ steps:
   #       docker cp wordki.ci.e2etests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/test/results
   #       docker cp wordki.ci.e2etests:/src/ $(System.DefaultWorkingDirectory)/temp
   #       tree $(System.DefaultWorkingDirectory)
-  # - task: PublishTestResults@2
-  #   displayName: Publish test results
-  #   inputs:
-  #     testResultsFormat: "JUnit"
-  #     searchFolder: $(System.DefaultWorkingDirectory)/test/results
-  #     testResultsFiles: "TESTS-*.xml"
-  # - task: PublishCodeCoverageResults@1
-  #   displayName: Publish code coverage
-  #   inputs:
-  #     codeCoverageTool: "Cobertura"
-  #     summaryFileLocation: "$(System.DefaultWorkingDirectory)/test/coverage/cobertura-coverage.xml"
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    inputs:
+      testResultsFormat: "JUnit"
+      searchFolder: $(System.DefaultWorkingDirectory)
+      testResultsFiles: "junit.xml"
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish code coverage
+    inputs:
+      codeCoverageTool: "Cobertura"
+      summaryFileLocation: "$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml"
   - task: DockerCompose@0
     displayName: Release
     inputs:
