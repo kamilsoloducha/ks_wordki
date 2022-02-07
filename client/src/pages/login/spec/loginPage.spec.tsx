@@ -1,16 +1,23 @@
 import { render, unmountComponentAtNode } from "react-dom";
+import { fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import * as redux from "react-redux";
-import { BrowserRouter, Redirect, Route, Router } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import LoginPage from "../LoginPage";
+import { UserActionEnum } from "store/user/actions";
 
-fdescribe("LoginPage", () => {
+describe("LoginPage", () => {
   let container: HTMLDivElement;
   const useSelectorMock = jest.spyOn(redux, "useSelector");
   const useDispatchMock = jest.spyOn(redux, "useDispatch");
+  const mockFunc = jest.fn(() => {});
+
   beforeEach(() => {
     useSelectorMock.mockClear();
     useDispatchMock.mockClear();
+    mockFunc.mockClear();
+    useDispatchMock.mockReturnValue(mockFunc as any);
+
     container = document.createElement("div");
     document.body.appendChild(container);
   });
@@ -61,5 +68,38 @@ fdescribe("LoginPage", () => {
       );
     });
     expect(container.innerHTML).toContain("Dashboard");
+  });
+
+  it("LoginPage", async () => {
+    useSelectorMock.mockReturnValueOnce(null);
+    useSelectorMock.mockReturnValueOnce(false);
+    act(() => {
+      render(<LoginPage />, container);
+    });
+
+    fireEvent.change(container.querySelector("#userName") as HTMLInputElement, {
+      target: {
+        value: "testUser",
+      },
+    });
+
+    fireEvent.change(container.querySelector("#password") as HTMLInputElement, {
+      target: {
+        value: "testPassword",
+      },
+    });
+
+    const submitButton = container.querySelector("input[type=submit]") as HTMLElement;
+    await act(async () => {
+      submitButton.click();
+    });
+
+    expect(container.querySelectorAll(".error-message").length).toBe(0);
+    expect(mockFunc).toHaveBeenCalledTimes(1);
+    expect(mockFunc).toHaveBeenCalledWith({
+      name: "testUser",
+      password: "testPassword",
+      type: UserActionEnum.LOGIN,
+    });
   });
 });

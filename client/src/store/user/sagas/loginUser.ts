@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest, take } from "@redux-saga/core/effects";
+import { call, put, takeEvery } from "@redux-saga/core/effects";
 import { ApiResponse } from "common/models/response";
 import { UserData } from "common/models/userModel";
 import { LoginRequest, LoginResponse } from "pages/login/requests";
@@ -10,7 +10,7 @@ export function* loginUser(action: LoginUser) {
     userName: action.name,
     password: action.password,
   } as LoginRequest;
-  const apiResponse: ApiResponse<LoginResponse> = yield call(() => login(request));
+  const apiResponse: ApiResponse<LoginResponse> = yield call(login, request);
 
   if (apiResponse.isCorrect) {
     const userData: UserData = {
