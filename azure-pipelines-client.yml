@@ -26,14 +26,14 @@ steps:
       dockerComposeFile: "client/ci/docker/docker-compose.test.yml"
       action: "Run a Docker Compose command"
       dockerComposeCommand: up
-  # - task: CmdLine@2
-  #   displayName: Copy test results
-  #   inputs:
-  #     script: |
-  #       docker ps -a
-  #       docker cp wordki-client.ci.test:/usr/src/app/dist/test $(System.DefaultWorkingDirectory)/test
-  #       ls $(System.DefaultWorkingDirectory)/test
-  #       ls $(System.DefaultWorkingDirectory)/test/results
+  - task: CmdLine@2
+    displayName: Copy test results
+    inputs:
+      script: |
+        docker ps -a
+        docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/testresult/junit.xml
+        ls $(System.DefaultWorkingDirectory)/test
+        ls $(System.DefaultWorkingDirectory)/test/results
   # - task: DockerCompose@0
   #   continueOnError: true
   #   displayName: Run UI Tests
