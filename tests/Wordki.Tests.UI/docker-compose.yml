@@ -1,0 +1,7 @@
+version: '3.5'
+services:
+  wordki.ui.test:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    network_mode: host
