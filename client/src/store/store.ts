@@ -23,6 +23,7 @@ import tickCardEffect from "./lesson/sagas/tickCard";
 import appendCardEffect from "./cards/sagas/appendCard";
 import setSettingLanguageEffect from "./lesson/sagas/setSettings";
 import getGroupsEffect from "./lesson/sagas/getGroups";
+import setFilterEffect from "./cards/sagas/setFilter";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -60,5 +61,6 @@ sagaMiddleware.run(tickCardEffect);
 sagaMiddleware.run(appendCardEffect);
 sagaMiddleware.run(setSettingLanguageEffect);
 sagaMiddleware.run(getGroupsEffect);
+sagaMiddleware.run(setFilterEffect);
 
 export type MainState = ReturnType<typeof store.getState>;

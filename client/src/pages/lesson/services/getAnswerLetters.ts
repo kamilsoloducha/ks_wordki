@@ -1,9 +1,6 @@
 import { AnswerLetter } from "../models/answer";
 
-export function getAnswerLetters(
-  correctAnswer: string,
-  answer: string
-): AnswerLetter[] {
+export function getAnswerLetters(correctAnswer: string, answer: string): AnswerLetter[] {
   const result: AnswerLetter[] = [];
   let i = 0;
   for (; i < correctAnswer.length; i++) {

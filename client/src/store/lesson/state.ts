@@ -8,6 +8,7 @@ export default interface LessonState {
   repeats: Repeat[];
   lessonState: LessonStatus;
   isCorrect: boolean | null;
+  isSecondChangeUsed: boolean;
   answer: string;
   cardsCount: number | null;
   lessonCount: number;
@@ -23,6 +24,7 @@ export const initialState: LessonState = {
   repeats: [],
   lessonState: SetLesson,
   isCorrect: null,
+  isSecondChangeUsed: false,
   answer: "",
   cardsCount: null,
   results: {} as Results,

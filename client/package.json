@@ -32,6 +32,7 @@
     "test": "react-scripts test",
     "test:ci": "react-scripts test --watchAll=false --coverage --ci --testResultsProcessor=\"jest-junit\" --coverageReporters cobertura",
     "test:test": "react-scripts test --config=./jest.config.js",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

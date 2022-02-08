@@ -1,5 +1,5 @@
-function LoadingPage() {
-  return <>Loading module</>;
-}
+import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
 
-export default LoadingPage;
+export default function LoadingPage() {
+  return <LoadingSpinner />;
+}

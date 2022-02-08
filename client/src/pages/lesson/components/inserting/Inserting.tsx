@@ -3,7 +3,7 @@ import * as act from "store/lesson/actions";
 import * as rt from "../../models/resultTypes";
 import "./Inserting.scss";
 import { CheckPending, LessonStateEnum } from "pages/lesson/models/lessonState";
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useEffect, useRef } from "react";
 import Question from "../question/Question";
 import Answer from "../answer/Answer";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Inserting(): ReactElement {
   const dispatch = useDispatch();
   const inputRef = useRef<any>(null);
-  const [answer, setAnswer] = useState("");
+  const answer = useSelector(select.selectUserAnswer);
   const repeat = useSelector(select.selectCurrectRepeat);
   const status = useSelector(select.selectLessonState);
   const isCorrect = useSelector(select.selectIsCorrect);
@@ -43,18 +43,17 @@ export default function Inserting(): ReactElement {
 
   useEffect(() => {
     if (status === CheckPending) {
-      setAnswer("");
+      dispatch(act.setAnswer(""));
       inputRef.current?.focus();
     }
-  }, [status, inputRef]);
+  }, [status, inputRef, dispatch]);
 
   const onAnswerChanged = useCallback(
     (event: any) => {
       const answer = event.target.value;
       dispatch(act.setAnswer(answer));
-      setAnswer(answer);
     },
-    [dispatch, setAnswer]
+    [dispatch]
   );
 
   if (!status.card || !repeat) {
@@ -64,11 +63,7 @@ export default function Inserting(): ReactElement {
   return (
     <div>
       Question:
-      <Question
-        value={repeat.question}
-        example={repeat.questionExample}
-        language={1}
-      />
+      <Question value={repeat.question} example={repeat.questionExample} language={1} />
       <div>
         Answer:
         <input

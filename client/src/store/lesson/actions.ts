@@ -5,10 +5,7 @@ import Results from "pages/lesson/models/results";
 import UserRepeat from "pages/lesson/models/userRepeat";
 import { compare } from "pages/lesson/services/compare";
 import { Group } from "pages/lessonSettings/models/group";
-import {
-  calculateResultsForCorrect,
-  calculateResultsForWrong,
-} from "./helpers/resultsHelpers";
+import { calculateResultsForCorrect, calculateResultsForWrong } from "./helpers/resultsHelpers";
 import LessonState, { initialState } from "./state";
 
 export enum DailyActionEnum {
@@ -302,12 +299,18 @@ export function check(): Check {
   return {
     type: DailyActionEnum.LESSON_CHECK,
     reduce: (state: LessonState): LessonState => {
-      const isCorrect =
-        state.lessonType === 1 ||
-        compare(state.repeats[0].answer, state.answer);
+      const isCorrect = state.lessonType === 1 || compare(state.repeats[0].answer, state.answer);
+      if (!isCorrect && !state.isSecondChangeUsed && state.repeats[0].questionDrawer > 4) {
+        return {
+          ...state,
+          isSecondChangeUsed: true,
+          answer: "",
+        };
+      }
       return {
         ...state,
         lessonState: l.AnswerPending,
+        isSecondChangeUsed: false,
         isCorrect: isCorrect,
       };
     },
@@ -364,10 +367,7 @@ export function wrong(): Wrong {
       const repeats = state.repeats.slice(1);
       repeats.push(currentRepeat);
 
-      const results = calculateResultsForWrong(
-        state.results,
-        state.lessonCount
-      );
+      const results = calculateResultsForWrong(state.results, state.lessonCount);
 
       return {
         ...state,

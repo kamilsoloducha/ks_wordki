@@ -13,6 +13,7 @@ namespace Cards.Application.Queries
         public bool LessonIncluded { get; set; }
         [JsonIgnore]
         public DateTime NextRepeat { get; set; }
+        public int QuestionDrawer { get; set; }
         public string Question { get; set; }
         public string QuestionExample { get; set; }
         public int QuestionType { get; set; }

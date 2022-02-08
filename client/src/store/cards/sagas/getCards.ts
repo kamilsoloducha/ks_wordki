@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { GroupDetailsResponse } from "pages/cards/models/groupDetailsSummary";
 import { selectUserId } from "store/user/selectors";
-import { CardsActionEnum, GetCards, getCardsSuccess } from "../actions";
+import { applyFilters, CardsActionEnum, GetCards, getCardsSuccess } from "../actions";
 import * as api from "pages/cards/services/groupDetailsApi";
 import { CardsSummaryResponse } from "pages/cards/models/cardsSummaryResponse";
 
@@ -25,6 +25,7 @@ function* getCards(action: GetCards) {
       cardsSummaryResponse.cards
     )
   );
+  yield put(applyFilters());
 }
 
 export default function* getCardsEffect() {

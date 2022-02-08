@@ -7,7 +7,9 @@ export default interface CardsState {
   language1: number;
   language2: number;
   cards: CardSummary[];
+  filteredCards: CardSummary[];
   selectedItem: CardSummary | null;
+  filter: FilterModel;
 }
 
 export const initialState: CardsState = {
@@ -17,5 +19,19 @@ export const initialState: CardsState = {
   language1: 0,
   language2: 0,
   cards: [],
+  filteredCards: [],
   selectedItem: null,
+  filter: {
+    drawer: null,
+    isLearning: null,
+    text: "",
+    isTicked: false,
+  },
 };
+
+export interface FilterModel {
+  drawer: number | null;
+  isLearning: boolean | null;
+  text: string;
+  isTicked: boolean;
+}

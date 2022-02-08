@@ -1,5 +1,5 @@
 import "./GroupDetailsPage.scss";
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import CardsList from "./components/cardsList/CardsList";
 import { CardSummary, SideSummary } from "./models/groupDetailsSummary";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,9 @@ import { Languages } from "common/models/languages";
 import AppendToLessonDialog from "./components/appendToLessonDialog/AppendToLessonDialog";
 
 export default function GroupDetailsPage(): ReactElement {
-  const containerRef = useRef<any>(null);
+  const filteredCards2 = useSelector(selectors.selectFilteredCards);
+  const filterState = useSelector(selectors.selectFilterState);
+  console.log(filteredCards2);
   const [formItem, setFormItem] = useState<FormModel | null>(null);
   const [filter, setFilter] = useState(CardsFilter.All);
   const [appendDialog, setAppendDialog] = useState(false);
@@ -90,6 +92,17 @@ export default function GroupDetailsPage(): ReactElement {
   };
 
   const onClickSetFilter = (filter: CardsFilter) => {
+    if (filter === 1) {
+      dispatch(actions.resetFilter());
+    } else if (filter === 2) {
+      dispatch(actions.setFilterLearning(true));
+    } else if (filter === 3) {
+      dispatch(actions.setFilterLearning(false));
+    } else if (filter >= 4 && filter <= 8) {
+      dispatch(actions.setFilterDrawer(filter - 3));
+    } else {
+      dispatch(actions.setFilterIsTicked(true));
+    }
     setFilter(filter);
   };
 
@@ -109,11 +122,11 @@ export default function GroupDetailsPage(): ReactElement {
 
   const onSearchChanged = useCallback(
     (text: string) => {
+      dispatch(actions.setFilterText(text));
       const filteredItems = filterByText(text, cardsFromStore);
-      console.log(filteredItems);
       setCards(filteredItems);
     },
-    [cardsFromStore, setCards]
+    [cardsFromStore, setCards, dispatch]
   );
 
   const onActionsVisible = () => {
@@ -176,7 +189,7 @@ export default function GroupDetailsPage(): ReactElement {
   ];
 
   return (
-    <div className="group-detail-main-container" ref={containerRef}>
+    <div className="group-detail-main-container">
       <GroupDetailsComponent
         name={groupDetails.name}
         front={groupDetails.language1}
@@ -233,12 +246,13 @@ export default function GroupDetailsPage(): ReactElement {
         <Pagination
           totalCount={filteredCardsCount}
           onPageChagned={onPageChagned}
+          search={filterState.text}
           onSearchChanged={onSearchChanged}
         />
       </div>
       <div className="group-details-card-list-container">
         <CardsList
-          cards={cards}
+          cards={filteredCards2}
           onItemSelected={onItemSelected}
           onChangeUsage={onUsageChanged}
         />
@@ -251,16 +265,8 @@ export default function GroupDetailsPage(): ReactElement {
         frontLanguage={Languages[groupDetails.language1]}
         backLanguage={Languages[groupDetails.language2]}
       />
-      <GroupDialog
-        group={editedGroup}
-        onHide={onHideGroupDialog}
-        onSubmit={onSubmitGroupDialog}
-      />
-      <ActionsDialog
-        isVisible={actionsVisible}
-        onHide={onActionsVisible}
-        actions={acts}
-      />
+      <GroupDialog group={editedGroup} onHide={onHideGroupDialog} onSubmit={onSubmitGroupDialog} />
+      <ActionsDialog isVisible={actionsVisible} onHide={onActionsVisible} actions={acts} />
       <AppendToLessonDialog
         isVisible={appendDialog}
         onHide={appendDialogHide}
@@ -337,9 +343,7 @@ function filterCards(cards: CardSummary[], filter: CardsFilter): CardSummary[] {
       result = cards.filter((item) => isCardFromDrawer(item, 5));
       break;
     case CardsFilter.Ticked:
-      result = cards.filter(
-        (item) => item.front.isTicked || item.back.isTicked
-      );
+      result = cards.filter((item) => item.front.isTicked || item.back.isTicked);
       break;
     default:
       result = cards;
@@ -353,9 +357,7 @@ function isSideFromDrawer(side: SideSummary, drawer: number): boolean {
 }
 
 function isCardFromDrawer(card: CardSummary, drawer: number): boolean {
-  return (
-    isSideFromDrawer(card.front, drawer) || isSideFromDrawer(card.back, drawer)
-  );
+  return isSideFromDrawer(card.front, drawer) || isSideFromDrawer(card.back, drawer);
 }
 
 function isCardInUsed(card: CardSummary): boolean {

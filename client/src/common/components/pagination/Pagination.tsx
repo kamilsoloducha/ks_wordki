@@ -4,13 +4,8 @@ import "./Pagination.scss";
 
 const pageSize = 10;
 
-export default function Pagination({
-  totalCount,
-  onPageChagned,
-  onSearchChanged,
-}: Model) {
+export default function Pagination({ totalCount, onPageChagned, search, onSearchChanged }: Model) {
   const [currectPage, setCurrectPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
   const totalPages = Math.ceil(totalCount / pageSize);
   const buttons = getPagesToDispaly(totalPages, currectPage);
 
@@ -30,12 +25,11 @@ export default function Pagination({
   const onSearchTextChanged = useCallback(
     (event: any) => {
       const text = event.target.value;
-      setSearchText(text);
       if (onSearchChanged) {
         onSearchChanged(text);
       }
     },
-    [setSearchText, onSearchChanged]
+    [onSearchChanged]
   );
 
   useEffect(() => {
@@ -46,11 +40,7 @@ export default function Pagination({
     <div className="pagination-container">
       <div className="pagination-left">
         {onSearchChanged && (
-          <input
-            placeholder="Search"
-            value={searchText}
-            onChange={onSearchTextChanged}
-          />
+          <input type="search" placeholder="Search" value={search} onChange={onSearchTextChanged} />
         )}
       </div>
       <div className="pagination-middle">
@@ -98,6 +88,7 @@ export default function Pagination({
 interface Model {
   totalCount: number;
   onPageChagned: (event: PageChangedEvent) => void;
+  search?: string;
   onSearchChanged?: (text: string) => void;
 }
 
