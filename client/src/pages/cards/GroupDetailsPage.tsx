@@ -22,19 +22,16 @@ import { Languages } from "common/models/languages";
 import AppendToLessonDialog from "./components/appendToLessonDialog/AppendToLessonDialog";
 
 export default function GroupDetailsPage(): ReactElement {
-  const filteredCards2 = useSelector(selectors.selectFilteredCards);
+  const allCards = useSelector(selectors.selectCards);
+  const filteredCardsFromStore = useSelector(selectors.selectFilteredCards);
   const filterState = useSelector(selectors.selectFilterState);
-  console.log(filteredCards2);
+  const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([]);
   const [formItem, setFormItem] = useState<FormModel | null>(null);
-  const [filter, setFilter] = useState(CardsFilter.All);
   const [appendDialog, setAppendDialog] = useState(false);
   const [page, setPage] = useState(1);
-  const [filteredCardsCount, setFilteredCardsCount] = useState(0);
-  const [cards, setCards] = useState<CardSummary[]>([]);
   const { groupId } = useParams<{ groupId: string }>();
   const dispatch = useDispatch();
   const isLoading = useSelector(selectors.selectIsLoading);
-  const cardsFromStore = useSelector(selectors.selectCards);
   const groupDetails = useSelector(selectors.selectGroupDetails);
   const [actionsVisible, setActionsVisible] = useState(false);
   const [editedGroup, setEditedGroup] = useState<any>(null);
@@ -44,12 +41,10 @@ export default function GroupDetailsPage(): ReactElement {
   }, [groupId, dispatch]);
 
   useEffect(() => {
-    const filteredCards = filterCards(cardsFromStore, filter);
-    setFilteredCardsCount(filteredCards.length);
     const first = (page - 1) * 10;
     const last = first + 10;
-    setCards(filteredCards.slice(first, last));
-  }, [filter, cardsFromStore, page]);
+    setPaginatedCards(filteredCardsFromStore.slice(first, last));
+  }, [page, filteredCardsFromStore]);
 
   const onItemSelected = (item: CardSummary) => {
     dispatch(actions.selectCard(item));
@@ -103,7 +98,6 @@ export default function GroupDetailsPage(): ReactElement {
     } else {
       dispatch(actions.setFilterIsTicked(true));
     }
-    setFilter(filter);
   };
 
   const onAddCard = () => {
@@ -123,10 +117,8 @@ export default function GroupDetailsPage(): ReactElement {
   const onSearchChanged = useCallback(
     (text: string) => {
       dispatch(actions.setFilterText(text));
-      const filteredItems = filterByText(text, cardsFromStore);
-      setCards(filteredItems);
     },
-    [cardsFromStore, setCards, dispatch]
+    [dispatch]
   );
 
   const onActionsVisible = () => {
@@ -155,19 +147,6 @@ export default function GroupDetailsPage(): ReactElement {
     dispatch(groupActions.updateGroup(group));
     onHideGroupDialog();
   };
-
-  const onUsageChanged = useCallback(
-    (cardId: number, side: number) => {
-      const original = cardsFromStore.find((x) => x.id === cardId);
-      if (!original) return;
-      const updatedCard = { ...original };
-      if (side === 1) updatedCard.front.isUsed = !updatedCard.front.isUsed;
-      else if (side === 2) updatedCard.back.isUsed = !updatedCard.back.isUsed;
-
-      dispatch(actions.updateCard(updatedCard));
-    },
-    [cardsFromStore, dispatch]
-  );
 
   const appendDialogSubmit = (count: number, languages: number) => {
     dispatch(actions.appendCard(groupId, count, languages));
@@ -200,7 +179,7 @@ export default function GroupDetailsPage(): ReactElement {
         <div className="group-details-info-card">
           <InfoCard
             label="all cards"
-            value={cardsFromStore.length}
+            value={allCards.length}
             classNameOverriden="info-card-blue"
             onClick={() => onClickSetFilter(CardsFilter.All)}
           />
@@ -208,7 +187,7 @@ export default function GroupDetailsPage(): ReactElement {
         <div className="group-details-info-card">
           <InfoCard
             label="learning"
-            value={getLearningCard(cardsFromStore)}
+            value={getLearningCard(allCards)}
             classNameOverriden="info-card-green"
             onClick={() => onClickSetFilter(CardsFilter.Learning)}
           />
@@ -217,7 +196,7 @@ export default function GroupDetailsPage(): ReactElement {
           <div className="group-details-info-card" key={item}>
             <InfoCard
               label={"drawer " + item}
-              value={getCardsCountFromDrawer(cardsFromStore, item)}
+              value={getCardsCountFromDrawer(allCards, item)}
               classNameOverriden={"info-card-drawer-" + item}
               onClick={() => onClickSetFilter(3 + item)}
             />
@@ -228,7 +207,7 @@ export default function GroupDetailsPage(): ReactElement {
         <div className="group-details-info-card">
           <InfoCard
             label="waiting"
-            value={2 * cardsFromStore.length - getLearningCard(cardsFromStore)}
+            value={2 * allCards.length - getLearningCard(allCards)}
             classNameOverriden="info-card-gray"
             onClick={() => onClickSetFilter(CardsFilter.Waiting)}
           />
@@ -236,7 +215,7 @@ export default function GroupDetailsPage(): ReactElement {
         <div className="group-details-info-card">
           <InfoCard
             label="ticked"
-            value={getTickedCard(cards)}
+            value={getTickedCard(allCards)}
             classNameOverriden="info-card-gray"
             onClick={() => onClickSetFilter(CardsFilter.Ticked)}
           />
@@ -244,18 +223,14 @@ export default function GroupDetailsPage(): ReactElement {
       </Expandable>
       <div className="group-details-paginator">
         <Pagination
-          totalCount={filteredCardsCount}
+          totalCount={filteredCardsFromStore.length}
           onPageChagned={onPageChagned}
           search={filterState.text}
           onSearchChanged={onSearchChanged}
         />
       </div>
       <div className="group-details-card-list-container">
-        <CardsList
-          cards={filteredCards2}
-          onItemSelected={onItemSelected}
-          onChangeUsage={onUsageChanged}
-        />
+        <CardsList cards={paginatedCards} onItemSelected={onItemSelected} />
       </div>
       <CardDialog
         card={formItem}
@@ -315,66 +290,66 @@ function getCardsCountFromDrawer(cards: CardSummary[], drawer: number): number {
   return result;
 }
 
-function filterCards(cards: CardSummary[], filter: CardsFilter): CardSummary[] {
-  let result = [];
-  switch (filter) {
-    case CardsFilter.All:
-      result = cards;
-      break;
-    case CardsFilter.Learning:
-      result = cards.filter((item) => isCardInUsed(item));
-      break;
-    case CardsFilter.Waiting:
-      result = cards.filter((item) => isCardNotInUsed(item));
-      break;
-    case CardsFilter.Drawer1:
-      result = cards.filter((item) => isCardFromDrawer(item, 1));
-      break;
-    case CardsFilter.Drawer2:
-      result = cards.filter((item) => isCardFromDrawer(item, 2));
-      break;
-    case CardsFilter.Drawer3:
-      result = cards.filter((item) => isCardFromDrawer(item, 3));
-      break;
-    case CardsFilter.Drawer4:
-      result = cards.filter((item) => isCardFromDrawer(item, 4));
-      break;
-    case CardsFilter.Drawer5:
-      result = cards.filter((item) => isCardFromDrawer(item, 5));
-      break;
-    case CardsFilter.Ticked:
-      result = cards.filter((item) => item.front.isTicked || item.back.isTicked);
-      break;
-    default:
-      result = cards;
-      break;
-  }
-  return result;
-}
+// function filterCards(cards: CardSummary[], filter: CardsFilter): CardSummary[] {
+//   let result = [];
+//   switch (filter) {
+//     case CardsFilter.All:
+//       result = cards;
+//       break;
+//     case CardsFilter.Learning:
+//       result = cards.filter((item) => isCardInUsed(item));
+//       break;
+//     case CardsFilter.Waiting:
+//       result = cards.filter((item) => isCardNotInUsed(item));
+//       break;
+//     case CardsFilter.Drawer1:
+//       result = cards.filter((item) => isCardFromDrawer(item, 1));
+//       break;
+//     case CardsFilter.Drawer2:
+//       result = cards.filter((item) => isCardFromDrawer(item, 2));
+//       break;
+//     case CardsFilter.Drawer3:
+//       result = cards.filter((item) => isCardFromDrawer(item, 3));
+//       break;
+//     case CardsFilter.Drawer4:
+//       result = cards.filter((item) => isCardFromDrawer(item, 4));
+//       break;
+//     case CardsFilter.Drawer5:
+//       result = cards.filter((item) => isCardFromDrawer(item, 5));
+//       break;
+//     case CardsFilter.Ticked:
+//       result = cards.filter((item) => item.front.isTicked || item.back.isTicked);
+//       break;
+//     default:
+//       result = cards;
+//       break;
+//   }
+//   return result;
+// }
 
 function isSideFromDrawer(side: SideSummary, drawer: number): boolean {
   return side.drawer === drawer && side.isUsed;
 }
 
-function isCardFromDrawer(card: CardSummary, drawer: number): boolean {
-  return isSideFromDrawer(card.front, drawer) || isSideFromDrawer(card.back, drawer);
-}
+// function isCardFromDrawer(card: CardSummary, drawer: number): boolean {
+//   return isSideFromDrawer(card.front, drawer) || isSideFromDrawer(card.back, drawer);
+// }
 
-function isCardInUsed(card: CardSummary): boolean {
-  return card.front.isUsed || card.back.isUsed;
-}
+// function isCardInUsed(card: CardSummary): boolean {
+//   return card.front.isUsed || card.back.isUsed;
+// }
 
-function isCardNotInUsed(card: CardSummary): boolean {
-  return !card.front.isUsed || !card.back.isUsed;
-}
+// function isCardNotInUsed(card: CardSummary): boolean {
+//   return !card.front.isUsed || !card.back.isUsed;
+// }
 
-function filterByText(text: string, cards: CardSummary[]): CardSummary[] {
-  const searchValue = text.toLowerCase();
-  return cards.filter(
-    (item) =>
-      item.front.value.toLowerCase().indexOf(searchValue) >= 0 ||
-      item.back.value.toLowerCase().indexOf(searchValue) >= 0
-  );
-}
+// function filterByText(text: string, cards: CardSummary[]): CardSummary[] {
+//   const searchValue = text.toLowerCase();
+//   return cards.filter(
+//     (item) =>
+//       item.front.value.toLowerCase().indexOf(searchValue) >= 0 ||
+//       item.back.value.toLowerCase().indexOf(searchValue) >= 0
+//   );
+// }
 
 const drawers = [1, 2, 3, 4, 5];

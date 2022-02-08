@@ -1,6 +1,6 @@
 import "./LoginPage.scss";
 import { useFormik } from "formik";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoginUser } from "store/user/actions";
@@ -11,6 +11,9 @@ export default function LoginPage(): ReactElement {
   const isLoading = useSelector(selectIsLoading);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    document.title = "Wordki - Login";
+  }, []);
 
   const formik = useFormik({
     initialValues,

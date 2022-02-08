@@ -13,6 +13,7 @@ export default function DashboardPage(): ReactElement {
   const history = router.useHistory();
 
   useEffect(() => {
+    document.title = "Wordki - Dashboard";
     dispatch(getDashboardSummary());
   }, [dispatch]);
 
