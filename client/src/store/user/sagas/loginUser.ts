@@ -17,7 +17,8 @@ export function* loginUser(action: LoginUser) {
       id: apiResponse.response.id,
       token: apiResponse.response.token,
     };
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("id", userData.id);
+    localStorage.setItem("token", userData.token);
   }
 
   yield put(

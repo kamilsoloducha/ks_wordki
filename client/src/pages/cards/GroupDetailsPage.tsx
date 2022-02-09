@@ -20,6 +20,7 @@ import GroupDetails from "common/components/groupDialog/groupDetails";
 import GroupDetailsComponent from "./components/groupDetails/GroupDetails";
 import { Languages } from "common/models/languages";
 import AppendToLessonDialog from "./components/appendToLessonDialog/AppendToLessonDialog";
+import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 
 export default function GroupDetailsPage(): ReactElement {
   const allCards = useSelector(selectors.selectCards);
@@ -158,7 +159,7 @@ export default function GroupDetailsPage(): ReactElement {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   const acts = [

@@ -9,7 +9,6 @@ import "primereact/resources/primereact.min.css";
 import ErrorPage from "common/components/error/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoginUserSuccess } from "store/user/actions";
-import { UserData } from "common/models/userModel";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
 import GuardedRoute from "common/components/guardedRoute/GuardedRoute";
@@ -28,11 +27,10 @@ const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));
 export default function App() {
   const isLogin = useSelector(selectIsLogin);
   const dispatch = useDispatch();
-  const storageValue = localStorage.getItem("user");
-  let storageUser: UserData;
-  if (storageValue) {
-    storageUser = JSON.parse(storageValue);
-    dispatch(getLoginUserSuccess(storageUser.token, storageUser.id, new Date(1)));
+  const userId = localStorage.getItem("id");
+  const token = localStorage.getItem("token");
+  if (userId && token) {
+    dispatch(getLoginUserSuccess(token, userId, new Date(1)));
   }
 
   return (

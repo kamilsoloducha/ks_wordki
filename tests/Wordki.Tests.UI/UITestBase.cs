@@ -4,13 +4,16 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Threading;
 using WireMock.Server;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using OpenQA.Selenium.Support.UI;
 
 namespace Wordki.Tests.UI
 {
     public abstract class UITestBase : IDisposable
     {
         protected string AppUrl = "http://localhost:3000";
-        protected IWebDriver Driver { get; private set; }
+        protected ChromeDriver Driver { get; private set; }
         protected WireMockServer Server { get; private set; }
 
         protected UITestBase()
@@ -50,9 +53,11 @@ namespace Wordki.Tests.UI
 
         protected void SetAuthorizationCookie()
         {
-            Driver.Navigate().GoToUrl($"{AppUrl}");
-            Thread.Sleep(200);
-            Driver.Manage().Cookies.AddCookie(new Cookie("wordki-usr-tag", "token"));
+            Driver.Navigate().GoToUrl($"http://localhost:3000/login");
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+                .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs("Wordki - Login"));
+            Driver.ExecuteScript("localStorage.setItem(\"id\", \"userid\");");
+            Driver.ExecuteScript("localStorage.setItem(\"token\", \"token\");");
         }
 
         protected void SetupDefaultGroupEndpoints() =>
