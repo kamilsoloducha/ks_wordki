@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDashboardSummary } from "store/dashboard/actions";
 import { selectData } from "store/dashboard/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
+import { Forecast } from "./components/forecast/Forecast";
 
 export default function DashboardPage(): ReactElement {
   const data = useSelector(selectData);
@@ -22,14 +23,18 @@ export default function DashboardPage(): ReactElement {
   }
 
   return (
-    <div id="info-group">
-      <Info
-        title="Repeats"
-        value={data.dailyRepeats}
-        onClick={() => history.push("/lesson-settings")}
-      />
-      <Info title="Groups" value={data.groupsCount} onClick={() => history.push("/groups")} />
-      <Info title="Cards" value={data.cardsCount} onClick={() => history.push("/cards")} />
-    </div>
+    <>
+      <div id="info-group">
+        <Info
+          title="Repeats"
+          value={data.dailyRepeats}
+          onClick={() => history.push("/lesson-settings")}
+        />
+        <Info title="Groups" value={data.groupsCount} onClick={() => history.push("/groups")} />
+        <Info title="Cards" value={data.cardsCount} onClick={() => history.push("/cards")} />
+      </div>
+      <br />
+      <Forecast />
+    </>
   );
 }

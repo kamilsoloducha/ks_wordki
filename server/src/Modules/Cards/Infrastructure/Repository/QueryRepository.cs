@@ -81,5 +81,8 @@ namespace Cards.Infrastructure
 
         public async Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken)
             => await _cardsContext.GroupsToLesson.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
+
+        public async Task<IEnumerable<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop, CancellationToken cancellationToken)
+            => await _cardsContext.RepeatCounts.Where(x => x.OwnerId == ownerId && x.Date >= start.Date && x.Date <= stop.Date).ToListAsync(cancellationToken);
     }
 }

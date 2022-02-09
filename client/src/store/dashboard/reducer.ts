@@ -1,4 +1,9 @@
-import { DashboardAction, DashboardActionEnum } from "./actions";
+import {
+  DashboardAction,
+  DashboardActionEnum,
+  reduceGetForecast,
+  reduceGetForecastSuccess,
+} from "./actions";
 import DashboardState, { initailState } from "./state";
 
 export default function dashboardReducer(
@@ -10,6 +15,10 @@ export default function dashboardReducer(
       return action.reduce(state);
     case DashboardActionEnum.GET_DASHBAORD_SUMMARY_SUCCESS:
       return action.reduce(state);
+    case DashboardActionEnum.GET_FORECAST:
+      return reduceGetForecast(state);
+    case DashboardActionEnum.GET_FORECAST_SUCCESS:
+      return reduceGetForecastSuccess(state, action as any);
     default:
       return state;
   }

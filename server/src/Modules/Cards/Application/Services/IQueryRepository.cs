@@ -28,5 +28,6 @@ namespace Cards.Application.Services
         Task<IEnumerable<CardSummary>> GetCardSummaries(Guid ownerId, long groupId, CancellationToken cancellationToken);
         Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken);
         Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken);
+        Task<IEnumerable<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop, CancellationToken cancellationToken);
     }
 }

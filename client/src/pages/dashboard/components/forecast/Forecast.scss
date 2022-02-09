@@ -1,0 +1,48 @@
+.forecast-container {
+    width: 100%;
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px 10%;
+    cursor: default;
+
+
+    .forecast-title {
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        border-bottom: 1px solid #858585;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+
+    }
+
+    .forecast-items-container {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px
+    }
+}
+
+
+
+.forecast-item-container {
+    flex-grow: 1;
+    text-align: center;
+    // cursor: pointer;
+
+    .forecast-item-date {
+        font-size: 15px;
+    }
+
+
+    .forecast-item-value {
+        margin-top: 10px;
+        font-size: 20px;
+    }
+
+    // &:hover {
+    //     border-bottom: 1px solid black;
+    //     color: black
+    // }
+}
