@@ -12,7 +12,7 @@ function* getCardsCount() {
   const apiResposne: ApiResponse<number> = yield call(
     async () =>
       await api.repeatsCount({
-        questionLanguage: settings.language ?? 0,
+        questionLanguage: settings.languages ?? [],
         userId: userId,
       })
   );

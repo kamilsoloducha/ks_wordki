@@ -4,11 +4,7 @@ import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { DailyActionEnum, getCardsSuccess } from "../actions";
 import { selectUserId } from "store/user/selectors";
 import { selectLessonType, selectSettings } from "../selectors";
-import {
-  GetRepeatsRequest,
-  GetRepeatsResponse,
-  StartLessonRequest,
-} from "pages/lesson/requests";
+import { GetRepeatsRequest, GetRepeatsResponse, StartLessonRequest } from "pages/lesson/requests";
 import { ApiResponse } from "common/models/response";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 
@@ -32,16 +28,12 @@ export default function* getCardsEffect() {
   yield takeLatest(DailyActionEnum.GET_CARDS, getCards);
 }
 
-function prepareRequest(
-  settings: LessonSettings,
-  userId: string
-): GetRepeatsRequest {
+function prepareRequest(settings: LessonSettings, userId: string): GetRepeatsRequest {
   const request: GetRepeatsRequest = {
     count: settings.count,
-    questionLanguage: settings.language,
+    questionLanguage: settings.languages,
     ownerId: userId,
-    groupId:
-      settings.mode === mode.Repetition ? null : settings.selectedGroup?.id,
+    groupId: settings.mode === mode.Repetition ? null : settings.selectedGroup?.id,
     lessonIncluded: settings.mode === mode.Repetition,
   };
   return request;

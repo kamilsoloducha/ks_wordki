@@ -165,3 +165,6 @@ join cards.cards c ON c."Id" = gc."CardsId"
 join cards.details fd on fd."SideId" = c."FrontId"
 join cards.details bd on bd."SideId" = c."BackId"
 group by g."Id"
+
+
+--/var/lib/pgadmin/storage/kamilsoloducha_gmail.com/details_backup.sql

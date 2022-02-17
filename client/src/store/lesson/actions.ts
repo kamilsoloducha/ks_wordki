@@ -89,7 +89,7 @@ export function setSettingCount(count: number): SetSettingCount {
 }
 
 export interface SetSettingLangauge extends LessonAction {}
-export function setSettingLanguage(language: number): SetSettingCount {
+export function setSettingLanguage(languages: number[]): SetSettingCount {
   return {
     type: DailyActionEnum.SET_SETTING_LANGUAGE,
     reduce: (state: LessonState): LessonState => {
@@ -97,7 +97,7 @@ export function setSettingLanguage(language: number): SetSettingCount {
         ...state,
         settings: {
           ...state.settings,
-          language: language,
+          languages: languages,
         },
       };
     },
@@ -244,9 +244,14 @@ export function getCardsCountSuccess(count: number): GetCardsCountSuccess {
   return {
     type: DailyActionEnum.GET_CARDS_COUNT_SUCCESS,
     reduce: (state: LessonState): LessonState => {
+      const settingsCount = state.settings.count > count ? count : state.settings.count;
       return {
         ...state,
         cardsCount: count,
+        settings: {
+          ...state.settings,
+          count: settingsCount,
+        },
       };
     },
   };

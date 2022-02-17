@@ -2,7 +2,7 @@ import { Group } from "./group";
 
 export interface LessonSettings {
   type: number;
-  language: number;
+  languages: number[];
   count: number;
   mode: number;
   groups: Group[];

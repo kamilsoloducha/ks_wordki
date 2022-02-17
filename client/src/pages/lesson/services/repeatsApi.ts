@@ -1,8 +1,5 @@
 import { AxiosResponse } from "axios";
-import http, {
-  createErrorResponse,
-  createResponse,
-} from "common/services/http/http";
+import http, { createErrorResponse, createResponse } from "common/services/http/http";
 import { GetRepeatsResponse } from "../requests/responses/getRepeatsResponse";
 import {
   GetRepeatsCountRequest,
@@ -19,31 +16,23 @@ export async function repeats(
   request: GetRepeatsRequest
 ): Promise<ApiResponse<GetRepeatsResponse>> {
   try {
-    const response = await http.get<GetRepeatsResponse>(`/repeats`, {
-      params: request,
-    });
+    const response = await http.post<GetRepeatsResponse>(`/repeats`, request);
     return createResponse(response.data);
   } catch (e: any) {
     return createErrorResponse("");
   }
 }
 
-export async function repeatsCount(
-  request: GetRepeatsCountRequest
-): Promise<ApiResponse<number>> {
+export async function repeatsCount(request: GetRepeatsCountRequest): Promise<ApiResponse<number>> {
   try {
-    const response = await http.get<number>(`/repeats/count`, {
-      params: request,
-    });
+    const response = await http.post<number>(`/repeats/count`, request);
     return createResponse(response.data);
   } catch (e: any) {
     return createErrorResponse("");
   }
 }
 
-export async function startLesson(
-  request: StartLessonRequest
-): Promise<AxiosResponse<any>> {
+export async function startLesson(request: StartLessonRequest): Promise<AxiosResponse<any>> {
   try {
     return await http.post<{}>("/lesson/start", request);
   } catch (e: any) {
@@ -51,9 +40,7 @@ export async function startLesson(
   }
 }
 
-export async function registerAnswer(
-  request: RegisterAnswerRequest
-): Promise<AxiosResponse<any>> {
+export async function registerAnswer(request: RegisterAnswerRequest): Promise<AxiosResponse<any>> {
   try {
     return await http.post<any>("/lesson/answer", request);
   } catch (e: any) {
@@ -61,9 +48,7 @@ export async function registerAnswer(
   }
 }
 
-export async function tickCard(
-  request: TickCardRequest
-): Promise<ApiResponse<any>> {
+export async function tickCard(request: TickCardRequest): Promise<ApiResponse<any>> {
   try {
     await http.put<any>("/cards/tick", request);
     return {
@@ -78,9 +63,7 @@ export async function getGroups(
   request: GetGroupsToLessonRequest
 ): Promise<ApiResponse<GetGroupToLessonResponse>> {
   try {
-    const response = await http.get<GetGroupToLessonResponse>(
-      `/groups/lesson/${request.ownerId}`
-    );
+    const response = await http.get<GetGroupToLessonResponse>(`/groups/lesson/${request.ownerId}`);
     return createResponse(response.data);
   } catch (e: any) {
     return createErrorResponse("");

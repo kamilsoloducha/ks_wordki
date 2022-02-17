@@ -1,39 +1,25 @@
+import "./NewSettings.scss";
 import * as act from "store/lesson/actions";
-import * as lang from "common/models/languages";
 import { ReactElement, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSettings } from "store/lesson/selectors";
 import { Dropdown } from "primereact/dropdown";
 import { Group } from "pages/lessonSettings/models/group";
+import { LessonTypeSelector } from "../lessonTypeSelector/LessonTypeSelector";
+import { LanguageSelector } from "../languageSelector/LanguageSelector";
 
 export default function NewSettings(): ReactElement {
   const dispatch = useDispatch();
   const settings = useSelector(selectSettings);
-  const groups = filterGroups(settings.groups, settings.language);
+  const groups = filterGroups(settings.groups, settings.languages);
 
   useEffect(() => {
     dispatch(act.getGroups());
   }, [dispatch]);
 
-  const onLanguageChanged = useCallback(
-    (event$: any) => {
-      const language = parseInt(event$.target.value);
-      dispatch(act.setSettingLanguage(language));
-    },
-    [dispatch]
-  );
-
   const onSelectedGroupChanged = useCallback(
     (event$: any) => {
       dispatch(act.setSettingGroup(event$.value));
-    },
-    [dispatch]
-  );
-
-  const onTypeChanged = useCallback(
-    (event$: any) => {
-      const type = parseInt(event$.target.value);
-      dispatch(act.setSettingType(type));
     },
     [dispatch]
   );
@@ -66,29 +52,11 @@ export default function NewSettings(): ReactElement {
 
   return (
     <>
-      <form>
-        <br />
-        Question Language:
-        <input
-          type="radio"
-          name="question"
-          id="langPol"
-          value={lang.Polish.type}
-          onChange={onLanguageChanged}
-          checked={settings.language === 1}
+      <form className="settings-form">
+        <LanguageSelector
+          selected={settings.languages}
+          onSelectedChanged={(value) => dispatch(act.setSettingLanguage(value))}
         />
-        <label htmlFor="langPol">Polish</label>
-        <input
-          type="radio"
-          name="question"
-          id="langEng"
-          value={lang.English.type}
-          onChange={onLanguageChanged}
-          checked={settings.language === 2}
-        />
-        <label htmlFor="langEng">English</label>
-        <br />
-        <br />
         <Dropdown
           value={settings.selectedGroup}
           options={groups}
@@ -102,38 +70,21 @@ export default function NewSettings(): ReactElement {
         <br />
         Count:
         <input type="number" value={settings.count} onChange={onLimitChanged} />
-        <br />
-        <br />
-        Lesson type:
-        <input
-          type="radio"
-          name="lessonType"
-          id="1"
-          value="1"
-          onChange={onTypeChanged}
-          checked={settings.type === 1}
+        <LessonTypeSelector
+          selected={settings.type}
+          onSelectedChanged={(value) => dispatch(act.setSettingType(value))}
         />
-        <label htmlFor="1">Fiszki</label>
-        <input
-          type="radio"
-          name="lessonType"
-          id="2"
-          value="2"
-          onChange={onTypeChanged}
-          checked={settings.type === 2}
-        />
-        <label htmlFor="2">Typing</label>
       </form>
       <br />
     </>
   );
 }
 
-function filterGroups(groups: Group[], language: number): Group[] {
-  if (language === 1) {
+function filterGroups(groups: Group[], languages: number[]): Group[] {
+  if (languages.includes(1)) {
     return groups.filter((x) => x.backCount > 0);
   }
-  if (language === 2) {
+  if (languages.includes(2)) {
     return groups.filter((x) => x.frontCount > 0);
   }
   return groups;

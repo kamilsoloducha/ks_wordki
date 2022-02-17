@@ -13,11 +13,11 @@ namespace Cards.Application.Services
         Task<IEnumerable<Repeat>> GetRepeats(OwnerId ownerId,
             DateTime dateTime,
             int count,
-            int questionLanguage,
+            IEnumerable<int> questionLanguage,
             long groupId,
             bool lessonIncluded,
             CancellationToken cancellationToken);
-        Task<int> GetDailyRepeatsCount(OwnerId ownerId, DateTime dateTime, int questionLanguage, CancellationToken cancellationToken);
+        Task<int> GetDailyRepeatsCount(OwnerId ownerId, DateTime dateTime, IEnumerable<int> questionLanguage, CancellationToken cancellationToken);
         Task<int> GetNewRepeatsCount(OwnerId ownerId, int questionLanguage, long? groupId, CancellationToken cancellationToken);
         Task<int> GetGroupsCount(OwnerId ownerId, CancellationToken cancellationToken);
         Task<int> GetCardsCount(OwnerId ownerId, CancellationToken cancellationToken);

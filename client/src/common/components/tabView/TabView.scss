@@ -1,0 +1,26 @@
+$hover-color: rgb(184, 184, 184);
+
+.tab-view-header-container {
+    display: flex;
+    border-bottom: 1px solid rgb(133, 133, 133);
+
+    .tab-view-header-item {
+        cursor: pointer;
+        font-weight: 600;
+        padding: 20px;
+
+        &.selected {
+            color: $hover-color;
+            border-bottom: 1px solid rgb(133, 133, 133);
+        }
+
+        &:hover {
+            border-bottom: 1px solid rgb(133, 133, 133);
+            color: $hover-color;
+        }
+    }
+}
+
+.tab-view-body-container {
+    width: 100%;
+}

@@ -33,7 +33,7 @@ export const initialState: LessonState = {
   settings: {
     mode: 1,
     count: 0,
-    language: -1,
+    languages: [],
     type: -1,
     groups: [],
     selectedGroup: null as any,

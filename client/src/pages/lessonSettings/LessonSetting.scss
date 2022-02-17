@@ -1,0 +1,38 @@
+$option-name-width: 300px;
+$color:#858585;
+$hover:#75757522;
+$active:#757575;
+
+.setting-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.settings-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button {
+        width: 300px;
+        height: 50px;
+        border: none;
+        background-color: #75757511;
+        color: $color;
+
+        &:hover {
+            background-color: $hover;
+            cursor: pointer;
+
+        }
+    }
+
+    button:disabled {
+        background-color: #0000;
+        cursor: default;
+    }
+}

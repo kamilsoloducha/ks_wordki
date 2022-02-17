@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Services;
@@ -25,7 +26,7 @@ namespace Cards.Application.Queries
                 var ownerId = OwnerId.Restore(request.UserId);
                 var dateTime = SystemClock.Now.Date;
 
-                var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, dateTime, 0, cancellationToken);
+                var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, dateTime, Enumerable.Empty<int>(), cancellationToken);
                 var groupsCount = await _queryRepository.GetGroupsCount(ownerId, cancellationToken);
                 var cardsCount = await _queryRepository.GetCardsCount(ownerId, cancellationToken);
                 // var repeatCounts = await _queryRepository.GetRepeatsCountSummary(ownerId, request.DateFrom, request.DateTo, cancellationToken);

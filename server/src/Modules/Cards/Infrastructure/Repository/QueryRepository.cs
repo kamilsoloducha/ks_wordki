@@ -25,7 +25,7 @@ namespace Cards.Infrastructure
             OwnerId ownerId,
             DateTime dateTime,
             int count,
-            int questionLanguage,
+            IEnumerable<int> questionLanguage,
             long groupId,
             bool lessonIncluded,
             CancellationToken cancellationToken)
@@ -35,19 +35,19 @@ namespace Cards.Infrastructure
                     x.OwnerId == ownerId.Value &&
                     x.NextRepeat <= dateTime &&
                     x.LessonIncluded == lessonIncluded &&
-                    (questionLanguage == 0 || x.QuestionLanguage == questionLanguage) &&
+                    (!questionLanguage.Any() || questionLanguage.Contains(x.QuestionLanguage)) &&
                     (groupId == 0 || x.GroupId == groupId))
                 .Take(count)
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<int> GetDailyRepeatsCount(OwnerId ownerId, DateTime dateTime, int questionLanguage, CancellationToken cancellationToken)
+        public async Task<int> GetDailyRepeatsCount(OwnerId ownerId, DateTime dateTime, IEnumerable<int> questionLanguage, CancellationToken cancellationToken)
             => await _cardsContext.Repeats
                 .CountAsync(x =>
                     x.OwnerId == ownerId.Value &&
                     x.NextRepeat <= dateTime &&
                     x.LessonIncluded == true &&
-                    (questionLanguage == 0 || x.QuestionLanguage == questionLanguage),
+                    (!questionLanguage.Any() || questionLanguage.Contains(x.QuestionLanguage)),
                 cancellationToken);
 
         public async Task<int> GetGroupsCount(OwnerId ownerId, CancellationToken cancellationToken)

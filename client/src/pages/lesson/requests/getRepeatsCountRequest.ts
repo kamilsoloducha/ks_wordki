@@ -1,4 +1,4 @@
 export interface GetRepeatsCountRequest {
-  questionLanguage: number | null;
+  questionLanguage: number[] | null;
   userId: string;
 }

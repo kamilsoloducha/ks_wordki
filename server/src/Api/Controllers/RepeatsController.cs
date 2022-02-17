@@ -13,19 +13,19 @@ public class RepeatsController : BaseController
 {
     public RepeatsController(IMediator mediator) : base(mediator) { }
 
-    [HttpGet]
+    [HttpPost]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> GetRepeats([FromQuery] GetRepeats.Query query, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRepeats([FromBody] GetRepeats.Query query, CancellationToken cancellationToken)
         => new JsonResult(await Mediator.Send(query, cancellationToken));
 
-    [HttpGet("count")]
+    [HttpPost("count")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> GetRepeatsCount([FromQuery] GetRepeatsCount.Query query, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRepeatsCount([FromBody] GetRepeatsCount.Query query, CancellationToken cancellationToken)
         => new JsonResult(await Mediator.Send(query, cancellationToken));
 
-    [HttpGet("new/count")]
+    [HttpPost("new/count")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> GetNewRepeatsCount([FromQuery] GetNewRepeatsCount.Query query, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetNewRepeatsCount([FromBody] GetNewRepeatsCount.Query query, CancellationToken cancellationToken)
     => new JsonResult(await Mediator.Send(query, cancellationToken));
 
 }

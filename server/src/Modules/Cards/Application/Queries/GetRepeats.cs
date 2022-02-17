@@ -23,7 +23,6 @@ namespace Cards.Application.Queries
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
                 if (!request.Count.HasValue) throw new Exception($"{nameof(request.Count)} must be defined");
-                if (!request.QuestionLanguage.HasValue) throw new Exception($"{nameof(request.QuestionLanguage)} must be defined");
 
                 var ownerId = OwnerId.Restore(request.OwnerId);
                 var now = request.LessonIncluded ? SystemClock.Now.Date : DateTime.MaxValue;
@@ -32,7 +31,7 @@ namespace Cards.Application.Queries
                     ownerId,
                     now,
                     request.Count.Value,
-                    request.QuestionLanguage.Value,
+                    request.QuestionLanguage,
                     groupId,
                     request.LessonIncluded,
                     cancellationToken
@@ -50,7 +49,7 @@ namespace Cards.Application.Queries
             public Guid OwnerId { get; set; }
             public long? GroupId { get; set; }
             public int? Count { get; set; }
-            public int? QuestionLanguage { get; set; }
+            public IEnumerable<int> QuestionLanguage { get; set; }
             public bool LessonIncluded { get; set; } = true;
         }
 

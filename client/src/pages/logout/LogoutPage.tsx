@@ -6,7 +6,8 @@ import { getLogoutUser } from "store/user/actions";
 function LogoutPage(): ReactElement {
   const dispatch = useDispatch();
   useEffect(() => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
     dispatch(getLogoutUser());
   }, [dispatch]);
   return <Redirect to="" />;

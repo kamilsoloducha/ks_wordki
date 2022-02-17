@@ -1,5 +1,5 @@
- @host = http://localhost:5000
-//@host = https://wordki-server.herokuapp.com
+// @host = http://localhost:5000
+@host = http://147.135.208.14:5000
 
 ### logining user
 # @name login
@@ -36,7 +36,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 #
-@groupId = {{allGroups.response.body.$.groups[3].id}}
+@groupId = {{allGroups.response.body.$.groups[0].id}}
 
 
 ### get group by userId and groupId
