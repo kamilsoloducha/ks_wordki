@@ -7,6 +7,7 @@ import { selectLessonType, selectSettings } from "../selectors";
 import { GetRepeatsRequest, GetRepeatsResponse, StartLessonRequest } from "pages/lesson/requests";
 import { ApiResponse } from "common/models/response";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
+import history from "../../../common/services/history";
 
 function* getCards() {
   const userId: string = yield select(selectUserId);
@@ -22,6 +23,7 @@ function* getCards() {
 
   yield call(async () => await api.startLesson(startLessonRequest));
   yield put(getCardsSuccess(apiResponse.response.repeats));
+  yield call(forwardTo, "/lesson");
 }
 
 export default function* getCardsEffect() {
@@ -37,4 +39,8 @@ function prepareRequest(settings: LessonSettings, userId: string): GetRepeatsReq
     lessonIncluded: settings.mode === mode.Repetition,
   };
   return request;
+}
+
+function forwardTo(location: any) {
+  history.push(location);
 }

@@ -1,9 +1,8 @@
 import "./NewCardsSettings.scss";
 import * as act from "store/lesson/actions";
-import { ReactElement, useCallback, useEffect } from "react";
+import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSettings } from "store/lesson/selectors";
-import { Dropdown } from "primereact/dropdown";
 import { Group } from "pages/lessonSettings/models/group";
 import { LessonTypeSelector } from "../lessonTypeSelector/LessonTypeSelector";
 import { LanguageSelector } from "../languageSelector/LanguageSelector";
@@ -73,14 +72,14 @@ function getAllCount(settings: LessonSettings): number {
   }
   if (settings.languages.includes(1)) {
     const increase =
-      settings.selectedGroup.front == 1
+      settings.selectedGroup.front === 1
         ? settings.selectedGroup.frontCount
         : settings.selectedGroup.backCount;
     count += increase;
   }
   if (settings.languages.includes(2)) {
     const increase =
-      settings.selectedGroup.front == 2
+      settings.selectedGroup.front === 2
         ? settings.selectedGroup.frontCount
         : settings.selectedGroup.backCount;
     count += increase;

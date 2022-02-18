@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
 import "./App.css";
 import LoadingPage from "common/components/loadingPage/LoadingPage";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
@@ -12,6 +12,7 @@ import { getLoginUserSuccess } from "store/user/actions";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
 import GuardedRoute from "common/components/guardedRoute/GuardedRoute";
+import history from "./common/services/history";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
 const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
@@ -36,7 +37,7 @@ export default function App() {
   return (
     <>
       <AxiosEx>
-        <BrowserRouter>
+        <Router history={history}>
           <TopBar isLogin={isLogin} />
           <div className="content">
             <Suspense fallback={<LoadingPage></LoadingPage>}>
@@ -60,7 +61,7 @@ export default function App() {
               </Switch>
             </Suspense>
           </div>
-        </BrowserRouter>
+        </Router>
       </AxiosEx>
     </>
   );

@@ -1,5 +1,5 @@
 import RootState from "./state";
-import * as url from "history";
+import history from "../../common/services/history";
 
 export enum RootActionEnum {
   REQUEST_FAILED = "[ROOT] REQUEST_FAILED",
@@ -20,7 +20,6 @@ export function requestFailed(error: Error): RequestFailed {
     error,
     type: RootActionEnum.REQUEST_FAILED,
     reduce: (state: RootState): RootState => {
-      const history = url.createBrowserHistory();
       history.push("/error");
       return { ...state };
     },
