@@ -32,6 +32,8 @@ export default function cardsReducer(state = initialState, action: Action): Card
       return actions.reduceSetFilterLearning(state, action as actions.SetFilterLearning);
     case actions.CardsActionEnum.SET_FILTER_TEXT:
       return actions.reduceSetFilterText(state, action as actions.SetFilterText);
+    case actions.CardsActionEnum.SET_FILTER_IS_TICKED:
+      return actions.reduceSetFilterIsTicked(state, action as actions.SetFilterIsTicked);
     case actions.CardsActionEnum.RESET_FILTERS:
       return actions.reduceResetFilter(state);
     case actions.CardsActionEnum.SET_FILTERED_CARDS:

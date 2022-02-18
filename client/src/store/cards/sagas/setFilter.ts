@@ -17,7 +17,10 @@ function* filterCards() {
   }
 
   if (filterState.isTicked) {
-    cards = cards.filter((item) => item.front.isTicked || item.back.isTicked);
+    cards = cards.filter((item) => {
+      console.log(item.front.isTicked, item.back.isTicked);
+      return item.front.isTicked || item.back.isTicked;
+    });
   }
 
   if (filterState.text.length > 2) {

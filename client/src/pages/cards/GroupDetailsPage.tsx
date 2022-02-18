@@ -96,7 +96,7 @@ export default function GroupDetailsPage(): ReactElement {
       dispatch(actions.setFilterLearning(false));
     } else if (filter >= 4 && filter <= 8) {
       dispatch(actions.setFilterDrawer(filter - 3));
-    } else {
+    } else if (filter === 9) {
       dispatch(actions.setFilterIsTicked(true));
     }
   };
@@ -277,7 +277,7 @@ function getLearningCard(cards: CardSummary[]): number {
 function getTickedCard(cards: CardSummary[]): number {
   let result = 0;
   cards.forEach((item) => {
-    if (false) result++;
+    if (item.back.isTicked) result++;
   });
   return result;
 }
