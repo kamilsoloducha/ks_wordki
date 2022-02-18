@@ -3,11 +3,11 @@ import * as act from "store/lesson/actions";
 import { ReactElement, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { selectCardsCount, selectRepeats, selectSettings } from "store/lesson/selectors";
+import { selectRepeats, selectSettings } from "store/lesson/selectors";
 import Settings from "./components/repetitionSettings/RepetitionSettings";
-import NewSettings from "./components/newSettings/newSettings";
 import { TabView, TabViewItemModel } from "common/components/tabView/TabeView";
 import { LessonSettings as SettingsModel } from "pages/lessonSettings/models/lessonSettings";
+import NewCardsSettings from "./components/newCardsSettings/NewCardsSettings";
 
 export default function LessonSettings(): ReactElement {
   const settings = useSelector(selectSettings);
@@ -30,7 +30,10 @@ export default function LessonSettings(): ReactElement {
       header: "Repetition",
       element: <Settings />,
     },
-    { header: "New words", element: <NewSettings /> },
+    {
+      header: "New words",
+      element: <NewCardsSettings />,
+    },
   ];
 
   const onModeChanged = useCallback(

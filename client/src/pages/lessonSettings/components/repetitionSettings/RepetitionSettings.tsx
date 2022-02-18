@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import { LessonTypeSelector } from "../lessonTypeSelector/LessonTypeSelector";
 import { LanguageSelector } from "../languageSelector/LanguageSelector";
 import { useDispatch, useSelector } from "react-redux";

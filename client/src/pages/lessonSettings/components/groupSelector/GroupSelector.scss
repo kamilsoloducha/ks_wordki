@@ -1,0 +1,30 @@
+@import '../../LessonSetting.scss';
+
+.group-selector-container {
+    display: flex;
+    align-items: center;
+
+    p {
+        width: $option-name-width;
+    }
+
+    .p-dropdown {
+        background-color: transparent;
+    }
+
+    .p-inputtext {
+        color: $color;
+    }
+
+}
+
+.group-item {
+    display: flex;
+    align-items: center;
+
+    .item-icon {
+        width: 24px;
+        margin-right: 5px;
+        margin-left: 10px;
+    }
+}

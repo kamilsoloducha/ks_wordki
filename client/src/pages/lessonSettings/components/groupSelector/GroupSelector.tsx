@@ -1,0 +1,61 @@
+import { Group } from "pages/lessonSettings/models/group";
+import { Dropdown } from "primereact/dropdown";
+import { ReactElement } from "react";
+import "./GroupSelector.scss";
+
+export function GroupSelector({ items, selectedGroup, onSelectedChanged }: Model): ReactElement {
+  return (
+    <div className="group-selector-container">
+      <p>Selected group:</p>
+      <Dropdown
+        value={selectedGroup}
+        options={items}
+        onChange={(event$) => onSelectedChanged(event$.value)}
+        itemTemplate={dropdownItemLayout}
+        valueTemplate={dropdownItemLayout}
+        optionLabel="name"
+        placeholder="Select group..."
+      />
+    </div>
+  );
+}
+
+interface Model {
+  items: Group[];
+  selectedGroup: Group;
+  onSelectedChanged: (group: Group) => void;
+}
+
+const dropdownItemLayout = (option: Group, props: any) => {
+  if (option) {
+    return (
+      <div className="group-item">
+        <strong>{option.name}</strong>
+        {flagLayout(option.front, option.frontCount)}
+        {flagLayout(option.back, option.backCount)}
+      </div>
+    );
+  }
+  return (
+    <>
+      <span>{props.placeholder}</span>
+    </>
+  );
+};
+
+const flagLayout = (lang: number, count: number) => {
+  return (
+    <>
+      <img className="item-icon" alt="" src={`/flags/${getIconFromLang(lang)}`} />
+      <strong>({count})</strong>
+    </>
+  );
+};
+
+function getIconFromLang(lang: number): string {
+  if (lang === 1) {
+    return "polish.svg";
+  } else {
+    return "english.svg";
+  }
+}
