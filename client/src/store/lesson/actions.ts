@@ -332,7 +332,7 @@ export function correct(result: number): Correct {
     reduce: (state: LessonState): LessonState => {
       const lessonHistory = [
         ...state.lessonHistory,
-        { repeat: state.repeats[0], userAnswer: state.answer } as UserRepeat,
+        { repeat: state.repeats[0], userAnswer: state.answer, result: result } as UserRepeat,
       ];
 
       const repeats = state.repeats.slice(1);
@@ -366,7 +366,7 @@ export function wrong(): Wrong {
     reduce: (state: LessonState): LessonState => {
       const lessonHistory = [
         ...state.lessonHistory,
-        { repeat: state.repeats[0], userAnswer: state.answer } as UserRepeat,
+        { repeat: state.repeats[0], userAnswer: state.answer, result: -1 } as UserRepeat,
       ];
       const currentRepeat = state.repeats[0];
       const repeats = state.repeats.slice(1);

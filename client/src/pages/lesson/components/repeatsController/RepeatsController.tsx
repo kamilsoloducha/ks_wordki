@@ -16,20 +16,14 @@ export default function RepeatsController({
           Check
         </button>
       )}
-      {lessonState.btnCorrect && (
-        <button
-          className={`correct ${isCorrect ? "focused" : ""}`}
-          onClick={onCorrectClick}
-        >
-          Correct
+      {lessonState.btnWrong && (
+        <button className={`wrong ${isCorrect ? "" : "focused"}`} onClick={onWrongClick}>
+          Wrong
         </button>
       )}
-      {lessonState.btnWrong && (
-        <button
-          className={`wrong ${isCorrect ? "" : "focused"}`}
-          onClick={onWrongClick}
-        >
-          Wrong
+      {lessonState.btnCorrect && (
+        <button className={`correct ${isCorrect ? "focused" : ""}`} onClick={onCorrectClick}>
+          Correct
         </button>
       )}
     </div>
