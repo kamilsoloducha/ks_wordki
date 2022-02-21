@@ -61,26 +61,22 @@ export default function Inserting(): ReactElement {
   }
 
   return (
-    <div>
-      Question:
+    <>
       <Question value={repeat.question} example={repeat.questionExample} language={1} />
-      <div>
-        Answer:
-        <input
-          ref={inputRef}
-          id="answer"
-          value={answer}
-          onChange={onAnswerChanged}
-          autoComplete="off"
-          disabled={!status.inserting}
-        />
-        <Answer
-          isVisible={status.answer}
-          userAnswer={answer}
-          correctAnswer={repeat.answer}
-          exampleAnswer={repeat.answerExample}
-        />
-      </div>
-    </div>
+      <input
+        ref={inputRef}
+        id="answer"
+        value={answer}
+        onChange={onAnswerChanged}
+        autoComplete="off"
+        disabled={!status.inserting}
+      />
+      <Answer
+        isVisible={status.answer}
+        userAnswer={answer}
+        correctAnswer={repeat.answer}
+        exampleAnswer={repeat.answerExample}
+      />
+    </>
   );
 }

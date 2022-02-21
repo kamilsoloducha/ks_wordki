@@ -1,7 +1,11 @@
 .correct-answer {
     display: flex;
     flex-direction: column;
-
+    height: 25vh;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 
     .correct-answer-header {
         width: 100%;

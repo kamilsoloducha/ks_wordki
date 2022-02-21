@@ -3,14 +3,17 @@ import { Dropdown } from "primereact/dropdown";
 import { ReactElement } from "react";
 import "./GroupSelector.scss";
 
-export function GroupSelector({ items, selectedGroup, onSelectedChanged }: Model): ReactElement {
+export function GroupSelector({ items, selectedGroupId, onSelectedChanged }: Model): ReactElement {
+  const selectedGroup = items.find((x) => x.id === selectedGroupId);
+  console.log(items, selectedGroupId, selectedGroup);
+
   return (
     <div className="group-selector-container">
       <p>Selected group:</p>
       <Dropdown
         value={selectedGroup}
         options={items}
-        onChange={(event$) => onSelectedChanged(event$.value)}
+        onChange={(event$) => onSelectedChanged(event$.value.id)}
         itemTemplate={dropdownItemLayout}
         valueTemplate={dropdownItemLayout}
         optionLabel="name"
@@ -22,8 +25,8 @@ export function GroupSelector({ items, selectedGroup, onSelectedChanged }: Model
 
 interface Model {
   items: Group[];
-  selectedGroup: Group;
-  onSelectedChanged: (group: Group) => void;
+  selectedGroupId: number | null;
+  onSelectedChanged: (groupId: number) => void;
 }
 
 const dropdownItemLayout = (option: Group, props: any) => {

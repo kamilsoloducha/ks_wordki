@@ -7,6 +7,7 @@ import Settings from "./components/repetitionSettings/RepetitionSettings";
 import { TabView, TabViewItemModel } from "common/components/tabView/TabeView";
 import { LessonSettings as SettingsModel } from "pages/lessonSettings/models/lessonSettings";
 import NewCardsSettings from "./components/newCardsSettings/NewCardsSettings";
+import * as mode from "./models/lesson-mode";
 
 export default function LessonSettings(): ReactElement {
   const settings = useSelector(selectSettings);
@@ -20,10 +21,12 @@ export default function LessonSettings(): ReactElement {
     {
       header: "Repetition",
       element: <Settings />,
+      value: mode.Repetition,
     },
     {
       header: "New words",
       element: <NewCardsSettings />,
+      value: mode.New,
     },
   ];
 
@@ -33,7 +36,7 @@ export default function LessonSettings(): ReactElement {
 
   return (
     <>
-      <TabView items={items} onItemChanged={onModeChanged} />
+      <TabView selectedValue={settings.mode} items={items} onItemChanged={onModeChanged} />
       <div className="settings-container">
         <button disabled={!canLessonStart(settings)} onClick={() => dispatch(act.getCards())}>
           Start

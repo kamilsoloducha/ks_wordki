@@ -45,12 +45,12 @@ export default function Fiszka(): ReactElement {
 
   return (
     <div>
-      Question:
       <Question
         value={currectRepeat.question}
         example={currectRepeat.questionExample}
         language={1}
       />
+      <hr />
       <Answer
         isVisible={status.answer}
         correctAnswer={currectRepeat.answer}

@@ -30,7 +30,7 @@ export default function NewCardsSettings(): ReactElement {
       <div className="setting-item">
         <GroupSelector
           items={groups}
-          selectedGroup={settings.selectedGroup}
+          selectedGroupId={settings.selectedGroupId}
           onSelectedChanged={(value) => dispatch(act.setSettingGroup(value))}
         />
       </div>
@@ -62,26 +62,24 @@ function filterGroups(groups: Group[], languages: number[]): Group[] {
 }
 
 function getAllCount(settings: LessonSettings): number {
-  if (!settings.selectedGroup) {
+  if (!settings.selectedGroupId) {
+    return 0;
+  }
+  const selectedGroup = settings.groups.find((x) => x.id === settings.selectedGroupId);
+  if (!selectedGroup) {
     return 0;
   }
   let count = 0;
   if (settings.languages.length === 0) {
-    count += settings.selectedGroup.backCount;
-    count += settings.selectedGroup.frontCount;
+    count += selectedGroup.backCount;
+    count += selectedGroup.frontCount;
   }
   if (settings.languages.includes(1)) {
-    const increase =
-      settings.selectedGroup.front === 1
-        ? settings.selectedGroup.frontCount
-        : settings.selectedGroup.backCount;
+    const increase = selectedGroup.front === 1 ? selectedGroup.frontCount : selectedGroup.backCount;
     count += increase;
   }
   if (settings.languages.includes(2)) {
-    const increase =
-      settings.selectedGroup.front === 2
-        ? settings.selectedGroup.frontCount
-        : settings.selectedGroup.backCount;
+    const increase = selectedGroup.front === 2 ? selectedGroup.frontCount : selectedGroup.backCount;
     count += increase;
   }
   return count;

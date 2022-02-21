@@ -1,24 +1,25 @@
 version: "3.5"
 services:
-  wordki-server.ci.e2e:
-    container_name: wordki-server.ci.e2e
-    image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
-    build:
-      context: ../../
-      dockerfile: ./build/docker/Dockerfile
-      target: integration-tests
-    links:
-      - wordki-postgres
-    env_file:
-      - secrets.E2E.env
-    environment:
-      - DatabaseConfig__Server=wordki-postgres
-      - WAIT_HOSTS=wordki-postgres:5432
-      - WAIT_HOSTS_TIMEOUT=60
-      - WAIT_BEFORE_HOSTS=10
-      - WAIT_SLEEP_INTERVAL=5
-    command: sh -c "/wait && dotnet test --test-adapter-path:. --logger:"junit""
-  wordki-postgres:
+  # wordki-server.ci.e2e:
+  #   container_name: wordki-server.ci.e2e
+  #   image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
+  #   build:
+  #     context: ../../
+  #     dockerfile: ./build/docker/Dockerfile
+  #     target: integration-tests
+  #   links:
+  #     - wordki-test
+  #   env_file:
+  #     - secrets.E2E.env
+  #   environment:
+  #     - DatabaseConfig__Server=wordki-postgres
+  #     - WAIT_HOSTS=wordki-test:5432
+  #     - WAIT_HOSTS_TIMEOUT=60
+  #     - WAIT_BEFORE_HOSTS=10
+  #     - WAIT_SLEEP_INTERVAL=5
+  #   command: sh -c "/wait && dotnet test --test-adapter-path:. --logger:"junit""
+  wordki-test:
+    container_name: wordki.postgres.ci
     image: postgres:alpine
     restart: always
     ports:
@@ -26,7 +27,10 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: changeme
-      POSTGRES_DB: mydb
+      POSTGRES_DB: wordki-test
+    volumes:
+      - ../../database/users.sql:/docker-entrypoint-initdb.d/users.sql
+      - ../../database/cards.sql:/docker-entrypoint-initdb.d/cards.sql
+      - ../../database/lessons.sql:/docker-entrypoint-initdb.d/lessons.sql
 volumes:
-  dbvol:
-    external: false
+  dbtest:

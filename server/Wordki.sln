@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lessons.Infrastructure", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9B1AAF8D-7597-4186-BF92-2C3BF9E7F242}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E2e", "tests\E2e\E2e.csproj", "{DA4DE4BB-3D16-4988-AA07-59E2B67A5654}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Tests", "tests\Api.Tests\Api.Tests.csproj", "{DA4DE4BB-3D16-4988-AA07-59E2B67A5654}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cards.Domain.Tests", "tests\Cards.Domain.Tests\Cards.Domain.Tests.csproj", "{75C72258-070F-493F-97DB-C5424CB74D77}"
 EndProject

@@ -138,7 +138,7 @@ export function setSettingMode(mode: number): SetSettingMode {
   };
 }
 
-export function setSettingGroup(group: Group): LessonAction {
+export function setSettingGroup(groupId: number): LessonAction {
   return {
     type: DailyActionEnum.SET_SETTING_GROUP,
     reduce: (state: LessonState): LessonState => {
@@ -146,7 +146,7 @@ export function setSettingGroup(group: Group): LessonAction {
         ...state,
         settings: {
           ...state.settings,
-          selectedGroup: group,
+          selectedGroupId: groupId,
         },
       };
     },

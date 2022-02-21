@@ -1,8 +1,12 @@
 .question-main-container {
     width: 100%;
+    height: 25vh;
     display: flex;
     flex-direction: column;
     text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 
     .question-value {
         width: 100%;

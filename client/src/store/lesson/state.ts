@@ -36,7 +36,7 @@ export const initialState: LessonState = {
     languages: [],
     type: -1,
     groups: [],
-    selectedGroup: null as any,
+    selectedGroupId: null,
     wrongLimit: 15,
   } as LessonSettings,
   lessonHistory: [],

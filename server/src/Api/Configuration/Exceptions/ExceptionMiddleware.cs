@@ -31,6 +31,11 @@ namespace Api.Configuration
                 _logger.LogError("A buissness rule '{rule}' has been breached", ex.Rule.GetType().Name);
                 await HandleBuissnessException(context, ex);
             }
+            catch (Exception e)
+            {
+                _logger.LogError("A buissness rule '{rule}' has been breached", e);
+                throw;
+            }
         }
 
         private async Task HandleBuissnessException(HttpContext context, BuissnessRuleFailedException exception)

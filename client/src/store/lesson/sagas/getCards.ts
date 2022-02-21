@@ -35,7 +35,7 @@ function prepareRequest(settings: LessonSettings, userId: string): GetRepeatsReq
     count: settings.count,
     questionLanguage: settings.languages,
     ownerId: userId,
-    groupId: settings.mode === mode.Repetition ? null : settings.selectedGroup?.id,
+    groupId: settings.mode === mode.Repetition ? null : settings.selectedGroupId,
     lessonIncluded: settings.mode === mode.Repetition,
   };
   return request;

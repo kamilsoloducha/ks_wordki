@@ -10,6 +10,7 @@ namespace Blueprints.Infrastrcuture.Authentication
     {
         public static IServiceCollection JwtConfig(this IServiceCollection services, IConfiguration config)
         {
+            var test = config.GetSection(nameof(JwtConfiguration));
             services.Configure<JwtConfiguration>(options => config.GetSection(nameof(JwtConfiguration)).Bind(options));
             var jwtSettings = config.GetSection(nameof(JwtConfiguration)).Get<JwtConfiguration>();
             services.AddAuthentication(x =>

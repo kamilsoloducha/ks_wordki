@@ -22,8 +22,8 @@ function LessonController({ lessonState }: Model): ReactElement {
   return (
     <>
       {lessonState.btnStart && <button onClick={onStart}>Start</button>}
-      {lessonState.btnPause && <button onClick={onPause}>Przerwa</button>}
-      {lessonState.btnFinish && <button onClick={onFinish}>Koniec</button>}
+      {/* {lessonState.btnPause && <button onClick={onPause}>Przerwa</button>} */}
+      {/* {lessonState.btnFinish && <button onClick={onFinish}>Koniec</button>} */}
     </>
   );
 }

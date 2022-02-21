@@ -1,12 +1,11 @@
 import "./TabView.scss";
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { TabViewItemHeader } from "./TabViewItemHeader";
 
-export function TabView({ items, onItemChanged }: Model): ReactElement {
-  const [selected, setSelected] = useState(0);
+export function TabView({ selectedValue, items, onItemChanged }: Model): ReactElement {
+  const content = items.find((x) => x.value === selectedValue)?.element;
 
   const onClick = (value: number) => {
-    setSelected(value);
     if (onItemChanged) onItemChanged(value);
   };
 
@@ -17,13 +16,13 @@ export function TabView({ items, onItemChanged }: Model): ReactElement {
           <TabViewItemHeader
             key={index}
             header={item.header}
-            isSelected={selected === index}
+            isSelected={selectedValue === item.value}
             value={index}
             onClick={onClick}
           />
         ))}
       </div>
-      <div className="tab-view-body-container">{items[selected].element}</div>
+      <div className="tab-view-body-container">{content}</div>
     </>
   );
 }
@@ -31,9 +30,11 @@ export function TabView({ items, onItemChanged }: Model): ReactElement {
 export interface TabViewItemModel {
   header: string;
   element: ReactElement;
+  value: number;
 }
 
 interface Model {
+  selectedValue: number;
   items: TabViewItemModel[];
   onItemChanged?: (value: number) => void;
 }
