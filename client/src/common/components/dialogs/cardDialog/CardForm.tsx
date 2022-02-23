@@ -29,7 +29,12 @@ export default function CardForm({ card, onSubmit, frontLanguage, backLanguage }
 
   return (
     <>
-      <form className="dialog-form" onSubmit={formik.handleSubmit} autoComplete="off">
+      <form
+        id="group-dialog-form"
+        className="dialog-form"
+        onSubmit={formik.handleSubmit}
+        autoComplete="off"
+      >
         <div className="dialog-form-item">
           <label htmlFor="frontValue" className="input-label">
             Front value

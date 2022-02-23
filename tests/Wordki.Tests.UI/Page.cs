@@ -1,7 +1,7 @@
 using OpenQA.Selenium;
 using FluentAssertions;
 
-namespace Wordki.Tests.UI.Login
+namespace Wordki.Tests.UI
 {
     abstract class Page
     {

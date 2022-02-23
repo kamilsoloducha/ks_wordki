@@ -5,12 +5,13 @@ import { selectForecast } from "store/dashboard/selectors";
 
 export function Forecast(): ReactElement {
   const data = useSelector(selectForecast);
+
   return (
     <div className="forecast-container">
       <div className="forecast-title">Repetitions forecast</div>
       <div className="forecast-items-container">
         {data
-          .map((item) => prepareForecasModel(item))
+          ?.map((item) => prepareForecasModel(item))
           .map((item, index) => {
             return (
               <ForecaseItem

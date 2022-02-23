@@ -67,7 +67,9 @@ export default function GroupsPage(): ReactElement {
   return (
     <>
       <div className="groups-action-container">
-        <button onClick={onaddgroup}>Create new group</button>
+        <button data-testid="new-group-button" onClick={onaddgroup}>
+          Create new group
+        </button>
         <button disabled={true}>Search from existing</button>
       </div>
       {paginatedItems.map((x) => (
