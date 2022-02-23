@@ -1,45 +1,41 @@
-import { SyntheticEvent } from "react";
-import { useHistory } from "react-router";
+import { getLanguageByType } from "common/models/languages";
 import "./GroupRow.scss";
 
-export default function GroupRow({
-  id,
-  name,
-  cardsCount,
-  cardsEnalbed,
-  onSelectionChanged,
-}: Model) {
-  const history = useHistory();
+export default function GroupRow({ groupSummary, onClick }: Model) {
+  const front = getLanguageByType(groupSummary.front);
+  const back = getLanguageByType(groupSummary.back);
 
-  const navigateToCards = (e: SyntheticEvent) => {
-    history.push("/cards/" + id);
-  };
-
-  const onCheckboxClick = (e: any) => {
-    if (onSelectionChanged) onSelectionChanged(id, e.target.checked);
+  const onClickHandle = () => {
+    if (onClick) {
+      onClick(groupSummary.id);
+    }
   };
 
   return (
-    <div className="group-row-container" onClick={navigateToCards}>
-      <input
-        type="checkbox"
-        onChange={onCheckboxClick}
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      />
-      <div className="group-row-name">{name}</div>
+    <div className="group-row-container" onClick={onClickHandle}>
+      <div className="group-row-flags">
+        <img alt={front.label} src={front.icon} width="24px" />
+        <img alt={back.label} src={back.icon} width="24px" />
+      </div>
+      <div className="group-row-name">{groupSummary.name}</div>
       <div className="group-row-cards">
-        {cardsCount}/{cardsEnalbed}
+        {groupSummary.cardsCount}/{groupSummary.cardsEnabled}
       </div>
     </div>
   );
 }
 
 interface Model {
+  groupSummary: GroupSummary;
+
+  onClick?: (id: number) => void;
+}
+
+interface GroupSummary {
   id: number;
   name: string;
+  front: number;
+  back: number;
   cardsCount: number;
-  cardsEnalbed: number;
-  onSelectionChanged?: (id: number, isSelected: boolean) => void;
+  cardsEnabled?: number;
 }

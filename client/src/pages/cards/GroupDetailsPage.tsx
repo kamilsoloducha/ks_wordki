@@ -7,20 +7,20 @@ import * as selectors from "store/cards/selectors";
 import * as actions from "store/cards/actions";
 import * as groupActions from "store/groups/actions";
 import { useParams } from "react-router";
-import CardDialog from "common/components/cardDialog/CardDialog";
-import Pagination from "common/components/pagination/Pagination";
 import InfoCard from "./components/infoCard/InfoCard";
 import Expandable from "common/components/expandable/Expandable";
 import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
-import { FormModel } from "common/components/cardDialog/CardForm";
 import { CardsFilter } from "./models/cardsFilter";
-import ActionsDialog from "common/components/actionsDialog/ActionsDialog";
-import GroupDialog from "common/components/groupDialog/GroupDialog";
-import GroupDetails from "common/components/groupDialog/groupDetails";
 import GroupDetailsComponent from "./components/groupDetails/GroupDetails";
 import { Languages } from "common/models/languages";
 import AppendToLessonDialog from "./components/appendToLessonDialog/AppendToLessonDialog";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
+import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
+import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
+import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
+import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
+import ActionsDialog from "common/components/dialogs/actionsDialog/ActionsDialog";
+import { pageSize, Pagination } from "common/components/pagination/Pagination";
 
 export default function GroupDetailsPage(): ReactElement {
   const allCards = useSelector(selectors.selectCards);
@@ -42,8 +42,8 @@ export default function GroupDetailsPage(): ReactElement {
   }, [groupId, dispatch]);
 
   useEffect(() => {
-    const first = (page - 1) * 10;
-    const last = first + 10;
+    const first = (page - 1) * pageSize;
+    const last = first + pageSize;
     setPaginatedCards(filteredCardsFromStore.slice(first, last));
   }, [page, filteredCardsFromStore]);
 
@@ -136,10 +136,6 @@ export default function GroupDetailsPage(): ReactElement {
     setEditedGroup(group);
   };
 
-  const onAppendCard = () => {
-    setAppendDialog(true);
-  };
-
   const onHideGroupDialog = () => {
     setEditedGroup(null);
   };
@@ -165,7 +161,6 @@ export default function GroupDetailsPage(): ReactElement {
   const acts = [
     { label: "Add card", action: onAddCard },
     { label: "Edit group", action: onEditGroup },
-    { label: "Append card to lesson", action: onAppendCard },
   ];
 
   return (
@@ -291,66 +286,8 @@ function getCardsCountFromDrawer(cards: CardSummary[], drawer: number): number {
   return result;
 }
 
-// function filterCards(cards: CardSummary[], filter: CardsFilter): CardSummary[] {
-//   let result = [];
-//   switch (filter) {
-//     case CardsFilter.All:
-//       result = cards;
-//       break;
-//     case CardsFilter.Learning:
-//       result = cards.filter((item) => isCardInUsed(item));
-//       break;
-//     case CardsFilter.Waiting:
-//       result = cards.filter((item) => isCardNotInUsed(item));
-//       break;
-//     case CardsFilter.Drawer1:
-//       result = cards.filter((item) => isCardFromDrawer(item, 1));
-//       break;
-//     case CardsFilter.Drawer2:
-//       result = cards.filter((item) => isCardFromDrawer(item, 2));
-//       break;
-//     case CardsFilter.Drawer3:
-//       result = cards.filter((item) => isCardFromDrawer(item, 3));
-//       break;
-//     case CardsFilter.Drawer4:
-//       result = cards.filter((item) => isCardFromDrawer(item, 4));
-//       break;
-//     case CardsFilter.Drawer5:
-//       result = cards.filter((item) => isCardFromDrawer(item, 5));
-//       break;
-//     case CardsFilter.Ticked:
-//       result = cards.filter((item) => item.front.isTicked || item.back.isTicked);
-//       break;
-//     default:
-//       result = cards;
-//       break;
-//   }
-//   return result;
-// }
-
 function isSideFromDrawer(side: SideSummary, drawer: number): boolean {
   return side.drawer === drawer && side.isUsed;
 }
-
-// function isCardFromDrawer(card: CardSummary, drawer: number): boolean {
-//   return isSideFromDrawer(card.front, drawer) || isSideFromDrawer(card.back, drawer);
-// }
-
-// function isCardInUsed(card: CardSummary): boolean {
-//   return card.front.isUsed || card.back.isUsed;
-// }
-
-// function isCardNotInUsed(card: CardSummary): boolean {
-//   return !card.front.isUsed || !card.back.isUsed;
-// }
-
-// function filterByText(text: string, cards: CardSummary[]): CardSummary[] {
-//   const searchValue = text.toLowerCase();
-//   return cards.filter(
-//     (item) =>
-//       item.front.value.toLowerCase().indexOf(searchValue) >= 0 ||
-//       item.back.value.toLowerCase().indexOf(searchValue) >= 0
-//   );
-// }
 
 const drawers = [1, 2, 3, 4, 5];

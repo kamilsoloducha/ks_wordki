@@ -8,6 +8,31 @@ using Cards.Domain;
 
 namespace Cards.Application.Services
 {
+
+    public class SearchQuery
+    {
+        public string SearchingTerm { get; }
+        public int Skip { get; }
+        public int Take { get; }
+
+        private SearchQuery(
+            string searchingTerm,
+            int skip,
+            int take)
+        {
+            SearchingTerm = searchingTerm;
+            Skip = skip;
+            Take = take;
+        }
+
+        public static SearchQuery Create(string searchingTerm, int pageNumber, int pageCount)
+        {
+            var skip = pageNumber < 1 ? 0 : pageCount * (pageNumber - 1);
+            return new SearchQuery(searchingTerm, skip, pageCount);
+        }
+
+    }
+
     public interface IQueryRepository
     {
         Task<IEnumerable<Repeat>> GetRepeats(OwnerId ownerId,
@@ -25,6 +50,7 @@ namespace Cards.Application.Services
 
 
         Task<IEnumerable<GroupSummary>> GetGroupSummaries(Guid ownerId, CancellationToken cancellationToken);
+        Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchQuery query, CancellationToken cancellationToken);
         Task<IEnumerable<CardSummary>> GetCardSummaries(Guid ownerId, long groupId, CancellationToken cancellationToken);
         Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken);
         Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken);

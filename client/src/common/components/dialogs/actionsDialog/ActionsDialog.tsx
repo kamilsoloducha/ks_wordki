@@ -2,23 +2,14 @@ import "./ActionsDialog.scss";
 import { Dialog } from "primereact/dialog";
 import { ReactElement } from "react";
 
-export default function ActionsDialog({
-  isVisible,
-  onHide,
-  actions,
-}: Model): ReactElement {
+export default function ActionsDialog({ isVisible, onHide, actions }: Model): ReactElement {
   const onButtonClick = (action: () => void) => {
     action();
     onHide();
   };
 
   return (
-    <Dialog
-      showHeader={false}
-      visible={isVisible}
-      onHide={onHide}
-      style={{ padding: "none" }}
-    >
+    <Dialog showHeader={false} visible={isVisible} onHide={onHide} style={{ padding: "none" }}>
       <div className="actions-dialog-container">
         {actions.map((item) => (
           <button

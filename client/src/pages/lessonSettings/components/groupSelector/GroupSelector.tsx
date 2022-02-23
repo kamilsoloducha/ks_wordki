@@ -5,7 +5,6 @@ import "./GroupSelector.scss";
 
 export function GroupSelector({ items, selectedGroupId, onSelectedChanged }: Model): ReactElement {
   const selectedGroup = items.find((x) => x.id === selectedGroupId);
-  console.log(items, selectedGroupId, selectedGroup);
 
   return (
     <div className="group-selector-container">

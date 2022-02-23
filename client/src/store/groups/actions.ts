@@ -1,4 +1,4 @@
-import GroupDetails from "common/components/groupDialog/groupDetails";
+import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
 import { GroupSummary } from "pages/groups/models/groupSummary";
 import GroupsState from "./state";
 
@@ -39,9 +39,7 @@ export interface GetGroupsSummarySuccess extends GroupsAction {
   groups: GroupSummary[];
 }
 
-export function getGroupsSummarySuccess(
-  groups: GroupSummary[]
-): GetGroupsSummarySuccess {
+export function getGroupsSummarySuccess(groups: GroupSummary[]): GetGroupsSummarySuccess {
   return {
     groups,
     type: GroupsActionEnum.GET_GROUPS_SUMMARY_SUCCESS,
@@ -52,10 +50,7 @@ export function getGroupsSummarySuccess(
 }
 
 export interface SelectionChanged extends GroupsAction {}
-export function selectionChanged(
-  id: number,
-  isSelected: boolean
-): SelectionChanged {
+export function selectionChanged(id: number, isSelected: boolean): SelectionChanged {
   return {
     type: GroupsActionEnum.SELECTION_CHANGED,
     reduce: (state: GroupsState): GroupsState => {
@@ -81,9 +76,7 @@ export function selectItemById(groupId: number): SelectItem {
   return {
     type: GroupsActionEnum.SELECT_ITEM,
     reduce: (state: GroupsState): GroupsState => {
-      const selectedItem = state.groups.find(
-        (x) => x.id === groupId
-      ) as GroupSummary;
+      const selectedItem = state.groups.find((x) => x.id === groupId) as GroupSummary;
       return { ...state, selectedItem };
     },
   };

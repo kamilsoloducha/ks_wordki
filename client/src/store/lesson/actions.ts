@@ -132,7 +132,6 @@ export function setSettingMode(mode: number): SetSettingMode {
           ...state.settings,
           mode: mode,
         },
-        moreCards: mode === lessonMode.New,
       };
     },
   };
@@ -184,7 +183,7 @@ export function getCards(): LessonAction {
   return {
     type: DailyActionEnum.GET_CARDS,
     reduce: (state: LessonState): LessonState => {
-      return { ...state, lessonState: l.Loading };
+      return { ...state, lessonState: l.Loading, isProcessing: true };
     },
   };
 }
@@ -200,6 +199,7 @@ export function getCardsSuccess(repeats: Repeat[]): GetCardsSuccess {
         repeats: allRepeats,
         lessonCount: allRepeats.length,
         lessonState: l.StartLessonPending,
+        isProcessing: false,
       };
     },
   };
@@ -245,12 +245,14 @@ export function getCardsCountSuccess(count: number): GetCardsCountSuccess {
     type: DailyActionEnum.GET_CARDS_COUNT_SUCCESS,
     reduce: (state: LessonState): LessonState => {
       const settingsCount = state.settings.count > count ? count : state.settings.count;
+      const mode = count > 0 ? lessonMode.Repetition : lessonMode.New;
       return {
         ...state,
         cardsCount: count,
         settings: {
           ...state.settings,
           count: settingsCount,
+          mode: mode,
         },
       };
     },

@@ -20,3 +20,4 @@ export const selectResults = (state: MainState) => state.lessonReducer.results;
 export const selectLessonType = (state: MainState) => state.lessonReducer.lessonType;
 
 export const selectSettings = (state: MainState) => state.lessonReducer.settings;
+export const selectIsProcessing = (state: MainState) => state.lessonReducer.isProcessing;

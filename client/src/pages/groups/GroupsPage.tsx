@@ -1,26 +1,28 @@
-import GroupDetails from "common/components/groupDialog/groupDetails";
-import GroupDialog from "common/components/groupDialog/GroupDialog";
-import { ReactElement, useEffect } from "react";
+import "./GroupsPage.scss";
+import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
+import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
+import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
+import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
+import { pageSize, Pagination } from "common/components/pagination/Pagination";
+import { ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   addGroup,
-  connectGroups,
   getGroupsSummary,
   resetSelectedItem,
-  selectionChanged,
   selectItem,
   updateGroup,
 } from "store/groups/actions";
-import {
-  selectGroups,
-  selectIsLoading,
-  selectSelectedItem,
-} from "store/groups/selectors";
+import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/selectors";
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
 
 export default function GroupsPage(): ReactElement {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const [page, setPage] = useState(1);
+  const [paginatedItems, setPaginatedItems] = useState<GroupSummary[]>([]);
   const isLoading = useSelector(selectIsLoading);
   const groups = useSelector(selectGroups);
   const selectedItem = useSelector(selectSelectedItem);
@@ -32,8 +34,14 @@ export default function GroupsPage(): ReactElement {
     dispatch(getGroupsSummary());
   }, [dispatch]);
 
+  useEffect(() => {
+    const first = (page - 1) * pageSize;
+    const last = first + pageSize;
+    setPaginatedItems(groups.slice(first, last));
+  }, [page, groups]);
+
   if (isLoading) {
-    return <>Loading...</>;
+    return <LoadingSpinner />;
   }
 
   const onhide = () => {
@@ -48,34 +56,36 @@ export default function GroupsPage(): ReactElement {
     dispatch(selectItem({} as GroupSummary));
   };
 
-  const onConnectGroups = () => {
-    dispatch(connectGroups());
-  };
-
   const selectGroup = (group: GroupSummary) => {
-    dispatch(selectItem(group));
+    history.push("/cards/" + group.id);
   };
 
-  const onGroupSelected = (id: number, isSelected: boolean) => {
-    dispatch(selectionChanged(id, isSelected));
+  const onPageChagned = (event: PageChangedEvent) => {
+    setPage(event.currectPage);
   };
 
   return (
     <>
-      Groups
-      <button onClick={onaddgroup}>Add Group</button>
-      <button onClick={onConnectGroups}>Connect Groups</button>
-      {groups.map((x) => (
+      <div className="groups-action-container">
+        <button onClick={onaddgroup}>Create new group</button>
+        <button disabled={true}>Search from existing</button>
+      </div>
+      {paginatedItems.map((x) => (
         <div key={x.id} onClick={() => selectGroup(x)}>
           <GroupRow
-            id={x.id}
-            name={x.name}
-            cardsCount={x.cardsCount}
-            cardsEnalbed={x.cardsEnabled}
-            onSelectionChanged={onGroupSelected}
+            groupSummary={{
+              id: x.id,
+              name: x.name,
+              front: 1,
+              back: 2,
+              cardsCount: x.cardsCount,
+              cardsEnabled: x.cardsEnabled ?? 0,
+            }}
           />
+          <hr style={{ backgroundColor: "rgb(133, 133, 133)", height: "1px", border: "none" }} />
         </div>
       ))}
+      <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
       <GroupDialog group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
     </>
   );

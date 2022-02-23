@@ -2,15 +2,17 @@ import "./LessonSetting.scss";
 import * as act from "store/lesson/actions";
 import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSettings } from "store/lesson/selectors";
+import { selectIsProcessing, selectSettings } from "store/lesson/selectors";
 import Settings from "./components/repetitionSettings/RepetitionSettings";
 import { TabView, TabViewItemModel } from "common/components/tabView/TabeView";
 import { LessonSettings as SettingsModel } from "pages/lessonSettings/models/lessonSettings";
 import NewCardsSettings from "./components/newCardsSettings/NewCardsSettings";
 import * as mode from "./models/lesson-mode";
+import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 
 export default function LessonSettings(): ReactElement {
   const settings = useSelector(selectSettings);
+  const isProcessing = useSelector(selectIsProcessing);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,9 +38,13 @@ export default function LessonSettings(): ReactElement {
 
   return (
     <>
+      {isProcessing && <LoadingSpinner />}
       <TabView selectedValue={settings.mode} items={items} onItemChanged={onModeChanged} />
       <div className="settings-container">
-        <button disabled={!canLessonStart(settings)} onClick={() => dispatch(act.getCards())}>
+        <button
+          disabled={!canLessonStart(settings) || isProcessing}
+          onClick={() => dispatch(act.getCards())}
+        >
           Start
         </button>
       </div>

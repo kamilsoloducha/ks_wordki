@@ -1,12 +1,17 @@
 .group-row-container {
     width: 100%;
     padding: 10px 5px;
-    background-color: white;
     display: flex;
     align-items: center;
+    cursor: pointer;
 
     &:hover {
-        background-color: rgb(240, 240, 240);
+        background-color: rgba(255, 255, 255, 0.068);
+    }
+
+    .group-row-flags {
+        display: flex;
+        flex-direction: column;
     }
 
     .group-row-name {
@@ -18,14 +23,5 @@
     .group-row-cards {
         margin-left: auto;
         margin-right: 20px;
-    }
-
-    input[type=checkbox] {
-        -ms-transform: scale(2);
-        -moz-transform: scale(2);
-        -webkit-transform: scale(2);
-        -o-transform: scale(2);
-        transform: scale(2);
-        padding: 10px;
     }
 }

@@ -80,9 +80,18 @@ namespace Cards.Infrastructure
             => await _cardsContext.GroupSummaries.SingleOrDefaultAsync(x => x.Id == groupId, cancellationToken);
 
         public async Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken)
-            => await _cardsContext.GroupsToLesson.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
+            => await _cardsContext.GroupsToLesson
+                .Where(x => x.OwnerId == ownerId && (x.FrontCount > 0 || x.BackCount > 0))
+                .ToListAsync(cancellationToken);
 
         public async Task<IEnumerable<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop, CancellationToken cancellationToken)
             => await _cardsContext.RepeatCounts.Where(x => x.OwnerId == ownerId && x.Date >= start.Date && x.Date <= stop.Date).ToListAsync(cancellationToken);
+
+        public async Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchQuery query, CancellationToken cancellationToken)
+            => await _cardsContext.GroupSummaries
+            .Where(x => x.Name.Contains(query.SearchingTerm))
+            .Skip(query.Skip)
+            .Take(query.Take)
+            .ToListAsync(cancellationToken);
     }
 }

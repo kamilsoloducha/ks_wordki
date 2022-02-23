@@ -1,14 +1,10 @@
+import "../forms.scss";
 import "./CardForm.scss";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useRef } from "react";
 import Language from "common/models/languages";
 
-export default function CardForm({
-  card,
-  onSubmit,
-  frontLanguage,
-  backLanguage,
-}: Model) {
+export default function CardForm({ card, onSubmit, frontLanguage, backLanguage }: Model) {
   const firstInputRef = useRef<any>(null);
 
   const onsubmit = useCallback(
@@ -33,12 +29,14 @@ export default function CardForm({
 
   return (
     <>
-      <form id="form" onSubmit={formik.handleSubmit} autoComplete="off">
-        <div className="form-item">
-          <label className="form-label">Front value</label>
+      <form className="dialog-form" onSubmit={formik.handleSubmit} autoComplete="off">
+        <div className="dialog-form-item">
+          <label htmlFor="frontValue" className="input-label">
+            Front value
+          </label>
           {frontLanguage && (
             <img
-              className="input-flag"
+              className="dialog-input-icon"
               src={frontLanguage?.icon}
               width="24px"
               alt={frontLanguage.label}
@@ -56,11 +54,13 @@ export default function CardForm({
           />
         </div>
 
-        <div className="form-item">
-          <label className="form-label">Back value</label>
+        <div className="dialog-form-item">
+          <label htmlFor="backValue" className="input-label">
+            Back value
+          </label>
           {backLanguage && (
             <img
-              className="input-flag"
+              className="dialog-input-icon"
               src={backLanguage?.icon}
               width="24px"
               alt={backLanguage.label}
@@ -77,8 +77,18 @@ export default function CardForm({
           />
         </div>
 
-        <div className="form-item">
-          <label className="form-label">Front example</label>
+        <div className="dialog-form-item">
+          <label htmlFor="frontExample" className="input-label">
+            Front example
+          </label>
+          {frontLanguage && (
+            <img
+              className="dialog-input-icon"
+              src={frontLanguage?.icon}
+              width="24px"
+              alt={frontLanguage.label}
+            />
+          )}
           <input
             className="form-text-input"
             id="frontExample"
@@ -90,8 +100,18 @@ export default function CardForm({
           />
         </div>
 
-        <div className="form-item">
-          <label className="form-label">Back example</label>
+        <div className="dialog-form-item">
+          {backLanguage && (
+            <img
+              className="dialog-input-icon"
+              src={backLanguage?.icon}
+              width="24px"
+              alt={backLanguage.label}
+            />
+          )}
+          <label htmlFor="backExample" className="input-label">
+            Back example
+          </label>
           <input
             className="form-text-input"
             id="backExample"
@@ -103,8 +123,10 @@ export default function CardForm({
           />
         </div>
 
-        <div>
-          <label className="form-label">Front used</label>
+        <div className="dialog-form-item">
+          <label htmlFor="frontEnabled" className="checkbox-label">
+            Front used
+          </label>
           <input
             id="frontEnabled"
             name="frontEnabled"
@@ -114,8 +136,10 @@ export default function CardForm({
           />
         </div>
 
-        <div>
-          <label className="form-label">Back used</label>
+        <div className="dialog-form-item">
+          <label htmlFor="backEnabled" className="checkbox-label">
+            Back used
+          </label>
           <input
             id="backEnabled"
             name="backEnabled"
@@ -125,8 +149,10 @@ export default function CardForm({
           />
         </div>
 
-        <div className="form-item">
-          <label className="form-label">Comment</label>
+        <div className="dialog-form-item">
+          <label htmlFor="comment" className="input-label">
+            Comment
+          </label>
           <input
             className="form-text-input"
             id="comment"
@@ -138,8 +164,10 @@ export default function CardForm({
           />
         </div>
 
-        <div>
-          <label className="form-label">Is Ticked</label>
+        <div className="dialog-form-item">
+          <label htmlFor="isTicked" className="checkbox-label">
+            Is Ticked
+          </label>
           <input
             id="isTicked"
             name="isTicked"

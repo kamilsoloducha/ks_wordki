@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { PageChangedEvent } from "./pageChagnedEvent";
 import "./Pagination.scss";
 
-const pageSize = 10;
+export const pageSize = 30;
 
-export default function Pagination({ totalCount, onPageChagned, search, onSearchChanged }: Model) {
+export function Pagination({ totalCount, onPageChagned, search, onSearchChanged }: Model) {
   const [currectPage, setCurrectPage] = useState(1);
   const totalPages = Math.ceil(totalCount / pageSize);
   const buttons = getPagesToDispaly(totalPages, currectPage);

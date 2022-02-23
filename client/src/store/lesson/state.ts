@@ -5,6 +5,7 @@ import UserRepeat from "pages/lesson/models/userRepeat";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 
 export default interface LessonState {
+  isProcessing: boolean;
   repeats: Repeat[];
   lessonState: LessonStatus;
   isCorrect: boolean | null;
@@ -17,10 +18,10 @@ export default interface LessonState {
   results: Results;
   settings: LessonSettings;
   lessonHistory: UserRepeat[];
-  moreCards: boolean;
 }
 
 export const initialState: LessonState = {
+  isProcessing: false,
   repeats: [],
   lessonState: SetLesson,
   isCorrect: null,
@@ -40,5 +41,4 @@ export const initialState: LessonState = {
     wrongLimit: 15,
   } as LessonSettings,
   lessonHistory: [],
-  moreCards: false,
 };

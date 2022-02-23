@@ -7,7 +7,7 @@ PUT {{host}}/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "kamil",
+    "userName": "user",
     "password": "pass"
 }
 
@@ -42,7 +42,7 @@ Authorization: {{authToken}}
 
 {
     "userId": "{{userId}}",
-    "groupName":"prof - praca",
+    "groupName":"Information: Executed action Api.GroupsController.Add (Api) in 390.7392ms",
     "front":1,
     "back":2,
     "cards":[     

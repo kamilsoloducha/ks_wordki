@@ -33,7 +33,6 @@ export default function DashboardPage(): ReactElement {
         <Info title="Groups" value={data.groupsCount} onClick={() => history.push("/groups")} />
         <Info title="Cards" value={data.cardsCount} onClick={() => history.push("/cards")} />
       </div>
-      <br />
       <Forecast />
     </>
   );

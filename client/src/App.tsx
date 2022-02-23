@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Route, Router, Switch } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import LoadingPage from "common/components/loadingPage/LoadingPage";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import "primeicons/primeicons.css";

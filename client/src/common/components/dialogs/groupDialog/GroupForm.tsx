@@ -1,4 +1,5 @@
 import "./GroupForm.scss";
+import "../forms.scss";
 import Language, { Languages } from "common/models/languages";
 import { useFormik } from "formik";
 import { Dropdown } from "primereact/dropdown";
@@ -17,34 +18,23 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
   const formik = useFormik({
     initialValues: {
       name: group?.name ?? "",
-      front: group?.front,
-      back: group?.back,
+      front: 0,
+      back: 0,
     },
     onSubmit: onsubmit,
   });
 
-  const options = Languages;
-
-  const languageOptions = (option: Language) => {
-    return option ? (
-      <div className="language-options-item">
-        <img
-          className="flag"
-          src={option.icon}
-          width="24px"
-          alt={option.label}
-        />
-        {option.label}
-      </div>
-    ) : (
-      <div></div>
-    );
-  };
-
   return (
-    <form id="form" onSubmit={formik.handleSubmit} autoComplete="off">
-      <div>
-        <label>Name</label>
+    <form
+      id="group-dialog-form"
+      className="dialog-form"
+      onSubmit={formik.handleSubmit}
+      autoComplete="off"
+    >
+      <div className="dialog-form-item">
+        <label htmlFor="name" className="input-label">
+          Name
+        </label>
         <input
           id="name"
           name="name"
@@ -53,26 +43,30 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
           value={formik.values.name}
         />
       </div>
-      <div>
+      <div className="dialog-form-item">
+        <label className="input-label">Front Language</label>
         <Dropdown
           value={formik.values.front}
-          options={options}
+          options={Languages}
           onChange={(e) => formik.setFieldValue("front", e.value)}
           optionLabel="label"
           optionValue="type"
-          itemTemplate={languageOptions}
-          valueTemplate={languageOptions}
+          itemTemplate={dropdownItemLayout}
+          valueTemplate={dropdownItemLayout}
+          placeholder="Select language..."
         />
       </div>
-      <div>
+      <div className="dialog-form-item">
+        <label className="input-label">Back Language</label>
         <Dropdown
           value={formik.values.back}
-          options={options}
+          options={Languages}
           onChange={(e) => formik.setFieldValue("back", e.value)}
           optionLabel="label"
           optionValue="type"
-          itemTemplate={languageOptions}
-          valueTemplate={languageOptions}
+          itemTemplate={dropdownItemLayout}
+          valueTemplate={dropdownItemLayout}
+          placeholder="Select language..."
         />
       </div>
     </form>
@@ -89,3 +83,14 @@ interface Model {
   group: GroupDetails;
   onSubmit: (group: GroupDetails) => void;
 }
+
+const dropdownItemLayout = (option: Language, props: any) => {
+  return option ? (
+    <div className="language-options-item">
+      <img className="flag" src={option.icon} width="24px" alt={option.label} />
+      {option.label}
+    </div>
+  ) : (
+    <span>{props.placeholder}</span>
+  );
+};
