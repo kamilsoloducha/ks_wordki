@@ -1,5 +1,8 @@
 using OpenQA.Selenium;
 using FluentAssertions;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Threading;
 
 namespace Wordki.Tests.UI
 {
@@ -22,8 +25,7 @@ namespace Wordki.Tests.UI
 
         public void EnsurePageLoaded()
         {
-
-            Driver.Url.Should().Be(Url);
+            // Driver.Url.Should().Be(Url);
             Driver.Title.Should().Be(Title);
         }
 
@@ -32,5 +34,7 @@ namespace Wordki.Tests.UI
             if (!append) element.Clear();
             element.SendKeys(text);
         }
+
+        public void Wait10s(int seconds) => Thread.Sleep(TimeSpan.FromSeconds(seconds));
     }
 }

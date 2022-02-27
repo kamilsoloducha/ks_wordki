@@ -23,10 +23,10 @@ namespace Wordki.Tests.UI
             var options = new ChromeOptions();
             // options.AddArguments("headless");
             options.AddArguments("diable-dev-shm-usage",
-             "disable-gpu",
-              "disable-infobars",
-              "ignore-certificate-errors",
-               "no-sandbox");
+                "disable-gpu",
+                "disable-infobars",
+                "ignore-certificate-errors",
+                "no-sandbox");
             Driver = new ChromeDriver(options);
         }
 
