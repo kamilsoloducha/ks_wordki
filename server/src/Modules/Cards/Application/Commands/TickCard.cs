@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
 using Cards.Domain;
+using FluentValidation;
 using MediatR;
 
 namespace Cards.Application.Commands
@@ -39,7 +40,15 @@ namespace Cards.Application.Commands
         {
             public Guid UserId { get; set; }
             public long SideId { get; set; }
+        }
 
+        internal class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
+                RuleFor(x => x.SideId).Must(x => x > 0);
+            }
         }
     }
 }

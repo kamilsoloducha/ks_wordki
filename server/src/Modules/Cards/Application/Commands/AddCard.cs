@@ -67,8 +67,8 @@ namespace Cards.Application.Commands
         {
             public CommandValidator()
             {
-                RuleFor(x => x.GroupId).Must(x => x != 0);
                 RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
+                RuleFor(x => x.GroupId).Must(x => x != 0);
                 RuleFor(x => x.Front.Value).NotEmpty();
                 RuleFor(x => x.Back.Value).NotEmpty();
             }

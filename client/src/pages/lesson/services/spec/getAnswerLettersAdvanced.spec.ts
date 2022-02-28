@@ -256,26 +256,25 @@ const multipleWordsMissingWord: Context = {
 
 describe("getAnswerLettersAdvanced", () => {
   [
-    // singleCorrectWord,
-    // singleWordChangedOneLetter,
-    // singleWordChangedMoreLetters,
-    // singleWordAdditionalSingleLetter,
-    // singleWordAdditionalMoreLetters,
-    // singleWordAdditionalSingleLetterWithSwap,
-    // singleWordAdditionalMoreLettersWithSwap,
-    // singleWordMissingSingleLetter,
-    // singleWordMissingMoreLetters,
-    // singleWordMissingMoreLettersInRow,
-    // singleWordMissingMoreLettersWithSwap,
+    singleCorrectWord,
+    singleWordChangedOneLetter,
+    singleWordChangedMoreLetters,
+    singleWordAdditionalSingleLetter,
+    singleWordAdditionalMoreLetters,
+    singleWordAdditionalSingleLetterWithSwap,
+    singleWordAdditionalMoreLettersWithSwap,
+    singleWordMissingSingleLetter,
+    singleWordMissingMoreLetters,
+    singleWordMissingMoreLettersInRow,
+    singleWordMissingMoreLettersWithSwap,
 
-    // multipleWords,
-    // multipleWordsAdditionalLetters,
-    singleWordAdditionalMoreLettersCustom1,
+    multipleWords,
+    multipleWordsAdditionalLetters,
+    // singleWordAdditionalMoreLettersCustom1,
     // multipleWordsMissingWord,
   ].forEach((item, index) => {
     it("should prepare answer letters :: " + index, () => {
       const result = getAnswerLettersAdvanced(item.givenCorrectAnswer, item.givenUserAnswer);
-      console.log(result);
       expect(result).toStrictEqual(item.expectedAnswerLetters);
     });
   });

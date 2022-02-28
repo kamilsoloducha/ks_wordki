@@ -12,7 +12,7 @@ namespace Utils
         {
             get
             {
-                return _isOverriden ? _overridenValue : DateTime.Now;
+                return _isOverriden ? _overridenValue : DateTime.UtcNow;
             }
         }
 

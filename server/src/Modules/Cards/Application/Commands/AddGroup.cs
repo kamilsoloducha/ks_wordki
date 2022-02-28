@@ -38,10 +38,7 @@ namespace Cards.Application.Commands
             }
         }
 
-        internal class CommandValidator : AbstractValidator<Command>
-        {
 
-        }
 
         public class Command : RequestBase<long>
         {
@@ -59,6 +56,20 @@ namespace Cards.Application.Commands
             public string BackValue { get; set; }
             public string BackExample { get; set; }
             public string Comment { get; set; }
+        }
+
+        internal class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
+                RuleFor(x => x.GroupName).NotEmpty();
+                RuleFor(x => x.Front).Must(x => x >= 0);
+                RuleFor(x => x.Back).Must(x => x >= 0);
+
+                RuleForEach(x => x.Cards).Must(x => !string.IsNullOrWhiteSpace(x.FrontValue));
+                RuleForEach(x => x.Cards).Must(x => !string.IsNullOrWhiteSpace(x.BackValue));
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using Blueprints.Application.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Utils;
 
 namespace Blueprints.Infrastrcuture.Authentication
 {
@@ -27,7 +28,7 @@ namespace Blueprints.Infrastrcuture.Authentication
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = SystemClock.Now.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));

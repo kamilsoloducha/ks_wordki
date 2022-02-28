@@ -1,7 +1,7 @@
 import "./Answer.scss";
 import { ReactElement } from "react";
-import { AnswerLetter } from "pages/lesson/models/answer";
 import { getAnswerLetters } from "pages/lesson/services/getAnswerLetters";
+import * as leven from "pages/lesson/services/levenshteinDistance";
 
 export default function Answer({
   isVisible,
@@ -10,18 +10,19 @@ export default function Answer({
   exampleAnswer,
 }: Model): ReactElement {
   const answerLetters = getAnswerLetters(correctAnswer, userAnswer);
+  const answer = leven.levenshtein(correctAnswer, userAnswer);
   return (
     <div className={`correct-answer `}>
       <div className="correct-answer-value">
-        {answerLetters.map((item: AnswerLetter, i: number) => (
+        {answer.map((item: any, i: number) => (
           <span
             key={i}
-            className={`correct-answer-value ${item.isCorrect ? "correct" : "wrong"} ${
-              item.isAdditional ? "additional" : ""
+            className={`correct-answer-value ${item.type === leven.Equal ? "correct" : "wrong"} ${
+              item.type === leven.Insert ? "additional" : ""
             }
             ${isVisible ? "" : "invisible"}`}
           >
-            {item.letter}
+            {item.char}
           </span>
         ))}
       </div>
