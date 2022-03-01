@@ -1,5 +1,4 @@
 import * as l from "pages/lesson/models/lessonState";
-import * as lessonMode from "pages/lessonSettings/models/lesson-mode";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
 import UserRepeat from "pages/lesson/models/userRepeat";
@@ -245,14 +244,12 @@ export function getCardsCountSuccess(count: number): GetCardsCountSuccess {
     type: DailyActionEnum.GET_CARDS_COUNT_SUCCESS,
     reduce: (state: LessonState): LessonState => {
       const settingsCount = state.settings.count > count ? count : state.settings.count;
-      const mode = count > 0 ? lessonMode.Repetition : lessonMode.New;
       return {
         ...state,
         cardsCount: count,
         settings: {
           ...state.settings,
           count: settingsCount,
-          mode: mode,
         },
       };
     },

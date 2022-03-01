@@ -1,3 +1,4 @@
+import "./LessonPage.scss";
 import * as actions from "store/lesson/actions";
 import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
@@ -6,18 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import Fiszka from "./components/fiszka/Fiszka";
 import Inserting from "./components/inserting/Inserting";
-import LessonController from "./components/lessonController/LessonController";
 import RepeatsController from "./components/repeatsController/RepeatsController";
 import { FinishPending } from "./models/lessonState";
-import { RepeatHistory } from "./components/repeatsHistory/RepeatsHistory";
+import { LessonInformation } from "./components/lessonInformation/LessonInformation";
 
 export default function LessonPage(): ReactElement {
-  const [repeatsPopup, setRepeatsPopup] = useState(false);
   const questions = useSelector(sel.selectRepeats);
   const status = useSelector(sel.selectLessonState);
   const isCorrect = useSelector(sel.selectIsCorrect);
   const lessonType = useSelector(sel.selectLessonType);
-  const repeatsHistory = useSelector(sel.selectLessonHistory);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -48,24 +46,16 @@ export default function LessonPage(): ReactElement {
     dispatch(actions.check());
   }, [dispatch]);
 
-  const showHistory = () => {
-    setRepeatsPopup(true);
-  };
-
-  const hideHistory = () => {
-    setRepeatsPopup(false);
-  };
-
   const mainComponent = lessonType === 2 ? <Inserting /> : <Fiszka />;
 
   return (
-    <>
-      <div>Pozostało: {questions.length}</div>
-      <LessonController lessonState={status} />
-      <button onClick={() => dispatch(actions.tickCard())}>Tick the card</button>
-      <button onClick={() => showHistory()} disabled={repeatsHistory.length === 0}>
-        Show history
-      </button>
+    <div className="lesson-page">
+      {status.btnStart && (
+        <button id="start-lesson-button" onClick={() => dispatch(actions.startLesson())}>
+          Start
+        </button>
+      )}
+      <LessonInformation />
       {mainComponent}
       <RepeatsController
         onCheckClick={check}
@@ -74,11 +64,6 @@ export default function LessonPage(): ReactElement {
         lessonState={status}
         isCorrect={isCorrect}
       />
-      <RepeatHistory
-        visible={repeatsPopup}
-        onHide={hideHistory}
-        history={[...repeatsHistory].reverse()}
-      />
-    </>
+    </div>
   );
 }

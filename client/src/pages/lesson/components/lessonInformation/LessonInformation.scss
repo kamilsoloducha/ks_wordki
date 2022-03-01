@@ -1,0 +1,34 @@
+.lesson-information {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid rgb(31, 31, 31);
+    align-items: center;
+
+    .lesson-information-item {
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 5px;
+
+        // .label {}
+
+        .value {
+            font-weight: 800;
+            font-size: x-large;
+
+            &.correct {
+                color: green;
+            }
+
+            &.accepted {
+                color: yellow;
+            }
+
+            &.wrong {
+                color: red;
+            }
+        }
+    }
+}

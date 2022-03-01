@@ -22,9 +22,9 @@ Authorization: {{authToken}}
 
 {
     "userId": "{{userId}}",
-    "groupName":"prof - mieszkanie",
-    "front":1,
-    "back":2,
+    "groupName":"prof - kierunek i ruch",
+    "front":2,
+    "back":1,
     "cards":[     
     ]
 }
@@ -57,143 +57,10 @@ Authorization: {{authToken}}
 
 {
     "userId": "{{userId}}",
-    "groupId": "{{groupId}}",
+    "groupId": "5",
     "itemSeparator":"|",
     "elementSeparator":"=",
     "itemsOrder":["FV","BV"],
-    "content":"
-    adorn=upiększać, dekorować|
-air conditioning=klimatyzacja|
-answerphone=automatyczna sekretarka|
-ash=popiół|
-ashtray=popielniczka|
-awakening=przebudzenie|
-basin=miednica (naczynie); umywalka|
-bedsit=kwatera, wynajęty pokój|
-boiler=bojler|
-brick house=dom murowany|
-bungalow=dom parterowy|
-bustle=rozgardiasz, krzątanina, bieganina|
-camp bed=łóżko polowe|
-candlestick=świecznik|
-chandelier=żyrandol|
-chest=skrzynia|
-chest of drawers=komoda|
-cleanse=oczyścić|
-closet=szafa|
-cohabit=mieszkać razem|
-corridor=korytarz|
-cosy=przytulny (np. pokoik)|
-defect=defekt, wada|
-desktop=pulpit, biurko|
-developer=konstruktor, inwestor|
-dip=zanurzać, zamaczać|
-domesticated=domator|
-doorbell=dzwonek (do drzwi)|
-dressing room=garderoba|
-dustpan=szufelka|
-empty=opróżnić|
-estate=nieruchomość|
-fall asleep=zasnąć|
-fixture=stały element wyposażenia|
-flash=lampa błyskowa|
-flatmate=współlokator|
-frame=obramowywać; wrobić (kogoś w coś)|
-furnish=umeblować|
-gateway=wejście, brama (często w znaczeniu przenośnym)|
-habitable=mieszkalny, nadający się do zamieszkania|
-hammock=hamak|
-handmade=ręcznie robiony|
-home for the aged=dom starców|
-homebody=domator|
-homecoming=powrót do domu|
-homelessness=bezdomność|
-hospitable=gościnny|
-household=gospodarstwo domowe|
-household appliences=sprzęt AGD i RTV|
-houseroom=miejsce w domu, przestrzeń domowa|
-hut=chata|
-inconvenient=niewygodny|
-inflame=rozpalić, rozpłomienić|
-inhospitable=niegościnny|
-inner=wewnętrzny (położony wewnątrz)|
-ironing board=deska do prasowania|
-junk=graty, stare rzeczy, śmieci|
-lackey=lokaj|
-landlady=właścicielka (hotelu, klubu)|
-larder=spiżarnia|
-laundry=pralnia, pranie|
-lavatory seat=sedes|
-lighting=oświetlenie|
-loft=strych|
-lullaby=kołysanka|
-make your bed=ścielić łóżko|
-mess=bałagan|
-modernise a building=unowocześnić budynek|
-mop=mop|
-mosaic=mozaika|
-nailbrush=szczotka do paznokci|
-neat=porządny, schludny|
-net curtains=firanki|
-oak=dębowy|
-occupied=zajęty|
-old-fashioned=staromodny|
-pad=wypchać, obić (np. sofę)|
-padlock=kłódka|
-patio=patio|
-penthouse=luksusowy apartament na ostatnim piętrze budynku|
-pine=sosnowy|
-pitcher=dzban|
-place of residence=miejsce zamieszkania|
-plaster=tynk|
-playroom=pokój zabaw|
-plug=korek (do wanny, zlewu)|
-porcelain=porcelana|
-portable=przenośny|
-quilt=kołdra|
-radiator=grzejnik|
-rail=poręcz|
-recess=wnęka, nisza|
-refrigerator=chłodziarka, lodówka|
-rent=czynsz|
-resident=mieszkaniec (niekoniecznie obywatel)|
-rocking chair=fotel bujany|
-rug=dywanik|
-safety razor=maszynka do golenia|
-satellite dish=antena satelitarna|
-shelter=schronienie|
-shutters=okiennice|
-situate=umieszczać|
-sliding=rozsuwany (np. drzwi)|
-snore=chrapać|
-squat=mieszkać na dziko|
-stair=stopień (na schodach)|
-stairway=schody (klatka schodowa)|
-stem=nóżka (kieliszka, grzyba)|
-store room=schowek|
-string=sznurek, seria, ciąg|
-study=gabinet (pokój)|
-substantial=solidny (np. mebel), pokaźny|
-suite=apartament (w hotelu)|
-teapot=dzbanek do herbaty|
-terrace=taras|
-thatched=kryty strzechą|
-thermostat=termostat|
-tile=kafelek, płytka|
-toilet bowl=muszla klozetowa|
-unfurnished=nieumeblowany|
-uninhabitable=nienadający się do zamieszkania|
-uninvited=niezaproszony|
-vacancy=wolne miejsce, wakat|
-vacuum cleaner=odkurzacz|
-ventilator=wentylator|
-veranda=weranda, ganek|
-villa=willa|
-wallpaper=tapeta|
-wallpaper=tapetować|
-well=studnia|
-well-insulated house=dom z dobrą izolacją cieplną|
-windowsill=parapet|
-yard=podwórko"
+    "content":""
 
 }

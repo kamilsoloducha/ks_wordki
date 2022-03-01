@@ -118,7 +118,7 @@ export function levenshtein(str1: string, str2: string): LevenpathResult[] {
   }
   for (let i = 1; i <= l1; i++)
     for (let j = 1; j <= l2; j++) {
-      if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+      if (str1.charAt(i - 1) === str2.charAt(j - 1)) {
         m[i][j] = m[i - 1][j - 1];
         paths[i][j] = [i - 1, j - 1];
       } else {

@@ -1,6 +1,5 @@
 import "./Answer.scss";
 import { ReactElement } from "react";
-import { getAnswerLetters } from "pages/lesson/services/getAnswerLetters";
 import * as leven from "pages/lesson/services/levenshteinDistance";
 
 export default function Answer({
@@ -9,7 +8,6 @@ export default function Answer({
   correctAnswer,
   exampleAnswer,
 }: Model): ReactElement {
-  const answerLetters = getAnswerLetters(correctAnswer, userAnswer);
   const answer = leven.levenshtein(correctAnswer, userAnswer);
   return (
     <div className={`correct-answer `}>
