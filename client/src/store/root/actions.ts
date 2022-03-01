@@ -1,27 +1,41 @@
-import RootState from "./state";
-import history from "../../common/services/history";
+import RootState, { Breadcrumb } from "./state";
+import { Action } from "@reduxjs/toolkit";
 
 export enum RootActionEnum {
   REQUEST_FAILED = "[ROOT] REQUEST_FAILED",
+  SET_BREADCRUMBS = "[ROOT] SET_BREADCRUMBS",
 }
 
-export interface RootAction {
-  type: RootActionEnum;
-  reduce: (state: RootState) => RootState;
-}
-
-export interface RequestFailed extends RootAction {
+export interface RequestFailed extends Action {
   error: Error;
 }
-
 export function requestFailed(error: Error): RequestFailed {
-  console.error(error);
-  return {
-    error,
+  const action: RequestFailed = {
     type: RootActionEnum.REQUEST_FAILED,
-    reduce: (state: RootState): RootState => {
-      history.push("/error");
-      return { ...state };
-    },
+    error,
+  };
+  return action;
+}
+
+export function requestFailedReduce(state: RootState, _: RequestFailed): RootState {
+  return { ...state };
+}
+
+export interface SetBreadcrumbs extends Action {
+  breadcrumbs: Breadcrumb[];
+}
+export function setBreadcrumbs(breadcrumbs: Breadcrumb[]): SetBreadcrumbs {
+  const action: SetBreadcrumbs = {
+    type: RootActionEnum.SET_BREADCRUMBS,
+    breadcrumbs,
+  };
+  return action;
+}
+export function setBreadcrumbsReduce(state: RootState, action: SetBreadcrumbs): RootState {
+  return {
+    ...state,
+    breadcrumbs: action.breadcrumbs,
   };
 }
+
+export type RootActions = SetBreadcrumbs | RequestFailed;

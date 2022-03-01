@@ -2,7 +2,7 @@ import "./LessonPage.scss";
 import * as actions from "store/lesson/actions";
 import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import Fiszka from "./components/fiszka/Fiszka";

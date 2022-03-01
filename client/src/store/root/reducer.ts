@@ -1,13 +1,12 @@
 import RootState, { initialState } from "./state";
-import { RootAction, RootActionEnum } from "./actions";
+import * as actions from "./actions";
 
-export default function rootReducer(
-  state = initialState,
-  action: RootAction
-): RootState {
+export default function rootReducer(state = initialState, action: actions.RootActions): RootState {
   switch (action.type) {
-    case RootActionEnum.REQUEST_FAILED:
-      return action.reduce(state);
+    case actions.RootActionEnum.REQUEST_FAILED:
+      return actions.requestFailedReduce(state, action as actions.RequestFailed);
+    case actions.RootActionEnum.SET_BREADCRUMBS:
+      return actions.setBreadcrumbsReduce(state, action as actions.SetBreadcrumbs);
     default:
       return state;
   }

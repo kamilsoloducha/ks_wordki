@@ -1,17 +1,25 @@
 import "./TopBar.scss";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
+import { Breadcrumb } from "store/root/state";
 
-export default function TopBar({ isLogin }: Model): ReactElement {
+export default function TopBar({ isLogin, breadCrumbs }: Model): ReactElement {
   return (
     <div className="top-bar">
-      <div className="top-bar-logo">Wordki</div>
+      <div className="tob-bar-breadcrumbs">
+        <Link className="top-bar-logo" to="/dashboard">
+          Wordki
+        </Link>
+        {breadCrumbs?.map((item, index) => (
+          <React.Fragment key={index}>
+            <li className="tob-bar-separator"></li> {<Link to={item.url ?? ""}>{item.name}</Link>}
+          </React.Fragment>
+        ))}
+      </div>
       <ul>
         {isLogin && (
           <>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
+            <li></li>
             <li>
               <Link to="/logout">Logout</Link>
             </li>
@@ -34,4 +42,5 @@ export default function TopBar({ isLogin }: Model): ReactElement {
 
 interface Model {
   isLogin: boolean;
+  breadCrumbs?: Breadcrumb[];
 }
