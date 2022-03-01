@@ -78,8 +78,8 @@ export default function GroupsPage(): ReactElement {
             groupSummary={{
               id: x.id,
               name: x.name,
-              front: 1,
-              back: 2,
+              front: x.front,
+              back: x.back,
               cardsCount: x.cardsCount,
               cardsEnabled: x.cardsEnabled ?? 0,
             }}

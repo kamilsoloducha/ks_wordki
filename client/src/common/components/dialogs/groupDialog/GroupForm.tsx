@@ -18,8 +18,8 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
   const formik = useFormik({
     initialValues: {
       name: group?.name ?? "",
-      front: 0,
-      back: 0,
+      front: group?.front ?? 0,
+      back: group?.back ?? 0,
     },
     onSubmit: onsubmit,
   });
