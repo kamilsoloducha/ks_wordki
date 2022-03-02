@@ -1,7 +1,7 @@
+pool:
+      vmImage: "ubuntu-latest"
 stages:
   - stage: Build
-    pool:
-      vmImage: "ubuntu-latest"
     jobs:
       - job: Build
         steps:
@@ -15,8 +15,6 @@ stages:
               dockerComposeCommand: up
   - stage: Test
     dependsOn: Build
-    pool:
-      vmImage: "ubuntu-latest"
     jobs:
       - job: UnitTests
         steps:
