@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
-run echo $PORT
-
 WORKDIR /server
 COPY . .
 RUN dotnet restore "./src/Api/Api.csproj"
@@ -18,6 +16,16 @@ RUN dotnet build "./src/Api/Api.csproj" -c Release -o /app
 # RUN chmod +x /wait
 
 # RUN dotnet build "Wordki.Tests.E2E.csproj"
+
+##########################################################
+# Build tests project
+##########################################################
+
+
+FROM build AS tests
+WORKDIR /server
+
+RUN dotnet build
 
 
 ##########################################################

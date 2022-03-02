@@ -14,7 +14,7 @@ using Users.Domain;
 
 namespace Api.Tests.Users
 {
-    [TestFixture]
+    [TestFixture(Ignore = "testing")]
     public class RegisterTests : UsersTestBase
     {
         [Test]

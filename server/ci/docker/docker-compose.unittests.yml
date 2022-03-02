@@ -1,0 +1,10 @@
+version: "3.5"
+services:
+  wordki-server.ci.unittests:
+    container_name: wordki-server.ci.unittests
+    image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./build/docker/Dockerfile
+      target: tests
+    command: dotnet test --test-adapter-path:. --logger:"junit"

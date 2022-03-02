@@ -17,11 +17,6 @@ namespace Wordki.Tests.E2E.Feature
             Host = new TestServerMock();
         }
 
-        [SetUp]
-        protected async Task ClearDatabase()
-        {
-        }
-
         protected async Task SendRequest()
         {
             Response = await Host.Client.SendAsync(Request);
