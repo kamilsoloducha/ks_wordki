@@ -20,7 +20,7 @@ namespace Cards.Domain
             _cards = new();
         }
 
-        public static Group New(GroupName name, Language front, Language back, ISequenceGenerator sequenceGenerator)
+        internal static Group New(GroupName name, Language front, Language back, ISequenceGenerator sequenceGenerator)
             => new Group()
             {
                 Id = GroupId.New(sequenceGenerator),
@@ -36,16 +36,19 @@ namespace Cards.Domain
             Back = back;
         }
 
-        internal void UpdateCard(CardId cardId, Side front, Side back)
-        {
-            var card = Cards.First(x => x.Id == cardId);
-            card.Update(front, back);
-        }
-
         internal void RemoveCard(CardId cardId)
         {
-            var card = Cards.First(x => x.Id == cardId);
+            var card = GetCard(cardId);
             _cards.Remove(card);
+        }
+
+        internal void RemoveCard(Card card)
+        {
+            var result = _cards.Remove(card);
+            if (!result)
+            {
+                throw new System.Exception("Card is not found");
+            }
         }
 
         internal Card AddCard(
@@ -75,11 +78,6 @@ namespace Cards.Domain
                 throw new System.Exception("Card is not found");
             }
             return card;
-        }
-
-        internal void RemoveCard(Card card)
-        {
-            _cards.Remove(card);
         }
     }
 }

@@ -31,11 +31,6 @@ namespace Cards.Domain
                 Owner = owner,
             };
 
-        internal void UpdateLabels(Label value, string example, Comment comment)
-        {
-            Comment = comment;
-        }
-
         public void Tick()
         {
             IsTicked = true;
@@ -49,18 +44,22 @@ namespace Cards.Domain
             Counter++;
         }
 
-        internal void IncludeInLesson()
-        {
-            if (LessonIncluded) throw new Exception("Card is already included");
-
-            LessonIncluded = true;
-        }
+        internal void IncludeInLesson() => LessonIncluded = true;
 
         internal void UpdateDetails(bool includeLesson, bool isTicked)
         {
             LessonIncluded = includeLesson;
             IsTicked = isTicked;
         }
+
+        internal void AttachNewSide(SideId sideId) => SideId = sideId;
+
+        internal static Detail Restore(Drawer drawer, int counter)
+            => new Detail
+            {
+                Drawer = drawer,
+                Counter = counter
+            };
 
         private void UpdateDrawer(int result)
         {
@@ -74,14 +73,5 @@ namespace Cards.Domain
             bool ShouldBeBoosted() => (Counter == 0 && Drawer.CorrectRepeat == 0)
                 || (Counter == 1 && Drawer.CorrectRepeat == 2);
         }
-
-        internal void AttachNewSide(SideId sideId) => SideId = sideId;
-
-        internal static Detail Restore(Drawer drawer, int counter)
-            => new Detail
-            {
-                Drawer = drawer,
-                Counter = counter
-            };
     }
 }

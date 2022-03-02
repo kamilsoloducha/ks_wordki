@@ -4,7 +4,6 @@ namespace Cards.Domain
 {
     public readonly struct Label
     {
-        internal static readonly Label Empty = new Label(string.Empty);
         public string Text { get; }
 
         private Label(string text)
@@ -14,11 +13,11 @@ namespace Cards.Domain
 
         public static Label Create(string text)
         {
-            if (text is null) throw new ArgumentException(nameof(text));
+            if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException(nameof(text));
 
             var trimmedText = text.Trim();
 
-            return string.IsNullOrEmpty(trimmedText) ? Empty : new Label(trimmedText);
+            return new Label(trimmedText);
         }
     }
 }
