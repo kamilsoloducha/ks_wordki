@@ -14,6 +14,7 @@ stages:
               action: "Run a Docker Compose command"
               dockerComposeCommand: up
   - stage: Test
+    dependsOn: Build
     pool:
       vmImage: "ubuntu-latest"
     jobs:
