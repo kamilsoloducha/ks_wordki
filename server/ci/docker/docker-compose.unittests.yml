@@ -5,6 +5,6 @@ services:
     image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
     build:
       context: ../../
-      dockerfile: ./build/docker/Dockerfile
+      dockerfile: ./ci/docker/Dockerfile
       target: tests
     command: dotnet test --test-adapter-path:. --logger:"junit"
