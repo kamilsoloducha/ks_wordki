@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Cards.Application.Queries
 {
-    public class SearchGroup
+    public class SearchGroups
     {
         internal class QueryHandler : IRequestHandler<Query, IEnumerable<GroupSummary>>
         {
@@ -22,7 +22,7 @@ namespace Cards.Application.Queries
 
             public async Task<IEnumerable<GroupSummary>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = SearchQuery.Create(request.SearchingTerm, request.PageNumber, request.PageSize);
+                var query = SearchGroupsQuery.Create(request.SearchingTerm, request.PageNumber, request.PageSize);
                 var groups = await _queryRepository.GetGroupSummaries(query, cancellationToken);
                 return groups;
             }

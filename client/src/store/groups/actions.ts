@@ -17,6 +17,9 @@ export enum GroupsActionEnum {
   UPDATE_GROUP_SUCCESS = "[GROUPS] UPDATE_GROUP_SUCCESS",
 
   CONNECT_GROUPS = "[GROUPS] CONNECT_GROUPS",
+
+  SEARCH_GROUP = "[GROUPS] SEARCH_GROUP",
+  SEARCH_GROUP_SUCCESS = "[GROUPS] SEARCH_GROUP_SUCCESS",
 }
 
 export interface GroupsAction {
@@ -145,6 +148,29 @@ export function connectGroups(): ConnectGroups {
     type: GroupsActionEnum.CONNECT_GROUPS,
     reduce: (state: GroupsState): GroupsState => {
       return { ...state };
+    },
+  };
+}
+
+export interface SearchGroup extends GroupsAction {
+  searchingText: string;
+}
+export function searchGroup(searchingText: string): SearchGroup {
+  return {
+    searchingText,
+    type: GroupsActionEnum.SEARCH_GROUP,
+    reduce: (state: GroupsState): GroupsState => {
+      return { ...state };
+    },
+  };
+}
+
+export interface SearchGroupSuccess extends GroupsAction {}
+export function searchGroupSuccess(groups: GroupSummary[]): SearchGroupSuccess {
+  return {
+    type: GroupsActionEnum.SEARCH_GROUP_SUCCESS,
+    reduce: (state: GroupsState): GroupsState => {
+      return { ...state, searchingGroups: groups };
     },
   };
 }

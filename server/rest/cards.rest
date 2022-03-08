@@ -140,3 +140,20 @@ Authorization: {{authToken}}
 GET {{host}}/cards/dashboard/summary HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
+
+
+### searching cards
+PUT {{host}}/cards/search HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": "{{userId}}",
+    "serachingTerm":"asdf",
+    "searchingDrawers":[],
+    "lessonIncluded":null,
+    "isTicked":null,
+    "pageNumber":1,
+    "pageSize":1000
+
+}

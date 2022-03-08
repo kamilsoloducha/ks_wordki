@@ -54,5 +54,10 @@ namespace Api
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromRoute] GetGroupsForLearn.Query query, CancellationToken cancellationToken)
             => new JsonResult(await Mediator.Send(query, cancellationToken));
+
+        [HttpGet("search")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Get([FromQuery] SearchGroups.Query query, CancellationToken cancellationToken)
+            => new JsonResult(await Mediator.Send(query, cancellationToken));
     }
 }

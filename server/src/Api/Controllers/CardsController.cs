@@ -59,5 +59,10 @@ namespace Api
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Append(AppendCards.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
+
+        [HttpPut("search")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Get(SearchCards.Query query, CancellationToken cancellationToken)
+        => new JsonResult(await Mediator.Send(query, cancellationToken));
     }
 }

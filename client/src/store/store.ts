@@ -24,6 +24,7 @@ import appendCardEffect from "./cards/sagas/appendCard";
 import setSettingLanguageEffect from "./lesson/sagas/setSettings";
 import getGroupsEffect from "./lesson/sagas/getGroups";
 import setFilterEffect from "./cards/sagas/setFilter";
+import searchGroupEffect from "./groups/sagas/searchGroup";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -62,5 +63,6 @@ sagaMiddleware.run(appendCardEffect);
 sagaMiddleware.run(setSettingLanguageEffect);
 sagaMiddleware.run(getGroupsEffect);
 sagaMiddleware.run(setFilterEffect);
+sagaMiddleware.run(searchGroupEffect);
 
 export type MainState = ReturnType<typeof store.getState>;

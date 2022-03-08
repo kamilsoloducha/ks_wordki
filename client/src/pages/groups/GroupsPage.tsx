@@ -17,12 +17,14 @@ import {
 import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/selectors";
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
+import { SearchGroup } from "./components/searchGroup/SearchGroup";
 
 export default function GroupsPage(): ReactElement {
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
   const [paginatedItems, setPaginatedItems] = useState<GroupSummary[]>([]);
+  const [seachGroupVisible, setSeachGroupVisible] = useState(false);
   const isLoading = useSelector(selectIsLoading);
   const groups = useSelector(selectGroups);
   const selectedItem = useSelector(selectSelectedItem);
@@ -64,13 +66,17 @@ export default function GroupsPage(): ReactElement {
     setPage(event.currectPage);
   };
 
+  const onHideSearchGroup = () => {
+    setSeachGroupVisible(false);
+  };
+
   return (
     <>
       <div className="groups-action-container">
         <button data-testid="new-group-button" onClick={onaddgroup}>
           Create new group
         </button>
-        <button disabled={true}>Search from existing</button>
+        <button onClick={() => setSeachGroupVisible(true)}>Search from existing</button>
       </div>
       {paginatedItems.map((x) => (
         <div key={x.id} onClick={() => selectGroup(x)}>
@@ -89,6 +95,7 @@ export default function GroupsPage(): ReactElement {
       ))}
       <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
       <GroupDialog group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
+      <SearchGroup visible={seachGroupVisible} onHide={onHideSearchGroup} />
     </>
   );
 }

@@ -87,11 +87,19 @@ namespace Cards.Infrastructure
         public async Task<IEnumerable<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop, CancellationToken cancellationToken)
             => await _cardsContext.RepeatCounts.Where(x => x.OwnerId == ownerId && x.Date >= start.Date && x.Date <= stop.Date).ToListAsync(cancellationToken);
 
-        public async Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchQuery query, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchGroupsQuery query, CancellationToken cancellationToken)
             => await _cardsContext.GroupSummaries
             .Where(x => x.Name.Contains(query.SearchingTerm))
             .Skip(query.Skip)
             .Take(query.Take)
             .ToListAsync(cancellationToken);
+
+        public async Task<IEnumerable<CardSummary>> SearchCards(SearchCardsQuery query, CancellationToken cancellationToken)
+            => await _cardsContext.CardsDetails
+                .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) || x.FrontValue.Contains(query.SearchingTerm) || x.BackValue.Contains(query.SearchingTerm))
+                .Where(x => !query.SearchingDrawers.Any() || query.SearchingDrawers.Contains(x.FrontDrawer) || query.SearchingDrawers.Contains(x.BackDrawer))
+                .Skip(query.Skip)
+                .Take(query.Take)
+                .ToListAsync(cancellationToken);
     }
 }

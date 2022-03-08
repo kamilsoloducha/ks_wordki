@@ -5,6 +5,7 @@ export default interface GroupsState {
   groups: GroupSummary[];
   selectedItem: GroupSummary | null;
   selectedItems: number[];
+  searchingGroups: GroupSummary[];
 }
 
 export const initialState: GroupsState = {
@@ -12,4 +13,5 @@ export const initialState: GroupsState = {
   groups: [],
   selectedItem: null,
   selectedItems: [],
+  searchingGroups: [],
 };
