@@ -1,3 +1,4 @@
+import { Action } from "@reduxjs/toolkit";
 import * as l from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
@@ -39,6 +40,8 @@ export enum DailyActionEnum {
   LESSON_WRONG = "[LESSON] LESSON_WRONG",
   LESSON_NO_MORE_CARDS = "[LESSON] LESSON_NO_MORE_CARDS",
   LESSON_FINISH = "[LESSON] LESSON_FINISH",
+
+  RESET_RESULTS = "[LESSON] RESET_RESULTS",
 }
 
 export interface LessonAction {
@@ -411,4 +414,16 @@ export function setAnswer(answer: string): SetAnswer {
       return { ...state, answer };
     },
   };
+}
+
+export interface ResetResults extends Action {}
+export function resetResults(): ResetResults {
+  const action: ResetResults = {
+    type: DailyActionEnum.RESET_RESULTS,
+  };
+  return action;
+}
+export function resetResultsReduce(state: LessonState): LessonState {
+  const newResults = initialState.results;
+  return { ...state, results: newResults };
 }

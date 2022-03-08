@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Domain;
 using Domain.IntegrationEvents;
+using Utils;
 
 namespace Users.Domain
 {
@@ -66,8 +67,9 @@ namespace Users.Domain
             newUser.Email = email;
             newUser.FirstName = firstName;
             newUser.Surname = surname;
-            newUser.Status = RegistrationStatus.WaitingForConfirmation;
-            newUser.CreationDate = DateTime.UtcNow;
+            newUser.Status = RegistrationStatus.Registered;
+            newUser.ConfirmationDate = SystemClock.Now;
+            newUser.CreationDate = SystemClock.Now;
             foreach (var role in roles)
             {
                 newUser.AddRole(role);
@@ -81,7 +83,7 @@ namespace Users.Domain
             CheckRule(new ConfirmUserStatusRule(Status));
 
             Status = RegistrationStatus.Registered;
-            ConfirmationDate = DateTime.UtcNow;
+            ConfirmationDate = SystemClock.Now;
             _events.Add(new UserCreated { Id = Id });
         }
 
@@ -97,7 +99,7 @@ namespace Users.Domain
         {
             CheckRule(new LoginUserStatusRule(Status));
 
-            LoginDate = DateTime.UtcNow;
+            LoginDate = SystemClock.Now;
         }
 
         private void AddRole(Role role)

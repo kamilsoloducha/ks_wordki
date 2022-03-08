@@ -22,7 +22,7 @@ Authorization: {{authToken}}
 
 {
     "userId": "{{userId}}",
-    "groupName":"prof - kierunek i ruch",
+    "groupName":"prof - pogoda i geografia",
     "front":2,
     "back":1,
     "cards":[     
@@ -57,10 +57,151 @@ Authorization: {{authToken}}
 
 {
     "userId": "{{userId}}",
-    "groupId": "5",
+    "groupId": "6",
     "itemSeparator":"|",
     "elementSeparator":"=",
     "itemsOrder":["FV","BV"],
-    "content":""
+    "content":"abyss = otchłań, głębia|
+acid rain = kwaśny deszcz|
+acre = akr|
+arid = suchy, jałowy|
+Athens = Ateny|
+avalanche = lawina|
+bank = brzeg rzeki, skarpa|
+bay = zatoka|
+beam = promień światła|
+blow = dąć, wiać|
+borderland = pogranicze|
+breeze = powiew wiatru|
+breezy = wietrzny|
+calcium = wapń|
+Canary Islands = Wyspy Kanaryjskie|
+cavern = pieczara|
+chill = chłód|
+chilly = chłodny|
+circulation = cyrkulacja|
+clay = glina|
+clear up = przejaśniać się|
+clime = obszar, sfera|
+cloud over = chmurzyć się|
+cloudiness = zachmurzenie|
+coastal = brzegowy|
+coastline = linia brzegowa|
+compass = kompas, busola|
+continental = kontynentalny|
+copper = miedź|
+coral reef = rafa koralowa|
+crater = krater|
+crest = szczyt, wierzchołek|
+Cyprus = Cypr|
+dam = tama|
+deluge = potop, ulewa|
+downpour = ulewa|
+downstream = w dół rzeki|
+drizzle = mżyć|
+drizzle = mżawka|
+drizzly = mżawkowa (pogoda)|
+droplet = kropelka|
+drought = susza|
+drown = utopić|
+dry up = wysychać|
+dull = pochmurny|
+erupt = wybuchać (np. o wulkanie)|
+eruption = wybuch wulkanu|
+flake = płatek (np. śniegu)|
+flood = zalewać|
+flow = płynąć (np. rzeka)|
+foamy = spieniony|
+freezing = lodowaty|
+geological = geologiczny|
+gorge = wąwóz|
+grassland = łąka|
+gulf = zatoka|
+gust = podmuch, powiew wiatru|
+hail = grad|
+hailstone = bryłka gradu|
+haze = mgła, dym (lekka)|
+heatwave = fala upałów|
+hemisphere = półkula (np. Ziemi)|
+highland = wyżyna|
+hilly = pagórkowaty|
+hydrogen = wodór|
+iceberg = góra lodowa|
+inhabited = zamieszkały|
+Irish = irlandzki|
+Lake Victoria = Jezioro Wiktorii|
+lava = lawa|
+layer = warstwa|
+lightning = błyskawica|
+lowland = nizina|
+lunar = księżycowy (np. krajobraz)|
+mainland = stały ląd|
+marine = morski|
+measurement = pomiar|
+meteorologist = meteorolog|
+moderation = umiarkowanie (rzeczownik), umiar|
+Morocco = Maroko|
+mountainous = górzysty|
+mud = błoto|
+muddy = błotnisty, zabłocony|
+nocturnal = nocny|
+North East = północny wschód|
+North Pole = biegun północny|
+North West = północny zachód|
+northern hemisphere = półkula północna|
+oasis = oaza|
+oil-slick = plama ropy naftowej|
+outback = odludzie, busz|
+overcast = zachmurzony, ponury|
+ozone layer = warstwa ozonowa|
+pass = przełęcz|
+peak = szczyt|
+peninsula = półwysep|
+plain = równina|
+pole = biegun (np. geograficzny)|
+polluted = zanieczyszczony|
+precipice = przepaść, urwisko|
+prediction = przewidywanie, prognoza|
+puddle = kałuża|
+rainforest = las tropikalny|
+ray = promień (np. słońca)|
+scale = podziałka (na mapie)|
+scorching = skwarny|
+sea bed = dno morskie|
+setting = otoczenie|
+severe = surowy, ostry (np. klimat)|
+shore = brzeg (morza, jeziora), wybrzeże|
+shower = przelotny deszcz|
+soak = przemoknąć|
+South East = południowy wschód|
+South West = południowy zachód|
+southern hemisphere = półkula południowa|
+splash = plusk|
+spot = miejsce|
+starry = gwiaździsty (np. niebo)|
+sundown = zachód słońca|
+Swahili = język suahili|
+swamp = bagno|
+temperate = umiarkowany (np. klimat)|
+terrain = teren|
+Thames = Tamiza|
+The Hague = Haga|
+thunderstorm = burza z piorunami|
+tidal wave = fala pływowa|
+tundra = tundra|
+twilight = zmrok, zmierzch|
+typhoon = tajfun|
+uplands = wyżyny|
+vast = rozległy (np. przestrzeń)|
+volcanic = wulkaniczny|
+warmth = ciepło|
+waterfall = wodospad|
+waterway = kanał|
+weather forecast = prognoza pogody|
+wetland = tereny podmokłe, bagna|
+whereabouts = przybliżone miejsce pobytu|
+whirlpool = wir wodny|
+white water = szybki, spieniony nurt|
+woodland = lasy, tereny leśne"
 
 }

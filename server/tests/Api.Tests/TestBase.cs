@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Utils;
 
 namespace Wordki.Tests.E2E.Feature
 {
@@ -15,6 +16,7 @@ namespace Wordki.Tests.E2E.Feature
         public TestBase()
         {
             Host = new TestServerMock();
+            SystemClock.Override(TestServerMock.MockDate);
         }
 
         protected async Task SendRequest()

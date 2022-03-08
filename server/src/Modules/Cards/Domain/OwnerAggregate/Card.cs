@@ -35,12 +35,6 @@ namespace Cards.Domain
             };
         }
 
-        internal void Update(Side front, Side back)
-        {
-            Front.Update(front.Value, front.Example);
-            Back.Update(back.Value, back.Example);
-        }
-
         internal void Update(Label frontValue, Label backValue, string frontExample, string backExample)
         {
             Front.Update(frontValue, frontExample);

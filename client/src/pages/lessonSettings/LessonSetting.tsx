@@ -16,6 +16,7 @@ export default function LessonSettings(): ReactElement {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(act.resetResults());
     dispatch(act.getCardsCount());
   }, [dispatch]);
 

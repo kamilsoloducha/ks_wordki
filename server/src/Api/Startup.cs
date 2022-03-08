@@ -21,6 +21,7 @@ using Blueprints.Infrastrcuture.Services;
 using Cards.Domain;
 using Blueprints.Infrastrcuture;
 using Microsoft.Extensions.Logging;
+using Blueprints.Infrastructure.DataAccess;
 
 namespace Api
 {
