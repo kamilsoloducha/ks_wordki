@@ -16,6 +16,6 @@ function* searchGroup({ searchingText }: SearchGroup) {
   );
 }
 
-export default function* searchGroupEffect() {
+export function* searchGroupEffect() {
   yield takeLatest(GroupsActionEnum.SEARCH_GROUP, searchGroup);
 }

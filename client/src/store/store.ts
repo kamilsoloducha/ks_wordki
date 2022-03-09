@@ -1,30 +1,18 @@
 import createSagaMiddleware from "@redux-saga/core";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import cardsReducer from "./cards/reducer";
-import addCardEffect from "./cards/sagas/addCard";
-import getCardsEffect from "./cards/sagas/getCards";
-import getCardsEffectDaily from "./lesson/sagas/getCards";
-import updateCardEffect from "./cards/sagas/updateCard";
 import lessonReducer from "./lesson/reducer";
 import dashboardReducer from "./dashboard/reducer";
-import getDashbaordSummaryEffect from "./dashboard/sagas/getDashboardSummary";
 import groupsReducer from "./groups/reducer";
-import getGroupsSummaryEffect from "./groups/sagas/getGroupsSummary";
 import rootReducer from "./root/reducer";
 import userReducer from "./user/reducer";
-import { loginUserEffect } from "./user/sagas/loginUser";
-import { correctEffect, wrongEffect } from "./lesson/sagas/answer";
-import deleteCardEffect from "./cards/sagas/deleteCard";
-import addGroupEffect from "./groups/sagas/addGroup";
-import updateGroupEffect from "./groups/sagas/updateGroup";
-import getCardsCountEffect from "./lesson/sagas/getCardsCount";
-import connectGroupsEffect from "./groups/sagas/connectGroups";
-import tickCardEffect from "./lesson/sagas/tickCard";
-import appendCardEffect from "./cards/sagas/appendCard";
-import setSettingLanguageEffect from "./lesson/sagas/setSettings";
-import getGroupsEffect from "./lesson/sagas/getGroups";
-import setFilterEffect from "./cards/sagas/setFilter";
-import searchGroupEffect from "./groups/sagas/searchGroup";
+import cardsSeachReducer from "./cardsSearch/reducer";
+import * as cardsSearch from "./cardsSearch/saga";
+import * as cards from "./cards/sagas";
+import * as dashboard from "./dashboard/sagas";
+import * as groups from "./groups/sagas";
+import * as lesson from "./lesson/sagas";
+import * as user from "./user/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -40,29 +28,37 @@ const mainReducer = combineReducers({
   groupsReducer,
   cardsReducer,
   lessonReducer,
+  cardsSeachReducer,
 });
 
 export const store = configureStore();
 
-sagaMiddleware.run(loginUserEffect);
-sagaMiddleware.run(getDashbaordSummaryEffect);
-sagaMiddleware.run(getGroupsSummaryEffect);
-sagaMiddleware.run(getCardsEffect);
-sagaMiddleware.run(updateCardEffect);
-sagaMiddleware.run(addCardEffect);
-sagaMiddleware.run(getCardsEffectDaily);
-sagaMiddleware.run(getCardsCountEffect);
-sagaMiddleware.run(correctEffect);
-sagaMiddleware.run(wrongEffect);
-sagaMiddleware.run(deleteCardEffect);
-sagaMiddleware.run(addGroupEffect);
-sagaMiddleware.run(updateGroupEffect);
-sagaMiddleware.run(connectGroupsEffect);
-sagaMiddleware.run(tickCardEffect);
-sagaMiddleware.run(appendCardEffect);
-sagaMiddleware.run(setSettingLanguageEffect);
-sagaMiddleware.run(getGroupsEffect);
-sagaMiddleware.run(setFilterEffect);
-sagaMiddleware.run(searchGroupEffect);
+sagaMiddleware.run(user.loginUserEffect);
+
+sagaMiddleware.run(dashboard.getDashbaordSummaryEffect);
+
+sagaMiddleware.run(cards.getCardsEffect);
+sagaMiddleware.run(cards.updateCardEffect);
+sagaMiddleware.run(cards.addCardEffect);
+sagaMiddleware.run(cards.deleteCardEffect);
+sagaMiddleware.run(cards.appendCardEffect);
+sagaMiddleware.run(cards.setFilterEffect);
+
+sagaMiddleware.run(groups.getGroupsSummaryEffect);
+sagaMiddleware.run(groups.addGroupEffect);
+sagaMiddleware.run(groups.updateGroupEffect);
+sagaMiddleware.run(groups.connectGroupsEffect);
+sagaMiddleware.run(groups.searchGroupEffect);
+
+sagaMiddleware.run(lesson.correctEffect);
+sagaMiddleware.run(lesson.wrongEffect);
+sagaMiddleware.run(lesson.getCardsCountEffect);
+sagaMiddleware.run(lesson.tickCardEffect);
+sagaMiddleware.run(lesson.setSettingLanguageEffect);
+sagaMiddleware.run(lesson.getGroupsEffect);
+
+sagaMiddleware.run(cardsSearch.searchEffect);
+sagaMiddleware.run(cardsSearch.getOverviewEffect);
+sagaMiddleware.run(cardsSearch.setFilterEffect);
 
 export type MainState = ReturnType<typeof store.getState>;

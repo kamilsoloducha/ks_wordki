@@ -15,12 +15,12 @@ function* addGroup({ group }: AddGroup) {
     back: group.back,
     front: group.front,
   } as AddGroupRequest;
-  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
-    () => api.addGroup(request)
+  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(() =>
+    api.addGroup(request)
   );
   yield put(data ? getGroupsSummary() : requestFailed(error));
 }
 
-export default function* addGroupEffect() {
+export function* addGroupEffect() {
   yield takeLatest(GroupsActionEnum.ADD_GROUP, addGroup);
 }

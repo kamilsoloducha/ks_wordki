@@ -19,6 +19,6 @@ function* getCardsCount() {
   yield put(getCardsCountSuccess(apiResposne.response));
 }
 
-export default function* getCardsCountEffect() {
+export function* getCardsCountEffect() {
   yield takeLatest(DailyActionEnum.GET_CARDS_COUNT, getCardsCount);
 }

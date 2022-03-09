@@ -16,6 +16,6 @@ function* getGroups() {
   yield put(getGroupsSuccess(apiResponse.response.groups));
 }
 
-export default function* getGroupsEffect() {
+export function* getGroupsEffect() {
   yield takeLatest(DailyActionEnum.GET_GROUPS, getGroups);
 }

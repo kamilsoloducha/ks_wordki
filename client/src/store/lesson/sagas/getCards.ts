@@ -26,7 +26,7 @@ function* getCards() {
   yield call(forwardTo, "/lesson");
 }
 
-export default function* getCardsEffect() {
+export function* getCardsEffect() {
   yield takeLatest(DailyActionEnum.GET_CARDS, getCards);
 }
 

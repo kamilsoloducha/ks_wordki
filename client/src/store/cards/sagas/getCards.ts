@@ -28,6 +28,6 @@ function* getCards(action: GetCards) {
   yield put(applyFilters());
 }
 
-export default function* getCardsEffect() {
+export function* getCardsEffect() {
   yield takeLatest(CardsActionEnum.GET_CARDS, getCards);
 }

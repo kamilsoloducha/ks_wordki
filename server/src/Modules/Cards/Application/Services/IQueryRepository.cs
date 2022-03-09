@@ -30,7 +30,7 @@ namespace Cards.Application.Services
         Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken);
         Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken);
         Task<IEnumerable<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop, CancellationToken cancellationToken);
-
         Task<IEnumerable<CardSummary>> SearchCards(SearchCardsQuery query, CancellationToken cancellationToken);
+        Task<CardsOverview> GetCardsOverview(Guid owerId, CancellationToken cancellationToken);
     }
 }

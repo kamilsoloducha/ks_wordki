@@ -31,6 +31,6 @@ function* getDashbaordSummary(_: GetDashboardSummary) {
   yield put(getForecastSuccess(result));
 }
 
-export default function* getDashbaordSummaryEffect() {
+export function* getDashbaordSummaryEffect() {
   yield takeLatest(DashboardActionEnum.GET_DASHBAORD_SUMMARY, getDashbaordSummary);
 }

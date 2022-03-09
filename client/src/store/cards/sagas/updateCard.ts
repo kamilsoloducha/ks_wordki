@@ -15,6 +15,6 @@ function* updateCard(action: UpdateCard) {
   yield put(data ? updateCardSuccess(action.card) : requestFailed(error));
 }
 
-export default function* updateCardEffect() {
+export function* updateCardEffect() {
   yield takeLatest(CardsActionEnum.UPDATE_CARD, updateCard);
 }

@@ -11,16 +11,12 @@ function* addCard(action: UpdateCard) {
   const userId: string = yield select(selectUserId);
   const id: string = yield select(selectGroupId);
 
-  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
-    () => api.addCard(userId, id, action.card)
+  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(() =>
+    api.addCard(userId, id, action.card)
   );
-  yield put(
-    data
-      ? selectCard({ front: {}, back: {} } as CardSummary)
-      : requestFailed(error)
-  );
+  yield put(data ? selectCard({ front: {}, back: {} } as CardSummary) : requestFailed(error));
 }
 
-export default function* addCardEffect() {
+export function* addCardEffect() {
   yield takeLatest(CardsActionEnum.ADD_CARD, addCard);
 }

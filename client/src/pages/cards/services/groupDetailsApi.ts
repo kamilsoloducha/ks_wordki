@@ -6,6 +6,8 @@ import { AddCardRequest } from "../models/requests/addCardRequest";
 import AppendCardsRequest from "../models/requests/appendCardsRequest";
 import { UpdateCardRequest } from "../models/requests/updateCardRequest";
 import { GroupDetailsResponse } from "../models/groupDetailsSummary";
+import { CardsOverview } from "../models/cardsOverview";
+import { CardsSearchRequest } from "../models/requests/cardsSearchRequest";
 
 export async function groupDetails(groupId: number): Promise<GroupDetailsResponse> {
   const response = await http.get<GroupDetailsResponse>(`/groups/details/${groupId}`);
@@ -86,6 +88,33 @@ export async function appendCards(
   try {
     const response = await http.put<{}>(`/cards/append`, request);
     return { data: response.data };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function cardsOverview(ownerId: string): Promise<CardsOverview | any> {
+  try {
+    const response = await http.get<CardsOverview>(`/cards/overview/${ownerId}`);
+    return response.data;
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function searchCards(request: CardsSearchRequest): Promise<CardSummary[] | any> {
+  try {
+    const response = await http.put<CardSummary[]>(`/cards/search`, request);
+    return response.data;
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function searchCardsCount(request: CardsSearchRequest): Promise<CardSummary[] | any> {
+  try {
+    const response = await http.get<CardSummary[]>(`/cards/search/count`, { params: request });
+    return response.data;
   } catch (error) {
     return { error };
   }

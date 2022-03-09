@@ -12,14 +12,12 @@ function* deleteCard() {
   const groupId: number = yield select(selectGroupId);
   const selectedItem: CardSummary = yield select(selectSelectedCard);
 
-  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
-    () => api.deleteCard(userId, groupId, selectedItem.id)
+  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(() =>
+    api.deleteCard(userId, groupId, selectedItem.id)
   );
-  yield put(
-    data.isCorrect ? deleteCardSuccess(selectedItem.id) : requestFailed(error)
-  );
+  yield put(data.isCorrect ? deleteCardSuccess(selectedItem.id) : requestFailed(error));
 }
 
-export default function* deleteCardEffect() {
+export function* deleteCardEffect() {
   yield takeLatest(CardsActionEnum.DELETE_CARD, deleteCard);
 }

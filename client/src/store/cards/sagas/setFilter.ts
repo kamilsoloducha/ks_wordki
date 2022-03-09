@@ -54,7 +54,7 @@ function filterByText(text: string, cards: CardSummary[]): CardSummary[] {
   );
 }
 
-export default function* setFilterEffect() {
+export function* setFilterEffect() {
   yield takeEvery(
     [
       CardsActionEnum.SET_FILTER_DRAWER,

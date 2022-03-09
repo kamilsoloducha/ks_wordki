@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./src/",
     "target": "es5",
     "lib": [
       "dom",
@@ -19,12 +19,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@store/*": ["./src/store/dashboard/*"]
+    },
   },
   "include": [
     "src"
   ],
-  "paths": [
 
-  ]
 }

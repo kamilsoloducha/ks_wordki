@@ -17,12 +17,12 @@ function* updateGroup({ group }: UpdateGroup) {
     back: group.back,
     front: group.front,
   } as UpdateGroupRequest;
-  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
-    () => api.updateGroup(request)
+  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(() =>
+    api.updateGroup(request)
   );
   yield put(data ? getCards(group.id) : requestFailed(error));
 }
 
-export default function* updateGroupEffect() {
+export function* updateGroupEffect() {
   yield takeLatest(GroupsActionEnum.UPDATE_GROUP, updateGroup);
 }

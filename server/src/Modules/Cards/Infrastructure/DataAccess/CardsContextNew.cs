@@ -32,6 +32,7 @@ namespace Cards.Infrastructure2
         public DbSet<Repeat> Repeats { get; set; }
         public DbSet<RepeatCount> RepeatCounts { get; set; }
         public DbSet<GroupToLesson> GroupsToLesson { get; set; }
+        public DbSet<CardsOverview> CardsOverviews { get; set; }
 
         public CardsContextNew(IConnectionStringProvider connectionStringProvider)
         {
@@ -68,6 +69,7 @@ namespace Cards.Infrastructure2
             modelBuilder.ApplyConfiguration(new RepeatEntityConfiguration());
             modelBuilder.ApplyConfiguration(new RepeatCountEntityConfiguration());
             modelBuilder.ApplyConfiguration(new GroupsToLessonEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new CardsOverviewEntityConfiguration());
 
         }
 
@@ -268,6 +270,15 @@ namespace Cards.Infrastructure2
         public void Configure(EntityTypeBuilder<GroupToLesson> builder)
         {
             builder.ToView("grouptolesson");
+            builder.HasNoKey();
+        }
+    }
+
+    public class CardsOverviewEntityConfiguration : IEntityTypeConfiguration<CardsOverview>
+    {
+        public void Configure(EntityTypeBuilder<CardsOverview> builder)
+        {
+            builder.ToView("overview");
             builder.HasNoKey();
         }
     }

@@ -15,6 +15,6 @@ function* appendCards(action: AppendCard) {
   yield put(data ? getCards(id) : requestFailed(error));
 }
 
-export default function* appendCardEffect() {
+export function* appendCardEffect() {
   yield takeLatest(CardsActionEnum.APPEND_CARD, appendCards);
 }

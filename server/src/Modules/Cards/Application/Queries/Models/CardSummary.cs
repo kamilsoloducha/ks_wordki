@@ -48,5 +48,7 @@ namespace Cards.Application.Queries.Models
                 },
             };
         }
+
+
     }
 }

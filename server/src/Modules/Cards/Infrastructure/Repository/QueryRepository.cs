@@ -98,8 +98,12 @@ namespace Cards.Infrastructure
             => await _cardsContext.CardsDetails
                 .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) || x.FrontValue.Contains(query.SearchingTerm) || x.BackValue.Contains(query.SearchingTerm))
                 .Where(x => !query.SearchingDrawers.Any() || query.SearchingDrawers.Contains(x.FrontDrawer) || query.SearchingDrawers.Contains(x.BackDrawer))
+                .Where(x => x.OwnerId == query.OwnerId)
                 .Skip(query.Skip)
                 .Take(query.Take)
                 .ToListAsync(cancellationToken);
+
+        public async Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
+            => await _cardsContext.CardsOverviews.FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken);
     }
 }

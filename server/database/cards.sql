@@ -168,3 +168,17 @@ group by g."Id"
 
 
 --/var/lib/pgadmin/storage/kamilsoloducha_gmail.com/details_backup.sql
+CREATE OR REPLACE VIEW cards.overview AS
+SELECT 
+d."OwnerId",
+COUNT(*) AS "All",
+COUNT(CASE WHEN d."Drawer" = 0 THEN 1 END) AS "Drawer1",
+COUNT(CASE WHEN d."Drawer" = 1 THEN 1 END) AS "Drawer2",
+COUNT(CASE WHEN d."Drawer" = 2 THEN 1 END) AS "Drawer3",
+COUNT(CASE WHEN d."Drawer" = 3 THEN 1 END) AS "Drawer4",
+COUNT(CASE WHEN d."Drawer" = 4 THEN 1 END) AS "Drawer5",
+COUNT(CASE WHEN d."LessonIncluded" THEN 1 END) AS "LessonIncluded",
+COUNT(CASE WHEN d."IsTicked" THEN 1 END) AS "Ticked"
+FROM cards.details d
+GROUP BY d."OwnerId"
+

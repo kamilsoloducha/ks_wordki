@@ -14,6 +14,6 @@ function* setSettingLanguage() {
   yield put(getCardsCount());
 }
 
-export default function* setSettingLanguageEffect() {
+export function* setSettingLanguageEffect() {
   yield takeLatest(DailyActionEnum.SET_SETTING_LANGUAGE, setSettingLanguage);
 }

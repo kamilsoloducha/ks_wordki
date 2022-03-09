@@ -63,6 +63,11 @@ namespace Api
         [HttpPut("search")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get(SearchCards.Query query, CancellationToken cancellationToken)
-        => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => new JsonResult(await Mediator.Send(query, cancellationToken));
+
+        [HttpGet("overview/{ownerId}")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Get([FromRoute] GetCardsOverview.Query query, CancellationToken cancellationToken)
+            => new JsonResult(await Mediator.Send(query, cancellationToken));
     }
 }

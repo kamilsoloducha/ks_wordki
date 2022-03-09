@@ -15,12 +15,12 @@ function* connectGroups() {
     userId,
     groupIds,
   } as ConnectGroupsRequest;
-  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
-    () => api.connectGroups(request)
+  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(() =>
+    api.connectGroups(request)
   );
   yield put(data ? getGroupsSummary() : requestFailed(error));
 }
 
-export default function* connectGroupsEffect() {
+export function* connectGroupsEffect() {
   yield takeLatest(GroupsActionEnum.CONNECT_GROUPS, connectGroups);
 }
