@@ -20,7 +20,9 @@ import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
 import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
 import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
 import ActionsDialog from "common/components/dialogs/actionsDialog/ActionsDialog";
-import { pageSize, Pagination } from "common/components/pagination/Pagination";
+import { Pagination } from "common/components/pagination/Pagination";
+
+const pageSize = 30;
 
 export default function GroupDetailsPage(): ReactElement {
   const allCards = useSelector(selectors.selectCards);

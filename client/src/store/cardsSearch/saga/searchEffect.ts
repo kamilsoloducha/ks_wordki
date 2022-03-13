@@ -2,10 +2,9 @@ import * as actions from "../actions";
 import * as api from "pages/cards/services/groupDetailsApi";
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { selectUserId } from "store/user/selectors";
-import { Filter } from "pages/cards/models/filter";
 import { selectFilter } from "../selectors";
-import { CardsSearchRequest } from "pages/cards/models/requests/cardsSearchRequest";
-import { CardSummary } from "pages/cards/models/cardSummary";
+import { CardsSearchRequest } from "pages/cardsSearch/models/requests/cardsSearchRequest";
+import { CardSummary, Filter } from "pages/cardsSearch/models";
 
 function* search() {
   const userId: string = yield select(selectUserId);
@@ -16,9 +15,9 @@ function* search() {
     searchingTerm: filter.searchingTerm,
     pageNumber: filter.pageNumber,
     pageSize: filter.pageSize,
-    onlyTicked: false,
+    onlyTicked: filter.tickedOnly ?? false,
     searchingDrawers: [],
-    lessonIncluded: null,
+    lessonIncluded: filter.lessonIncluded,
   };
 
   const cards: CardSummary[] = yield call(api.searchCards, searchRequest);

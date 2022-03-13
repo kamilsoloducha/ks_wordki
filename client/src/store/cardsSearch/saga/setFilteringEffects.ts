@@ -5,11 +5,13 @@ function* search() {
   yield put(actions.search());
 }
 
-export function* setFilterEffect() {
+export function* setPaginationEffect() {
   yield takeLatest(
     [
-      actions.CardsSearchActionEnum.FILTER_SET_TERM,
+      actions.CardsSearchActionEnum.FILTER_RESET,
       actions.CardsSearchActionEnum.FILTER_SET_PAGINATION,
+      actions.CardsSearchActionEnum.FILTER_SET_LESSON_INCLUDED,
+      actions.CardsSearchActionEnum.FILTER_SET_TICKED_ONLY,
     ],
     search
   );

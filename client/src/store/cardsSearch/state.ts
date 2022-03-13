@@ -1,6 +1,4 @@
-import { CardsOverview } from "pages/cards/models/cardsOverview";
-import { Filter } from "pages/cards/models/filter";
-import { CardSummary } from "pages/cards/models/groupDetailsSummary";
+import { CardsOverview, CardSummary, Filter } from "pages/cardsSearch/models";
 
 export interface CardsSearchState {
   isSearching: boolean;
@@ -13,5 +11,11 @@ export const initialCardsSearchState: CardsSearchState = {
   isSearching: false,
   cards: [],
   overview: { all: 0, drawers: [0, 0, 0, 0, 0], lessonIncluded: 0, ticked: 0 },
-  filter: { searchingTerm: "", pageNumber: 1, pageSize: 50 },
+  filter: {
+    searchingTerm: "",
+    tickedOnly: null,
+    lessonIncluded: null,
+    pageNumber: 1,
+    pageSize: 50,
+  },
 };

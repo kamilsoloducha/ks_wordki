@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import * as actions from "../actions";
 import * as api from "pages/cards/services/groupDetailsApi";
 import { selectUserId } from "store/user/selectors";
-import { CardsOverview } from "pages/cards/models/cardsOverview";
+import { CardsOverview } from "pages/cardsSearch/models/cardsOverview";
 
 function* getOverview() {
   const userId: string = yield select(selectUserId);

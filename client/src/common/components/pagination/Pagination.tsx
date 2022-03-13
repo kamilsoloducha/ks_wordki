@@ -2,9 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import { PageChangedEvent } from "./pageChagnedEvent";
 import "./Pagination.scss";
 
-export const pageSize = 30;
-
-export function Pagination({ totalCount, onPageChagned, search, onSearchChanged }: Model) {
+export function Pagination({
+  totalCount,
+  onPageChagned,
+  search,
+  onSearchChanged,
+  pageSize = 30,
+}: Model) {
   const [currectPage, setCurrectPage] = useState(1);
   const totalPages = Math.ceil(totalCount / pageSize);
   const buttons = getPagesToDispaly(totalPages, currectPage);
@@ -19,7 +23,7 @@ export function Pagination({ totalCount, onPageChagned, search, onSearchChanged 
         first: (page - 1) * pageSize + 1,
       });
     },
-    [setCurrectPage, onPageChagned, totalPages, currectPage]
+    [setCurrectPage, onPageChagned, totalPages, currectPage, pageSize]
   );
 
   const onSearchTextChanged = useCallback(
@@ -34,7 +38,7 @@ export function Pagination({ totalCount, onPageChagned, search, onSearchChanged 
 
   useEffect(() => {
     changePage(1);
-  }, [totalCount]); // eslint-disable-line
+  }, [totalCount, pageSize]); // eslint-disable-line
 
   return (
     <div className="pagination-container">
@@ -87,6 +91,7 @@ export function Pagination({ totalCount, onPageChagned, search, onSearchChanged 
 
 interface Model {
   totalCount: number;
+  pageSize?: number;
   onPageChagned: (event: PageChangedEvent) => void;
   search?: string;
   onSearchChanged?: (text: string) => void;

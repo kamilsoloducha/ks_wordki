@@ -1,4 +1,5 @@
 import "./CardDialog.scss";
+import "../dialogs.scss";
 import { ReactElement } from "react";
 import { Dialog } from "primereact/dialog";
 import Footer from "./Footer";
@@ -21,9 +22,7 @@ export default function CardDialog({
     if (onDelete) onDelete(card);
   };
 
-  const footer = (
-    <Footer onhide={onHide} ondelete={isEditing ? ondelete : undefined} />
-  );
+  const footer = <Footer onhide={onHide} ondelete={isEditing ? ondelete : undefined} />;
 
   return (
     <Dialog

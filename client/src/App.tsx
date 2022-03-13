@@ -21,7 +21,7 @@ const RegisterPage = lazy(() => import("pages/register/RegisterPage"));
 const DashboardPage = lazy(() => import("pages/dashboard/DashbaordPage"));
 const GroupsPage = lazy(() => import("pages/groups/GroupsPage"));
 const GroupDetails = lazy(() => import("pages/cards/GroupDetailsPage"));
-const CardsPage = lazy(() => import("pages/cards/CardsPage"));
+const CardsPage = lazy(() => import("pages/cardsSearch/CardsPage"));
 const LessonSettingsPage = lazy(() => import("pages/lessonSettings/LessonSetting"));
 const LessonPage = lazy(() => import("pages/lesson/LessonPage"));
 const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));

@@ -59,6 +59,9 @@ sagaMiddleware.run(lesson.getGroupsEffect);
 
 sagaMiddleware.run(cardsSearch.searchEffect);
 sagaMiddleware.run(cardsSearch.getOverviewEffect);
-sagaMiddleware.run(cardsSearch.setFilterEffect);
+sagaMiddleware.run(cardsSearch.setPaginationEffect);
+sagaMiddleware.run(cardsSearch.setSearchingTermEffect);
+sagaMiddleware.run(cardsSearch.updateCardEffect);
+sagaMiddleware.run(cardsSearch.deleteCardEffect);
 
 export type MainState = ReturnType<typeof store.getState>;

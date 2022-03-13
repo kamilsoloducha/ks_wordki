@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Cards.Application.Queries.Models;
 using Cards.Application.Services;
 using Cards.Domain;
 using MediatR;
@@ -14,7 +13,6 @@ namespace Cards.Application.Queries
     {
         internal class QueryHandler : IRequestHandler<Query, IEnumerable<CardSummary>>
         {
-
             private readonly IQueryRepository _queryRepository;
 
             public QueryHandler(IQueryRepository queryRepository)
@@ -37,28 +35,32 @@ namespace Cards.Application.Queries
                 return cards.Select(ToDto);
             }
 
-            private SearchCards.CardSummary ToDto(Cards.Application.Queries.Models.CardSummary card)
+            private SearchCards.CardSummary ToDto(Models.CardSummary card)
             {
                 return new SearchCards.CardSummary
                 {
                     Id = card.CardId,
+                    GroupId = card.GroupId,
+                    GroupName = card.GroupName,
                     Front = new SearchCards.SideSummary
                     {
                         Type = (int)SideType.Front,
+                        Lang = card.FrontLanguage,
                         Value = card.FrontValue,
                         Example = card.FrontExample,
                         Comment = card.FrontDetailsComment,
-                        Drawer = Math.Min(card.FrontDrawer + 1, 5),
+                        Drawer = Drawer.Create(card.FrontDrawer).Value,
                         IsUsed = card.FrontLessonIncluded,
                         IsTicked = card.FrontIsTicked,
                     },
                     Back = new SearchCards.SideSummary
                     {
                         Type = (int)SideType.Back,
+                        Lang = card.BackLanguage,
                         Value = card.BackValue,
                         Example = card.BackExample,
                         Comment = card.BackDetailsComment,
-                        Drawer = Math.Min(card.BackDrawer + 1, 5),
+                        Drawer = Drawer.Create(card.BackDrawer).Value,
                         IsUsed = card.BackLessonIncluded,
                         IsTicked = card.BackIsTicked,
                     },
@@ -80,6 +82,8 @@ namespace Cards.Application.Queries
         public class CardSummary
         {
             public long Id { get; set; }
+            public long GroupId { get; set; }
+            public string GroupName { get; set; }
             public SideSummary Back { get; set; }
             public SideSummary Front { get; set; }
         }
@@ -87,6 +91,7 @@ namespace Cards.Application.Queries
         public class SideSummary
         {
             public int Type { get; set; }
+            public int Lang { get; set; }
             public string Value { get; set; }
             public string Example { get; set; }
             public string Comment { get; set; }

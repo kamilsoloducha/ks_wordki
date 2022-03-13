@@ -3,7 +3,7 @@ import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
 import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
-import { pageSize, Pagination } from "common/components/pagination/Pagination";
+import { Pagination } from "common/components/pagination/Pagination";
 import { ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -18,6 +18,8 @@ import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
 import { SearchGroup } from "./components/searchGroup/SearchGroup";
+
+const pageSize = 30;
 
 export default function GroupsPage(): ReactElement {
   const dispatch = useDispatch();

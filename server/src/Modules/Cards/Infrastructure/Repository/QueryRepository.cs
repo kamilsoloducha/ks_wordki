@@ -98,10 +98,21 @@ namespace Cards.Infrastructure
             => await _cardsContext.CardsDetails
                 .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) || x.FrontValue.Contains(query.SearchingTerm) || x.BackValue.Contains(query.SearchingTerm))
                 .Where(x => !query.SearchingDrawers.Any() || query.SearchingDrawers.Contains(x.FrontDrawer) || query.SearchingDrawers.Contains(x.BackDrawer))
+                .Where(x => !query.LessonIncluded.HasValue || x.BackLessonIncluded == query.LessonIncluded || x.FrontLessonIncluded == query.LessonIncluded)
+                .Where(x => !query.OnlyTicked || x.BackIsTicked)
                 .Where(x => x.OwnerId == query.OwnerId)
                 .Skip(query.Skip)
                 .Take(query.Take)
                 .ToListAsync(cancellationToken);
+
+        public async Task<int> SearchCardsCount(SearchCardsQuery query, CancellationToken cancellationToken)
+            => await _cardsContext.CardsDetails
+                .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) || x.FrontValue.Contains(query.SearchingTerm) || x.BackValue.Contains(query.SearchingTerm))
+                .Where(x => !query.SearchingDrawers.Any() || query.SearchingDrawers.Contains(x.FrontDrawer) || query.SearchingDrawers.Contains(x.BackDrawer))
+                .Where(x => !query.LessonIncluded.HasValue || x.BackLessonIncluded == query.LessonIncluded || x.FrontLessonIncluded == query.LessonIncluded)
+                .Where(x => !query.OnlyTicked || x.BackIsTicked)
+                .Where(x => x.OwnerId == query.OwnerId)
+                .CountAsync(cancellationToken);
 
         public async Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
             => await _cardsContext.CardsOverviews.FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken);

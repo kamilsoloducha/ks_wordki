@@ -6,8 +6,9 @@ import { AddCardRequest } from "../models/requests/addCardRequest";
 import AppendCardsRequest from "../models/requests/appendCardsRequest";
 import { UpdateCardRequest } from "../models/requests/updateCardRequest";
 import { GroupDetailsResponse } from "../models/groupDetailsSummary";
-import { CardsOverview } from "../models/cardsOverview";
-import { CardsSearchRequest } from "../models/requests/cardsSearchRequest";
+import { CardsOverview } from "../../cardsSearch/models/cardsOverview";
+import { CardsSearchRequest } from "../../cardsSearch/models/requests/cardsSearchRequest";
+import { UpdateCardResponse } from "pages/cardsSearch/models/repsponses/updateCardResponse";
 
 export async function groupDetails(groupId: number): Promise<GroupDetailsResponse> {
   const response = await http.get<GroupDetailsResponse>(`/groups/details/${groupId}`);
@@ -115,6 +116,15 @@ export async function searchCardsCount(request: CardsSearchRequest): Promise<Car
   try {
     const response = await http.get<CardSummary[]>(`/cards/search/count`, { params: request });
     return response.data;
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function updateCard2(request: UpdateCardRequest): Promise<UpdateCardResponse | any> {
+  try {
+    const response = await http.put<UpdateCardResponse>(`/cards/update`, request);
+    return { data: response.data };
   } catch (error) {
     return { error };
   }
