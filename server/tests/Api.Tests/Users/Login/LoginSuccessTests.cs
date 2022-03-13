@@ -13,7 +13,7 @@ using Wordki.Tests.E2E.Feature;
 
 namespace Api.Tests.Users
 {
-    [TestFixture]
+    [TestFixture(Ignore = "not ready")]
     public class LoginSuccessTest : UsersTestBase
     {
 
