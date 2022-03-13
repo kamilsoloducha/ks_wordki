@@ -50,6 +50,7 @@ sagaMiddleware.run(groups.updateGroupEffect);
 sagaMiddleware.run(groups.connectGroupsEffect);
 sagaMiddleware.run(groups.searchGroupEffect);
 
+sagaMiddleware.run(lesson.getCardsEffect);
 sagaMiddleware.run(lesson.correctEffect);
 sagaMiddleware.run(lesson.wrongEffect);
 sagaMiddleware.run(lesson.getCardsCountEffect);
