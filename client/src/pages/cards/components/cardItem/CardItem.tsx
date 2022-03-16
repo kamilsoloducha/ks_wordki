@@ -1,56 +1,35 @@
 import "./CardItem.scss";
+import { ReactElement } from "react";
 import { CardSummary } from "pages/cards/models/groupDetailsSummary";
-import Drawer from "../drawer/Drawer";
+import { CardSide } from "pages/cards/models/cardSide";
 
-function CardItem({ card, direction, onChangeUsage }: Model) {
-  const [first, second] =
-    direction === 1 ? [card.front, card.back] : [card.back, card.front];
-
-  const onDrawerClick = (side: number) => {
-    if (!onChangeUsage) return;
-    onChangeUsage(card.id, side);
-  };
-
+export function CardItem({ card, onClick }: RowModel): ReactElement {
   return (
-    <div className="card-item-container">
-      <div className="card-item-value">
-        <Drawer
-          drawer={first.drawer}
-          isUsed={first.isUsed}
-          onClick={() => {
-            onDrawerClick(1);
-          }}
-        />
-        <b>{first.value} </b>
-        <b>{second.value}</b>
-        <Drawer
-          drawer={second.drawer}
-          isUsed={second.isUsed}
-          onClick={() => {
-            onDrawerClick(2);
-          }}
-        />
+    <div className="row-container" onClick={() => onClick && onClick(card)}>
+      <div className="row-sides">
+        <Side side={card.front} />
+        <Side side={card.back} />
       </div>
-      {first.example && second.example && (
-        <>
-          <hr />
-          <div className="card-item-example">
-            &bull;
-            <div className="card-item-example-container">
-              <div className="card-item-example-first">{first.example}</div>
-              <div className="card-item-example-second">{second.example}</div>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 }
 
-export default CardItem;
-
-export interface Model {
+export interface RowModel {
   card: CardSummary;
-  direction: number;
-  onChangeUsage?: (cardId: number, side: number) => void;
+  onClick?: (card: CardSummary) => void;
+}
+
+function Side({ side }: { side: CardSide }): ReactElement {
+  return (
+    <div className={`row-side-container ${drawerClassName(side.drawer)}`}>
+      <div className="row-side-value">
+        <strong>{side.value}</strong>
+      </div>
+      <div className="row-side-example">{side.example}</div>
+    </div>
+  );
+}
+
+function drawerClassName(drawer: number): string {
+  return "drawer" + drawer;
 }

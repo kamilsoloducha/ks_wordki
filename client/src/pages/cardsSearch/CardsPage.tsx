@@ -13,6 +13,7 @@ import { Row } from "./components/row/Row";
 export default function CardsPage(): ReactElement {
   const dispatch = useDispatch();
   const cards = useSelector(selectors.selectCards);
+  const cardsCount = useSelector(selectors.selectCardsCount);
   const filter = useSelector(selectors.selectFilter);
   const isSearching = useSelector(selectors.selectIsSearching);
   const overview = useSelector(selectors.selectOverview);
@@ -105,7 +106,7 @@ export default function CardsPage(): ReactElement {
       <button onClick={lessonIncludedOnly}>Lesson Included</button>
       <button onClick={waitingOnly}>Lesson Included</button>
       <Pagination
-        totalCount={overview.all / 2}
+        totalCount={cardsCount}
         pageSize={filter.pageSize}
         onPageChagned={onPageChagned}
         search={filter.searchingTerm}

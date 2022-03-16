@@ -1,6 +1,6 @@
 import "./CardsList.scss";
 import { CardSummary } from "pages/cards/models/groupDetailsSummary";
-import CardItem from "../cardItem/CardItem";
+import { CardItem } from "../cardItem/CardItem";
 
 function CardsList({ cards, onItemSelected, onChangeUsage }: Model) {
   const onClick = (item: CardSummary) => {
@@ -10,7 +10,7 @@ function CardsList({ cards, onItemSelected, onChangeUsage }: Model) {
     <>
       {cards.map((x) => (
         <div className="card-item" key={x.id} onClick={() => onClick(x)}>
-          <CardItem card={x} direction={1} onChangeUsage={onChangeUsage} />
+          <CardItem card={x} />
         </div>
       ))}
     </>

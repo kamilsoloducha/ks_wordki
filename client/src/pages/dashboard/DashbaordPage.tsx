@@ -7,7 +7,6 @@ import { getDashboardSummary } from "store/dashboard/actions";
 import { selectData } from "store/dashboard/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { Forecast } from "./components/forecast/Forecast";
-// import * as tets from "@";
 
 export default function DashboardPage(): ReactElement {
   const data = useSelector(selectData);
@@ -19,12 +18,9 @@ export default function DashboardPage(): ReactElement {
     dispatch(getDashboardSummary());
   }, [dispatch]);
 
-  if (data.isLoading) {
-    return <LoadingSpinner />;
-  }
-
   return (
     <>
+      {data.isLoading && <LoadingSpinner />}
       <div id="info-group">
         <Info
           title="Repeats"

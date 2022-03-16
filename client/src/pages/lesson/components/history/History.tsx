@@ -7,7 +7,7 @@ export function History({ history }: Model): ReactElement {
     <table>
       <thead>
         <tr>
-          <th></th>
+          <th className="icon"></th>
           <th>Question</th>
           <th>Answer</th>
           <th>User answer</th>

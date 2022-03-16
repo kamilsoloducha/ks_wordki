@@ -112,9 +112,9 @@ export async function searchCards(request: CardsSearchRequest): Promise<CardSumm
   }
 }
 
-export async function searchCardsCount(request: CardsSearchRequest): Promise<CardSummary[] | any> {
+export async function searchCardsCount(request: CardsSearchRequest): Promise<number | any> {
   try {
-    const response = await http.get<CardSummary[]>(`/cards/search/count`, { params: request });
+    const response = await http.put<number>(`/cards/search/count`, request);
     return response.data;
   } catch (error) {
     return { error };

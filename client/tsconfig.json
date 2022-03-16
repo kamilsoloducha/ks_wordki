@@ -19,13 +19,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "paths": {
-      "@store/*": ["./src/store/dashboard/*"]
-    },
+    "jsx": "react-jsx"
   },
   "include": [
     "src"
-  ],
-
+  ]
 }

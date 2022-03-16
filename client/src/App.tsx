@@ -20,6 +20,7 @@ const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
 const RegisterPage = lazy(() => import("pages/register/RegisterPage"));
 const DashboardPage = lazy(() => import("pages/dashboard/DashbaordPage"));
 const GroupsPage = lazy(() => import("pages/groups/GroupsPage"));
+const GroupsSearchPage = lazy(() => import("pages/groupsSearch/GroupsSearch"));
 const GroupDetails = lazy(() => import("pages/cards/GroupDetailsPage"));
 const CardsPage = lazy(() => import("pages/cardsSearch/CardsPage"));
 const LessonSettingsPage = lazy(() => import("pages/lessonSettings/LessonSetting"));
@@ -49,6 +50,7 @@ export default function App() {
                 <Route path="/login" component={LoginPage} />
                 <Route path="/register" component={RegisterPage} />
                 <GuardedRoute path="/dashboard" component={DashboardPage} auth={isLogin} />
+                <GuardedRoute path="/groups/search" component={GroupsSearchPage} auth={isLogin} />
                 <GuardedRoute path="/groups" component={GroupsPage} auth={isLogin} />
                 <GuardedRoute path="/cards/:groupId" component={GroupDetails} auth={isLogin} />
                 <GuardedRoute path="/cards" component={CardsPage} auth={isLogin} />

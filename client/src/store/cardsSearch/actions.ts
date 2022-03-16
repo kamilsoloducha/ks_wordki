@@ -68,11 +68,13 @@ export function searchReduce(state: CardsSearchState): CardsSearchState {
 
 export interface SeachSuccess extends Action {
   cards: CardSummary[];
+  cardsCount: number;
 }
-export function searchSuccess(cards: CardSummary[]): SeachSuccess {
+export function searchSuccess(cards: CardSummary[], cardsCount: number): SeachSuccess {
   return {
     type: CardsSearchActionEnum.SEARCH_SUCCESS,
     cards,
+    cardsCount,
   };
 }
 export function searchSuccessReduce(
@@ -83,6 +85,7 @@ export function searchSuccessReduce(
     ...state,
     isSearching: false,
     cards: action.cards,
+    cardsCount: action.cardsCount,
   };
 }
 

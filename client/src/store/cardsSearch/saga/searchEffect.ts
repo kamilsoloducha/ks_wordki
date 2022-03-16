@@ -21,8 +21,9 @@ function* search() {
   };
 
   const cards: CardSummary[] = yield call(api.searchCards, searchRequest);
+  const cardsCount: number = yield call(api.searchCardsCount, searchRequest);
 
-  yield put(actions.searchSuccess(cards));
+  yield put(actions.searchSuccess(cards, cardsCount));
 }
 
 export function* searchEffect() {

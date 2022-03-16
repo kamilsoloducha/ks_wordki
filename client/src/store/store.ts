@@ -7,10 +7,12 @@ import groupsReducer from "./groups/reducer";
 import rootReducer from "./root/reducer";
 import userReducer from "./user/reducer";
 import cardsSeachReducer from "./cardsSearch/reducer";
+import { groupsSearchReducer } from "./groupsSearch/reducer";
 import * as cardsSearch from "./cardsSearch/saga";
 import * as cards from "./cards/sagas";
 import * as dashboard from "./dashboard/sagas";
 import * as groups from "./groups/sagas";
+import * as groupsSearch from "./groupsSearch/sagas";
 import * as lesson from "./lesson/sagas";
 import * as user from "./user/sagas";
 
@@ -29,6 +31,7 @@ const mainReducer = combineReducers({
   cardsReducer,
   lessonReducer,
   cardsSeachReducer,
+  groupsSearchReducer,
 });
 
 export const store = configureStore();
@@ -64,5 +67,7 @@ sagaMiddleware.run(cardsSearch.setPaginationEffect);
 sagaMiddleware.run(cardsSearch.setSearchingTermEffect);
 sagaMiddleware.run(cardsSearch.updateCardEffect);
 sagaMiddleware.run(cardsSearch.deleteCardEffect);
+
+sagaMiddleware.run(groupsSearch.searchEffect);
 
 export type MainState = ReturnType<typeof store.getState>;

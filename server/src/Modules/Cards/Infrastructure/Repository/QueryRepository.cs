@@ -94,6 +94,11 @@ namespace Cards.Infrastructure
             .Take(query.Take)
             .ToListAsync(cancellationToken);
 
+        public async Task<int> GetGroupSummariesCount(SearchGroupsQuery query, CancellationToken cancellationToken)
+            => await _cardsContext.GroupSummaries
+            .Where(x => x.Name.Contains(query.SearchingTerm))
+            .CountAsync(cancellationToken);
+
         public async Task<IEnumerable<CardSummary>> SearchCards(SearchCardsQuery query, CancellationToken cancellationToken)
             => await _cardsContext.CardsDetails
                 .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) || x.FrontValue.Contains(query.SearchingTerm) || x.BackValue.Contains(query.SearchingTerm))

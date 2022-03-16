@@ -26,6 +26,7 @@ namespace Cards.Application.Services
 
         Task<IEnumerable<GroupSummary>> GetGroupSummaries(Guid ownerId, CancellationToken cancellationToken);
         Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchGroupsQuery query, CancellationToken cancellationToken);
+        Task<int> GetGroupSummariesCount(SearchGroupsQuery query, CancellationToken cancellationToken);
         Task<IEnumerable<CardSummary>> GetCardSummaries(Guid ownerId, long groupId, CancellationToken cancellationToken);
         Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken);
         Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken);

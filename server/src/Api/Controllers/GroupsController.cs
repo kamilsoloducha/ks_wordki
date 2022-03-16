@@ -48,16 +48,21 @@ namespace Api
         [HttpGet("dashboard/summary")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(new GetDashboardSummary.Query(), cancellationToken));
+            => Ok(await Mediator.Send(new GetDashboardSummary.Query(), cancellationToken));
 
         [HttpGet("lesson/{ownerId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromRoute] GetGroupsForLearn.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
 
-        [HttpGet("search")]
+        [HttpPut("search")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Get([FromQuery] SearchGroups.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+        public async Task<IActionResult> Put([FromBody] SearchGroups.Query query, CancellationToken cancellationToken)
+            => Ok(await Mediator.Send(query, cancellationToken));
+
+        [HttpPut("search/count")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Put([FromBody] SearchGroupsCount.Query query, CancellationToken cancellationToken)
+            => Ok(await Mediator.Send(query, cancellationToken));
     }
 }

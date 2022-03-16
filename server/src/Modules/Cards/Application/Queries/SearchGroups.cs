@@ -22,14 +22,14 @@ namespace Cards.Application.Queries
 
             public async Task<IEnumerable<GroupSummary>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = SearchGroupsQuery.Create(request.SearchingTerm, request.PageNumber, request.PageSize);
+                var query = SearchGroupsQuery.Create(request.Name, request.PageNumber, request.PageSize);
                 var groups = await _queryRepository.GetGroupSummaries(query, cancellationToken);
                 return groups;
             }
         }
         public class Query : IRequest<IEnumerable<GroupSummary>>
         {
-            public string SearchingTerm { get; set; }
+            public string Name { get; set; }
             public int PageNumber { get; set; }
             public int PageSize { get; set; }
         }

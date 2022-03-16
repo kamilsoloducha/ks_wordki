@@ -4,7 +4,7 @@ import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
 import { Pagination } from "common/components/pagination/Pagination";
-import { ReactElement, useEffect, useState } from "react";
+import { Fragment, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -17,7 +17,6 @@ import {
 import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/selectors";
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
-import { SearchGroup } from "./components/searchGroup/SearchGroup";
 
 const pageSize = 30;
 
@@ -26,7 +25,6 @@ export default function GroupsPage(): ReactElement {
   const history = useHistory();
   const [page, setPage] = useState(1);
   const [paginatedItems, setPaginatedItems] = useState<GroupSummary[]>([]);
-  const [seachGroupVisible, setSeachGroupVisible] = useState(false);
   const isLoading = useSelector(selectIsLoading);
   const groups = useSelector(selectGroups);
   const selectedItem = useSelector(selectSelectedItem);
@@ -68,8 +66,8 @@ export default function GroupsPage(): ReactElement {
     setPage(event.currectPage);
   };
 
-  const onHideSearchGroup = () => {
-    setSeachGroupVisible(false);
+  const onSearchGroup = () => {
+    history.push("/groups/search");
   };
 
   return (
@@ -78,11 +76,12 @@ export default function GroupsPage(): ReactElement {
         <button data-testid="new-group-button" onClick={onaddgroup}>
           Create new group
         </button>
-        <button onClick={() => setSeachGroupVisible(true)}>Search from existing</button>
+        <button onClick={onSearchGroup}>Search from existing</button>
       </div>
       {paginatedItems.map((x) => (
-        <div key={x.id} onClick={() => selectGroup(x)}>
+        <Fragment key={x.id}>
           <GroupRow
+            onClick={() => selectGroup(x)}
             groupSummary={{
               id: x.id,
               name: x.name,
@@ -92,12 +91,10 @@ export default function GroupsPage(): ReactElement {
               cardsEnabled: x.cardsEnabled ?? 0,
             }}
           />
-          <hr style={{ backgroundColor: "rgb(133, 133, 133)", height: "1px", border: "none" }} />
-        </div>
+        </Fragment>
       ))}
       <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
       <GroupDialog group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
-      <SearchGroup visible={seachGroupVisible} onHide={onHideSearchGroup} />
     </>
   );
 }

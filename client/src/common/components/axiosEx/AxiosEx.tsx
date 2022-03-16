@@ -1,12 +1,11 @@
 import { ReactElement, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { selectToken } from "store/user/selectors";
 import http from "../../services/http/http";
+import history from "../../services/history";
 
 export default function AxiosEx({ children }: Model) {
   const token = useSelector(selectToken);
-  const history = useHistory();
 
   http.interceptors.request.use(
     (req) => {

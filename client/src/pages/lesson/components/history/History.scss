@@ -1,9 +1,22 @@
 table {
     border-collapse: collapse;
+    width: 100%;
 }
 
-td {
+tr:not(:last-child) {
     border-bottom: 1px solid black;
+}
+
+th {
+    padding-bottom: 5px;
+}
+
+th.icon {
+    width: 24px;
+}
+
+td:not(:first-child) {
+    padding-left: 10px;
 }
 
 .history-correct {

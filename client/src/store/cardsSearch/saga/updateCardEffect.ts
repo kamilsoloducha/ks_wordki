@@ -3,7 +3,6 @@ import * as actions from "../actions";
 import * as api from "pages/cards/services/groupDetailsApi";
 import { selectUserId } from "store/user/selectors";
 import { UpdateCardRequest } from "pages/cards/models/requests/updateCardRequest";
-import { UpdateCardResponse } from "pages/cardsSearch/models/repsponses/updateCardResponse";
 
 function* updateCard(action: actions.UpdateCard) {
   const userId: string = yield select(selectUserId);
@@ -24,7 +23,7 @@ function* updateCard(action: actions.UpdateCard) {
       isTicked: action.card.back.isTicked,
     },
   };
-  const _: UpdateCardResponse = yield call(api.updateCard2, request);
+  yield call(api.updateCard2, request);
 
   yield put(actions.search());
 }

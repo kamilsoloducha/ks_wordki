@@ -18,7 +18,7 @@ namespace Api
         protected async Task<IActionResult> HandleRequest<TResponse>(RequestBase<TResponse> request, CancellationToken cancellationToken)
         {
             var result = await Mediator.Send(request, cancellationToken);
-            return result.IsCorrect ? new JsonResult(result) : BadRequest(result);
+            return result.IsCorrect ? Ok(result) : BadRequest(result);
         }
     }
 }
