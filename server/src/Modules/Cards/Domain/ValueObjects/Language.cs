@@ -1,4 +1,4 @@
-using System;
+using Blueprints.Domain;
 
 namespace Cards.Domain
 {
@@ -13,7 +13,7 @@ namespace Cards.Domain
 
         public static Language Create(int id)
         {
-            if (id < 0) throw new ArgumentException(nameof(id));
+            if (id < 0) throw new BuissnessArgumentException(nameof(id), id);
 
             return new Language(id);
         }

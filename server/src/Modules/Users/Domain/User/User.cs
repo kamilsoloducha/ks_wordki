@@ -97,8 +97,6 @@ namespace Users.Domain
 
         public void Login()
         {
-            CheckRule(new LoginUserStatusRule(Status));
-
             LoginDate = SystemClock.Now;
         }
 

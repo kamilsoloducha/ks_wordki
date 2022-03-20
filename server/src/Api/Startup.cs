@@ -21,7 +21,6 @@ using Blueprints.Infrastrcuture.Services;
 using Cards.Domain;
 using Blueprints.Infrastrcuture;
 using Microsoft.Extensions.Logging;
-using Blueprints.Infrastructure.DataAccess;
 
 namespace Api
 {
@@ -70,6 +69,7 @@ namespace Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
+                c.CustomSchemaIds(type => type.ToString());
             });
             services.AddMvc().AddFluentValidation();
             services.AddLogging(loggingBuilder =>
@@ -82,16 +82,13 @@ namespace Api
          IWebHostEnvironment env,
          IServiceProvider serviceProvider)
         {
-
-            // serviceProvider.CreateCardsDb().Wait();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
 
             app.UseCors("AllowAll");
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

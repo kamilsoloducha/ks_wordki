@@ -68,7 +68,6 @@ export function resetLesson(): ResetLesson {
         ...state,
         repeats: [],
         answer: "",
-        lessonHistory: [],
       };
     },
   };
@@ -185,7 +184,12 @@ export function getCards(): LessonAction {
   return {
     type: DailyActionEnum.GET_CARDS,
     reduce: (state: LessonState): LessonState => {
-      return { ...state, lessonState: l.Loading, isProcessing: true };
+      return {
+        ...state,
+        lessonState: l.Loading,
+        isProcessing: true,
+        lessonHistory: [],
+      };
     },
   };
 }

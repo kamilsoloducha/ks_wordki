@@ -2,7 +2,7 @@ import UserRepeat from "pages/lesson/models/userRepeat";
 import { ReactElement } from "react";
 import "./History.scss";
 
-export function History({ history }: Model): ReactElement {
+export function History({ history, userAnswer = true }: Model): ReactElement {
   return (
     <table>
       <thead>
@@ -10,7 +10,7 @@ export function History({ history }: Model): ReactElement {
           <th className="icon"></th>
           <th>Question</th>
           <th>Answer</th>
-          <th>User answer</th>
+          {userAnswer && <th>User answer</th>}
         </tr>
       </thead>
       <tbody>
@@ -25,7 +25,7 @@ export function History({ history }: Model): ReactElement {
             </td>
             <td>{item.repeat.question}</td>
             <td>{item.repeat.answer}</td>
-            <td>{item.userAnswer}</td>
+            {userAnswer && <td>{item.userAnswer}</td>}
           </tr>
         ))}
       </tbody>
@@ -35,6 +35,7 @@ export function History({ history }: Model): ReactElement {
 
 interface Model {
   history: UserRepeat[];
+  userAnswer?: boolean;
 }
 
 function getClassByResult(result: number): string {

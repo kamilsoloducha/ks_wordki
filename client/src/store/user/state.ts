@@ -4,6 +4,7 @@ export default interface UserState {
   token: string;
   id: string;
   expirationDate: Date;
+  errorMessage: string;
 }
 
 export const initialState: UserState = {
@@ -12,4 +13,5 @@ export const initialState: UserState = {
   token: "",
   id: "",
   expirationDate: new Date(1),
+  errorMessage: "",
 };

@@ -18,7 +18,7 @@ namespace Api
         [HttpGet("{ownerId}/{groupId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromRoute] GetCardSummaries.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
 
         [HttpPost("add")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
@@ -53,7 +53,7 @@ namespace Api
         [HttpGet("dashboard/summary/{userId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromRoute] GetDashboardSummary.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
 
         [HttpPut("append")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
@@ -63,7 +63,7 @@ namespace Api
         [HttpPut("search")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get(SearchCards.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
 
         [HttpPut("search/count")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
@@ -73,6 +73,6 @@ namespace Api
         [HttpGet("overview/{ownerId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromRoute] GetCardsOverview.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
     }
 }

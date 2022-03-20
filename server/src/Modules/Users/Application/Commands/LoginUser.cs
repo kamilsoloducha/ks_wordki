@@ -7,12 +7,13 @@ using Blueprints.Application.Requests;
 using FluentValidation;
 using System;
 using Utils;
+using MediatR;
 
 namespace Users.Application
 {
     public class LoginUser
     {
-        internal class CommandHandler : RequestHandlerBase<Command, Response>
+        internal class CommandHandler : IRequestHandler<Command, Response>
         {
             private readonly IUserRepository _userRepository;
             private readonly IPasswordManager _passwordManager;
@@ -27,14 +28,12 @@ namespace Users.Application
                 _authenticationService = authenticationService;
             }
 
-            public async override Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
                 var hashedPassword = _passwordManager.CreateHashedPassword(request.Password);
                 var user = await _userRepository.GetUser(request.UserName, hashedPassword, cancellationToken);
                 if (user is null)
-                {
-                    return ResponseBase<Response>.Create("user is null");
-                }
+                    return new Response { ResponseCode = ResponseCode.UserNotFound };
 
                 var creatingDate = SystemClock.Now;
                 var token = _authenticationService.Authenticate(user.Id, user.Roles.Select(x => x.Type.ToString()));
@@ -42,17 +41,18 @@ namespace Users.Application
                 user.Login();
                 await _userRepository.Update(user, cancellationToken);
 
-                return ResponseBase<Response>.Create(new Response
+                return new Response
                 {
+                    ResponseCode = ResponseCode.Successful,
                     Token = token,
                     Id = user.Id,
                     CreatingDateTime = creatingDate,
                     ExpirationDateTime = creatingDate.AddDays(7)
-                });
+                };
             }
         }
 
-        public class Command : RequestBase<Response>
+        public class Command : IRequest<Response>
         {
             public string UserName { get; set; }
             public string Password { get; set; }
@@ -69,10 +69,17 @@ namespace Users.Application
 
         public class Response
         {
+            public ResponseCode ResponseCode { get; set; }
             public string Token { get; set; }
             public Guid Id { get; set; }
             public DateTime CreatingDateTime { get; set; }
             public DateTime ExpirationDateTime { get; set; }
+        }
+
+        public enum ResponseCode
+        {
+            Successful,
+            UserNotFound
         }
     }
 }

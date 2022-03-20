@@ -15,7 +15,6 @@ export function LessonInformation(): ReactElement {
   const results = useSelector(sel.selectResults);
   const repeatsHistory = useSelector(sel.selectLessonHistory);
   const status = useSelector(sel.selectLessonState);
-  console.log(status);
 
   const hideHistory = () => {
     setRepeatsPopup(false);

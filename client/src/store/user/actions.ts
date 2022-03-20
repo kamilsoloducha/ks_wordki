@@ -4,10 +4,11 @@ import UserState, { initialState } from "./state";
 export enum UserActionEnum {
   LOGIN = "[USER] LOGIN",
   LOGIN_SUCCESS = "[USER] LOGIN_SUCCESS",
-  LOGIN_FAILED = "[USER] LOGIN_FAILED",
   REGISTER = "[USER] REGISTER",
   REGISTER_SUCCESS = "[USER] REGISTER_SUCCESS",
   LOGOUT = "[USER] LOGOUT",
+
+  SET_ERROR_MESSAGE = "[USER] SET_ERROR_MESSAGE",
 }
 
 export interface LoginUser extends Action {
@@ -50,16 +51,20 @@ export function reduceLoginUserSuccess(state: UserState, action: LoginUserSucces
   };
 }
 
-export interface LoginUserFailed extends Action {}
-export function getLoginUserFailed(): LoginUserFailed {
+export interface SetErrorMessage extends Action {
+  errorMessage: string;
+}
+export function setErrorMessage(errorMessage: string): SetErrorMessage {
   return {
-    type: UserActionEnum.LOGIN_SUCCESS,
+    type: UserActionEnum.SET_ERROR_MESSAGE,
+    errorMessage,
   };
 }
-export function reduceLoginUserFailed(state: UserState, _: LoginUserFailed): UserState {
+export function reduceSetErrorMessage(state: UserState, action: SetErrorMessage): UserState {
   return {
     ...state,
     isLoading: false,
+    errorMessage: action.errorMessage,
   };
 }
 
@@ -99,4 +104,4 @@ export function reduceRegisterUser(state: UserState, _: RegisterUser): UserState
   return { ...state };
 }
 
-export type UserAction = LoginUser | LoginUserSuccess | LoginUserFailed | RegisterUser | Logout;
+export type UserAction = LoginUser | LoginUserSuccess | SetErrorMessage | RegisterUser | Logout;

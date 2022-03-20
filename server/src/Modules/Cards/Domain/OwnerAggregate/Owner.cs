@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blueprints.Domain;
 
 namespace Cards.Domain
 {
@@ -161,14 +162,14 @@ namespace Cards.Domain
         private Group GetGroup(GroupId id)
         {
             var group = _groups.FirstOrDefault(x => x.Id == id);
-            if (group is null) throw new Exception("Group is not found");
+            if (group is null) throw new BuissnessObjectNotFoundException(nameof(group), id);
             return group;
         }
 
         private Detail GetDetail(SideId sideId)
         {
             var detail = Details.FirstOrDefault(x => x.SideId == sideId);
-            if (detail is null) throw new Exception("Detail is not found");
+            if (detail is null) throw new BuissnessObjectNotFoundException(nameof(detail), sideId);
             return detail;
         }
 

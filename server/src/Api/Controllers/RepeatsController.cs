@@ -16,16 +16,16 @@ public class RepeatsController : BaseController
     [HttpPost]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
     public async Task<IActionResult> GetRepeats([FromBody] GetRepeats.Query query, CancellationToken cancellationToken)
-        => new JsonResult(await Mediator.Send(query, cancellationToken));
+        => Ok(await Mediator.Send(query, cancellationToken));
 
     [HttpPost("count")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
     public async Task<IActionResult> GetRepeatsCount([FromBody] GetRepeatsCount.Query query, CancellationToken cancellationToken)
-        => new JsonResult(await Mediator.Send(query, cancellationToken));
+        => Ok(await Mediator.Send(query, cancellationToken));
 
     [HttpPost("new/count")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
     public async Task<IActionResult> GetNewRepeatsCount([FromBody] GetNewRepeatsCount.Query query, CancellationToken cancellationToken)
-    => new JsonResult(await Mediator.Send(query, cancellationToken));
+    => Ok(await Mediator.Send(query, cancellationToken));
 
 }

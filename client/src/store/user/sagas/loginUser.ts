@@ -1,31 +1,34 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
-import { ApiResponse } from "common/models/response";
-import { UserData } from "common/models/userModel";
 import { LoginRequest, LoginResponse } from "pages/login/requests";
+import { LoginResponseCode } from "pages/login/requests/responses/loginResponseCode";
 import { login } from "pages/login/services/loginApi";
-import { getLoginUserFailed, getLoginUserSuccess, LoginUser, UserActionEnum } from "../actions";
+import { setErrorMessage, getLoginUserSuccess, LoginUser, UserActionEnum } from "../actions";
 
 export function* loginUser(action: LoginUser) {
   const request = {
     userName: action.name,
     password: action.password,
   } as LoginRequest;
-  const apiResponse: ApiResponse<LoginResponse> = yield call(login, request);
+  const apiResponse: LoginResponse = yield call(login, request);
 
-  if (apiResponse.isCorrect) {
-    const userData: UserData = {
-      id: apiResponse.response.id,
-      token: apiResponse.response.token,
-    };
-    localStorage.setItem("id", userData.id);
-    localStorage.setItem("token", userData.token);
+  switch (apiResponse.responseCode) {
+    case LoginResponseCode.Successful:
+      localStorage.setItem("id", apiResponse.id);
+      localStorage.setItem("token", apiResponse.token);
+      localStorage.setItem("creationDate", apiResponse.creatingDateTime);
+      localStorage.setItem("expirationDate", apiResponse.expirationDateTime);
+      yield put(
+        getLoginUserSuccess(
+          apiResponse.token,
+          apiResponse.id,
+          new Date(apiResponse.expirationDateTime)
+        )
+      );
+      break;
+    case LoginResponseCode.UserNotFound:
+      yield put(setErrorMessage("Incorrect username or password."));
+      break;
   }
-
-  yield put(
-    apiResponse.isCorrect
-      ? getLoginUserSuccess(apiResponse.response.token, apiResponse.response.id, new Date(1100))
-      : getLoginUserFailed()
-  );
 }
 
 export function* loginUserEffect() {

@@ -1,0 +1,53 @@
+.lesson-results-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .buttons {
+        width: 100%;
+        display: flex;
+        padding: 10px;
+
+        button {
+            flex-grow: 1;
+            padding: 15px;
+            border: none;
+            outline: none;
+            color: rgb(187, 187, 187);
+            background-color: transparent;
+            cursor: pointer;
+            border-radius: 3px;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.068);
+            }
+
+            &:disabled {
+                color: rgb(126, 126, 126);
+                background-color: transparent;
+                cursor: default;
+            }
+        }
+    }
+
+    .details {
+        width: 100%;
+        display: flex;
+
+        .overview {
+            flex-grow: 1;
+
+            p {
+                cursor: pointer;
+
+                &:hover {
+                    color: rgb(197, 197, 197);
+                }
+            }
+        }
+
+        .table {
+            flex-grow: 9;
+        }
+    }
+}

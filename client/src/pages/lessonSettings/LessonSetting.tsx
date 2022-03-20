@@ -7,7 +7,7 @@ import Settings from "./components/repetitionSettings/RepetitionSettings";
 import { TabView, TabViewItemModel } from "common/components/tabView/TabeView";
 import { LessonSettings as SettingsModel } from "pages/lessonSettings/models/lessonSettings";
 import NewCardsSettings from "./components/newCardsSettings/NewCardsSettings";
-import * as mode from "./models/lesson-mode";
+import { LessonMode as mode } from "./models/lesson-mode";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 
 export default function LessonSettings(): ReactElement {
@@ -37,15 +37,17 @@ export default function LessonSettings(): ReactElement {
     dispatch(act.setSettingMode(value + 1));
   };
 
+  const onStartClick = () => {
+    dispatch(act.resetResults());
+    dispatch(act.getCards());
+  };
+
   return (
     <>
       {isProcessing && <LoadingSpinner />}
       <TabView selectedValue={settings.mode} items={items} onItemChanged={onModeChanged} />
       <div className="settings-container">
-        <button
-          disabled={!canLessonStart(settings) || isProcessing}
-          onClick={() => dispatch(act.getCards())}
-        >
+        <button disabled={!canLessonStart(settings) || isProcessing} onClick={onStartClick}>
           Start
         </button>
       </div>

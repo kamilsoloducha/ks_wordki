@@ -1,4 +1,5 @@
 using System;
+using Blueprints.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -15,6 +16,14 @@ namespace Cards.Domain.Tests.OwnerIdTests
             var ownerId = Domain.OwnerId.Restore(guid);
 
             ownerId.Value.Should().Be(guid);
+        }
+
+        [Test]
+        public void RestoreWithError()
+        {
+            var guid = Guid.Empty;
+            Action act = () => Domain.OwnerId.Restore(guid);
+            act.Should().ThrowExactly<BuissnessArgumentException>();
         }
 
         [Test]

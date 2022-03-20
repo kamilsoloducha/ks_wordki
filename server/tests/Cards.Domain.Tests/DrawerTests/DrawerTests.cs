@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using FluentAssertions;
 using System;
+using Blueprints.Domain;
 
 namespace Cards.Domain.Tests.DrawerTests
 {
@@ -76,7 +77,7 @@ namespace Cards.Domain.Tests.DrawerTests
             const int initValue = -1;
             Action action = () => Drawer.Create(initValue);
 
-            action.Should().Throw<Exception>();
+            action.Should().Throw<BuissnessArgumentException>();
         }
     }
 }

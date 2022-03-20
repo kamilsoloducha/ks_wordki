@@ -16,6 +16,6 @@ namespace Api
         [HttpGet("forecast")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromQuery] GetForecast.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
     }
 }

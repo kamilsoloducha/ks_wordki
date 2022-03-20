@@ -1,4 +1,4 @@
-using System;
+using Blueprints.Domain;
 
 namespace Cards.Domain
 {
@@ -13,7 +13,7 @@ namespace Cards.Domain
 
         public static Label Create(string text)
         {
-            if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException(nameof(text));
+            if (string.IsNullOrWhiteSpace(text)) throw new BuissnessArgumentException(nameof(text), text);
 
             var trimmedText = text.Trim();
 

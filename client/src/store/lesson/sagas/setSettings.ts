@@ -3,12 +3,11 @@ import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 import { select } from "redux-saga/effects";
 import { DailyActionEnum, getCardsCount } from "../actions";
 import { selectSettings } from "../selectors";
-
 import * as lessonMode from "pages/lessonSettings/models/lesson-mode";
 
 function* setSettingLanguage() {
   const settings: LessonSettings = yield select(selectSettings);
-  if (settings.mode === lessonMode.New) {
+  if (settings.mode === lessonMode.LessonMode.New) {
     return;
   }
   yield put(getCardsCount());

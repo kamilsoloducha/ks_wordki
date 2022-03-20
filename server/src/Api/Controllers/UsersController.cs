@@ -24,7 +24,7 @@ namespace Api
 
         [HttpPut("login")]
         public async Task<IActionResult> Login(LoginUser.Command command, CancellationToken cancellationToken)
-            => await HandleRequest(command, cancellationToken);
+            => Ok(await Mediator.Send(command, cancellationToken));
 
         [HttpDelete("delete")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]

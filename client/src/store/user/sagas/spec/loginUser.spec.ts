@@ -57,7 +57,7 @@ describe("loginUser generator", () => {
     // expect(mock).toHaveBeenCalledTimes(1);
 
     expect(saga.next({ isCorrect: false } as any).value).toStrictEqual(
-      put(actions.getLoginUserFailed())
+      put(actions.setErrorMessage())
     );
     expect(saga.next().done).toBe(true);
   });

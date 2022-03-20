@@ -1,4 +1,5 @@
 using System;
+using Blueprints.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace Cards.Domain.Tests.GroupNameTests
         public void CreateFailed(string parameter)
         {
             Action action = () => GroupName.Create(parameter);
-            action.Should().Throw<ArgumentException>();
+            action.Should().Throw<BuissnessArgumentException>();
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+using Blueprints.Domain;
 
 namespace Cards.Domain
 {
@@ -19,7 +19,7 @@ namespace Cards.Domain
 
         public static Drawer Create(int correctRepeat)
         {
-            if (correctRepeat < 0) throw new ArgumentException(nameof(correctRepeat));
+            if (correctRepeat < 0) throw new BuissnessArgumentException(nameof(correctRepeat), correctRepeat);
 
             return new Drawer(correctRepeat);
         }

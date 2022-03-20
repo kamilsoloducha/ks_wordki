@@ -3,17 +3,20 @@ import { useFormik } from "formik";
 import { ReactElement, useEffect } from "react";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoginUser } from "store/user/actions";
-import { selectIsLoading, selectUserId } from "store/user/selectors";
+import { getLoginUser, setErrorMessage } from "store/user/actions";
+import * as selectors from "store/user/selectors";
 
 export default function LoginPage(): ReactElement {
-  const userId = useSelector(selectUserId);
-  const isLoading = useSelector(selectIsLoading);
+  const userId = useSelector(selectors.selectUserId);
+  const isLoading = useSelector(selectors.selectIsLoading);
+  const errorMessage = useSelector(selectors.selectErrorMessage);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     document.title = "Wordki - Login";
-  }, []);
+    dispatch(setErrorMessage(""));
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues,
@@ -64,6 +67,7 @@ export default function LoginPage(): ReactElement {
             <div className="error-message">{formik.errors.password}</div>
           ) : null}
         </div>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <input type="submit" value="Login" disabled={isLoading} />
       </form>
     </div>

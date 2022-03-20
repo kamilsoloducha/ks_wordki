@@ -1,4 +1,5 @@
 using System;
+using Blueprints.Domain;
 
 namespace Cards.Domain
 {
@@ -14,7 +15,7 @@ namespace Cards.Domain
         private static OwnerId New() => Restore(Guid.NewGuid());
         public static OwnerId Restore(Guid id)
         {
-            if (id == Guid.Empty) throw new ArgumentException(nameof(id));
+            if (id == Guid.Empty) throw new BuissnessArgumentException(nameof(id), id);
 
             return new OwnerId(id);
         }

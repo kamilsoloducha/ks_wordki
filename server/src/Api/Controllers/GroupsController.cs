@@ -18,12 +18,12 @@ namespace Api
         [HttpGet("{ownerId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> GetAll([FromRoute] GetGroupsSummary.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
 
         [HttpGet("details/{groupId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Get([FromRoute] GetGroupDetails.Query query, CancellationToken cancellationToken)
-            => new JsonResult(await Mediator.Send(query, cancellationToken));
+            => Ok(await Mediator.Send(query, cancellationToken));
 
         [HttpPost("add")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]

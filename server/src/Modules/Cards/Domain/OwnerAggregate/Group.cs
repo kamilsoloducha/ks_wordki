@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Blueprints.Domain;
 
 namespace Cards.Domain
 {
@@ -45,10 +46,7 @@ namespace Cards.Domain
         internal void RemoveCard(Card card)
         {
             var result = _cards.Remove(card);
-            if (!result)
-            {
-                throw new System.Exception("Card is not found");
-            }
+            if (!result) throw new BuissnessArgumentException(nameof(card), card.Id);
         }
 
         internal Card AddCard(
@@ -73,10 +71,8 @@ namespace Cards.Domain
         internal Card GetCard(CardId cardId)
         {
             var card = Cards.FirstOrDefault(x => x.Id == cardId);
-            if (card is null)
-            {
-                throw new System.Exception("Card is not found");
-            }
+            if (card is null) throw new BuissnessObjectNotFoundException(nameof(card), cardId);
+
             return card;
         }
     }

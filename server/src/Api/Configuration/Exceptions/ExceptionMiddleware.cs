@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
 using Blueprints.Domain;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -30,6 +29,14 @@ namespace Api.Configuration
             {
                 _logger.LogError("A buissness rule '{rule}' has been breached", ex.Rule.GetType().Name);
                 await HandleBuissnessException(context, ex);
+            }
+            catch (BuissnessArgumentException ex)
+            {
+                _logger.LogCritical("Domain object creation failed. Argument {argument} cannot have value {value}", ex.ArgumentName, ex.Value);
+                var response = ResponseBase<object>.Create(ex.Message);
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(response);
             }
             catch (Exception e)
             {

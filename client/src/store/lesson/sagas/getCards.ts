@@ -1,5 +1,4 @@
 import * as api from "pages/lesson/services/repeatsApi";
-import * as mode from "pages/lessonSettings/models/lesson-mode";
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { DailyActionEnum, getCardsSuccess } from "../actions";
 import { selectUserId } from "store/user/selectors";
@@ -8,6 +7,7 @@ import { GetRepeatsRequest, GetRepeatsResponse, StartLessonRequest } from "pages
 import { ApiResponse } from "common/models/response";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 import history from "../../../common/services/history";
+import { LessonMode } from "pages/lessonSettings/models/lesson-mode";
 
 function* getCards() {
   const userId: string = yield select(selectUserId);
@@ -35,8 +35,8 @@ function prepareRequest(settings: LessonSettings, userId: string): GetRepeatsReq
     count: settings.count,
     questionLanguage: settings.languages,
     ownerId: userId,
-    groupId: settings.mode === mode.Repetition ? null : settings.selectedGroupId,
-    lessonIncluded: settings.mode === mode.Repetition,
+    groupId: settings.mode === LessonMode.Repetition ? null : settings.selectedGroupId,
+    lessonIncluded: settings.mode === LessonMode.Repetition,
   };
   return request;
 }

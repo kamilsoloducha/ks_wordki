@@ -23,6 +23,7 @@ namespace Cards.Application.Commands
             public async override Task<ResponseBase<long>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ownerId = OwnerId.Restore(request.UserId);
+
                 var owner = await _repository.Get(ownerId, cancellationToken);
                 if (owner is null) return ResponseBase<long>.Create("(set is null");
 

@@ -1,4 +1,5 @@
 using System;
+using Blueprints.Domain;
 
 namespace Cards.Domain
 {
@@ -19,7 +20,7 @@ namespace Cards.Domain
         }
         public static CardId Restore(long id)
         {
-            if (id <= 0) throw new ArgumentException(nameof(id));
+            if (id <= 0) throw new BuissnessArgumentException(nameof(id), id);
 
             return new CardId(id);
         }

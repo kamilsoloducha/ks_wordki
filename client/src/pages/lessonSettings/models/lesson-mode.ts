@@ -1,2 +1,4 @@
-export const Repetition = 1;
-export const New = 2;
+export enum LessonMode {
+  Repetition = 1,
+  New = 2,
+}
