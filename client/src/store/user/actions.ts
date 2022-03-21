@@ -103,5 +103,3 @@ export function getRegisterUser(
 export function reduceRegisterUser(state: UserState, _: RegisterUser): UserState {
   return { ...state };
 }
-
-export type UserAction = LoginUser | LoginUserSuccess | SetErrorMessage | RegisterUser | Logout;

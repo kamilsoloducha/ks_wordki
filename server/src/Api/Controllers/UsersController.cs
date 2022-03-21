@@ -16,7 +16,7 @@ namespace Api
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUser.Command command, CancellationToken cancellationToken)
-            => await HandleRequest(command, cancellationToken);
+            => Ok(await Mediator.Send(command, cancellationToken));
 
         [HttpPut("confirm")]
         public async Task<IActionResult> Confirm(ConfirmEmail.Command command, CancellationToken cancellationToken)

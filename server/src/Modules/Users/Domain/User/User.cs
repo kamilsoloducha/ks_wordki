@@ -27,39 +27,30 @@ namespace Users.Domain
             Roles = new List<Role>();
         }
 
-        public static async Task<User> RegisterUser(
+        public static User RegisterUser(
             string name,
             string password,
             string email,
             string firstName,
-            string surname,
-            IDataChecker dataChecker,
-            CancellationToken cancellationToken)
-        => await Register(name, password, email, firstName, surname, new[] { Role.Student }, dataChecker, cancellationToken);
+            string surname)
+        => Register(name, password, email, firstName, surname, new[] { Role.Student });
 
-        public static async Task<User> RegisterAdmin(
+        public static User RegisterAdmin(
             string name,
             string password,
             string email,
             string firstName,
-            string surname,
-            IDataChecker dataChecker,
-            CancellationToken cancellationToken)
-        => await Register(name, password, email, firstName, surname, new[] { Role.Admin, Role.Student }, dataChecker, cancellationToken);
+            string surname)
+        => Register(name, password, email, firstName, surname, new[] { Role.Admin, Role.Student });
 
-        protected static async Task<User> Register(
+        protected static User Register(
             string name,
             string password,
             string email,
             string firstName,
             string surname,
-            IEnumerable<Role> roles,
-            IDataChecker dataChecker,
-            CancellationToken cancellationToken)
+            IEnumerable<Role> roles)
         {
-            await CheckRule(new RegisterLoginRule(dataChecker, name), cancellationToken);
-            await CheckRule(new RegisterEmailRule(dataChecker, name), cancellationToken);
-
             var newUser = new User();
             newUser.Id = Guid.NewGuid();
             newUser.Name = name;

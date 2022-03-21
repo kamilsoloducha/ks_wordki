@@ -29,14 +29,12 @@ namespace Users.Infrastructure
             var isAdminAccountExists = await _userRepository.Any(x => x.Name == _adminAccountSettings.UserName, CancellationToken.None);
             if (isAdminAccountExists) return;
 
-            var adminUser = await User.RegisterAdmin(
+            var adminUser = User.RegisterAdmin(
                 _adminAccountSettings.UserName,
                 _passwordManager.CreateHashedPassword(_adminAccountSettings.Password),
                 _adminAccountSettings.Email,
                 null,
-                null,
-                _dataChecker,
-                CancellationToken.None);
+                null);
 
             adminUser.Confirm();
 

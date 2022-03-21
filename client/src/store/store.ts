@@ -37,6 +37,7 @@ const mainReducer = combineReducers({
 export const store = configureStore();
 
 sagaMiddleware.run(user.loginUserEffect);
+sagaMiddleware.run(user.registerUserEffect);
 
 sagaMiddleware.run(dashboard.getDashbaordSummaryEffect);
 

@@ -1,7 +1,8 @@
+import { Action } from "@reduxjs/toolkit";
 import * as actions from "./actions";
 import UserState, { initialState } from "./state";
 
-export default function userReducer(state = initialState, action: actions.UserAction): UserState {
+export default function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
     case actions.UserActionEnum.LOGIN:
       return actions.reduceLoginUser(state, action as actions.LoginUser);

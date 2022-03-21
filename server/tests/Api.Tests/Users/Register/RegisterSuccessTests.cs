@@ -25,7 +25,7 @@ namespace Api.Tests.Users
         {
             var content = new RegisterUser.Command
             {
-                Name = "username",
+                UserName = "username",
                 Password = "password",
                 Email = "user@mail.com"
             };
@@ -48,7 +48,7 @@ namespace Api.Tests.Users
             users.Should().HaveCount(1);
             var user = users[0];
             user.Id.Should().Be(response.Response);
-            user.Name.Should().Be(content.Name);
+            user.Name.Should().Be(content.UserName);
             user.Email.Should().Be(content.Email);
             user.Status.Should().Be(1);
             user.ConfirmationDate.Should().Be(TestServerMock.MockDate);

@@ -1,11 +1,13 @@
 import { useFormik } from "formik";
 import { Toast } from "primereact/toast";
 import { ReactElement, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { getRegisterUser } from "store/user/actions";
 import { selectUserId } from "store/user/selectors";
 
 function RegisterPage(): ReactElement {
+  const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
   const toast = useRef<Toast>(null);
 
@@ -15,14 +17,15 @@ function RegisterPage(): ReactElement {
     validate,
   });
 
+  const onSubmit = async (model: FormModel) => {
+    dispatch(
+      getRegisterUser(model.userName, model.email, model.password, model.passwordConfirmation)
+    );
+  };
+
   if (userId) {
     return <Redirect to="/dashboard" />;
   }
-
-  const onSubmit = async (_: FormModel) => {
-    return <Redirect to="login" />;
-  };
-
   return (
     <>
       <form onSubmit={formik.handleSubmit} autoComplete="off">
@@ -51,9 +54,7 @@ function RegisterPage(): ReactElement {
             type="email"
             autoComplete="off"
           />
-          {formik.errors.email && formik.touched.email ? (
-            <div>{formik.errors.email}</div>
-          ) : null}
+          {formik.errors.email && formik.touched.email ? <div>{formik.errors.email}</div> : null}
         </div>
 
         <div>
@@ -81,8 +82,7 @@ function RegisterPage(): ReactElement {
             type="password"
             autoComplete="off"
           />
-          {formik.errors.passwordConfirmation &&
-          formik.touched.passwordConfirmation ? (
+          {formik.errors.passwordConfirmation && formik.touched.passwordConfirmation ? (
             <div>{formik.errors.passwordConfirmation}</div>
           ) : null}
         </div>
