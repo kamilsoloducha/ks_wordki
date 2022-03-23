@@ -11,5 +11,5 @@ export interface Repeat {
   frontLanguage: number;
   backLanguage: number;
   comment: string;
-  groupId: string;
+  groupId: number;
 }

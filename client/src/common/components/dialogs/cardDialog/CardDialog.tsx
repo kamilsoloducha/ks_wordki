@@ -19,6 +19,7 @@ export default function CardDialog({
   const header = isEditing ? "Editing Card" : "Creating Card";
 
   const ondelete: () => void = () => {
+    if (!card) return;
     if (onDelete) onDelete(card);
   };
 
@@ -47,7 +48,7 @@ interface Model {
   card: FormModel | null;
   onHide: () => void;
   onSubmit: (item: FormModel) => void;
-  onDelete?: (item: FormModel | null) => void;
+  onDelete?: (item: FormModel) => void;
   frontLanguage?: Language;
   backLanguage?: Language;
 }

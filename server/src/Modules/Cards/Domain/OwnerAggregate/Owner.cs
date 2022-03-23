@@ -136,8 +136,16 @@ namespace Cards.Domain
                 backDetail.AttachNewSide(newCard.BackId);
             }
 
-            frontDetail.UpdateDetails(updateCommand.Front.IncludeLesson, updateCommand.Front.IsTicked);
-            backDetail.UpdateDetails(updateCommand.Back.IncludeLesson, updateCommand.Back.IsTicked);
+            frontDetail.UpdateDetails(
+                updateCommand.Front.IncludeLesson.HasValue ?
+                updateCommand.Front.IncludeLesson.Value :
+                frontDetail.LessonIncluded,
+                updateCommand.Front.IsTicked);
+            backDetail.UpdateDetails(
+                updateCommand.Back.IncludeLesson.HasValue ?
+                updateCommand.Back.IncludeLesson.Value :
+                backDetail.LessonIncluded,
+                updateCommand.Back.IsTicked);
 
             return result;
         }

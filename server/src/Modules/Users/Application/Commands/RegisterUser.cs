@@ -5,6 +5,8 @@ using Users.Domain;
 using Blueprints.Application.Requests;
 using FluentValidation;
 using MediatR;
+using MassTransit;
+using System.Linq;
 
 namespace Users.Application
 {
@@ -15,15 +17,18 @@ namespace Users.Application
             private readonly IDataChecker _dataChecker;
             private readonly IUserRepository _userRepository;
             private readonly IPasswordManager _passwordManager;
+            private readonly IPublishEndpoint _publishEndpoint;
 
             public CommandHandler(
                 IDataChecker dataChecker,
                 IUserRepository userRepository,
-                IPasswordManager passwordManager)
+                IPasswordManager passwordManager,
+                IPublishEndpoint publishEndpoint)
             {
                 _dataChecker = dataChecker;
                 _userRepository = userRepository;
                 _passwordManager = passwordManager;
+                _publishEndpoint = publishEndpoint;
             }
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -45,7 +50,7 @@ namespace Users.Application
                 );
 
                 await _userRepository.Add(user, cancellationToken);
-
+                await _publishEndpoint.Publish(user.Events.First(), cancellationToken);
                 return new Response
                 {
                     UserId = user.Id,

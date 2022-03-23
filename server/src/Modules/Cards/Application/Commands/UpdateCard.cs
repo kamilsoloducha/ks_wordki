@@ -75,7 +75,7 @@ namespace Cards.Application.Commands
         {
             public string Value { get; set; }
             public string Example { get; set; }
-            public bool IsUsed { get; set; }
+            public bool? IsUsed { get; set; }
             public bool IsTicked { get; set; }
         }
 

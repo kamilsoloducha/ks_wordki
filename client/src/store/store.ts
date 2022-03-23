@@ -61,6 +61,7 @@ sagaMiddleware.run(lesson.getCardsCountEffect);
 sagaMiddleware.run(lesson.tickCardEffect);
 sagaMiddleware.run(lesson.setSettingLanguageEffect);
 sagaMiddleware.run(lesson.getGroupsEffect);
+sagaMiddleware.run(lesson.updateCardEffect);
 
 sagaMiddleware.run(cardsSearch.searchEffect);
 sagaMiddleware.run(cardsSearch.getOverviewEffect);

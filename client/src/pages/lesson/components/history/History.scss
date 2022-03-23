@@ -19,6 +19,12 @@ td:not(:first-child) {
     padding-left: 10px;
 }
 
+tr.clickable {
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.027);
+    }
+}
+
 .history-correct {
     border-left: 2px solid green;
     background-color: rgba(0, 128, 0, 0.5);

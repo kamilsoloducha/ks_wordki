@@ -1,4 +1,6 @@
 import { Action } from "@reduxjs/toolkit";
+import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
+import { Side } from "common/models/side";
 import * as l from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
@@ -42,6 +44,12 @@ export enum DailyActionEnum {
   LESSON_FINISH = "[LESSON] LESSON_FINISH",
 
   RESET_RESULTS = "[LESSON] RESET_RESULTS",
+
+  UPDATE_CARD = "[LESSON] UPDATE_CARD",
+  UPDATE_CARD_SUCCESS = "[LESSON] UPDATE_CARD_SUCCESS",
+
+  DELETE_CARD = "[LESSON] DELETE_CARD",
+  DELETE_CARD_SUCCESS = "[LESSON] DELETE_CARD_SUCCESS",
 }
 
 export interface LessonAction {
@@ -430,4 +438,50 @@ export function resetResults(): ResetResults {
 export function resetResultsReduce(state: LessonState): LessonState {
   const newResults = initialState.results;
   return { ...state, results: newResults };
+}
+
+export interface UpdateCard extends Action {
+  form: FormModel;
+  groupId: number;
+}
+export function updateCard(form: FormModel, groupId: number): UpdateCard {
+  const action: UpdateCard = {
+    type: DailyActionEnum.UPDATE_CARD,
+    form,
+    groupId,
+  };
+  return action;
+}
+export function updateCardReduce(state: LessonState): LessonState {
+  return { ...state };
+}
+
+export interface UpdateCardSuccess extends Action {
+  form: FormModel;
+}
+export function updateCardSuccess(form: FormModel): UpdateCardSuccess {
+  const action: UpdateCardSuccess = {
+    type: DailyActionEnum.UPDATE_CARD_SUCCESS,
+    form,
+  };
+  return action;
+}
+export function updateCardSuccessReduce(
+  state: LessonState,
+  action: UpdateCardSuccess
+): LessonState {
+  const lessonHistory = state.lessonHistory.map((x) => {
+    if (x.repeat.cardId !== action.form.cardId) return x;
+    x.repeat.question =
+      x.repeat.questionSide === Side.Front ? action.form.frontValue : action.form.backValue;
+    x.repeat.questionExample =
+      x.repeat.questionSide === Side.Front ? action.form.frontExample : action.form.backExample;
+    x.repeat.answer =
+      x.repeat.questionSide === Side.Front ? action.form.backValue : action.form.frontValue;
+    x.repeat.answerExample =
+      x.repeat.questionSide === Side.Front ? action.form.backExample : action.form.backExample;
+    return x;
+  });
+
+  return { ...state, lessonHistory: lessonHistory };
 }

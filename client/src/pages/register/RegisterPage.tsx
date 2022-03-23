@@ -1,15 +1,21 @@
+import "./RegisterPage.scss";
 import { useFormik } from "formik";
-import { Toast } from "primereact/toast";
-import { ReactElement, useRef } from "react";
+import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getRegisterUser } from "store/user/actions";
-import { selectUserId } from "store/user/selectors";
+import { getRegisterUser, setErrorMessage } from "store/user/actions";
+import * as selectors from "store/user/selectors";
 
 function RegisterPage(): ReactElement {
   const dispatch = useDispatch();
-  const userId = useSelector(selectUserId);
-  const toast = useRef<Toast>(null);
+  const userId = useSelector(selectors.selectUserId);
+  const isLoading = useSelector(selectors.selectIsLoading);
+  const errorMessage = useSelector(selectors.selectErrorMessage);
+
+  useEffect(() => {
+    document.title = "Wordki - Register";
+    dispatch(setErrorMessage(""));
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues: formInitValues,
@@ -27,10 +33,10 @@ function RegisterPage(): ReactElement {
     return <Redirect to="/dashboard" />;
   }
   return (
-    <>
-      <form onSubmit={formik.handleSubmit} autoComplete="off">
-        <div>
-          <label>Nazwa użytkownika</label>
+    <div className="register-page-container">
+      <form className="register-form" onSubmit={formik.handleSubmit} autoComplete="off">
+        <div className="register-form-header">Register</div>
+        <div className="register-input-item">
           <input
             id="userName"
             name="userName"
@@ -38,14 +44,15 @@ function RegisterPage(): ReactElement {
             onChange={formik.handleChange}
             type="text"
             autoComplete="off"
+            placeholder="User name"
+            disabled={isLoading}
           />
           {formik.errors.userName && formik.touched.userName ? (
-            <div>{formik.errors.userName}</div>
+            <div className="error-message">{formik.errors.userName}</div>
           ) : null}
         </div>
 
-        <div>
-          <label>E-mail</label>
+        <div className="register-input-item">
           <input
             id="email"
             name="email"
@@ -53,12 +60,15 @@ function RegisterPage(): ReactElement {
             onChange={formik.handleChange}
             type="email"
             autoComplete="off"
+            placeholder="E-mail"
+            disabled={isLoading}
           />
-          {formik.errors.email && formik.touched.email ? <div>{formik.errors.email}</div> : null}
+          {formik.errors.email && formik.touched.email ? (
+            <div className="error-message">{formik.errors.email}</div>
+          ) : null}
         </div>
 
-        <div>
-          <label>Hasło</label>
+        <div className="register-input-item">
           <input
             id="password"
             name="password"
@@ -66,14 +76,15 @@ function RegisterPage(): ReactElement {
             onChange={formik.handleChange}
             type="password"
             autoComplete="off"
+            placeholder="Password"
+            disabled={isLoading}
           />
           {formik.errors.password && formik.touched.password ? (
-            <div>{formik.errors.password}</div>
+            <div className="error-message">{formik.errors.password}</div>
           ) : null}
         </div>
 
-        <div>
-          <label>Powtórz hasło</label>
+        <div className="register-input-item">
           <input
             id="passwordConfirmation"
             name="passwordConfirmation"
@@ -81,15 +92,17 @@ function RegisterPage(): ReactElement {
             onChange={formik.handleChange}
             type="password"
             autoComplete="off"
+            placeholder="Password Confirmation"
+            disabled={isLoading}
           />
           {formik.errors.passwordConfirmation && formik.touched.passwordConfirmation ? (
-            <div>{formik.errors.passwordConfirmation}</div>
+            <div className="error-message">{formik.errors.passwordConfirmation}</div>
           ) : null}
         </div>
-        <input type="submit" value="Utworz konto" />
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <input type="submit" value="Create" disabled={isLoading} />
       </form>
-      <Toast ref={toast} />
-    </>
+    </div>
   );
 }
 

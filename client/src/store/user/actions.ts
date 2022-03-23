@@ -101,5 +101,5 @@ export function getRegisterUser(
   };
 }
 export function reduceRegisterUser(state: UserState, _: RegisterUser): UserState {
-  return { ...state };
+  return { ...state, isLoading: true };
 }

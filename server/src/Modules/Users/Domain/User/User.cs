@@ -65,7 +65,7 @@ namespace Users.Domain
             {
                 newUser.AddRole(role);
             }
-
+            newUser._events.Add(new UserCreated { Id = newUser.Id });
             return newUser;
         }
 

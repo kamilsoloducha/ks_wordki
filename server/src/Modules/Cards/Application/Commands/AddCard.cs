@@ -25,7 +25,7 @@ namespace Cards.Application.Commands
                 var ownerId = OwnerId.Restore(request.UserId);
 
                 var owner = await _repository.Get(ownerId, cancellationToken);
-                if (owner is null) return ResponseBase<long>.Create("(set is null");
+                if (owner is null) return ResponseBase<long>.Create("set is null");
 
                 var groupId = GroupId.Restore(request.GroupId);
                 var frontValue = Label.Create(request.Front.Value);
