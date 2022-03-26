@@ -68,6 +68,12 @@ namespace Cards.Domain
             return card;
         }
 
+        internal Card AddCard(Card card)
+        {
+            _cards.Add(card);
+            return card;
+        }
+
         internal Card GetCard(CardId cardId)
         {
             var card = Cards.FirstOrDefault(x => x.Id == cardId);

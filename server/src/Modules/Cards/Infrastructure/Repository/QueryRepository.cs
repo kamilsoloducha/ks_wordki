@@ -76,6 +76,9 @@ namespace Cards.Infrastructure
         public async Task<IEnumerable<CardSummary>> GetCardSummaries(Guid ownerId, long groupId, CancellationToken cancellationToken)
             => await _cardsContext.CardsDetails.Where(x => x.OwnerId == ownerId && x.GroupId == groupId).ToListAsync(cancellationToken);
 
+        public async Task<IEnumerable<CardSummary>> GetCardSummaries(long groupId, CancellationToken cancellationToken)
+        => await _cardsContext.CardsDetails.Where(x => x.GroupId == groupId).ToListAsync(cancellationToken);
+
         public async Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken)
             => await _cardsContext.GroupSummaries.SingleOrDefaultAsync(x => x.Id == groupId, cancellationToken);
 

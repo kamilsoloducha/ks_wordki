@@ -35,6 +35,12 @@ namespace Cards.Infrastructure2
             => await _cardsContext.Details
                 .FirstOrDefaultAsync(x => x.OwnerId == ownerId && x.SideId == sideId, cancellationToken);
 
+        public async Task<Group> GetGroup(GroupId id, CancellationToken cancellationToken)
+            => await _cardsContext.Groups
+                .Include(x => x.Cards).ThenInclude(x => x.Front)
+                .Include(x => x.Cards).ThenInclude(x => x.Back)
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
         public async Task Update(Owner owner, CancellationToken cancellationToken)
         {
             _cardsContext.Owners.Update(owner);

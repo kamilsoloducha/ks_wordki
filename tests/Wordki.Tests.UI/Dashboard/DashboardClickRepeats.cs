@@ -1,5 +1,4 @@
 using System;
-using FluentAssertions;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -8,10 +7,10 @@ using TestStack.BDDfy;
 namespace Wordki.Tests.UI.Login
 {
     [TestFixture]
-    public class NavigateToDashboard : UITestBase
+    public class DashboardClickRepeats : UITestBase
     {
         private readonly DashboardPage _page;
-        public NavigateToDashboard()
+        public DashboardClickRepeats()
         {
             _page = new DashboardPage(Driver);
         }
@@ -28,9 +27,7 @@ namespace Wordki.Tests.UI.Login
         {
             new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
                 .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.ClassName("info-container")));
-            _page.Repeats.Text.Should().Contain("30");
-            _page.Cards.Text.Should().Contain("20");
-            _page.Groups.Text.Should().Contain("10");
+            _page.Repeats.Click();
         }
 
         [Test]

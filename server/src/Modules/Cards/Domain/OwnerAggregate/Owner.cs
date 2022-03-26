@@ -33,6 +33,23 @@ namespace Cards.Domain
             return newGroup.Id;
         }
 
+        public GroupId AppendGroup(Group group, ISequenceGenerator sequenceGenerator)
+        {
+
+            var newGroup = Group.New(group.Name, group.Front, group.Back, sequenceGenerator);
+            _groups.Add(newGroup);
+
+            foreach (var card in group.Cards)
+            {
+                card.IsPrivate = false;
+
+                newGroup.AddCard(card);
+                AddDetails(card, Comment.Create(string.Empty), Comment.Create(string.Empty));
+            }
+
+            return newGroup.Id;
+        }
+
         public void MergeGroups(IEnumerable<GroupId> groupIds)
         {
             throw new NotImplementedException();

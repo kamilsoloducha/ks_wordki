@@ -4,8 +4,9 @@ namespace Cards.Domain
 {
     public class Detail
     {
-        public OwnerId OwnerId { get; private set; }
+        public long Id { get; private set; }
 
+        public OwnerId OwnerId { get; private set; }
         public SideId SideId { get; private set; }
         public Drawer Drawer { get; private set; }
         public int Counter { get; private set; }

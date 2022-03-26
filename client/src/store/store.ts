@@ -70,6 +70,9 @@ sagaMiddleware.run(cardsSearch.setSearchingTermEffect);
 sagaMiddleware.run(cardsSearch.updateCardEffect);
 sagaMiddleware.run(cardsSearch.deleteCardEffect);
 
+sagaMiddleware.run(groupsSearch.getCardsEffect);
+sagaMiddleware.run(groupsSearch.saveGroupEffect);
 sagaMiddleware.run(groupsSearch.searchEffect);
+sagaMiddleware.run(groupsSearch.setGroupEffect);
 
 export type MainState = ReturnType<typeof store.getState>;

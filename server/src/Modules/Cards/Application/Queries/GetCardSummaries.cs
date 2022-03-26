@@ -8,7 +8,6 @@ using MediatR;
 
 namespace Cards.Application.Queries
 {
-
     public class GetCardSummaries
     {
         internal class QueryHandler : IRequestHandler<Query, Response>

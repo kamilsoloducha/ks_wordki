@@ -1,0 +1,31 @@
+ @host = http://localhost:5000/users
+
+### registering user
+# @name register
+POST {{host}}/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "user1",
+    "password": "pass",
+    "email": "user@mail.com",
+    "firstName": null,
+    "surname": null
+}
+
+@id1 = {{register.response.body.$.response}}
+
+### registering user
+# @name register
+POST {{host}}/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "user2",
+    "password": "pass",
+    "email": "user2@mail.com",
+    "firstName": null,
+    "surname": null
+}
+
+@id2 = {{register.response.body.$.response}}

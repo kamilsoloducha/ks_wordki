@@ -30,6 +30,12 @@ namespace Api
         public async Task<IActionResult> Add(AddGroup.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
+
+        [HttpPost("append")]
+        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+        public async Task<IActionResult> Append(AppendGroup.Command command, CancellationToken cancellationToken)
+            => Ok(await Mediator.Send(command, cancellationToken));
+
         [HttpPut("update")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Update(UpdateGroup.Command command, CancellationToken cancellationToken)

@@ -38,8 +38,6 @@ namespace Cards.Application.Commands
             }
         }
 
-
-
         public class Command : RequestBase<long>
         {
             public Guid UserId { get; set; }

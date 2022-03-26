@@ -200,7 +200,7 @@ namespace Cards.Infrastructure2
         {
             builder.ToTable("details");
 
-            builder.HasKey(x => new { x.OwnerId, x.SideId });
+            builder.HasKey(x => x.Id);
 
             builder.Property(x => x.SideId).HasConversion(
                 x => x.Value,

@@ -1,11 +1,13 @@
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.Linq;
 
 namespace Wordki.Tests.UI.LessonSettings
 {
     class LessonSettingsPage : Page
     {
-        protected override string Url => "http://localhost:3000/lessonsettings";
+        protected override string Url => "http://localhost:3000/lesson-settings";
         public LessonSettingsPage(IWebDriver driver) : base(driver) { }
 
         private IWebElement TabView => Driver.FindElement(By.ClassName("tab-view-header-container"));
@@ -13,19 +15,32 @@ namespace Wordki.Tests.UI.LessonSettings
         public IWebElement NewWrodsTab => TabView.FindElements(By.ClassName("tab-view-header-item"))[1];
 
         private IWebElement LanguageSelector => Driver.FindElement(By.ClassName("language-items-container"));
-        public void SelectPolishLanguage() => LanguageSelector.FindElement(By.CssSelector("label[for=polish']")).Click();
-        public void SelectEnglishLanguage() => LanguageSelector.FindElement(By.CssSelector("label[for=english']")).Click();
+        public void SelectPolishLanguage() => LanguageSelector.FindElement(By.CssSelector("label[for=polish]")).Click();
+        public void SelectEnglishLanguage() => LanguageSelector.FindElement(By.CssSelector("label[for=english]")).Click();
+
+        public void InsertCardsCount(int count)
+        {
+            var countSelector = Driver.FindElement(By.ClassName("count-container"));
+            var input = countSelector.FindElement(By.CssSelector("input"));
+            input.Clear();
+            input.SendKeys(count.ToString());
+        }
+
         public void SelectAllCards()
         {
             var countSelector = Driver.FindElement(By.ClassName("count-container"));
+            var count = countSelector.FindElement(By.CssSelector("strong"));
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+                .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TextToBePresentInElement(count, "100"));
+
             var buttons = countSelector.FindElements(By.CssSelector("button"));
             var allButton = buttons.Last();
             allButton.Click();
         }
 
         private IWebElement TypeSelector => Driver.FindElement(By.ClassName("lesson-type-container"));
-        public void SelectFiszki() => TypeSelector.FindElement(By.CssSelector("label[for=1']")).Click();
-        public void SelectInserting() => TypeSelector.FindElement(By.CssSelector("label[for=2']")).Click();
+        public void SelectFiszki() => TypeSelector.FindElements(By.CssSelector("label"))[0].Click();
+        public void SelectInserting() => TypeSelector.FindElements(By.CssSelector("label"))[1].Click();
         public void StartLesson()
         {
             var startButton = Driver.FindElement(By.ClassName("settings-container")).FindElement(By.CssSelector("button"));

@@ -34,6 +34,7 @@ CREATE TABLE cards.cards (
 );
 
 CREATE TABLE cards.details (
+    "Id" bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     "OwnerId" uuid NOT NULL,
     "SideId" bigint NOT NULL,
     "Drawer" integer NOT NULL,
@@ -42,7 +43,7 @@ CREATE TABLE cards.details (
     "LessonIncluded" boolean NOT NULL,
     "Comment" text NOT NULL,
     "IsTicked" boolean NOT NULL,
-    CONSTRAINT "PK_details" PRIMARY KEY ("OwnerId", "SideId"),
+    CONSTRAINT "PK_details" PRIMARY KEY ("Id"),
     CONSTRAINT "FK_details_owners_OwnerId" FOREIGN KEY ("OwnerId") REFERENCES cards.owners ("Id") ON DELETE CASCADE
 );
 
@@ -126,15 +127,16 @@ GROUP BY d."NextRepeat", d."OwnerId"
 ORDER BY d."NextRepeat";
 
 CREATE OR REPLACE VIEW cards.cardsummary AS
- SELECT g."OwnerId",
+select 
+	bd."OwnerId",
     g."Id" AS "GroupId",
     g."Name" as "GroupName",
     c."Id" AS "CardId",
-    f."Value" AS "FrontValue",
-    f."Example" AS "FrontExample",
+    fs."Value" AS "FrontValue",
+    fs."Example" AS "FrontExample",
 	g."Front" as "FrontLanguage",
-    b."Value" AS "BackValue",
-    b."Example" AS "BackExample",
+    bs."Value" AS "BackValue",
+    bs."Example" AS "BackExample",
 	g."Back" as "BackLanguage",
     fd."Comment" AS "FrontDetailsComment",
     fd."Drawer" AS "FrontDrawer",
@@ -144,13 +146,14 @@ CREATE OR REPLACE VIEW cards.cardsummary AS
     bd."Drawer" AS "BackDrawer",
     bd."LessonIncluded" AS "BackLessonIncluded",
 	bd."IsTicked" AS "BackIsTicked"
-   FROM cards.groups g
-     LEFT JOIN cards.groups_cards gc ON gc."GroupsId" = g."Id"
-     LEFT JOIN cards.cards c ON c."Id" = gc."CardsId"
-     JOIN cards.sides f ON f."Id" = c."FrontId"
-     JOIN cards.details fd ON fd."SideId" = f."Id"
-     JOIN cards.sides b ON b."Id" = c."BackId"
-     JOIN cards.details bd ON bd."SideId" = b."Id";
+from cards.cards c
+join cards.groups_cards gc ON gc."CardsId" = c."Id"
+join cards."groups" g ON g."Id" = gc."GroupsId"
+join cards.sides bs ON bs."Id" = c."BackId"
+join cards.sides fs ON fs."Id" = c."FrontId"
+left join cards.details bd on bd."SideId" = bs."Id" and bd."OwnerId" = g."OwnerId"
+left join cards.details fd on fd."SideId" = fs."Id" and fd."OwnerId" = g."OwnerId"
+where bd."OwnerId" = fd."OwnerId";
 
 
 CREATE OR REPLACE VIEW cards.grouptolesson AS
@@ -167,10 +170,9 @@ join cards.groups_cards gc ON gc."GroupsId" = g."Id"
 join cards.cards c ON c."Id" = gc."CardsId"
 join cards.details fd on fd."SideId" = c."FrontId"
 join cards.details bd on bd."SideId" = c."BackId"
-group by g."Id"
+group by g."Id";
 
 
---/var/lib/pgadmin/storage/kamilsoloducha_gmail.com/details_backup.sql
 CREATE OR REPLACE VIEW cards.overview AS
 SELECT 
 o."Id" as "OwnerId",
@@ -184,7 +186,6 @@ COUNT(CASE WHEN d."LessonIncluded" THEN 1 END) AS "LessonIncluded",
 COUNT(CASE WHEN d."IsTicked" THEN 1 END) AS "Ticked"
 FROM cards.owners o 
 LEFT JOIN cards.details d ON d."OwnerId" = o."Id"
-GROUP BY o."Id"
-
+GROUP BY o."Id";
 
 
