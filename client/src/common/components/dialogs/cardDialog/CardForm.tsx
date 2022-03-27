@@ -187,7 +187,7 @@ export default function CardForm({ card, onSubmit, frontLanguage, backLanguage }
 }
 
 export interface FormModel {
-  cardId: number;
+  cardId: string;
   frontValue: string;
   frontExample: string;
   frontEnabled: any;

@@ -11,7 +11,5 @@ namespace Blueprints.Application.Requests
         public static ResponseBase<TResponse> Create(TResponse response)
             => new ResponseBase<TResponse>() { Response = response };
 
-        public static ResponseBase<TResponse> Create(string error)
-            => new ResponseBase<TResponse>() { Error = error };
     }
 }

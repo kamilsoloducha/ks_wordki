@@ -22,7 +22,7 @@ export async function searchCardsCount(request: SearchGroupsRequest): Promise<nu
   }
 }
 
-export async function getCards(groupId: number): Promise<CardSummary[] | any> {
+export async function getCards(groupId: string): Promise<CardSummary[] | any> {
   try {
     const response = await http.get<CardSummary[]>(`/cards/${groupId}`);
     return response.data;

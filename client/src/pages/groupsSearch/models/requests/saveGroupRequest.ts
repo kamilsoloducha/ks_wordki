@@ -1,4 +1,4 @@
 export interface SaveGroupRequest {
   ownerId: string;
-  groupId: number;
+  groupId: string;
 }

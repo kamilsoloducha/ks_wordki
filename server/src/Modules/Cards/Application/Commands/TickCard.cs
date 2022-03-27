@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Blueprints.Application.Requests;
 using Cards.Domain;
 using FluentValidation;
@@ -13,19 +14,20 @@ namespace Cards.Application.Commands
         internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
             private readonly IOwnerRepository _repository;
+            private readonly IHashIdsService _hash;
 
-            public CommandHandler(IOwnerRepository repository)
+            public CommandHandler(IOwnerRepository repository, IHashIdsService hash)
             {
                 _repository = repository;
+                _hash = hash;
             }
 
             public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ownerId = OwnerId.Restore(request.UserId);
-                var sideId = SideId.Restore(request.SideId);
+                var sideId = SideId.Restore(_hash.GetLongId(request.SideId));
 
                 var side = await _repository.Get(ownerId, sideId, cancellationToken);
-                if (side is null) return ResponseBase<Unit>.Create("side is null");
 
                 if (side.IsTicked) return ResponseBase<Unit>.Create(Unit.Value);
 
@@ -39,7 +41,7 @@ namespace Cards.Application.Commands
         public class Command : RequestBase<Unit>
         {
             public Guid UserId { get; set; }
-            public long SideId { get; set; }
+            public string SideId { get; set; }
         }
 
         internal class CommandValidator : AbstractValidator<Command>
@@ -47,7 +49,7 @@ namespace Cards.Application.Commands
             public CommandValidator()
             {
                 RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
-                RuleFor(x => x.SideId).Must(x => x > 0);
+                RuleFor(x => x.SideId).NotEmpty();
             }
         }
     }

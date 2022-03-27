@@ -1,5 +1,5 @@
 export default interface GroupDetails {
-  id: number;
+  id: string;
   name: string;
   front: number;
   back: number;

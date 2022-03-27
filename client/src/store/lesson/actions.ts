@@ -146,7 +146,7 @@ export function setSettingMode(mode: number): SetSettingMode {
   };
 }
 
-export function setSettingGroup(groupId: number): LessonAction {
+export function setSettingGroup(groupId: string): LessonAction {
   return {
     type: DailyActionEnum.SET_SETTING_GROUP,
     reduce: (state: LessonState): LessonState => {
@@ -442,9 +442,9 @@ export function resetResultsReduce(state: LessonState): LessonState {
 
 export interface UpdateCard extends Action {
   form: FormModel;
-  groupId: number;
+  groupId: string;
 }
-export function updateCard(form: FormModel, groupId: number): UpdateCard {
+export function updateCard(form: FormModel, groupId: string): UpdateCard {
   const action: UpdateCard = {
     type: DailyActionEnum.UPDATE_CARD,
     form,

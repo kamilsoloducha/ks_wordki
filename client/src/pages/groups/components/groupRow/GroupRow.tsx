@@ -30,11 +30,11 @@ export default function GroupRow({ groupSummary, onClick }: Model) {
 interface Model {
   groupSummary: GroupSummary;
 
-  onClick?: (id: number) => void;
+  onClick?: (id: string) => void;
 }
 
 interface GroupSummary {
-  id: number;
+  id: string;
   name: string;
   front: number;
   back: number;

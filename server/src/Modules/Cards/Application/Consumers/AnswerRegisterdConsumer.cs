@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Cards.Domain;
 using Domain.IntegrationEvents;
 using MassTransit;
@@ -16,6 +17,7 @@ namespace Cards.Application
     {
         private readonly INextRepeatCalculator _nextRepeatCalculator;
         private readonly IOwnerRepository _cardsRepository;
+
 
         public AnswerRegisterdConsumer(INextRepeatCalculator nextRepeatCalculator,
             IOwnerRepository cardsRepository)

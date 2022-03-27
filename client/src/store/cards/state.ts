@@ -2,7 +2,7 @@ import { CardSummary } from "pages/cards/models/groupDetailsSummary";
 
 export default interface CardsState {
   isLoading: boolean;
-  id: number;
+  id: string;
   name: string;
   language1: number;
   language2: number;
@@ -14,7 +14,7 @@ export default interface CardsState {
 
 export const initialState: CardsState = {
   isLoading: false,
-  id: 0,
+  id: "",
   name: "",
   language1: 0,
   language2: 0,

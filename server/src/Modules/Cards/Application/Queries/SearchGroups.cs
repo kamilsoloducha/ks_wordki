@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
 using MediatR;
@@ -11,27 +13,48 @@ namespace Cards.Application.Queries
 {
     public class SearchGroups
     {
-        internal class QueryHandler : IRequestHandler<Query, IEnumerable<GroupSummary>>
+        internal class QueryHandler : IRequestHandler<Query, IEnumerable<GroupSummaryDto>>
         {
             private readonly IQueryRepository _queryRepository;
+            private readonly IHashIdsService _hash;
 
-            public QueryHandler(IQueryRepository queryRepository)
+            public QueryHandler(IQueryRepository queryRepository, IHashIdsService hash)
             {
                 _queryRepository = queryRepository;
+                _hash = hash;
             }
 
-            public async Task<IEnumerable<GroupSummary>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<GroupSummaryDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query = SearchGroupsQuery.Create(request.Name, request.PageNumber, request.PageSize);
                 var groups = await _queryRepository.GetGroupSummaries(query, cancellationToken);
-                return groups;
+                return groups.Select(x => ToDto(x, _hash));
             }
+
+            private GroupSummaryDto ToDto(GroupSummary groupSummary, IHashIdsService hashIds)
+                => new GroupSummaryDto
+                {
+                    Id = hashIds.GetHash(groupSummary.Id),
+                    Name = groupSummary.Name,
+                    Front = groupSummary.Front,
+                    Back = groupSummary.Back,
+                    CardsCount = groupSummary.CardsCount
+                };
         }
-        public class Query : IRequest<IEnumerable<GroupSummary>>
+        public class Query : IRequest<IEnumerable<GroupSummaryDto>>
         {
             public string Name { get; set; }
             public int PageNumber { get; set; }
             public int PageSize { get; set; }
+        }
+
+        public class GroupSummaryDto
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public int Front { get; set; }
+            public int Back { get; set; }
+            public int CardsCount { get; set; }
         }
     }
 

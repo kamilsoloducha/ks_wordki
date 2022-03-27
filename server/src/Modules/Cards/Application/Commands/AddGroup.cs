@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Blueprints.Application.Requests;
 using Cards.Domain;
 using FluentValidation;
@@ -10,22 +11,24 @@ namespace Cards.Application.Commands
 {
     public class AddGroup
     {
-        internal class CommandHandler : RequestHandlerBase<Command, long>
+        internal class CommandHandler : RequestHandlerBase<Command, string>
         {
             private readonly IOwnerRepository _repository;
             private readonly ISequenceGenerator _sequenceGenerator;
+            private readonly IHashIdsService _hash;
 
-            public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator)
+            public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator, IHashIdsService hash)
             {
                 _repository = repository;
                 _sequenceGenerator = sequenceGenerator;
+                _hash = hash;
             }
 
-            public async override Task<ResponseBase<long>> Handle(Command request, CancellationToken cancellationToken)
+            public async override Task<ResponseBase<string>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var userId = OwnerId.Restore(request.UserId);
                 var owner = await _repository.Get(userId, cancellationToken);
-                if (owner is null) return ResponseBase<long>.Create("cardsSet is null");
+                if (owner is null) return ResponseBase<string>.Create("cardsSet is null");
 
                 var groupName = GroupName.Create(request.GroupName);
                 var front = Language.Create(request.Front);
@@ -34,11 +37,11 @@ namespace Cards.Application.Commands
                 var groupId = owner.AddGroup(groupName, front, back, _sequenceGenerator);
 
                 await _repository.Update(owner, cancellationToken);
-                return ResponseBase<long>.Create(groupId.Value);
+                return ResponseBase<string>.Create(_hash.GetHash(groupId.Value));
             }
         }
 
-        public class Command : RequestBase<long>
+        public class Command : RequestBase<string>
         {
             public Guid UserId { get; set; }
             public string GroupName { get; set; }

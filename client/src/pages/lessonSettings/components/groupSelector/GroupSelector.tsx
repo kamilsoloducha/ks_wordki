@@ -24,8 +24,8 @@ export function GroupSelector({ items, selectedGroupId, onSelectedChanged }: Mod
 
 interface Model {
   items: Group[];
-  selectedGroupId: number | null;
-  onSelectedChanged: (groupId: number) => void;
+  selectedGroupId: string | null;
+  onSelectedChanged: (groupId: string) => void;
 }
 
 const dropdownItemLayout = (option: Group, props: any) => {

@@ -230,10 +230,10 @@ export function UpdateCardSuccessReducer(
 }
 
 export interface DeleteCard extends Action {
-  cardId: number;
-  groupId: number;
+  cardId: string;
+  groupId: string;
 }
-export function deleteCard(cardId: number, groupId: number): DeleteCard {
+export function deleteCard(cardId: string, groupId: string): DeleteCard {
   return {
     type: CardsSearchActionEnum.DELETE_CARD,
     cardId,

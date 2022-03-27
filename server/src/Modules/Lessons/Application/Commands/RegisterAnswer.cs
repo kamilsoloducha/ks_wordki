@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Blueprints.Application.Requests;
 using Lessons.Domain;
 using MassTransit;
@@ -14,19 +15,21 @@ namespace Lessons.Application.Commands
         {
             private readonly IPerformanceRepository _repository;
             private readonly IPublishEndpoint _publishEndpoint;
+            private readonly IHashIdsService _hash;
 
-            public CommandHandler(IPerformanceRepository repository, IPublishEndpoint publishEndpoint)
+
+            public CommandHandler(IPerformanceRepository repository, IPublishEndpoint publishEndpoint, IHashIdsService hash)
             {
                 _repository = repository;
                 _publishEndpoint = publishEndpoint;
+                _hash = hash;
             }
 
             public async override Task<ResponseBase<Resposne>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
-                if (performance is null) return ResponseBase<Resposne>.Create("performance is null");
 
-                performance.RegisterAnswer(request.SideId, request.Result);
+                performance.RegisterAnswer(_hash.GetLongId(request.SideId), request.Result);
                 await _repository.Update(performance);
                 await _publishEndpoint.Publish(performance.Events.First(), cancellationToken);
 
@@ -38,7 +41,7 @@ namespace Lessons.Application.Commands
         {
             public DateTime StartLessonDate { get; set; } // usually it will be the latest, always??
             public Guid UserId { get; set; }
-            public long SideId { get; set; }
+            public string SideId { get; set; }
             public int Result { get; set; }
         }
 

@@ -7,7 +7,7 @@ import * as api from "pages/cards/services/groupDetailsApi";
 
 function* updateCard(action: UpdateCard) {
   const userId: string = yield select(selectUserId);
-  const id: number = yield select(selectGroupId);
+  const id: string = yield select(selectGroupId);
 
   const { data, error }: { data: {}; error: any } = yield call(() =>
     api.updateCard(userId, id, action.card)

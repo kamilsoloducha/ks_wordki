@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Blueprints.Application.Requests;
 using Cards.Domain;
 using FluentValidation;
@@ -13,21 +14,22 @@ namespace Cards.Application.Commands
         {
             private readonly IOwnerRepository _repository;
             private readonly ISequenceGenerator _sequenceGenerator;
+            private readonly IHashIdsService _hash;
 
-            public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator)
+            public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator, IHashIdsService hash)
             {
                 _repository = repository;
                 _sequenceGenerator = sequenceGenerator;
+                _hash = hash;
             }
 
             public async override Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ownerId = OwnerId.Restore(request.UserId);
                 var owner = await _repository.Get(ownerId, cancellationToken);
-                if (owner is null) return ResponseBase<Response>.Create("set is null");
 
-                var groupId = GroupId.Restore(request.GroupId);
-                var cardId = CardId.Restore(request.CardId);
+                var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
+                var cardId = CardId.Restore(_hash.GetLongId(request.CardId));
                 var frontValue = Label.Create(request.Front.Value);
                 var backValue = Label.Create(request.Back.Value);
 
@@ -57,15 +59,15 @@ namespace Cards.Application.Commands
                 var result = owner.UpdateCard(groupId, cardId, command, _sequenceGenerator);
 
                 await _repository.Update(owner, cancellationToken);
-                return ResponseBase<Response>.Create(new Response { CardId = result.Value });
+                return ResponseBase<Response>.Create(new Response { CardId = _hash.GetHash(result.Value) });
             }
         }
 
         public class Command : RequestBase<Response>
         {
             public Guid UserId { get; set; }
-            public long GroupId { get; set; }
-            public long CardId { get; set; }
+            public string GroupId { get; set; }
+            public string CardId { get; set; }
             public CardSide Front { get; set; }
             public CardSide Back { get; set; }
             public string Comment { get; set; }
@@ -81,7 +83,7 @@ namespace Cards.Application.Commands
 
         public class Response
         {
-            public long CardId { get; set; }
+            public string CardId { get; set; }
         }
 
         internal class CommandValidator : AbstractValidator<Command>
@@ -89,8 +91,8 @@ namespace Cards.Application.Commands
             public CommandValidator()
             {
                 RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
-                RuleFor(x => x.GroupId).Must(x => x != 0);
-                RuleFor(x => x.CardId).Must(x => x != 0);
+                RuleFor(x => x.GroupId).NotEmpty();
+                RuleFor(x => x.CardId).NotEmpty();
                 RuleFor(x => x.Front.Value).NotEmpty();
                 RuleFor(x => x.Back.Value).NotEmpty();
             }

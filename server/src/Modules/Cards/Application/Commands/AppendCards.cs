@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Blueprints.Application.Requests;
 using Cards.Domain;
 using MediatR;
@@ -13,16 +14,18 @@ namespace Cards.Application.Commands
         {
 
             private readonly IOwnerRepository _repository;
+            private readonly IHashIdsService _hash;
 
-            public CommandHandler(IOwnerRepository repository)
+            public CommandHandler(IOwnerRepository repository, IHashIdsService hash)
             {
                 _repository = repository;
+                _hash = hash;
             }
 
             public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ownerId = OwnerId.Restore(request.OwnerId);
-                var groupId = GroupId.Restore(request.GroupId);
+                var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
 
                 var owner = await _repository.Get(ownerId, cancellationToken);
                 owner.IncludeToLesson(groupId, request.Count, request.Langauges);
@@ -36,7 +39,7 @@ namespace Cards.Application.Commands
         public class Command : RequestBase<Unit>
         {
             public Guid OwnerId { get; set; }
-            public long GroupId { get; set; }
+            public string GroupId { get; set; }
             public int Count { get; set; }
             public int Langauges { get; set; }
         }

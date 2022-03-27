@@ -27,9 +27,6 @@ namespace Users.Application
             public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetUser(request.Id.Value, cancellationToken);
-                if (user is null)
-                    return ResponseBase<Unit>.Create("user is null");
-
                 user.Remove();
 
                 await _userRepository.Update(user, cancellationToken);

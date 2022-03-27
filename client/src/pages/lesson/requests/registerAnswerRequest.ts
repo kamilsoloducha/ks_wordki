@@ -1,5 +1,5 @@
 export interface RegisterAnswerRequest {
   userId: string;
-  sideId: number;
+  sideId: string;
   result: number;
 }

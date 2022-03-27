@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Cards.Application.Services;
 using Cards.Domain;
 using MediatR;
@@ -9,44 +10,46 @@ namespace Cards.Application.Commands
 {
     public class AppendGroup
     {
-        internal class CommandHandler : IRequestHandler<Command, long>
+        internal class CommandHandler : IRequestHandler<Command, string>
         {
 
-            private IOwnerRepository _ownerRepository;
-            private IQueryRepository _queryRepository;
-            private ISequenceGenerator _sequenceGenerator;
+            private readonly IOwnerRepository _ownerRepository;
+            private readonly IQueryRepository _queryRepository;
+            private readonly ISequenceGenerator _sequenceGenerator;
+            private readonly IHashIdsService _hash;
 
             public CommandHandler(IOwnerRepository ownerRepository,
                 IQueryRepository queryRepository,
-                ISequenceGenerator sequenceGenerator)
+                ISequenceGenerator sequenceGenerator, IHashIdsService hash)
             {
                 _ownerRepository = ownerRepository;
                 _queryRepository = queryRepository;
                 _sequenceGenerator = sequenceGenerator;
+                _hash = hash;
             }
 
-            public async Task<long> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<string> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ownerId = OwnerId.Restore(request.OwnerId);
 
                 var owner = await _ownerRepository.Get(ownerId, cancellationToken);
                 if (owner is null) throw new Exception("");
 
-                var groupId = GroupId.Restore(request.GroupId);
+                var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
                 var group = await _ownerRepository.GetGroup(groupId, cancellationToken);
 
                 var newGroupId = owner.AppendGroup(group, _sequenceGenerator);
 
                 await _ownerRepository.Update(owner, cancellationToken);
 
-                return newGroupId.Value;
+                return _hash.GetHash(newGroupId.Value);
             }
         }
 
-        public class Command : IRequest<long>
+        public class Command : IRequest<string>
         {
             public Guid OwnerId { get; set; }
-            public long GroupId { get; set; }
+            public string GroupId { get; set; }
         }
     }
 }

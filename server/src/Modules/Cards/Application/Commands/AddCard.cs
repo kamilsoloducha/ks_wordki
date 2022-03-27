@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Blueprints.Application.Requests;
 using Cards.Domain;
 using FluentValidation;
@@ -9,25 +10,27 @@ namespace Cards.Application.Commands
 {
     public class AddCard
     {
-        internal class CommandHandler : RequestHandlerBase<Command, long>
+        internal class CommandHandler : RequestHandlerBase<Command, string>
         {
             private readonly IOwnerRepository _repository;
             private readonly ISequenceGenerator _sequenceGenerator;
+            private readonly IHashIdsService _hash;
 
-            public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator)
+            public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator, IHashIdsService hash)
             {
                 _repository = repository;
                 _sequenceGenerator = sequenceGenerator;
+                _hash = hash;
             }
 
-            public async override Task<ResponseBase<long>> Handle(Command request, CancellationToken cancellationToken)
+            public async override Task<ResponseBase<string>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ownerId = OwnerId.Restore(request.UserId);
 
                 var owner = await _repository.Get(ownerId, cancellationToken);
-                if (owner is null) return ResponseBase<long>.Create("set is null");
+                if (owner is null) return ResponseBase<string>.Create("set is null");
 
-                var groupId = GroupId.Restore(request.GroupId);
+                var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
                 var frontValue = Label.Create(request.Front.Value);
                 var backValue = Label.Create(request.Back.Value);
                 var frontComment = Comment.Create(request.Comment);
@@ -44,14 +47,14 @@ namespace Cards.Application.Commands
                     _sequenceGenerator);
 
                 await _repository.Update(owner, cancellationToken);
-                return ResponseBase<long>.Create(cardId.Value);
+                return ResponseBase<string>.Create(_hash.GetHash(cardId.Value));
             }
         }
 
-        public class Command : RequestBase<long>
+        public class Command : RequestBase<string>
         {
             public Guid UserId { get; set; }
-            public long GroupId { get; set; }
+            public string GroupId { get; set; }
             public CardSide Front { get; set; }
             public CardSide Back { get; set; }
             public string Comment { get; set; }
@@ -69,7 +72,7 @@ namespace Cards.Application.Commands
             public CommandValidator()
             {
                 RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
-                RuleFor(x => x.GroupId).Must(x => x != 0);
+                RuleFor(x => x.GroupId).NotEmpty();
                 RuleFor(x => x.Front.Value).NotEmpty();
                 RuleFor(x => x.Back.Value).NotEmpty();
             }

@@ -21,6 +21,7 @@ using Blueprints.Infrastrcuture.Services;
 using Cards.Domain;
 using Blueprints.Infrastrcuture;
 using Microsoft.Extensions.Logging;
+using Infrastructure.Services;
 
 namespace Api
 {
@@ -34,9 +35,11 @@ namespace Api
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            HostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -64,6 +67,8 @@ namespace Api
                 .AddLessonsApplicationModule()
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddHashIds(Configuration, HostingEnvironment);
 
             services.AddCustomAuthorization();
             services.AddSwaggerGen(c =>

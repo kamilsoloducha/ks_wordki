@@ -22,7 +22,7 @@ export default function GroupsSearch(): ReactElement {
     dispatch(actions.filterSetName(value));
   };
 
-  const onGroupSelected = (groupId: number) => {
+  const onGroupSelected = (groupId: string) => {
     const selectedGroup = groups.find((x) => x.id === groupId);
     if (!selectedGroup) return;
     dispatch(actions.setGroup(selectedGroup));

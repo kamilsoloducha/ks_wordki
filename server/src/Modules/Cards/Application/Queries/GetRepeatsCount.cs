@@ -36,7 +36,6 @@ namespace Cards.Application.Queries
         {
             public Guid UserId { get; set; }
             public IEnumerable<int> QuestionLanguage { get; set; }
-            public IEnumerable<Guid> GroupIds { get; set; }
             public bool IsUsed { get; set; }
         }
     }

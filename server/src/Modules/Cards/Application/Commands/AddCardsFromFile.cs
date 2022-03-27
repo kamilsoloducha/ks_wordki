@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Blueprints.Application.Requests;
 using Cards.Domain;
 using MediatR;
@@ -14,18 +15,20 @@ namespace Cards.Application.Commands
         {
             private readonly IOwnerRepository _repository;
             private readonly ISequenceGenerator _sequenceGenerator;
+            private readonly IHashIdsService _hash;
 
             public CommandHandler(IOwnerRepository repository,
-                ISequenceGenerator sequenceGenerator)
+                ISequenceGenerator sequenceGenerator, IHashIdsService hash)
             {
                 _repository = repository;
                 _sequenceGenerator = sequenceGenerator;
+                _hash = hash;
             }
 
             public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ownerId = OwnerId.Restore(request.UserId);
-                var groupId = GroupId.Restore(request.GroupId);
+                var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
 
                 var owner = await _repository.Get(ownerId, cancellationToken);
 
@@ -66,7 +69,7 @@ namespace Cards.Application.Commands
         public class Command : RequestBase<Unit>
         {
             public Guid UserId { get; set; }
-            public long GroupId { get; set; }
+            public string GroupId { get; set; }
             public string Content { get; set; }
             public string ItemSeparator { get; set; }
             public string ElementSeparator { get; set; }

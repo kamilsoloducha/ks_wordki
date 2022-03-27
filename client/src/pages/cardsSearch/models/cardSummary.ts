@@ -1,8 +1,8 @@
 import { Side } from "./side";
 
 export interface CardSummary {
-  id: number;
-  groupId: number;
+  id: string;
+  groupId: string;
   groupName: string;
   front: Side;
   back: Side;

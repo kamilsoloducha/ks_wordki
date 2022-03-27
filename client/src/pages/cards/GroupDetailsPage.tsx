@@ -40,7 +40,7 @@ export default function GroupDetailsPage(): ReactElement {
   const [editedGroup, setEditedGroup] = useState<any>(null);
 
   useEffect(() => {
-    dispatch(actions.getCards(parseInt(groupId)));
+    dispatch(actions.getCards(groupId));
   }, [groupId, dispatch]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function GroupDetailsPage(): ReactElement {
         isTicked: item.isTicked,
       },
     } as CardSummary;
-    if (udpdatedCard.id !== 0) {
+    if (udpdatedCard.id !== "") {
       dispatch(actions.updateCard(udpdatedCard));
       setFormItem(null);
     } else {
@@ -105,7 +105,7 @@ export default function GroupDetailsPage(): ReactElement {
 
   const onAddCard = () => {
     const cardTemplate = {
-      id: 0,
+      id: "",
       front: { value: "", example: "", isUsed: false },
       back: { value: "", example: "", isUsed: false },
     } as CardSummary;

@@ -6,6 +6,6 @@ export interface LessonSettings {
   count: number;
   mode: number;
   groups: Group[];
-  selectedGroupId: number | null;
+  selectedGroupId: string | null;
   wrongLimit: number;
 }

@@ -1,8 +1,8 @@
 import { CardSide } from "./cardSide";
 
 export interface CardSummary {
-  id: number;
-  groupId: number;
+  id: string;
+  groupId: string;
   front: CardSide;
   back: CardSide;
 }

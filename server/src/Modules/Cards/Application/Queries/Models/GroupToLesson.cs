@@ -13,6 +13,5 @@ namespace Cards.Application.Queries
         public int Back { get; set; }
         public int FrontCount { get; set; }
         public int BackCount { get; set; }
-
     }
 }

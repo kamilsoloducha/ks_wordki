@@ -10,17 +10,17 @@ import { CardsOverview } from "../../cardsSearch/models/cardsOverview";
 import { CardsSearchRequest } from "../../cardsSearch/models/requests/cardsSearchRequest";
 import { UpdateCardResponse } from "pages/cardsSearch/models/repsponses/updateCardResponse";
 
-export async function groupDetails(groupId: number): Promise<GroupDetailsResponse> {
+export async function groupDetails(groupId: string): Promise<GroupDetailsResponse> {
   const response = await http.get<GroupDetailsResponse>(`/groups/details/${groupId}`);
   return response.data;
 }
 
-export async function cardsSummary(userId: string, groupId: number): Promise<CardsSummaryResponse> {
+export async function cardsSummary(userId: string, groupId: string): Promise<CardsSummaryResponse> {
   const response = await http.get<CardsSummaryResponse>(`/cards/${userId}/${groupId}`);
   return response.data;
 }
 
-export async function updateCard(userId: string, groupId: number, card: CardSummary) {
+export async function updateCard(userId: string, groupId: string, card: CardSummary) {
   const request = {
     userId,
     groupId,
@@ -69,14 +69,14 @@ export async function addCard(userId: string, groupId: string, card: CardSummary
   }
 }
 
-export async function deleteCard(userId: string, groupId: number, cardId: number) {
+export async function deleteCard(userId: string, groupId: string, cardId: string) {
   const response = await http.delete<{}>(`/cards/delete/${userId}/${groupId}/${cardId}`);
   return { data: response.data };
 }
 
 export async function appendCards(
   userId: string,
-  groupId: number,
+  groupId: string,
   count: number,
   langauges: number
 ) {

@@ -21,7 +21,6 @@ namespace Lessons.Application.Commands
             public async override Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
-                if (performance is null) return ResponseBase<Response>.Create("performance is null");
 
                 var lessonType = LessonType.Create(request.LessonType);
 

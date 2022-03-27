@@ -1,6 +1,6 @@
 export interface Repeat {
-  sideId: number;
-  cardId: number;
+  sideId: string;
+  cardId: string;
   questionSide: number;
   question: string;
   questionExample: string;
@@ -11,5 +11,5 @@ export interface Repeat {
   frontLanguage: number;
   backLanguage: number;
   comment: string;
-  groupId: number;
+  groupId: string;
 }

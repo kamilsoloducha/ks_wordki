@@ -1,7 +1,7 @@
 import { CardSide } from "./cardSide";
 
 export interface CardSummary {
-  id: number;
+  id: string;
   front: CardSide;
   back: CardSide;
 }

@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Services;
-using Cards.Application.Queries.Models;
 using Cards.Application.Services;
 using MediatR;
 
 namespace Cards.Application.Queries
 {
-    public class GetGroupsSummary
+    public class GetGroupDetails
     {
         internal class QueryHandler : IRequestHandler<Query, Response>
         {
@@ -22,40 +18,31 @@ namespace Cards.Application.Queries
                 _queryRepository = queryRepository;
                 _hash = hash;
             }
+
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var groupsSummaries = await _queryRepository.GetGroupSummaries(request.OwnerId, cancellationToken);
-                return new Response { Groups = groupsSummaries.Select(x => CreateDto(x, _hash)) };
-            }
-
-            private GroupSummaryDto CreateDto(GroupSummary groupSummary, IHashIdsService hashIds)
-                => new GroupSummaryDto
+                var groupId = _hash.GetLongId(request.GroupId);
+                var groupDetails = await _queryRepository.GetGroupDetails(groupId, cancellationToken);
+                return new Response
                 {
-                    Id = hashIds.GetHash(groupSummary.Id),
-                    Name = groupSummary.Name,
-                    Front = groupSummary.Front,
-                    Back = groupSummary.Back,
-                    CardsCount = groupSummary.CardsCount
+                    Id = _hash.GetHash(groupDetails.Id),
+                    Name = groupDetails.Name,
+                    Front = groupDetails.Front,
+                    Back = groupDetails.Back
                 };
+            }
         }
-
         public class Query : IRequest<Response>
         {
-            public Guid OwnerId { get; set; }
+            public string GroupId { get; set; }
         }
 
         public class Response
-        {
-            public IEnumerable<GroupSummaryDto> Groups { get; set; }
-        }
-
-        public class GroupSummaryDto
         {
             public string Id { get; set; }
             public string Name { get; set; }
             public int Front { get; set; }
             public int Back { get; set; }
-            public int CardsCount { get; set; }
         }
     }
 }

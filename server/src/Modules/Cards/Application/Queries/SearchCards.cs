@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Services;
 using Cards.Application.Services;
 using Cards.Domain;
 using MediatR;
@@ -14,10 +15,12 @@ namespace Cards.Application.Queries
         internal class QueryHandler : IRequestHandler<Query, IEnumerable<CardSummary>>
         {
             private readonly IQueryRepository _queryRepository;
+            private readonly IHashIdsService _hash;
 
-            public QueryHandler(IQueryRepository queryRepository)
+            public QueryHandler(IQueryRepository queryRepository, IHashIdsService hash)
             {
                 _queryRepository = queryRepository;
+                _hash = hash;
             }
 
             public async Task<IEnumerable<CardSummary>> Handle(Query request, CancellationToken cancellationToken)
@@ -39,8 +42,8 @@ namespace Cards.Application.Queries
             {
                 return new SearchCards.CardSummary
                 {
-                    Id = card.CardId,
-                    GroupId = card.GroupId,
+                    Id = _hash.GetHash(card.CardId),
+                    GroupId = _hash.GetHash(card.GroupId),
                     GroupName = card.GroupName,
                     Front = new SearchCards.SideSummary
                     {
@@ -81,8 +84,8 @@ namespace Cards.Application.Queries
 
         public class CardSummary
         {
-            public long Id { get; set; }
-            public long GroupId { get; set; }
+            public string Id { get; set; }
+            public string GroupId { get; set; }
             public string GroupName { get; set; }
             public SideSummary Back { get; set; }
             public SideSummary Front { get; set; }

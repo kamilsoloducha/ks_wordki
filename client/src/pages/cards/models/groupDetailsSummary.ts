@@ -1,5 +1,5 @@
 export interface GroupDetailsResponse {
-  id: number;
+  id: string;
   name: string;
   front: number;
   back: number;
@@ -14,7 +14,7 @@ export default interface GroupDetailsSummary {
 }
 
 export interface CardSummary {
-  id: number;
+  id: string;
   front: SideSummary;
   back: SideSummary;
 }

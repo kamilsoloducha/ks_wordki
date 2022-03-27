@@ -46,11 +46,6 @@ namespace Api
         public async Task<IActionResult> Tick(TickCard.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
-        [HttpPut("enable")]
-        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Update(AddCardSide.Command command, CancellationToken cancellationToken)
-            => await HandleRequest(command, cancellationToken);
-
         [HttpDelete("delete/{userId}/{groupId}/{cardId}")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Delete([FromRoute] DeleteCard.Command command, CancellationToken cancellationToken)

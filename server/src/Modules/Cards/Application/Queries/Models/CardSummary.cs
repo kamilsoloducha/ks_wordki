@@ -23,35 +23,5 @@ namespace Cards.Application.Queries.Models
         public int BackDrawer { get; set; }
         public bool BackLessonIncluded { get; set; }
         public bool BackIsTicked { get; set; }
-
-        public GetCardSummaries.CardSummary ToDto()
-        {
-            return new GetCardSummaries.CardSummary
-            {
-                Id = CardId,
-                Front = new GetCardSummaries.SideSummary
-                {
-                    Type = (int)SideType.Front,
-                    Value = FrontValue,
-                    Example = FrontExample,
-                    Comment = FrontDetailsComment,
-                    Drawer = Math.Min(FrontDrawer + 1, 5),
-                    IsUsed = FrontLessonIncluded,
-                    IsTicked = FrontIsTicked,
-                },
-                Back = new GetCardSummaries.SideSummary
-                {
-                    Type = (int)SideType.Back,
-                    Value = BackValue,
-                    Example = BackExample,
-                    Comment = BackDetailsComment,
-                    Drawer = Math.Min(BackDrawer + 1, 5),
-                    IsUsed = BackLessonIncluded,
-                    IsTicked = BackIsTicked,
-                },
-            };
-        }
-
-
     }
 }

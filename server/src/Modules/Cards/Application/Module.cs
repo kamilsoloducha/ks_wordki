@@ -1,6 +1,7 @@
 using Domain.IntegrationEvents;
 using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cards.Application
@@ -10,6 +11,7 @@ namespace Cards.Application
         public static IServiceCollection AddCardsApplicationModule(this IServiceCollection services)
         {
             services.AddMediatR(typeof(Module).Assembly);
+
             return services;
         }
 
