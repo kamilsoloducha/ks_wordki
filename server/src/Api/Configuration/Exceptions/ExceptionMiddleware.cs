@@ -20,7 +20,6 @@ namespace Api.Configuration
 
         public async Task Invoke(HttpContext context)
         {
-            _logger.LogDebug("Exception middleware");
             try
             {
                 await _next(context);

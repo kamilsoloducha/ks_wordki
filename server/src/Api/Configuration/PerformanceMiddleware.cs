@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +20,6 @@ namespace Api.Configuration
         public async Task Invoke(HttpContext context)
         {
             var stopWatch = new Stopwatch();
-            _logger.LogInformation("Start handling {request} at {startTime}", context.Request.Path, SystemClock.Now);
             stopWatch.Start();
 
             await _next(context);
