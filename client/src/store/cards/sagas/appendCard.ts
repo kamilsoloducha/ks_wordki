@@ -3,7 +3,7 @@ import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import { AppendCard, CardsActionEnum, getCards } from "../actions";
 import { selectGroupId } from "../selectors";
-import * as api from "pages/cards/services/groupDetailsApi";
+import * as api from "api";
 
 function* appendCards(action: AppendCard) {
   const userId: string = yield select(selectUserId);

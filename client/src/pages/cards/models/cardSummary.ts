@@ -1,7 +1,7 @@
-import { CardSide } from "./cardSide";
+import { SideSummary } from "./sideSummary";
 
 export interface CardSummary {
   id: string;
-  front: CardSide;
-  back: CardSide;
+  front: SideSummary;
+  back: SideSummary;
 }

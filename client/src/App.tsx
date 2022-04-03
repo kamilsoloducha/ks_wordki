@@ -4,7 +4,6 @@ import "primereact/resources/themes/nova/theme.css";
 import "primereact/resources/primereact.min.css";
 import { lazy, Suspense } from "react";
 import { Route, Router, Switch } from "react-router-dom";
-import LoadingPage from "common/components/loadingPage/LoadingPage";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import ErrorPage from "common/components/error/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +13,7 @@ import TopBar from "common/components/topBar/TopBar";
 import GuardedRoute from "common/components/guardedRoute/GuardedRoute";
 import history from "./common/services/history";
 import { selectBreadcrumbs } from "store/root/selectors";
+import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
 const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
@@ -28,9 +28,11 @@ const LessonPage = lazy(() => import("pages/lesson/LessonPage"));
 const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));
 
 export default function App() {
+  const dispatch = useDispatch();
+
   const isLogin = useSelector(selectIsLogin);
   const breadCrumbs = useSelector(selectBreadcrumbs);
-  const dispatch = useDispatch();
+
   const userId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
 
@@ -44,7 +46,7 @@ export default function App() {
         <Router history={history}>
           <TopBar isLogin={isLogin} breadCrumbs={breadCrumbs} />
           <div className="content">
-            <Suspense fallback={<LoadingPage></LoadingPage>}>
+            <Suspense fallback={<LoadingSpinner />}>
               <Switch>
                 <Route path="/logout" component={LogoutPage} />
                 <Route path="/login" component={LoginPage} />
@@ -70,9 +72,4 @@ export default function App() {
       </AxiosEx>
     </>
   );
-}
-
-export interface UserModel {
-  id: string;
-  token: string;
 }

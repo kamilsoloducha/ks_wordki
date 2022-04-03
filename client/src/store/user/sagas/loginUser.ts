@@ -1,7 +1,6 @@
 import { call, put, takeEvery } from "@redux-saga/core/effects";
-import { LoginRequest, LoginResponse } from "pages/login/requests";
-import { LoginResponseCode } from "pages/login/requests/responses/loginResponseCode";
-import { login } from "pages/login/services/loginApi";
+import { LoginRequest } from "api/commands";
+import * as api from "api";
 import { setErrorMessage, getLoginUserSuccess, LoginUser, UserActionEnum } from "../actions";
 
 export function* loginUser(action: LoginUser) {
@@ -9,10 +8,10 @@ export function* loginUser(action: LoginUser) {
     userName: action.name,
     password: action.password,
   } as LoginRequest;
-  const apiResponse: LoginResponse = yield call(login, request);
+  const apiResponse: api.LoginResponse = yield call(api.login, request);
 
   switch (apiResponse.responseCode) {
-    case LoginResponseCode.Successful:
+    case api.LoginResponseCode.Successful:
       localStorage.setItem("id", apiResponse.id);
       localStorage.setItem("token", apiResponse.token);
       localStorage.setItem("creationDate", apiResponse.creatingDateTime);
@@ -25,7 +24,7 @@ export function* loginUser(action: LoginUser) {
         )
       );
       break;
-    case LoginResponseCode.UserNotFound:
+    case api.LoginResponseCode.UserNotFound:
       yield put(setErrorMessage("Incorrect username or password."));
       break;
   }

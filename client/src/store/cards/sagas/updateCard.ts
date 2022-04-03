@@ -3,7 +3,7 @@ import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import { CardsActionEnum, UpdateCard, updateCardSuccess } from "../actions";
 import { selectGroupId } from "../selectors";
-import * as api from "pages/cards/services/groupDetailsApi";
+import * as api from "api";
 
 function* updateCard(action: UpdateCard) {
   const userId: string = yield select(selectUserId);

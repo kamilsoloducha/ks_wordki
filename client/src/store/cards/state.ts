@@ -1,4 +1,4 @@
-import { CardSummary } from "pages/cards/models/groupDetailsSummary";
+import { CardSummary } from "pages/cards/models";
 
 export default interface CardsState {
   isLoading: boolean;

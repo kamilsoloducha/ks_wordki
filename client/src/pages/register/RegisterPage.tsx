@@ -5,9 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getRegisterUser, setErrorMessage } from "store/user/actions";
 import * as selectors from "store/user/selectors";
+import { initialValue, RegisterFormModel } from "./models";
+import { validate } from "./services/registerFormValidator";
 
-function RegisterPage(): ReactElement {
+export default function RegisterPage(): ReactElement {
   const dispatch = useDispatch();
+
   const userId = useSelector(selectors.selectUserId);
   const isLoading = useSelector(selectors.selectIsLoading);
   const errorMessage = useSelector(selectors.selectErrorMessage);
@@ -18,12 +21,12 @@ function RegisterPage(): ReactElement {
   }, [dispatch]);
 
   const formik = useFormik({
-    initialValues: formInitValues,
+    initialValues: initialValue,
     onSubmit: (values) => onSubmit(values),
     validate,
   });
 
-  const onSubmit = async (model: FormModel) => {
+  const onSubmit = async (model: RegisterFormModel) => {
     dispatch(
       getRegisterUser(model.userName, model.email, model.password, model.passwordConfirmation)
     );
@@ -105,40 +108,3 @@ function RegisterPage(): ReactElement {
     </div>
   );
 }
-
-export default RegisterPage;
-
-interface FormModel {
-  userName: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-}
-
-const formInitValues: FormModel = {
-  userName: "",
-  email: "",
-  password: "",
-  passwordConfirmation: "",
-};
-
-const validate = (values: FormModel): FormModel => {
-  const errors = {} as FormModel;
-  if (!values.userName?.length) {
-    errors.userName = "Pole jest wymagane";
-  }
-  if (!values.email?.length) {
-    errors.email = "Pole jest wymagane";
-  }
-  if (!values.password?.length) {
-    errors.password = "Pole jest wymagane";
-  }
-  if (!values.passwordConfirmation?.length) {
-    errors.passwordConfirmation = "Pole jest wymagane";
-  }
-  if (values.passwordConfirmation !== values.password) {
-    errors.passwordConfirmation = "Hasła muszą być takie same";
-  }
-
-  return errors;
-};

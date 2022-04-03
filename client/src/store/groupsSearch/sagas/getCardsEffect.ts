@@ -1,5 +1,5 @@
 import * as actions from "../actions";
-import * as api from "pages/groupsSearch/services/groupsSearchApi";
+import * as api from "api";
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { selectSelectedGroup } from "../selectors";
 import { GroupSummary } from "pages/groupsSearch/models/groupSummary";

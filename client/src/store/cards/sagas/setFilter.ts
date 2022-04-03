@@ -2,7 +2,7 @@ import { put, select, takeEvery } from "@redux-saga/core/effects";
 import { CardsActionEnum, setFilteredCards } from "../actions";
 import { FilterModel } from "../state";
 import { selectCards, selectFilterState } from "../selectors";
-import { CardSummary, SideSummary } from "pages/cards/models/groupDetailsSummary";
+import { CardSummary, SideSummary } from "pages/cards/models";
 
 function* filterCards() {
   const filterState: FilterModel = yield select(selectFilterState);

@@ -1,5 +1,4 @@
 import "./CardDialog.scss";
-import "../dialogs.scss";
 import { ReactElement } from "react";
 import { Dialog } from "primereact/dialog";
 import Footer from "./Footer";

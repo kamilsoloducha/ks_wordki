@@ -1,9 +1,8 @@
 import { call, select, takeLatest } from "@redux-saga/core/effects";
 import { selectUserId } from "store/user/selectors";
 import { Correct, DailyActionEnum, Wrong } from "../actions";
-import * as api from "pages/lesson/services/repeatsApi";
+import * as api from "api";
 import { selectLessonHistory, selectShouldSendAnswer } from "../selectors";
-import { RegisterAnswerRequest } from "pages/lesson/requests";
 import UserRepeat from "pages/lesson/models/userRepeat";
 
 function* answer(action: Correct | Wrong) {
@@ -18,7 +17,7 @@ function* answer(action: Correct | Wrong) {
       userId,
       sideId: previousRepeat.repeat.sideId,
       result: action.result,
-    } as RegisterAnswerRequest)
+    } as api.RegisterAnswerRequest)
   );
 }
 

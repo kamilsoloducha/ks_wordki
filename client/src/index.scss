@@ -54,3 +54,31 @@ $drawer2-color: rgb(129, 84, 0);
 $drawer3-color: rgb(128, 128, 0);
 $drawer4-color: rgb(40, 105, 5);
 $drawer5-color: rgb(0, 54, 0);
+
+
+.p-dialog {
+  width: 950px !important;
+  border: none !important;
+
+  .p-dialog-header {
+    background: rgb(68, 68, 68) !important;
+    color: rgb(211, 211, 211) !important;
+    border-bottom: none !important;
+  }
+
+  .p-dialog-content {
+    background: rgb(95, 95, 95) !important;
+    color: rgb(211, 211, 211) !important;
+  }
+
+  .p-dialog-footer {
+    border-top: none !important;
+    background: rgb(68, 68, 68) !important;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .p-dialog {
+    width: 100% !important;
+  }
+}

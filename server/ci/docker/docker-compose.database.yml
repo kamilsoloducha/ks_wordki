@@ -4,8 +4,8 @@ services:
     container_name: wordki-postgres
     image: postgres:alpine
     restart: always
-#    ports:
-#      - 5432:5432
+    ports:
+     - 5432:5432
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: changeme

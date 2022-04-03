@@ -1,0 +1,51 @@
+#seachGroupForm {
+    padding: 0 10px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    gap: 5px;
+
+    input {
+        flex-grow: 1;
+        margin: 0 10px;
+        padding: 5px;
+        font-size: large;
+        outline: none;
+        border: none;
+        background-color: #0001;
+        color: #858585;
+    }
+
+    button {
+        border: none;
+        outline: none;
+        color: rgb(187, 187, 187);
+        background-color: transparent;
+        cursor: pointer;
+        border-radius: 3px;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.068);
+        }
+
+        &:disabled {
+            color: rgb(126, 126, 126);
+            background-color: transparent;
+            cursor: default;
+        }
+    }
+}
+
+.dialog-input-icon {
+    position: absolute;
+    top: 20%
+}
+
+.search-group-dialog-footer {
+    button {
+        border: none;
+        border-radius: 5px;
+        padding: 10px 30px;
+        cursor: pointer;
+    }
+}

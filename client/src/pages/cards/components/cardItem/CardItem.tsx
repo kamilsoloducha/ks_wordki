@@ -1,7 +1,6 @@
 import "./CardItem.scss";
 import { ReactElement } from "react";
-import { CardSummary } from "pages/cards/models/groupDetailsSummary";
-import { CardSide } from "pages/cards/models/cardSide";
+import { CardSummary, SideSummary } from "pages/cards/models";
 
 export function CardItem({ card, onClick }: RowModel): ReactElement {
   return (
@@ -19,7 +18,7 @@ export interface RowModel {
   onClick?: (card: CardSummary) => void;
 }
 
-function Side({ side }: { side: CardSide }): ReactElement {
+function Side({ side }: { side: SideSummary }): ReactElement {
   return (
     <div className={`row-side-container ${drawerClassName(side.drawer)}`}>
       <div className="row-side-value">

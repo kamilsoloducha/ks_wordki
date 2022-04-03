@@ -1,15 +1,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Domain;
+using Cards.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cards.Infrastructure2
+namespace Cards.Infrastructure
 {
     internal class CardsRepository : IOwnerRepository
     {
-        private readonly CardsContextNew _cardsContext;
+        private readonly CardsContext _cardsContext;
 
-        public CardsRepository(CardsContextNew cardsContext)
+        public CardsRepository(CardsContext cardsContext)
         {
             _cardsContext = cardsContext;
         }

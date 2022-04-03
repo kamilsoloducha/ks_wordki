@@ -1,6 +1,6 @@
 import "./CardsList.scss";
-import { CardSummary } from "pages/cards/models/groupDetailsSummary";
 import { CardItem } from "../cardItem/CardItem";
+import { CardSummary } from "pages/cards/models";
 
 function CardsList({ cards, onItemSelected, onChangeUsage }: Model) {
   const onClick = (item: CardSummary) => {

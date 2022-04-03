@@ -1,4 +1,4 @@
-import { CardSummary } from "pages/cards/models/groupDetailsSummary";
+import { CardSummary } from "pages/cards/models";
 import { Action } from "redux";
 import CardsState, { initialState } from "./state";
 

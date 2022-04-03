@@ -1,12 +1,11 @@
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import * as actions from "../actions";
-import * as api from "pages/cards/services/groupDetailsApi";
+import * as api from "api";
 import { selectUserId } from "store/user/selectors";
-import { UpdateCardRequest } from "pages/cards/models/requests/updateCardRequest";
 
 function* updateCard(action: actions.UpdateCard) {
   const userId: string = yield select(selectUserId);
-  const request: UpdateCardRequest = {
+  const request: api.UpdateCardRequest = {
     userId: userId,
     groupId: action.card.groupId,
     cardId: action.card.id,

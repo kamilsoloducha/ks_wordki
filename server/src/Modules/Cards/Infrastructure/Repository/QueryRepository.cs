@@ -7,16 +7,16 @@ using Cards.Application.Queries;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
 using Cards.Domain;
-using Cards.Infrastructure2;
+using Cards.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cards.Infrastructure
 {
     internal class QueryRepository : IQueryRepository
     {
-        private readonly CardsContextNew _cardsContext;
+        private readonly CardsContext _cardsContext;
 
-        public QueryRepository(CardsContextNew cardsContext)
+        public QueryRepository(CardsContext cardsContext)
         {
             _cardsContext = cardsContext;
         }

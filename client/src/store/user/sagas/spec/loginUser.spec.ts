@@ -2,7 +2,7 @@ import { testSaga } from "redux-saga-test-plan";
 import * as m from "pages/login/services/loginApi";
 import { loginUser, loginUserEffect } from "../loginUser";
 import { ApiResponse } from "common/models/response";
-import { LoginResponse } from "pages/login/requests";
+import { LoginResponse } from "pages/login/models";
 import { put, call, takeEvery } from "@redux-saga/core/effects";
 import * as actions from "store/user/actions";
 

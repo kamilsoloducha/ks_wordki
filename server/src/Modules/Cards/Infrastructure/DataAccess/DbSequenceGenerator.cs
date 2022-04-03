@@ -1,13 +1,14 @@
 using System.Threading.Tasks;
 using Cards.Domain;
+using Cards.Infrastructure.DataAccess;
 
-namespace Cards.Infrastructure2
+namespace Cards.Infrastructure
 {
     internal class DbSequenceGenerator : ISequenceGenerator
     {
-        private readonly CardsContextNew _dbContext;
+        private readonly CardsContext _dbContext;
 
-        public DbSequenceGenerator(CardsContextNew dbContext)
+        public DbSequenceGenerator(CardsContext dbContext)
         {
             _dbContext = dbContext;
         }

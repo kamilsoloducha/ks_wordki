@@ -1,18 +1,16 @@
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
-import { GroupDetailsResponse } from "pages/cards/models/groupDetailsSummary";
 import { selectUserId } from "store/user/selectors";
 import { applyFilters, CardsActionEnum, GetCards, getCardsSuccess } from "../actions";
-import * as api from "pages/cards/services/groupDetailsApi";
-import { CardsSummaryResponse } from "pages/cards/models/cardsSummaryResponse";
+import * as api from "api";
 
 function* getCards(action: GetCards) {
   const userId: string = yield select(selectUserId);
 
-  const cardsSummaryResponse: CardsSummaryResponse = yield call(
+  const cardsSummaryResponse: api.CardsSummaryResponse = yield call(
     async () => await api.cardsSummary(userId, action.groupId)
   );
 
-  const groupDetailsResponse: GroupDetailsResponse = yield call(
+  const groupDetailsResponse: api.GroupDetailsResponse = yield call(
     async () => await api.groupDetails(action.groupId)
   );
 

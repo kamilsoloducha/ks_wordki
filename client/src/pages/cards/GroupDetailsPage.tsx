@@ -1,11 +1,11 @@
 import "./GroupDetailsPage.scss";
-import { ReactElement, useCallback, useEffect, useState } from "react";
-import CardsList from "./components/cardsList/CardsList";
-import { CardSummary, SideSummary } from "./models/groupDetailsSummary";
-import { useDispatch, useSelector } from "react-redux";
 import * as selectors from "store/cards/selectors";
 import * as actions from "store/cards/actions";
 import * as groupActions from "store/groups/actions";
+import * as utils from "./services";
+import { ReactElement, useCallback, useEffect, useState } from "react";
+import CardsList from "./components/cardsList/CardsList";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import InfoCard from "./components/infoCard/InfoCard";
 import Expandable from "common/components/expandable/Expandable";
@@ -21,6 +21,7 @@ import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
 import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
 import ActionsDialog from "common/components/dialogs/actionsDialog/ActionsDialog";
 import { Pagination } from "common/components/pagination/Pagination";
+import { CardSummary, SideSummary } from "./models";
 
 const pageSize = 30;
 
@@ -185,7 +186,7 @@ export default function GroupDetailsPage(): ReactElement {
         <div className="group-details-info-card">
           <InfoCard
             label="learning"
-            value={getLearningCard(allCards)}
+            value={utils.getLearningCardCount(allCards)}
             classNameOverriden="info-card-green"
             onClick={() => onClickSetFilter(CardsFilter.Learning)}
           />
@@ -194,7 +195,7 @@ export default function GroupDetailsPage(): ReactElement {
           <div className="group-details-info-card" key={item}>
             <InfoCard
               label={"drawer " + item}
-              value={getCardsCountFromDrawer(allCards, item)}
+              value={utils.getCardsCountFromDrawerCount(allCards, item)}
               classNameOverriden={"info-card-drawer-" + item}
               onClick={() => onClickSetFilter(3 + item)}
             />
@@ -205,7 +206,7 @@ export default function GroupDetailsPage(): ReactElement {
         <div className="group-details-info-card">
           <InfoCard
             label="waiting"
-            value={2 * allCards.length - getLearningCard(allCards)}
+            value={2 * allCards.length - utils.getLearningCardCount(allCards)}
             classNameOverriden="info-card-gray"
             onClick={() => onClickSetFilter(CardsFilter.Waiting)}
           />
@@ -213,7 +214,7 @@ export default function GroupDetailsPage(): ReactElement {
         <div className="group-details-info-card">
           <InfoCard
             label="ticked"
-            value={getTickedCard(allCards)}
+            value={utils.getTickedCardCount(allCards)}
             classNameOverriden="info-card-gray"
             onClick={() => onClickSetFilter(CardsFilter.Ticked)}
           />
@@ -260,36 +261,6 @@ function getFormModelFromCardSummary(card: CardSummary): FormModel {
     backEnabled: card.back.isUsed,
     isTicked: card.front.isTicked,
   } as FormModel;
-}
-
-function getLearningCard(cards: CardSummary[]): number {
-  let result = 0;
-  cards.forEach((item) => {
-    if (item.front.isUsed) result++;
-    if (item.back.isUsed) result++;
-  });
-  return result;
-}
-
-function getTickedCard(cards: CardSummary[]): number {
-  let result = 0;
-  cards.forEach((item) => {
-    if (item.back.isTicked) result++;
-  });
-  return result;
-}
-
-function getCardsCountFromDrawer(cards: CardSummary[], drawer: number): number {
-  let result = 0;
-  cards.forEach((item) => {
-    if (isSideFromDrawer(item.front, drawer)) result++;
-    if (isSideFromDrawer(item.back, drawer)) result++;
-  });
-  return result;
-}
-
-function isSideFromDrawer(side: SideSummary, drawer: number): boolean {
-  return side.drawer === drawer && side.isUsed;
 }
 
 const drawers = [1, 2, 3, 4, 5];

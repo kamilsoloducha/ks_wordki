@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { selectToken } from "store/user/selectors";
-import http from "../../services/http/http";
+import http from "../../../api/services/httpBase";
 import history from "../../services/history";
 
 export default function AxiosEx({ children }: Model) {

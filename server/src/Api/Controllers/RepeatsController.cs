@@ -23,8 +23,9 @@ public class RepeatsController : BaseController
     public async Task<IActionResult> GetRepeatsCount([FromBody] GetRepeatsCount.Query query, CancellationToken cancellationToken)
         => Ok(await Mediator.Send(query, cancellationToken));
 
-    [HttpPost("new/count")]
-    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+    // [HttpPost("new/count")]
+    // [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+    // unused
     public async Task<IActionResult> GetNewRepeatsCount([FromBody] GetNewRepeatsCount.Query query, CancellationToken cancellationToken)
     => Ok(await Mediator.Send(query, cancellationToken));
 

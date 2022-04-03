@@ -1,6 +1,6 @@
 import { call, put, takeLatest, select } from "@redux-saga/core/effects";
 import { DailyActionEnum, getCardsCountSuccess } from "../actions";
-import * as api from "pages/lesson/services/repeatsApi";
+import * as api from "api";
 import { selectUserId } from "store/user/selectors";
 import { ApiResponse } from "common/models/response";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";

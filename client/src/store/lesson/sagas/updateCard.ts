@@ -1,9 +1,8 @@
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
-import * as api from "pages/cards/services/groupDetailsApi";
+import * as api from "api";
 import { DailyActionEnum, UpdateCard, updateCardSuccess } from "../actions";
-import { UpdateCardRequest } from "pages/cards/models/requests/updateCardRequest";
 
 function* updateCard(action: UpdateCard) {
   const userId: string = yield select(selectUserId);
@@ -24,7 +23,7 @@ function* updateCard(action: UpdateCard) {
       isUsed: action.form.backEnabled,
       isTicked: action.form.isTicked,
     },
-  } as UpdateCardRequest;
+  } as api.UpdateCardRequest;
 
   const { data, error }: { data: {}; error: any } = yield call(() => api.updateCard2(request));
   yield put(data ? updateCardSuccess(action.form) : requestFailed(error));

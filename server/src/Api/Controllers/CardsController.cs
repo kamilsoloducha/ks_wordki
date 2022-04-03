@@ -51,11 +51,6 @@ namespace Api
         public async Task<IActionResult> Delete([FromRoute] DeleteCard.Command command, CancellationToken cancellationToken)
             => await HandleRequest(command, cancellationToken);
 
-        [HttpGet("dashboard/summary/{userId}")]
-        [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-        public async Task<IActionResult> Get([FromRoute] GetDashboardSummary.Query query, CancellationToken cancellationToken)
-            => Ok(await Mediator.Send(query, cancellationToken));
-
         [HttpPut("append")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Append(AppendCards.Command command, CancellationToken cancellationToken)

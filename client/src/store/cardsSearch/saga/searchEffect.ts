@@ -1,16 +1,15 @@
 import * as actions from "../actions";
-import * as api from "pages/cards/services/groupDetailsApi";
+import * as api from "api";
 import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { selectUserId } from "store/user/selectors";
 import { selectFilter } from "../selectors";
-import { CardsSearchRequest } from "pages/cardsSearch/models/requests/cardsSearchRequest";
 import { CardSummary, Filter } from "pages/cardsSearch/models";
 
 function* search() {
   const userId: string = yield select(selectUserId);
   const filter: Filter = yield select(selectFilter);
 
-  const searchRequest: CardsSearchRequest = {
+  const searchRequest: api.CardsSearchQuery = {
     ownerId: userId,
     searchingTerm: filter.searchingTerm,
     pageNumber: filter.pageNumber,

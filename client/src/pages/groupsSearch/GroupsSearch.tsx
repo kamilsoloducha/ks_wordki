@@ -42,16 +42,14 @@ export default function GroupsSearch(): ReactElement {
       <div className="groups-search-container">
         <div className="groups-search-filter">
           <form id="seachGroupForm" autoComplete="off" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label htmlFor="groupName">Name</label>
-              <input
-                id="groupName"
-                name="groupName"
-                type="search"
-                onChange={onGroupNameChanged}
-                value={filter}
-              />
-            </div>
+            <input
+              id="groupName"
+              name="groupName"
+              type="search"
+              onChange={onGroupNameChanged}
+              value={filter}
+              placeholder="Search..."
+            />
             <button onClick={() => dispatch(actions.search())}>Search</button>
           </form>
         </div>
@@ -71,7 +69,12 @@ export default function GroupsSearch(): ReactElement {
             </Fragment>
           ))}
         </div>
-        <Dialog onHide={onDialogHide} visible={selectedGroup !== null} minX={100} minY={100}>
+        <Dialog
+          onHide={onDialogHide}
+          visible={selectedGroup !== null}
+          draggable={false}
+          footer={Footer({ onDialogHide, onSave })}
+        >
           {isCardsLoading && <LoadingSpinner />}
           {cards.map((x, index) => (
             <Fragment key={index}>
@@ -80,10 +83,23 @@ export default function GroupsSearch(): ReactElement {
               </p>
             </Fragment>
           ))}
-          <button onClick={onDialogHide}>Cancel</button>
-          <button onClick={onSave}>Save</button>
         </Dialog>
       </div>
     </>
+  );
+}
+
+function Footer({
+  onDialogHide,
+  onSave,
+}: {
+  onDialogHide: () => void;
+  onSave: () => void;
+}): ReactElement {
+  return (
+    <div className="search-group-dialog-footer">
+      <button onClick={onDialogHide}>Cancel</button>
+      <button onClick={onSave}>Save</button>
+    </div>
   );
 }

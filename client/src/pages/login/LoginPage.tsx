@@ -5,6 +5,8 @@ import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoginUser, setErrorMessage } from "store/user/actions";
 import * as selectors from "store/user/selectors";
+import { initialValues, LoginFormModel } from "./models";
+import { validate } from "./services/loginFormValidator";
 
 export default function LoginPage(): ReactElement {
   const userId = useSelector(selectors.selectUserId);
@@ -28,7 +30,7 @@ export default function LoginPage(): ReactElement {
     return <Redirect to="/dashboard" />;
   }
 
-  const onSubmit = (values: FormModel) => {
+  const onSubmit = (values: LoginFormModel) => {
     dispatch(getLoginUser(values.userName, values.password));
   };
 
@@ -73,24 +75,3 @@ export default function LoginPage(): ReactElement {
     </div>
   );
 }
-
-interface FormModel {
-  userName: string;
-  password: string;
-}
-
-const initialValues: FormModel = {
-  userName: "",
-  password: "",
-};
-
-const validate = (values: FormModel): FormModel => {
-  const errors = {} as FormModel;
-  if (!values.userName?.length) {
-    errors.userName = "Field is required";
-  }
-  if (!values.password?.length) {
-    errors.password = "Field is required";
-  }
-  return errors;
-};

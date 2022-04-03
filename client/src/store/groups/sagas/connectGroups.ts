@@ -2,9 +2,8 @@ import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import { getGroupsSummary, GroupsActionEnum } from "../actions";
-import * as api from "pages/groups/services/groupsApi";
+import * as api from "api";
 import { ApiResponse } from "common/models/response";
-import ConnectGroupsRequest from "pages/groups/models/connectGroupsRequest";
 import { selectSelectedItems } from "../selectors";
 
 function* connectGroups() {
@@ -14,7 +13,7 @@ function* connectGroups() {
   const request = {
     userId,
     groupIds,
-  } as ConnectGroupsRequest;
+  } as api.ConnectGroupsRequest;
   const { data, error }: { data: ApiResponse<string>; error: any } = yield call(() =>
     api.connectGroups(request)
   );

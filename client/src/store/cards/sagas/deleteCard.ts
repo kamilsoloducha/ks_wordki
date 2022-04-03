@@ -3,9 +3,9 @@ import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import { CardsActionEnum, deleteCardSuccess } from "../actions";
 import { selectGroupId, selectSelectedCard } from "../selectors";
-import * as api from "pages/cards/services/groupDetailsApi";
+import * as api from "api";
 import { ApiResponse } from "common/models/response";
-import { CardSummary } from "pages/cards/models/cardSummary";
+import { CardSummary } from "pages/cards/models";
 
 function* deleteCard() {
   const userId: string = yield select(selectUserId);
