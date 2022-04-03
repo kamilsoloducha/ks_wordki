@@ -17,10 +17,12 @@ import {
 import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/selectors";
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
+import { useTitle } from "common";
 
 const pageSize = 30;
 
 export default function GroupsPage(): ReactElement {
+  useTitle("Wordki - Groups");
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);

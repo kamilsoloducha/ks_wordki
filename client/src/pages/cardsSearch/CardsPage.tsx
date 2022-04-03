@@ -9,8 +9,10 @@ import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
 import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
 import { CardsOverview, CardSummary } from "./models";
 import { Row } from "./components/row/Row";
+import { useTitle } from "common";
 
 export default function CardsPage(): ReactElement {
+  useTitle("Wordki - Cards");
   const dispatch = useDispatch();
   const cards = useSelector(selectors.selectCards);
   const cardsCount = useSelector(selectors.selectCardsCount);

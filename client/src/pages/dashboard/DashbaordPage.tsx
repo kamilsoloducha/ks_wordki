@@ -7,14 +7,15 @@ import { getDashboardSummary } from "store/dashboard/actions";
 import { selectData } from "store/dashboard/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { Forecast } from "./components/forecast/Forecast";
+import { useTitle } from "common";
 
 export default function DashboardPage(): ReactElement {
+  useTitle("Wordki - Dashboard");
   const data = useSelector(selectData);
   const dispatch = useDispatch();
   const history = router.useHistory();
 
   useEffect(() => {
-    document.title = "Wordki - Dashboard";
     dispatch(getDashboardSummary());
   }, [dispatch]);
 

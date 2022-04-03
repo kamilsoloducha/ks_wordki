@@ -10,8 +10,10 @@ import Inserting from "./components/inserting/Inserting";
 import RepeatsController from "./components/repeatsController/RepeatsController";
 import { FinishPending } from "./models/lessonState";
 import { LessonInformation } from "./components/lessonInformation/LessonInformation";
+import { useTitle } from "common";
 
 export default function LessonPage(): ReactElement {
+  useTitle("Wordki - Lesson");
   const questions = useSelector(sel.selectRepeats);
   const status = useSelector(sel.selectLessonState);
   const isCorrect = useSelector(sel.selectIsCorrect);
@@ -29,6 +31,7 @@ export default function LessonPage(): ReactElement {
   }, [status, questions, history]);
 
   useEffect(() => {
+    dispatch(actions.resetResults());
     return () => {
       dispatch(actions.resetLesson());
     };

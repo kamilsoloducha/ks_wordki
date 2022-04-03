@@ -6,8 +6,10 @@ import * as selectors from "store/groupsSearch/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import GroupRow from "pages/groups/components/groupRow/GroupRow";
 import { Dialog } from "primereact/dialog";
+import { useTitle } from "common";
 
 export default function GroupsSearch(): ReactElement {
+  useTitle("Wordki - Groups");
   const dispatch = useDispatch();
 
   const filter = useSelector(selectors.selectFilter);

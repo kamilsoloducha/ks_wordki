@@ -9,8 +9,10 @@ import { LessonSettings as SettingsModel } from "pages/lessonSettings/models/les
 import NewCardsSettings from "./components/newCardsSettings/NewCardsSettings";
 import { LessonMode as mode } from "./models/lesson-mode";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
+import { useTitle } from "common";
 
 export default function LessonSettings(): ReactElement {
+  useTitle("Wordki - Lesson");
   const settings = useSelector(selectSettings);
   const isProcessing = useSelector(selectIsProcessing);
   const dispatch = useDispatch();

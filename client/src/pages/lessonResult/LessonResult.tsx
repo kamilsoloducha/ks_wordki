@@ -9,8 +9,10 @@ import UserRepeat from "pages/lesson/models/userRepeat";
 import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
 import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
 import { Side } from "common/models/side";
+import { useTitle } from "common";
 
 export default function LessonResult(): ReactElement {
+  useTitle("Wordki - Results");
   const dispatch = useDispatch();
   const history = useHistory();
   const results = useSelector(selectResults);

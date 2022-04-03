@@ -7,8 +7,10 @@ import { getRegisterUser, setErrorMessage } from "store/user/actions";
 import * as selectors from "store/user/selectors";
 import { initialValue, RegisterFormModel } from "./models";
 import { validate } from "./services/registerFormValidator";
+import { useTitle } from "common";
 
 export default function RegisterPage(): ReactElement {
+  useTitle("Wordki - Login");
   const dispatch = useDispatch();
 
   const userId = useSelector(selectors.selectUserId);

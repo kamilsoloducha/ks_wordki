@@ -21,7 +21,8 @@ import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
 import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
 import ActionsDialog from "common/components/dialogs/actionsDialog/ActionsDialog";
 import { Pagination } from "common/components/pagination/Pagination";
-import { CardSummary, SideSummary } from "./models";
+import { CardSummary } from "./models";
+import { useTitle } from "common";
 
 const pageSize = 30;
 
@@ -39,6 +40,8 @@ export default function GroupDetailsPage(): ReactElement {
   const groupDetails = useSelector(selectors.selectGroupDetails);
   const [actionsVisible, setActionsVisible] = useState(false);
   const [editedGroup, setEditedGroup] = useState<any>(null);
+
+  useTitle(`Wordki - ${groupDetails.name}`);
 
   useEffect(() => {
     dispatch(actions.getCards(groupId));
