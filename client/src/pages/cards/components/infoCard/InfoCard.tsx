@@ -2,17 +2,15 @@ import "./InfoCard.scss";
 import { ReactElement } from "react";
 
 export default function InfoCard({
-  value,
-  label,
+  value = "test",
+  label = "test",
   classNameOverriden,
   disabled: disable = false,
   onClick,
 }: Model): ReactElement {
   return (
     <div
-      className={`info-card-container ${classNameOverriden} ${
-        disable ? "info-card-disabled" : ""
-      }
+      className={`info-card-container ${classNameOverriden} ${disable ? "info-card-disabled" : ""}
       ${onClick ? "clickable" : ""}`}
       onClick={onClick}
     >
