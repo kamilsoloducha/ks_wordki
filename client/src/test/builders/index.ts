@@ -1,2 +1,2 @@
-export * from "./cardSummary.builder.spec";
-export * from "./sideSummary.builder.spec";
+export * from "./cardSummary.mocks.spec";
+export * from "./sideSummary.mocks.spec";

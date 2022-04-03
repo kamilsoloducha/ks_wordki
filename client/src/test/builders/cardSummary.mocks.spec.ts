@@ -1,5 +1,5 @@
 import { CardSummary, SideSummary } from "pages/cards/models";
-import { SideSummaryBuilder } from "./sideSummary.builder.spec";
+import { SideSummaryBuilder } from "./sideSummary.mocks.spec";
 
 export class CardSummaryBuilder implements CardSummary {
   id = "id";

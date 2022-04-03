@@ -46,61 +46,61 @@ describe("LoginPage", () => {
     expect(container.querySelectorAll(".error-message").length).toBe(2);
   });
 
-  // it("LoginPage", async () => {
-  //   useSelectorMock.mockReturnValueOnce(null);
-  //   useSelectorMock.mockReturnValueOnce(true);
-  //   act(() => {
-  //     render(<LoginPage />, container);
-  //   });
-  //   const inputs = container.querySelectorAll("input");
-  //   inputs.forEach((item) => expect(item.disabled).toBe(true));
-  // });
+  it("LoginPage", async () => {
+    useSelectorMock.mockReturnValueOnce(null);
+    useSelectorMock.mockReturnValueOnce(true);
+    act(() => {
+      render(<LoginPage />, container);
+    });
+    const inputs = container.querySelectorAll("input");
+    inputs.forEach((item) => expect(item.disabled).toBe(true));
+  });
 
-  // it("LoginPage", async () => {
-  //   useSelectorMock.mockReturnValueOnce("userId");
-  //   useSelectorMock.mockReturnValueOnce(false);
-  //   act(() => {
-  //     render(
-  //       <BrowserRouter>
-  //         <LoginPage />
-  //         <Route path="/dashboard">Dashboard</Route>
-  //       </BrowserRouter>,
-  //       container
-  //     );
-  //   });
-  //   expect(container.innerHTML).toContain("Dashboard");
-  // });
+  it("LoginPage", async () => {
+    useSelectorMock.mockReturnValueOnce("userId");
+    useSelectorMock.mockReturnValueOnce(false);
+    act(() => {
+      render(
+        <BrowserRouter>
+          <LoginPage />
+          <Route path="/dashboard">Dashboard</Route>
+        </BrowserRouter>,
+        container
+      );
+    });
+    expect(container.innerHTML).toContain("Dashboard");
+  });
 
-  // it("LoginPage", async () => {
-  //   useSelectorMock.mockReturnValueOnce(null);
-  //   useSelectorMock.mockReturnValueOnce(false);
-  //   act(() => {
-  //     render(<LoginPage />, container);
-  //   });
+  it("LoginPage", async () => {
+    useSelectorMock.mockReturnValueOnce(null);
+    useSelectorMock.mockReturnValueOnce(false);
+    act(() => {
+      render(<LoginPage />, container);
+    });
 
-  //   fireEvent.change(container.querySelector("#userName") as HTMLInputElement, {
-  //     target: {
-  //       value: "testUser",
-  //     },
-  //   });
+    fireEvent.change(container.querySelector("#userName") as HTMLInputElement, {
+      target: {
+        value: "testUser",
+      },
+    });
 
-  //   fireEvent.change(container.querySelector("#password") as HTMLInputElement, {
-  //     target: {
-  //       value: "testPassword",
-  //     },
-  //   });
+    fireEvent.change(container.querySelector("#password") as HTMLInputElement, {
+      target: {
+        value: "testPassword",
+      },
+    });
 
-  //   const submitButton = container.querySelector("input[type=submit]") as HTMLElement;
-  //   await act(async () => {
-  //     submitButton.click();
-  //   });
+    const submitButton = container.querySelector("input[type=submit]") as HTMLElement;
+    await act(async () => {
+      submitButton.click();
+    });
 
-  //   expect(container.querySelectorAll(".error-message").length).toBe(0);
-  //   expect(mockFunc).toHaveBeenCalledTimes(1);
-  //   expect(mockFunc).toHaveBeenCalledWith({
-  //     name: "testUser",
-  //     password: "testPassword",
-  //     type: UserActionEnum.LOGIN,
-  //   });
-  // });
+    expect(container.querySelectorAll(".error-message").length).toBe(0);
+    expect(mockFunc).toHaveBeenCalledTimes(2);
+    expect(mockFunc).toHaveBeenCalledWith({
+      name: "testUser",
+      password: "testPassword",
+      type: UserActionEnum.LOGIN,
+    });
+  });
 });
