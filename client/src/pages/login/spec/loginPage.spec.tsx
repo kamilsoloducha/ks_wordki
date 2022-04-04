@@ -5,21 +5,30 @@ import * as redux from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
 import LoginPage from "../LoginPage";
 import { UserActionEnum } from "store/user/actions";
+import configureStore from "redux-mock-store";
 
 describe("LoginPage", () => {
   let container: HTMLDivElement;
-  const useSelectorMock = jest.spyOn(redux, "useSelector");
   const useDispatchMock = jest.spyOn(redux, "useDispatch");
   const mockFunc = jest.fn(() => {});
+  const mockStore = configureStore([]);
+  let store: any;
 
   beforeEach(() => {
-    useSelectorMock.mockClear();
     useDispatchMock.mockClear();
     mockFunc.mockClear();
     useDispatchMock.mockReturnValue(mockFunc as any);
 
     container = document.createElement("div");
     document.body.appendChild(container);
+
+    store = mockStore({
+      userReducer: {
+        isLogin: false,
+        isLoading: false,
+        id: "",
+      },
+    });
   });
 
   afterEach(() => {
@@ -27,12 +36,14 @@ describe("LoginPage", () => {
     container.remove();
   });
 
-  it("LoginPage", async () => {
-    useSelectorMock.mockReturnValueOnce(null);
-    useSelectorMock.mockReturnValueOnce(false);
-    useSelectorMock.mockReturnValueOnce(null);
+  it("LoginPage1", async () => {
     act(() => {
-      render(<LoginPage />, container);
+      render(
+        <redux.Provider store={store}>
+          <LoginPage />
+        </redux.Provider>,
+        container
+      );
     });
     expect(container.querySelectorAll("input").length).toBe(3);
     expect(container.querySelectorAll("input[type=submit]").length).toBe(1);
@@ -46,36 +57,62 @@ describe("LoginPage", () => {
     expect(container.querySelectorAll(".error-message").length).toBe(2);
   });
 
-  it("LoginPage", async () => {
-    useSelectorMock.mockReturnValueOnce(null);
-    useSelectorMock.mockReturnValueOnce(true);
+  it("LoginPage2", async () => {
+    store = mockStore({
+      userReducer: {
+        isLogin: false,
+        isLoading: true,
+        token: "",
+        id: "",
+        expirationDate: new Date(1),
+        errorMessage: "",
+      },
+    });
     act(() => {
-      render(<LoginPage />, container);
+      render(
+        <redux.Provider store={store}>
+          <LoginPage />
+        </redux.Provider>,
+        container
+      );
     });
     const inputs = container.querySelectorAll("input");
     inputs.forEach((item) => expect(item.disabled).toBe(true));
   });
 
-  it("LoginPage", async () => {
-    useSelectorMock.mockReturnValueOnce("userId");
-    useSelectorMock.mockReturnValueOnce(false);
+  it("LoginPage3", async () => {
+    store = mockStore({
+      userReducer: {
+        isLogin: true,
+        isLoading: false,
+        token: "",
+        id: "test",
+        expirationDate: new Date(1),
+        errorMessage: "",
+      },
+    });
     act(() => {
       render(
-        <BrowserRouter>
-          <LoginPage />
-          <Route path="/dashboard">Dashboard</Route>
-        </BrowserRouter>,
+        <redux.Provider store={store}>
+          <BrowserRouter>
+            <LoginPage />
+            <Route path="/dashboard">Dashboard</Route>
+          </BrowserRouter>
+        </redux.Provider>,
         container
       );
     });
     expect(container.innerHTML).toContain("Dashboard");
   });
 
-  it("LoginPage", async () => {
-    useSelectorMock.mockReturnValueOnce(null);
-    useSelectorMock.mockReturnValueOnce(false);
+  it("LoginPage4", async () => {
     act(() => {
-      render(<LoginPage />, container);
+      render(
+        <redux.Provider store={store}>
+          <LoginPage />
+        </redux.Provider>,
+        container
+      );
     });
 
     fireEvent.change(container.querySelector("#userName") as HTMLInputElement, {

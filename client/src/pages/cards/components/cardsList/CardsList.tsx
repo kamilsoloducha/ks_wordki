@@ -2,7 +2,7 @@ import "./CardsList.scss";
 import { CardItem } from "../cardItem/CardItem";
 import { CardSummary } from "pages/cards/models";
 
-function CardsList({ cards, onItemSelected, onChangeUsage }: Model) {
+function CardsList({ cards, onItemSelected }: Model) {
   const onClick = (item: CardSummary) => {
     if (onItemSelected) onItemSelected(item);
   };
@@ -22,5 +22,4 @@ export default CardsList;
 interface Model {
   cards: CardSummary[];
   onItemSelected?: (item: CardSummary) => void;
-  onChangeUsage?: (cardId: number, side: number) => void;
 }

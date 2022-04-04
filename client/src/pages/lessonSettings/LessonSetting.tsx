@@ -11,7 +11,7 @@ import { LessonMode as mode } from "./models/lesson-mode";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { useTitle } from "common";
 
-export default function LessonSettings(): ReactElement {
+export default function LessonSettingsPage(): ReactElement {
   useTitle("Wordki - Lesson");
   const settings = useSelector(selectSettings);
   const isProcessing = useSelector(selectIsProcessing);

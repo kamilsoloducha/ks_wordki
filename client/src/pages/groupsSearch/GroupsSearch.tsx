@@ -8,7 +8,7 @@ import GroupRow from "pages/groups/components/groupRow/GroupRow";
 import { Dialog } from "primereact/dialog";
 import { useTitle } from "common";
 
-export default function GroupsSearch(): ReactElement {
+export default function GroupsSearchPage(): ReactElement {
   useTitle("Wordki - Groups");
   const dispatch = useDispatch();
 

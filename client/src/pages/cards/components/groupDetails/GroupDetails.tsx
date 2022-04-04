@@ -1,6 +1,6 @@
 import "./GroupDetails.scss";
 
-function GroupDetails({ name, onSettingsClick }: Model) {
+export function GroupDetails({ name, onSettingsClick }: Model) {
   return (
     <div className="group-details-container">
       <div className="group-details-name">{name}</div>
@@ -10,8 +10,6 @@ function GroupDetails({ name, onSettingsClick }: Model) {
     </div>
   );
 }
-
-export default GroupDetails;
 
 interface Model {
   name: string;

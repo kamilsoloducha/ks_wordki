@@ -11,35 +11,32 @@ import InfoCard from "./components/infoCard/InfoCard";
 import Expandable from "common/components/expandable/Expandable";
 import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
 import { CardsFilter } from "./models/cardsFilter";
-import GroupDetailsComponent from "./components/groupDetails/GroupDetails";
 import { Languages } from "common/models/languages";
-import AppendToLessonDialog from "./components/appendToLessonDialog/AppendToLessonDialog";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
-import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
 import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
 import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
 import ActionsDialog from "common/components/dialogs/actionsDialog/ActionsDialog";
 import { Pagination } from "common/components/pagination/Pagination";
 import { CardSummary } from "./models";
 import { useTitle } from "common";
+import { GroupDetails } from "./components/groupDetails/GroupDetails";
 
 const pageSize = 30;
 
 export default function GroupDetailsPage(): ReactElement {
+  const dispatch = useDispatch();
   const allCards = useSelector(selectors.selectCards);
   const filteredCardsFromStore = useSelector(selectors.selectFilteredCards);
   const filterState = useSelector(selectors.selectFilterState);
-  const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([]);
-  const [formItem, setFormItem] = useState<FormModel | null>(null);
-  const [appendDialog, setAppendDialog] = useState(false);
-  const [page, setPage] = useState(1);
-  const { groupId } = useParams<{ groupId: string }>();
-  const dispatch = useDispatch();
   const isLoading = useSelector(selectors.selectIsLoading);
   const groupDetails = useSelector(selectors.selectGroupDetails);
+  const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([]);
+  const [formItem, setFormItem] = useState<FormModel | null>(null);
+  const [page, setPage] = useState(1);
   const [actionsVisible, setActionsVisible] = useState(false);
   const [editedGroup, setEditedGroup] = useState<any>(null);
+  const { groupId }: { groupId: string } = useParams();
 
   useTitle(`Wordki - ${groupDetails.name}`);
 
@@ -146,18 +143,9 @@ export default function GroupDetailsPage(): ReactElement {
     setEditedGroup(null);
   };
 
-  const onSubmitGroupDialog = (group: GroupDetails) => {
+  const onSubmitGroupDialog = (group: any) => {
     dispatch(groupActions.updateGroup(group));
     onHideGroupDialog();
-  };
-
-  const appendDialogSubmit = (count: number, languages: number) => {
-    dispatch(actions.appendCard(groupId, count, languages));
-    setAppendDialog(false);
-  };
-
-  const appendDialogHide = () => {
-    setAppendDialog(false);
   };
 
   if (isLoading) {
@@ -171,7 +159,7 @@ export default function GroupDetailsPage(): ReactElement {
 
   return (
     <div className="group-detail-main-container">
-      <GroupDetailsComponent
+      <GroupDetails
         name={groupDetails.name}
         front={groupDetails.language1}
         back={groupDetails.language2}
@@ -244,11 +232,6 @@ export default function GroupDetailsPage(): ReactElement {
       />
       <GroupDialog group={editedGroup} onHide={onHideGroupDialog} onSubmit={onSubmitGroupDialog} />
       <ActionsDialog isVisible={actionsVisible} onHide={onActionsVisible} actions={acts} />
-      <AppendToLessonDialog
-        isVisible={appendDialog}
-        onHide={appendDialogHide}
-        onSubmit={appendDialogSubmit}
-      />
     </div>
   );
 }
