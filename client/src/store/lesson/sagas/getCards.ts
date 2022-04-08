@@ -7,8 +7,11 @@ import { ApiResponse } from "common/models/response";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 import history from "../../../common/services/history";
 import { LessonMode } from "pages/lessonSettings/models/lesson-mode";
+import { SagaIterator } from "redux-saga";
+import { take } from "redux-saga/effects";
 
-function* getCards() {
+export function* getCardsEffect(): SagaIterator {
+  yield take(DailyActionEnum.GET_CARDS);
   const userId: string = yield select(selectUserId);
   const settings: LessonSettings = yield select(selectSettings);
 
@@ -23,10 +26,6 @@ function* getCards() {
   yield call(async () => await api.startLesson(startLessonRequest));
   yield put(getCardsSuccess(apiResponse.response.repeats));
   yield call(forwardTo, "/lesson");
-}
-
-export function* getCardsEffect() {
-  yield takeLatest(DailyActionEnum.GET_CARDS, getCards);
 }
 
 function prepareRequest(settings: LessonSettings, userId: string): api.RepeatsQuery {

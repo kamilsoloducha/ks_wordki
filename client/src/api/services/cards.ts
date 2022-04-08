@@ -117,12 +117,12 @@ export async function searchCardsCount(request: queries.CardsSearchQuery): Promi
 
 export async function updateCard2(
   request: commands.UpdateCardRequest
-): Promise<responses.UpdateCardResponse | any> {
+): Promise<responses.UpdateCardResponse | boolean> {
   try {
     const response = await http.put<responses.UpdateCardResponse>(`/cards/update`, request);
-    return { data: response.data };
+    return response.data;
   } catch (error) {
-    return { error };
+    return false;
   }
 }
 

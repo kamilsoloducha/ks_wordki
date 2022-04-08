@@ -5,7 +5,7 @@ import * as api from "api";
 import { selectLessonHistory, selectShouldSendAnswer } from "../selectors";
 import UserRepeat from "pages/lesson/models/userRepeat";
 
-function* answer(action: Correct | Wrong) {
+export function* answer(action: Correct | Wrong) {
   const shouldUpdate: boolean = yield select(selectShouldSendAnswer);
   if (!shouldUpdate) return;
 

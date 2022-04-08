@@ -5,7 +5,6 @@ export enum UserActionEnum {
   LOGIN = "[USER] LOGIN",
   LOGIN_SUCCESS = "[USER] LOGIN_SUCCESS",
   REGISTER = "[USER] REGISTER",
-  REGISTER_SUCCESS = "[USER] REGISTER_SUCCESS",
   LOGOUT = "[USER] LOGOUT",
 
   SET_ERROR_MESSAGE = "[USER] SET_ERROR_MESSAGE",
@@ -15,7 +14,7 @@ export interface LoginUser extends Action {
   name: string;
   password: string;
 }
-export function getLoginUser(name: string, password: string): LoginUser {
+export function login(name: string, password: string): LoginUser {
   return {
     name,
     password,
@@ -31,7 +30,7 @@ export interface LoginUserSuccess extends Action {
   id: string;
   expirationDate: Date;
 }
-export function getLoginUserSuccess(token: string, id: string, expirationDate: Date) {
+export function loginSuccess(token: string, id: string, expirationDate: Date) {
   return {
     type: UserActionEnum.LOGIN_SUCCESS,
     token,
@@ -70,7 +69,7 @@ export function reduceSetErrorMessage(state: UserState, action: SetErrorMessage)
 
 export interface Logout extends Action {}
 
-export function getLogoutUser(): Logout {
+export function logout(): Logout {
   return {
     type: UserActionEnum.LOGOUT,
   };
@@ -86,7 +85,7 @@ export interface RegisterUser extends Action {
   passwordConfirmation: string;
 }
 
-export function getRegisterUser(
+export function register(
   name: string,
   email: string,
   password: string,

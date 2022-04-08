@@ -1,8 +1,11 @@
-import { call, put, takeEvery } from "@redux-saga/core/effects";
+import { call, put, take, takeEvery } from "@redux-saga/core/effects";
 import * as api from "api";
-import { setErrorMessage, UserActionEnum, RegisterUser, getLoginUser } from "../actions";
+import { SagaIterator } from "redux-saga";
+import { setErrorMessage, UserActionEnum, RegisterUser, login } from "../actions";
 
-export function* registerUser(action: RegisterUser) {
+export function* registerUserEffect(): SagaIterator {
+  const action: RegisterUser = yield take(UserActionEnum.REGISTER);
+
   const request = {
     userName: action.name,
     password: action.password,
@@ -14,7 +17,7 @@ export function* registerUser(action: RegisterUser) {
 
   switch (apiResponse.responseCode) {
     case api.RegisterResponseCode.Successful:
-      yield put(getLoginUser(action.name, action.password));
+      yield put(login(action.name, action.password));
       break;
     case api.RegisterResponseCode.UserNameAlreadyOccupied:
       yield put(setErrorMessage("User with the same name has already existed"));
@@ -23,8 +26,4 @@ export function* registerUser(action: RegisterUser) {
       yield put(setErrorMessage("User with the same email has already existed"));
       break;
   }
-}
-
-export function* registerUserEffect() {
-  yield takeEvery(UserActionEnum.REGISTER, registerUser);
 }

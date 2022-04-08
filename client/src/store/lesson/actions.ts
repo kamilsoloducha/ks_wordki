@@ -52,7 +52,7 @@ export enum DailyActionEnum {
   DELETE_CARD_SUCCESS = "[LESSON] DELETE_CARD_SUCCESS",
 }
 
-export interface LessonAction {
+export interface LessonAction extends Action {
   type: DailyActionEnum;
   reduce: (state: LessonState) => LessonState;
 }

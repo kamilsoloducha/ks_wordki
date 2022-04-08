@@ -1,11 +1,12 @@
+import { SagaIterator } from "redux-saga";
 import { put, takeLatest } from "redux-saga/effects";
 import * as actions from "../actions";
 
-function* search() {
+export function* search(): SagaIterator {
   yield put(actions.search());
 }
 
-export function* setPaginationEffect() {
+export function* setPaginationEffect(): SagaIterator {
   yield takeLatest(
     [
       actions.CardsSearchActionEnum.FILTER_RESET,

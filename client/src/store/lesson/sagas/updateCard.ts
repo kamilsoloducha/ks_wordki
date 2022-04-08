@@ -3,8 +3,12 @@ import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import * as api from "api";
 import { DailyActionEnum, UpdateCard, updateCardSuccess } from "../actions";
+import { take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
 
-function* updateCard(action: UpdateCard) {
+export function* updateCardEffect(): SagaIterator {
+  const action: UpdateCard = yield take(DailyActionEnum.UPDATE_CARD);
+
   const userId: string = yield select(selectUserId);
 
   const request = {
@@ -25,10 +29,6 @@ function* updateCard(action: UpdateCard) {
     },
   } as api.UpdateCardRequest;
 
-  const { data, error }: { data: {}; error: any } = yield call(() => api.updateCard2(request));
-  yield put(data ? updateCardSuccess(action.form) : requestFailed(error));
-}
-
-export function* updateCardEffect() {
-  yield takeLatest(DailyActionEnum.UPDATE_CARD, updateCard);
+  const response: api.UpdateCardResponse | boolean = yield call(api.updateCard2, request);
+  yield put(response !== false ? updateCardSuccess(action.form) : requestFailed({} as any));
 }

@@ -2,8 +2,12 @@ import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import { selectUserId } from "store/user/selectors";
 import { applyFilters, CardsActionEnum, GetCards, getCardsSuccess } from "../actions";
 import * as api from "api";
+import { SagaIterator } from "redux-saga";
+import { take } from "redux-saga/effects";
 
-function* getCards(action: GetCards) {
+export function* getCardsEffect(): SagaIterator {
+  const action: GetCards = yield take(CardsActionEnum.GET_CARDS);
+
   const userId: string = yield select(selectUserId);
 
   const cardsSummaryResponse: api.CardsSummaryResponse = yield call(
@@ -24,8 +28,4 @@ function* getCards(action: GetCards) {
     )
   );
   yield put(applyFilters());
-}
-
-export function* getCardsEffect() {
-  yield takeLatest(CardsActionEnum.GET_CARDS, getCards);
 }

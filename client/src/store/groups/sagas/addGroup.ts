@@ -4,8 +4,10 @@ import { selectUserId } from "store/user/selectors";
 import { AddGroup, getGroupsSummary, GroupsActionEnum } from "../actions";
 import * as api from "api";
 import { ApiResponse } from "common/models/response";
+import { take } from "redux-saga/effects";
 
-function* addGroup({ group }: AddGroup) {
+export function* addGroupEffect() {
+  const { group }: AddGroup = yield take(GroupsActionEnum.ADD_GROUP);
   const userId: string = yield select(selectUserId);
 
   const request = {
@@ -18,8 +20,4 @@ function* addGroup({ group }: AddGroup) {
     api.addGroup(request)
   );
   yield put(data ? getGroupsSummary() : requestFailed(error));
-}
-
-export function* addGroupEffect() {
-  yield takeLatest(GroupsActionEnum.ADD_GROUP, addGroup);
 }

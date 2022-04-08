@@ -7,7 +7,7 @@ import { Route, Router, Switch } from "react-router-dom";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import ErrorPage from "common/components/error/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoginUserSuccess } from "store/user/actions";
+import { loginSuccess } from "store/user/actions";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
 import GuardedRoute from "common/components/guardedRoute/GuardedRoute";
@@ -37,7 +37,7 @@ export default function App() {
   const token = localStorage.getItem("token");
 
   if (userId && token) {
-    dispatch(getLoginUserSuccess(token, userId, new Date(1)));
+    dispatch(loginSuccess(token, userId, new Date(1)));
   }
 
   return (

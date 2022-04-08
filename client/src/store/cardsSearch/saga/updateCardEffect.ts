@@ -2,8 +2,10 @@ import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import * as actions from "../actions";
 import * as api from "api";
 import { selectUserId } from "store/user/selectors";
+import { take } from "redux-saga/effects";
 
-function* updateCard(action: actions.UpdateCard) {
+export function* updateCardEffect() {
+  const action: actions.UpdateCard = yield take(actions.CardsSearchActionEnum.UPDATE_CARD);
   const userId: string = yield select(selectUserId);
   const request: api.UpdateCardRequest = {
     userId: userId,
@@ -23,10 +25,5 @@ function* updateCard(action: actions.UpdateCard) {
     },
   };
   yield call(api.updateCard2, request);
-
   yield put(actions.search());
-}
-
-export function* updateCardEffect() {
-  yield takeLatest(actions.CardsSearchActionEnum.UPDATE_CARD, updateCard);
 }

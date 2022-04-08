@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { ReactElement, useEffect } from "react";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoginUser, setErrorMessage } from "store/user/actions";
+import { login, setErrorMessage } from "store/user/actions";
 import * as selectors from "store/user/selectors";
 import { initialValues, LoginFormModel } from "./models";
 import { validate } from "./services/loginFormValidator";
@@ -32,7 +32,7 @@ export default function LoginPage(): ReactElement {
   }
 
   const onSubmit = (values: LoginFormModel) => {
-    dispatch(getLoginUser(values.userName, values.password));
+    dispatch(login(values.userName, values.password));
   };
 
   return (

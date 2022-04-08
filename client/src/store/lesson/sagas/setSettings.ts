@@ -1,18 +1,16 @@
-import { put, takeLatest } from "@redux-saga/core/effects";
+import { put } from "@redux-saga/core/effects";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
-import { select } from "redux-saga/effects";
+import { select, take } from "redux-saga/effects";
 import { DailyActionEnum, getCardsCount } from "../actions";
 import { selectSettings } from "../selectors";
 import * as lessonMode from "pages/lessonSettings/models/lesson-mode";
+import { SagaIterator } from "redux-saga";
 
-function* setSettingLanguage() {
+export function* setSettingLanguageEffect(): SagaIterator {
+  yield take(DailyActionEnum.SET_SETTING_LANGUAGE);
   const settings: LessonSettings = yield select(selectSettings);
   if (settings.mode === lessonMode.LessonMode.New) {
     return;
   }
   yield put(getCardsCount());
-}
-
-export function* setSettingLanguageEffect() {
-  yield takeLatest(DailyActionEnum.SET_SETTING_LANGUAGE, setSettingLanguage);
 }

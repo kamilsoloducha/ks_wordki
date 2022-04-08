@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { getRegisterUser, setErrorMessage } from "store/user/actions";
+import { register, setErrorMessage } from "store/user/actions";
 import * as selectors from "store/user/selectors";
 import { initialValue, RegisterFormModel } from "./models";
 import { validate } from "./services/registerFormValidator";
@@ -29,9 +29,7 @@ export default function RegisterPage(): ReactElement {
   });
 
   const onSubmit = async (model: RegisterFormModel) => {
-    dispatch(
-      getRegisterUser(model.userName, model.email, model.password, model.passwordConfirmation)
-    );
+    dispatch(register(model.userName, model.email, model.password, model.passwordConfirmation));
   };
 
   if (userId) {
