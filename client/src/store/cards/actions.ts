@@ -18,8 +18,6 @@ export enum CardsActionEnum {
   DELETE_CARD = "[CARDS] DELETE_CARD",
   DELETE_CARD_SUCCESS = "[CARDS] DELETE_CARD_SUCCESS",
 
-  APPEND_CARD = "[CARDS] DELETE_CARD",
-
   SET_FILTER_DRAWER = "[CARDS] SET_FILTER_DRAWER",
   SET_FILTER_LEARNING = "[CARDS] SET_FILTER_LEARNING",
   SET_FILTER_TEXT = "[CARDS] SET_FILTER_TEXT",
@@ -180,23 +178,6 @@ export function resetSelectedCard(): ResetSelectedCard {
 }
 export function reduceResetSelectedCard(state: CardsState): CardsState {
   return { ...state, selectedItem: null };
-}
-
-export interface AppendCard extends Action {
-  groupId: string;
-  count: number;
-  languages: number;
-}
-export function appendCard(groupId: string, count: number, languages: number): AppendCard {
-  return {
-    type: CardsActionEnum.APPEND_CARD,
-    groupId,
-    count,
-    languages,
-  };
-}
-export function reduceAppendCard(state: CardsState): CardsState {
-  return { ...state };
 }
 
 export interface SetFilterDrawer extends Action {

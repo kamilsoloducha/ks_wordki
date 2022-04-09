@@ -9,12 +9,20 @@ import { CardSummary } from "pages/cards/models";
 export async function cardsSummary(
   userId: string,
   groupId: string
-): Promise<responses.CardsSummaryResponse> {
-  const response = await http.get<responses.CardsSummaryResponse>(`/cards/${userId}/${groupId}`);
-  return response.data;
+): Promise<responses.CardsSummaryResponse | boolean> {
+  try {
+    const resposnse = await http.get<responses.CardsSummaryResponse>(`/cards/${userId}/${groupId}`);
+    return resposnse.data;
+  } catch (error: any) {
+    return false;
+  }
 }
 
-export async function updateCard(userId: string, groupId: string, card: CardSummary) {
+export async function updateCard(
+  userId: string,
+  groupId: string,
+  card: CardSummary
+): Promise<{} | boolean> {
   const request = {
     userId,
     groupId,
@@ -34,13 +42,17 @@ export async function updateCard(userId: string, groupId: string, card: CardSumm
   } as commands.UpdateCardRequest;
   try {
     const response = await http.put<{}>(`/cards/update`, request);
-    return { data: response.data };
+    return response.data;
   } catch (error) {
-    return { error };
+    return false;
   }
 }
 
-export async function addCard(userId: string, groupId: string, card: CardSummary) {
+export async function addCard(
+  userId: string,
+  groupId: string,
+  card: CardSummary
+): Promise<string | boolean> {
   const request = {
     userId,
     groupId,
@@ -56,16 +68,24 @@ export async function addCard(userId: string, groupId: string, card: CardSummary
     },
   } as commands.AddCardRequest;
   try {
-    const response = await http.post<ApiResponse<string>>(`/cards/add`, request);
-    return { data: response.data };
+    const response = await http.post<string>(`/cards/add`, request);
+    return response.data;
   } catch (error) {
-    return { error };
+    return false;
   }
 }
 
-export async function deleteCard(userId: string, groupId: string, cardId: string) {
-  const response = await http.delete<{}>(`/cards/delete/${userId}/${groupId}/${cardId}`);
-  return { data: response.data };
+export async function deleteCard(
+  userId: string,
+  groupId: string,
+  cardId: string
+): Promise<{} | boolean> {
+  try {
+    await http.delete<{}>(`/cards/delete/${userId}/${groupId}/${cardId}`);
+    return {};
+  } catch (error: any) {
+    return false;
+  }
 }
 
 export async function appendCards(

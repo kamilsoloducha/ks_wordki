@@ -11,11 +11,14 @@ export function* getCardsEffect(): SagaIterator {
   const userId: string = yield select(selectUserId);
 
   const cardsSummaryResponse: api.CardsSummaryResponse = yield call(
-    async () => await api.cardsSummary(userId, action.groupId)
+    api.cardsSummary,
+    userId,
+    action.groupId
   );
 
   const groupDetailsResponse: api.GroupDetailsResponse = yield call(
-    async () => await api.groupDetails(action.groupId)
+    api.groupDetails,
+    action.groupId
   );
 
   yield put(

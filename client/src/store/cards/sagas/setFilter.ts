@@ -3,8 +3,9 @@ import { CardsActionEnum, setFilteredCards } from "../actions";
 import { FilterModel } from "../state";
 import { selectCards, selectFilterState } from "../selectors";
 import { CardSummary, SideSummary } from "pages/cards/models";
+import { SagaIterator } from "redux-saga";
 
-function* filterCards() {
+export function* filterCards(): SagaIterator {
   const filterState: FilterModel = yield select(selectFilterState);
   let cards: CardSummary[] = yield select(selectCards);
   if (filterState.drawer !== null) {

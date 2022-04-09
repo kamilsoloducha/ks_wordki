@@ -5,8 +5,9 @@ import { AddGroup, getGroupsSummary, GroupsActionEnum } from "../actions";
 import * as api from "api";
 import { ApiResponse } from "common/models/response";
 import { take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
 
-export function* addGroupEffect() {
+export function* addGroupEffect(): SagaIterator {
   const { group }: AddGroup = yield take(GroupsActionEnum.ADD_GROUP);
   const userId: string = yield select(selectUserId);
 

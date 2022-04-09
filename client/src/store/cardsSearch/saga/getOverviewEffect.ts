@@ -4,8 +4,9 @@ import * as api from "api";
 import { selectUserId } from "store/user/selectors";
 import { CardsOverview } from "pages/cardsSearch/models/cardsOverview";
 import { take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
 
-export function* getOverviewEffect() {
+export function* getOverviewEffect(): SagaIterator {
   yield take(actions.CardsSearchActionEnum.GET_OVERVIEW);
   const userId: string = yield select(selectUserId);
 

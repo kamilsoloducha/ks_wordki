@@ -5,9 +5,15 @@ import * as responses from "../responses";
 import * as queries from "../queries";
 import http, { createErrorResponse, createResponse } from "./httpBase";
 
-export async function groupDetails(groupId: string): Promise<responses.GroupDetailsResponse> {
-  const response = await http.get<responses.GroupDetailsResponse>(`/groups/details/${groupId}`);
-  return response.data;
+export async function groupDetails(
+  groupId: string
+): Promise<responses.GroupDetailsResponse | boolean> {
+  try {
+    const response = await http.get<responses.GroupDetailsResponse>(`/groups/details/${groupId}`);
+    return response.data;
+  } catch (error: any) {
+    return false;
+  }
 }
 
 export async function groups(userId: string) {

@@ -13,8 +13,6 @@ export function* updateCardEffect(): SagaIterator {
   const userId: string = yield select(selectUserId);
   const id: string = yield select(selectGroupId);
 
-  const { data, error }: { data: {}; error: any } = yield call(() =>
-    api.updateCard(userId, id, action.card)
-  );
-  yield put(data ? updateCardSuccess(action.card) : requestFailed(error));
+  const response: {} | boolean = yield call(api.updateCard, userId, id, action.card);
+  yield put(response !== false ? updateCardSuccess(action.card) : requestFailed({} as any));
 }

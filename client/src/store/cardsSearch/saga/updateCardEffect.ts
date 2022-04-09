@@ -3,8 +3,9 @@ import * as actions from "../actions";
 import * as api from "api";
 import { selectUserId } from "store/user/selectors";
 import { take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
 
-export function* updateCardEffect() {
+export function* updateCardEffect(): SagaIterator {
   const action: actions.UpdateCard = yield take(actions.CardsSearchActionEnum.UPDATE_CARD);
   const userId: string = yield select(selectUserId);
   const request: api.UpdateCardRequest = {
