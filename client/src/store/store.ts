@@ -1,5 +1,4 @@
 import createSagaMiddleware from "@redux-saga/core";
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import cardsReducer from "./cards/reducer";
 import lessonReducer from "./lesson/reducer";
 import dashboardReducer from "./dashboard/reducer";
@@ -7,7 +6,7 @@ import groupsReducer from "./groups/reducer";
 import rootReducer from "./root/reducer";
 import userReducer from "./user/reducer";
 import cardsSeachReducer from "./cardsSearch/reducer";
-import { groupsSearchReducer } from "./groupsSearch/reducer";
+import groupsSearchReducer from "./groupsSearch/reducer";
 import * as cardsSearch from "./cardsSearch/saga";
 import * as cards from "./cards/sagas";
 import * as dashboard from "./dashboard/sagas";
@@ -15,26 +14,24 @@ import * as groups from "./groups/sagas";
 import * as groupsSearch from "./groupsSearch/sagas";
 import * as lesson from "./lesson/sagas";
 import * as user from "./user/sagas";
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const sagaMiddleware = createSagaMiddleware();
 
-export function configureStore() {
-  const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
-  return createStore(mainReducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
-}
-
-const mainReducer = combineReducers({
-  rootReducer,
-  userReducer,
-  dashboardReducer,
-  groupsReducer,
-  cardsReducer,
-  lessonReducer,
-  cardsSeachReducer,
-  groupsSearchReducer,
+export const store = configureStore({
+  reducer: {
+    userReducer,
+    cardsReducer,
+    lessonReducer,
+    dashboardReducer,
+    groupsReducer,
+    rootReducer,
+    cardsSeachReducer,
+    groupsSearchReducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
 });
-
-export const store = configureStore();
 
 sagaMiddleware.run(user.loginUserEffect);
 sagaMiddleware.run(user.registerUserEffect);
@@ -50,7 +47,6 @@ sagaMiddleware.run(cards.setFilterEffect);
 sagaMiddleware.run(groups.getGroupsSummaryEffect);
 sagaMiddleware.run(groups.addGroupEffect);
 sagaMiddleware.run(groups.updateGroupEffect);
-sagaMiddleware.run(groups.connectGroupsEffect);
 
 sagaMiddleware.run(lesson.getCardsEffect);
 sagaMiddleware.run(lesson.correctEffect);
@@ -74,3 +70,13 @@ sagaMiddleware.run(groupsSearch.searchEffect);
 sagaMiddleware.run(groupsSearch.setGroupEffect);
 
 export type MainState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  MainState,
+  unknown,
+  Action<string>
+>;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<MainState> = useSelector;

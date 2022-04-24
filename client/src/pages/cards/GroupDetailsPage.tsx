@@ -1,7 +1,7 @@
 import "./GroupDetailsPage.scss";
 import * as selectors from "store/cards/selectors";
-import * as actions from "store/cards/actions";
-import * as groupActions from "store/groups/actions";
+import * as actions from "store/cards/reducer";
+import * as groupActions from "store/groups/reducer";
 import * as utils from "./services";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import CardsList from "./components/cardsList/CardsList";
@@ -41,7 +41,7 @@ export default function GroupDetailsPage(): ReactElement {
   useTitle(`Wordki - ${groupDetails.name}`);
 
   useEffect(() => {
-    dispatch(actions.getCards(groupId));
+    dispatch(actions.getCards({ groupId }));
   }, [groupId, dispatch]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function GroupDetailsPage(): ReactElement {
   }, [page, filteredCardsFromStore]);
 
   const onItemSelected = (item: CardSummary) => {
-    dispatch(actions.selectCard(item));
+    dispatch(actions.selectCard({ item: item }));
     setFormItem(getFormModelFromCardSummary(item));
   };
 
@@ -72,16 +72,16 @@ export default function GroupDetailsPage(): ReactElement {
       },
     } as CardSummary;
     if (udpdatedCard.id !== "") {
-      dispatch(actions.updateCard(udpdatedCard));
+      dispatch(actions.updateCard({ card: udpdatedCard }));
       setFormItem(null);
     } else {
-      dispatch(actions.addCard(udpdatedCard));
+      dispatch(actions.addCard({ card: udpdatedCard }));
       onAddCard();
     }
   };
 
   const onDelete = () => {
-    dispatch(actions.deleteCard());
+    // dispatch(actions.deleteCard({cardId:}));
     setFormItem(null);
   };
 
@@ -94,13 +94,13 @@ export default function GroupDetailsPage(): ReactElement {
     if (filter === 1) {
       dispatch(actions.resetFilter());
     } else if (filter === 2) {
-      dispatch(actions.setFilterLearning(true));
+      dispatch(actions.setFilterLearning({ isLearning: true }));
     } else if (filter === 3) {
-      dispatch(actions.setFilterLearning(false));
+      dispatch(actions.setFilterLearning({ isLearning: false }));
     } else if (filter >= 4 && filter <= 8) {
-      dispatch(actions.setFilterDrawer(filter - 3));
+      dispatch(actions.setFilterDrawer({ drawer: filter - 3 }));
     } else if (filter === 9) {
-      dispatch(actions.setFilterIsTicked(true));
+      dispatch(actions.setFilterIsTicked({ isTicked: true }));
     }
   };
 
@@ -110,7 +110,7 @@ export default function GroupDetailsPage(): ReactElement {
       front: { value: "", example: "", isUsed: false },
       back: { value: "", example: "", isUsed: false },
     } as CardSummary;
-    dispatch(actions.selectCard(cardTemplate));
+    dispatch(actions.selectCard({ item: cardTemplate }));
     setFormItem(getFormModelFromCardSummary(cardTemplate));
   };
 
@@ -120,7 +120,7 @@ export default function GroupDetailsPage(): ReactElement {
 
   const onSearchChanged = useCallback(
     (text: string) => {
-      dispatch(actions.setFilterText(text));
+      dispatch(actions.setFilterText({ text: text }));
     },
     [dispatch]
   );

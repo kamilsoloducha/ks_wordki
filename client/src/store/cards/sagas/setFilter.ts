@@ -1,9 +1,9 @@
 import { put, select, takeEvery } from "@redux-saga/core/effects";
-import { CardsActionEnum, setFilteredCards } from "../actions";
 import { FilterModel } from "../state";
 import { selectCards, selectFilterState } from "../selectors";
 import { CardSummary, SideSummary } from "pages/cards/models";
 import { SagaIterator } from "redux-saga";
+import { setFilteredCards } from "../reducer";
 
 export function* filterCards(): SagaIterator {
   const filterState: FilterModel = yield select(selectFilterState);
@@ -27,7 +27,7 @@ export function* filterCards(): SagaIterator {
   if (filterState.text.length > 2) {
     cards = filterByText(String(filterState.text), cards);
   }
-  yield put(setFilteredCards(cards));
+  yield put(setFilteredCards({ cards: cards }));
 }
 
 function isCardFromDrawer(card: CardSummary, drawer: number): boolean {
@@ -58,12 +58,12 @@ function filterByText(text: string, cards: CardSummary[]): CardSummary[] {
 export function* setFilterEffect() {
   yield takeEvery(
     [
-      CardsActionEnum.SET_FILTER_DRAWER,
-      CardsActionEnum.SET_FILTER_IS_TICKED,
-      CardsActionEnum.SET_FILTER_LEARNING,
-      CardsActionEnum.SET_FILTER_TEXT,
-      CardsActionEnum.APPLY_FILTERS,
-      CardsActionEnum.RESET_FILTERS,
+      "cards/setFilterDrawer",
+      "cards/setFilterIsTicked",
+      "cards/setFilterLearning",
+      "cards/setFilterText",
+      "cards/applyFilters",
+      "cards/resetFilters",
     ],
     filterCards
   );

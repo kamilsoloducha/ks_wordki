@@ -1,25 +1,38 @@
-import {
-  DashboardAction,
-  DashboardActionEnum,
-  reduceGetForecast,
-  reduceGetForecastSuccess,
-} from "./actions";
+import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import DashboardState, { initailState } from "./state";
+import * as p from "./action-payloads";
 
-export default function dashboardReducer(
-  state = initailState,
-  action: DashboardAction
-): DashboardState {
-  switch (action.type) {
-    case DashboardActionEnum.GET_DASHBAORD_SUMMARY:
-      return action.reduce(state);
-    case DashboardActionEnum.GET_DASHBAORD_SUMMARY_SUCCESS:
-      return action.reduce(state);
-    case DashboardActionEnum.GET_FORECAST:
-      return reduceGetForecast(state);
-    case DashboardActionEnum.GET_FORECAST_SUCCESS:
-      return reduceGetForecastSuccess(state, action as any);
-    default:
-      return state;
-  }
-}
+export const dashbaordSlice = createSlice({
+  name: "dashboard",
+  initialState: initailState,
+  reducers: {
+    getDashboardSummary: (state: DashboardState): void => {
+      state.isLoading = true;
+    },
+    getDashboardSummarySuccess: (
+      state: DashboardState,
+      action: PayloadAction<p.GetDashboardSummarySuccess>
+    ): void => {
+      state.isLoading = false;
+      state.groupsCount = action.payload.groupsCount;
+      state.cardsCount = action.payload.cardsCount;
+      state.dailyRepeats = action.payload.dailyRepeats;
+    },
+
+    getForecast: (state: DashboardState): void => {
+      state.isForecastLoading = true;
+    },
+    getForecastSuccess: (
+      state: DashboardState,
+      action: PayloadAction<p.GetForecastSuccess>
+    ): void => {
+      state.isForecastLoading = false;
+      state.forecast = action.payload.forecast;
+    },
+  },
+});
+
+export default dashbaordSlice.reducer;
+
+export const { getDashboardSummary, getDashboardSummarySuccess, getForecast, getForecastSuccess } =
+  dashbaordSlice.actions;

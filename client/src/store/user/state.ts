@@ -3,7 +3,7 @@ export default interface UserState {
   isLoading: boolean;
   token: string;
   id: string;
-  expirationDate: Date;
+  expirationDate: string;
   errorMessage: string;
 }
 
@@ -12,6 +12,6 @@ export const initialState: UserState = {
   isLoading: false,
   token: "",
   id: "",
-  expirationDate: new Date(1),
+  expirationDate: "",
   errorMessage: "",
 };

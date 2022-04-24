@@ -2,12 +2,12 @@ import { call, put, select, take } from "@redux-saga/core/effects";
 import { ForecastModel } from "pages/dashboard/models/forecastModel";
 import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
-import { DashboardActionEnum, getDashboardSummarySuccess, getForecastSuccess } from "../actions";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
+import { getDashboardSummarySuccess, getForecastSuccess } from "../reducer";
 
 export function* getDashbaordSummaryEffect(): SagaIterator {
-  yield take(DashboardActionEnum.GET_DASHBAORD_SUMMARY);
+  yield take("dashboard/getDashboardSummary");
   const userId: string = yield select(selectUserId);
   const { data, error }: { data: api.DashboardSummaryResponse; error: any } = yield call(
     api.getDashboardSummaryApi,
@@ -24,8 +24,12 @@ export function* getDashbaordSummaryEffect(): SagaIterator {
   const result: ForecastModel[] = yield call(api.getForecast, getForecastRequest);
   yield put(
     data
-      ? getDashboardSummarySuccess(data.dailyRepeats, data.groupsCount, data.cardsCount)
+      ? getDashboardSummarySuccess({
+          dailyRepeats: data.dailyRepeats,
+          groupsCount: data.groupsCount,
+          cardsCount: data.cardsCount,
+        })
       : requestFailed(error)
   );
-  yield put(getForecastSuccess(result));
+  yield put(getForecastSuccess({ forecast: result }));
 }

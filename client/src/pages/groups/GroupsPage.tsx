@@ -13,7 +13,7 @@ import {
   resetSelectedItem,
   selectItem,
   updateGroup,
-} from "store/groups/actions";
+} from "store/groups/reducer";
 import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/selectors";
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
@@ -53,11 +53,11 @@ export default function GroupsPage(): ReactElement {
   };
 
   const onsubmit = (group: GroupDetails) => {
-    dispatch(group.id ? updateGroup(group) : addGroup(group));
+    dispatch(group.id ? updateGroup({ group }) : addGroup({ group }));
   };
 
   const onaddgroup = () => {
-    dispatch(selectItem({} as GroupSummary));
+    dispatch(selectItem({ group: {} as GroupSummary }));
   };
 
   const selectGroup = (group: GroupSummary) => {

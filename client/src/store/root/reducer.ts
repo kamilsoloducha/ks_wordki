@@ -1,7 +1,8 @@
 import RootState, { initialState } from "./state";
 import * as actions from "./actions";
+import { Action } from "@reduxjs/toolkit";
 
-export default function rootReducer(state = initialState, action: actions.RootActions): RootState {
+export default function rootReducer(state = initialState, action: Action): RootState {
   switch (action.type) {
     case actions.RootActionEnum.REQUEST_FAILED:
       return actions.requestFailedReduce(state, action as actions.RequestFailed);

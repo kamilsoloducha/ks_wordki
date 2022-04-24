@@ -11,8 +11,8 @@ export function Forecast(): ReactElement {
       <div className="forecast-title">Repetitions forecast</div>
       <div className="forecast-items-container">
         {data
-          ?.map((item) => prepareForecasModel(item))
-          .map((item, index) => {
+          ?.map((item: any) => prepareForecasModel(item))
+          .map((item: any, index: number) => {
             return (
               <ForecaseItem
                 key={index}

@@ -1,5 +1,5 @@
 import "./LessonPage.scss";
-import * as actions from "store/lesson/actions";
+import * as actions from "store/lesson/reducer";
 import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
 import { ReactElement, useCallback, useEffect } from "react";
@@ -38,11 +38,11 @@ export default function LessonPage(): ReactElement {
   }, [dispatch]);
 
   const correct = useCallback(() => {
-    dispatch(actions.correct(isCorrect ? type.Correct : type.Accepted));
+    dispatch(actions.correct({ result: isCorrect ? type.Correct : type.Accepted }));
   }, [dispatch, isCorrect]);
 
   const wrong = useCallback(() => {
-    dispatch(actions.wrong());
+    dispatch(actions.wrong({ result: -1 }));
   }, [dispatch]);
 
   const check = useCallback(() => {

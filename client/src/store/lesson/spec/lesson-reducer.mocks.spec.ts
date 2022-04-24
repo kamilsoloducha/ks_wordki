@@ -1,9 +1,10 @@
-import * as actions from "../actions";
+import { Action } from "@reduxjs/toolkit";
+import * as actions from "../reducer";
 import LessonState, { initialState } from "../state";
 
 interface Context {
   givenState: LessonState;
-  givenAction: actions.LessonAction;
+  givenAction: Action;
   expectedState: LessonState;
 }
 

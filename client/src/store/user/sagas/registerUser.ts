@@ -1,23 +1,24 @@
-import { call, put, take, takeEvery } from "@redux-saga/core/effects";
+import { call, put, take } from "@redux-saga/core/effects";
+import { PayloadAction } from "@reduxjs/toolkit";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
-import { setErrorMessage, UserActionEnum, RegisterUser, login } from "../actions";
+import { login, setErrorMessage } from "../reducer";
 
 export function* registerUserEffect(): SagaIterator {
-  const action: RegisterUser = yield take(UserActionEnum.REGISTER);
+  const action: PayloadAction<any> = yield take("user/register");
 
   const request = {
-    userName: action.name,
-    password: action.password,
-    passwordConfirmation: action.passwordConfirmation,
-    email: action.email,
+    userName: action.payload.name,
+    password: action.payload.password,
+    passwordConfirmation: action.payload.passwordConfirmation,
+    email: action.payload.email,
   } as api.RegisterRequest;
 
   const apiResponse: api.RegisterResponse = yield call(api.register, request);
 
   switch (apiResponse.responseCode) {
     case api.RegisterResponseCode.Successful:
-      yield put(login(action.name, action.password));
+      yield put(login({ userName: action.payload.name, password: action.payload.password }));
       break;
     case api.RegisterResponseCode.UserNameAlreadyOccupied:
       yield put(setErrorMessage("User with the same name has already existed"));

@@ -1,5 +1,5 @@
 import "./NewCardsSettings.scss";
-import * as act from "store/lesson/actions";
+import * as act from "store/lesson/reducer";
 import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSettings } from "store/lesson/selectors";
@@ -24,27 +24,27 @@ export default function NewCardsSettings(): ReactElement {
       <div className="setting-item">
         <LanguageSelector
           selected={settings.languages}
-          onSelectedChanged={(value) => dispatch(act.setSettingLanguage(value))}
+          onSelectedChanged={(value) => dispatch(act.setSettingsLanguage({ languages: value }))}
         />
       </div>
       <div className="setting-item">
         <GroupSelector
           items={groups}
           selectedGroupId={settings.selectedGroupId}
-          onSelectedChanged={(value) => dispatch(act.setSettingGroup(value))}
+          onSelectedChanged={(value) => dispatch(act.setSettingsGroup({ groupId: value }))}
         />
       </div>
       <div className="setting-item">
         <CountSelector
           all={getAllCount(settings)}
           selected={settings.count}
-          onSelectedChanged={(value) => dispatch(act.setSettingCount(value))}
+          onSelectedChanged={(value) => dispatch(act.setSettingsCount({ count: value }))}
         />
       </div>
       <div className="setting-item">
         <LessonTypeSelector
           selected={settings.type}
-          onSelectedChanged={(value) => dispatch(act.setSettingType(value))}
+          onSelectedChanged={(value) => dispatch(act.setSettingsType({ type: value }))}
         />
       </div>
     </>

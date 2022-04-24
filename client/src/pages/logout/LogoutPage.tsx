@@ -1,10 +1,10 @@
 import { ReactElement, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
-import { logout } from "store/user/actions";
+import { useAppDispatch } from "store/store";
+import { logout } from "store/user/reducer";
 
 function LogoutPage(): ReactElement {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     localStorage.removeItem("id");
     localStorage.removeItem("token");

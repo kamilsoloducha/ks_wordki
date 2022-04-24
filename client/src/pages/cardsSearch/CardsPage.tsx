@@ -1,5 +1,5 @@
 import * as selectors from "store/cardsSearch/selectors";
-import * as actions from "store/cardsSearch/actions";
+import * as actions from "store/cardsSearch/reducer";
 import { Fragment, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "common/components/pagination/Pagination";
@@ -28,15 +28,15 @@ export default function CardsPage(): ReactElement {
   }, [dispatch]);
 
   const onPageChagned = (event: PageChangedEvent) => {
-    dispatch(actions.filterSetPagination(event.currectPage, event.count));
+    dispatch(actions.filterSetPagination({ pageNumber: event.currectPage, pageSize: event.count }));
   };
 
   const onSearchChanged = (searchingTerm: string) => {
-    dispatch(actions.filterSetTerm(searchingTerm));
+    dispatch(actions.filterSetTerm({ searchingTerm }));
   };
 
   const setPageSize = (size: number) => {
-    dispatch(actions.filterSetPagination(filter.pageNumber, size));
+    dispatch(actions.filterSetPagination({ pageNumber: filter.pageNumber, pageSize: size }));
   };
 
   const clearFilters = () => {
@@ -44,15 +44,15 @@ export default function CardsPage(): ReactElement {
   };
 
   const tickedOnly = () => {
-    dispatch(actions.filterSetTickedOnly(true));
+    dispatch(actions.filterSetTickedOnly({ tickedOnly: true }));
   };
 
   const lessonIncludedOnly = () => {
-    dispatch(actions.filterSetLessonIncluded(true));
+    dispatch(actions.filterSetLessonIncluded({ lessonIncluded: true }));
   };
 
   const waitingOnly = () => {
-    dispatch(actions.filterSetLessonIncluded(false));
+    dispatch(actions.filterSetLessonIncluded({ lessonIncluded: false }));
   };
 
   const onItemSelected = (card: CardSummary) => {
@@ -63,7 +63,7 @@ export default function CardsPage(): ReactElement {
     if (!selectedItem || !model) {
       return;
     }
-    dispatch(actions.deleteCard(selectedItem.id, selectedItem.groupId));
+    dispatch(actions.deleteCard({ cardId: selectedItem.id, groupId: selectedItem.groupId }));
     setSelectedItem(null);
   };
 
@@ -88,7 +88,7 @@ export default function CardsPage(): ReactElement {
         isUsed: model.backEnabled,
       },
     };
-    dispatch(actions.udpateCard(card));
+    dispatch(actions.updateCard({ card }));
     setSelectedItem(null);
   };
 
@@ -114,7 +114,7 @@ export default function CardsPage(): ReactElement {
         search={filter.searchingTerm}
         onSearchChanged={onSearchChanged}
       />
-      {cards.map((item, index) => (
+      {cards.map((item: any, index: number) => (
         <Fragment key={index}>
           <Row card={item} onClick={onItemSelected} />
         </Fragment>

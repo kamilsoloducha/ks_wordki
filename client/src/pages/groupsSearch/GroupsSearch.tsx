@@ -1,7 +1,7 @@
 import "./GroupsSearch.scss";
 import { Fragment, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "store/groupsSearch/actions";
+import * as actions from "store/groupsSearch/reducer";
 import * as selectors from "store/groupsSearch/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import GroupRow from "pages/groups/components/groupRow/GroupRow";
@@ -25,9 +25,9 @@ export default function GroupsSearchPage(): ReactElement {
   };
 
   const onGroupSelected = (groupId: string) => {
-    const selectedGroup = groups.find((x) => x.id === groupId);
+    const selectedGroup = groups.find((x: any) => x.id === groupId);
     if (!selectedGroup) return;
-    dispatch(actions.setGroup(selectedGroup));
+    dispatch(actions.setGroup({ group: selectedGroup }));
   };
 
   const onDialogHide = () => {
@@ -56,7 +56,7 @@ export default function GroupsSearchPage(): ReactElement {
           </form>
         </div>
         <div className="groups-search-results">
-          {groups.map((x) => (
+          {groups.map((x: any) => (
             <Fragment key={x.id}>
               <GroupRow
                 groupSummary={{
@@ -78,7 +78,7 @@ export default function GroupsSearchPage(): ReactElement {
           footer={Footer({ onDialogHide, onSave })}
         >
           {isCardsLoading && <LoadingSpinner />}
-          {cards.map((x, index) => (
+          {cards.map((x: any, index: number) => (
             <Fragment key={index}>
               <p>
                 {x.front.value} - {x.back.value}

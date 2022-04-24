@@ -1,16 +1,16 @@
-import { call, put, select, takeLatest } from "@redux-saga/core/effects";
-import * as actions from "../actions";
+import { call, put, select } from "@redux-saga/core/effects";
 import * as api from "api";
 import { selectUserId } from "store/user/selectors";
 import { CardsOverview } from "pages/cardsSearch/models/cardsOverview";
 import { take } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
+import { getOverviewSuccess } from "../reducer";
 
 export function* getOverviewEffect(): SagaIterator {
-  yield take(actions.CardsSearchActionEnum.GET_OVERVIEW);
+  yield take("cardsSearch/getOverview");
   const userId: string = yield select(selectUserId);
 
   const overview: CardsOverview = yield call(api.cardsOverview, userId);
 
-  yield put(actions.getOverviewSuccess(overview));
+  yield put(getOverviewSuccess({ overview }));
 }

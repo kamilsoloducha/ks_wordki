@@ -1,36 +1,54 @@
-import { Action } from "@reduxjs/toolkit";
+import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GroupsSearchState, initialGroupsSearchState } from "./state";
-import * as act from "./actions";
+import * as p from "./action-payloads";
 
-export function groupsSearchReducer(
-  state = initialGroupsSearchState,
-  action: Action
-): GroupsSearchState {
-  switch (action.type) {
-    case act.GroupsSearchActionEnum.SEARCH:
-      return act.searchReduce(state);
-    case act.GroupsSearchActionEnum.SEARCH_SUCCESS:
-      return act.searchSuccessReduce(state, action as act.SearchSuccess);
+export const groupSearchSlice = createSlice({
+  name: "groupsSearch",
+  initialState: initialGroupsSearchState,
+  reducers: {
+    search: (state: GroupsSearchState): void => {
+      state.isSearching = true;
+    },
+    searchSuccess: (state: GroupsSearchState, action: PayloadAction<p.SearchSuccess>): void => {
+      state.isSearching = false;
+      state.groups = action.payload.groups;
+      state.groupsCount = action.payload.groupsCount;
+    },
+    filterSetName: (state: GroupsSearchState, action: PayloadAction<p.FilterSetName>): void => {
+      state.groupName = action.payload.name;
+    },
+    setGroup: (state: GroupsSearchState, action: PayloadAction<p.SetGroup>): void => {
+      state.selectedGroup = action.payload.group;
+    },
+    resetSelection: (state: GroupsSearchState): void => {
+      state.selectedGroup = null;
+    },
+    getCards: (state: GroupsSearchState): void => {
+      state.isCardsLoading = true;
+    },
+    getCardsSuccess: (state: GroupsSearchState, action: PayloadAction<p.GetCardsSuccess>): void => {
+      state.cards = action.payload.cards;
+      state.isCardsLoading = false;
+    },
+    saveGroup: (state: GroupsSearchState): void => {
+      state.isCardsLoading = true;
+    },
+    saveGroupSuccess: (state: GroupsSearchState): void => {
+      state.isCardsLoading = false;
+    },
+  },
+});
 
-    case act.GroupsSearchActionEnum.FILTER_SET_NAME:
-      return act.filterSetNameReduce(state, action as act.FilterSetName);
+export default groupSearchSlice.reducer;
 
-    case act.GroupsSearchActionEnum.SET_GROUP:
-      return act.setGroupReduce(state, action as act.SetGroup);
-    case act.GroupsSearchActionEnum.RESET_SELECTION:
-      return act.resetSelectionReduce(state);
-
-    case act.GroupsSearchActionEnum.GET_CARDS:
-      return act.getCardsReduce(state);
-    case act.GroupsSearchActionEnum.GET_CARDS_SUCCESS:
-      return act.getCardsSuccessReduce(state, action as act.GetCardsSuccess);
-
-    case act.GroupsSearchActionEnum.SAVE_GROUP:
-      return act.saveGroupReduce(state);
-    case act.GroupsSearchActionEnum.SAVE_GROUP_SUCCESS:
-      return act.saveGroupSuccessReduce(state);
-
-    default:
-      return state;
-  }
-}
+export const {
+  filterSetName,
+  getCards,
+  getCardsSuccess,
+  resetSelection,
+  saveGroup,
+  saveGroupSuccess,
+  search,
+  searchSuccess,
+  setGroup,
+} = groupSearchSlice.actions;

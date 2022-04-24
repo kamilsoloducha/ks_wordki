@@ -3,7 +3,7 @@ import { ReactElement, useEffect } from "react";
 import * as router from "react-router-dom";
 import { Info } from "./components/info/Info";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashboardSummary } from "store/dashboard/actions";
+import { getDashboardSummary } from "store/dashboard/reducer";
 import { selectData } from "store/dashboard/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { Forecast } from "./components/forecast/Forecast";

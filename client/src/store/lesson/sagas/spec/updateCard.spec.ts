@@ -1,10 +1,10 @@
 import "test/matcher/toDeepEqual";
-import * as actions from "../../actions";
 import * as api from "api";
 import { call, select, take } from "redux-saga/effects";
 import { selectUserId } from "store/user/selectors";
 import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
 import { updateCardEffect } from "../updateCard";
+import { updateCard } from "store/lesson/reducer";
 
 describe("updateCardEffect", () => {
   it("should go through", () => {
@@ -20,7 +20,7 @@ describe("updateCardEffect", () => {
       comment: "comment",
       isTicked: true,
     };
-    const updateCardAction = actions.updateCard(form, "groupId");
+    const updateCardAction = updateCard({ form: form, groupId: "groupId" });
     const saga = updateCardEffect();
     const request: api.UpdateCardRequest = {
       userId: "userId",
@@ -39,7 +39,7 @@ describe("updateCardEffect", () => {
         isTicked: true,
       },
     };
-    expect(saga.next().value).toStrictEqual(take(actions.DailyActionEnum.UPDATE_CARD));
+    expect(saga.next().value).toStrictEqual(take("lesson/updateCard"));
     expect(saga.next(updateCardAction).value).toStrictEqual(select(selectUserId));
     expect(saga.next("userId").value).toStrictEqual(call(api.updateCard2, request));
   });

@@ -1,17 +1,17 @@
-import * as actions from "../actions";
 import * as api from "api";
-import { call, put, select, takeLatest } from "@redux-saga/core/effects";
+import { call, put, select } from "@redux-saga/core/effects";
 import { selectSelectedGroup } from "../selectors";
 import { GroupSummary } from "pages/groupsSearch/models/groupSummary";
 import { CardSummary } from "pages/groupsSearch/models/cardSummary";
 import { SagaIterator } from "redux-saga";
 import { take } from "redux-saga/effects";
+import { getCardsSuccess } from "../reducer";
 
 export function* getCardsEffect(): SagaIterator {
-  yield take(actions.GroupsSearchActionEnum.GET_CARDS);
+  yield take("groupsSearch/getCards");
   const selectedGroup: GroupSummary = yield select(selectSelectedGroup);
 
   const cards: CardSummary[] = yield call(api.getCards, selectedGroup.id);
 
-  yield put(actions.getCardsSuccess(cards));
+  yield put(getCardsSuccess({ cards }));
 }

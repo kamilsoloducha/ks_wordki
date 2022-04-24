@@ -1,11 +1,11 @@
 import "test/matcher/toDeepEqual";
-import * as actions from "../../actions";
 import { SagaIterator } from "redux-saga";
 import { put, select } from "redux-saga/effects";
 import { selectCards, selectFilterState } from "store/cards/selectors";
 import { CardSummary } from "pages/cards/models";
 import { filterCards } from "../setFilter";
 import { FilterModel } from "store/cards/state";
+import { setFilteredCards } from "store/cards/reducer";
 
 describe("filterCards", () => {
   let saga: SagaIterator;
@@ -24,6 +24,6 @@ describe("filterCards", () => {
     const cards: CardSummary[] = [];
     expect(saga.next().value).toStrictEqual(select(selectFilterState));
     expect(saga.next(filterModel).value).toStrictEqual(select(selectCards));
-    expect(saga.next(cards).value).toDeepEqual(put(actions.setFilteredCards([])));
+    expect(saga.next(cards).value).toDeepEqual(put(setFilteredCards({ cards: [] })));
   });
 });

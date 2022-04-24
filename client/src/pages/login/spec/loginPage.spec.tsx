@@ -4,7 +4,6 @@ import { act } from "react-dom/test-utils";
 import * as redux from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
 import LoginPage from "../LoginPage";
-import { UserActionEnum } from "store/user/actions";
 import configureStore from "redux-mock-store";
 
 describe("LoginPage", () => {
@@ -135,9 +134,11 @@ describe("LoginPage", () => {
     expect(container.querySelectorAll(".error-message").length).toBe(0);
     expect(mockFunc).toHaveBeenCalledTimes(2);
     expect(mockFunc).toHaveBeenCalledWith({
-      name: "testUser",
-      password: "testPassword",
-      type: UserActionEnum.LOGIN,
+      payload: {
+        userName: "testUser",
+        password: "testPassword",
+      },
+      type: "user/login",
     });
   });
 });

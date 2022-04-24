@@ -1,14 +1,15 @@
 import { call, put, take } from "@redux-saga/core/effects";
+import { PayloadAction } from "@reduxjs/toolkit";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
-import { setErrorMessage, loginSuccess, LoginUser, UserActionEnum } from "../actions";
+import { LoginPayload } from "../action-payload";
+import { loginSuccess, setErrorMessage } from "../reducer";
 
 export function* loginUserEffect(): SagaIterator {
-  const action: LoginUser = yield take(UserActionEnum.LOGIN);
-
+  const action: PayloadAction<LoginPayload> = yield take("user/login");
   const request = {
-    userName: action.name,
-    password: action.password,
+    userName: action.payload.userName,
+    password: action.payload.password,
   } as api.LoginRequest;
   const apiResponse: api.LoginResponse = yield call(api.login, request);
 
@@ -19,7 +20,11 @@ export function* loginUserEffect(): SagaIterator {
       localStorage.setItem("creationDate", apiResponse.creatingDateTime);
       localStorage.setItem("expirationDate", apiResponse.expirationDateTime);
       yield put(
-        loginSuccess(apiResponse.token, apiResponse.id, new Date(apiResponse.expirationDateTime))
+        loginSuccess({
+          token: apiResponse.token,
+          id: apiResponse.id,
+          expirationDate: apiResponse.expirationDateTime,
+        })
       );
       break;
     case api.LoginResponseCode.UserNotFound:

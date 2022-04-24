@@ -1,11 +1,11 @@
 import * as users from "api/services/users";
 import * as api from "api";
+import * as actions from "../../reducer";
 import { put, call, take } from "@redux-saga/core/effects";
-import * as actions from "store/user/actions";
 import { loginUserEffect } from "../loginUser";
 
 describe("loginUserEffect", () => {
-  const action = { name: "testName", password: "testPassword", type: actions.UserActionEnum.LOGIN };
+  const action = actions.login({ userName: "testName", password: "testPassword" });
   let saga: any;
   let mock: any;
 
@@ -23,7 +23,7 @@ describe("loginUserEffect", () => {
     const response = { responseCode: api.LoginResponseCode.UserNotFound } as api.LoginResponse;
     mock.mockImplementation(() => new Promise<api.LoginResponse>(() => response));
 
-    expect(saga.next().value).toStrictEqual(take(actions.UserActionEnum.LOGIN));
+    expect(saga.next().value).toStrictEqual(take("user/login"));
     expect(saga.next(action).value).toStrictEqual(call(mock, request));
     expect(saga.next(response).value).toStrictEqual(
       put(actions.setErrorMessage("Incorrect username or password."))
@@ -41,14 +41,20 @@ describe("loginUserEffect", () => {
       responseCode: api.LoginResponseCode.Successful,
       token: "token",
       id: "id",
-      expirationDateTime: "2",
+      expirationDateTime: "2001-01-31T23:00:00.000Z",
     } as api.LoginResponse;
 
-    expect(saga.next().value).toStrictEqual(take(actions.UserActionEnum.LOGIN));
+    expect(saga.next().value).toStrictEqual(take("user/login"));
     expect(saga.next(action).value).toStrictEqual(call(mock, request));
 
     expect(saga.next(response).value).toStrictEqual(
-      put(actions.loginSuccess("token", "id", new Date("2")))
+      put(
+        actions.loginSuccess({
+          token: "token",
+          id: "id",
+          expirationDate: "2001-01-31T23:00:00.000Z",
+        })
+      )
     );
 
     expect(saga.next().done).toBe(true);

@@ -1,6 +1,6 @@
 import "./LessonInformation.scss";
 import * as sel from "store/lesson/selectors";
-import * as actions from "store/lesson/actions";
+import * as actions from "store/lesson/reducer";
 import { ReactElement, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "primereact/menu";

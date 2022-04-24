@@ -1,7 +1,7 @@
-import * as actions from "../actions";
 import { put, take } from "@redux-saga/core/effects";
+import { getCards } from "../reducer";
 
 export function* setGroupEffect() {
-  yield take(actions.GroupsSearchActionEnum.SET_GROUP);
-  yield put(actions.getCards());
+  yield take("groupsSearch/setGroup");
+  yield put(getCards());
 }

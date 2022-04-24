@@ -1,6 +1,6 @@
 import * as key from "../../models/keyCodes";
 import * as resultTypes from "../../models/resultTypes";
-import * as actions from "store/lesson/actions";
+import * as actions from "store/lesson/reducer";
 import * as sel from "store/lesson/selectors";
 import { ReactElement, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,11 +20,11 @@ export default function Fiszka(): ReactElement {
           break;
         }
         case key.Left: {
-          dispatch(actions.wrong());
+          dispatch(actions.wrong({ result: -1 }));
           break;
         }
         case key.Right: {
-          dispatch(actions.correct(resultTypes.Correct));
+          dispatch(actions.correct({ result: resultTypes.Correct }));
           break;
         }
       }

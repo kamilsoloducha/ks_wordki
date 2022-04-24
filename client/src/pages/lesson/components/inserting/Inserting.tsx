@@ -1,5 +1,5 @@
 import * as select from "store/lesson/selectors";
-import * as act from "store/lesson/actions";
+import * as act from "store/lesson/reducer";
 import * as rt from "../../models/resultTypes";
 import "./Inserting.scss";
 import { CheckPending, LessonStateEnum } from "pages/lesson/models/lessonState";
@@ -25,7 +25,7 @@ export default function Inserting(): ReactElement {
           return;
         }
         case LessonStateEnum.AnswerPending: {
-          dispatch(isCorrect ? act.correct(rt.Correct) : act.wrong());
+          dispatch(isCorrect ? act.correct({ result: rt.Correct }) : act.wrong({ result: -1 }));
           return;
         }
       }
@@ -43,7 +43,7 @@ export default function Inserting(): ReactElement {
 
   useEffect(() => {
     if (status === CheckPending) {
-      dispatch(act.setAnswer(""));
+      dispatch(act.setAnswer({ answer: "" }));
       inputRef.current?.focus();
     }
   }, [status, inputRef, dispatch]);

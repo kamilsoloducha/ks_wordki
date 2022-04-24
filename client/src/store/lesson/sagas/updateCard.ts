@@ -1,34 +1,38 @@
-import { call, put, select, takeLatest } from "@redux-saga/core/effects";
+import { call, put, select } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import * as api from "api";
-import { DailyActionEnum, UpdateCard, updateCardSuccess } from "../actions";
 import { take } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { UpdateCard } from "../action-payloads";
+import { updateCardSuccess } from "../reducer";
 
 export function* updateCardEffect(): SagaIterator {
-  const action: UpdateCard = yield take(DailyActionEnum.UPDATE_CARD);
+  const action: PayloadAction<UpdateCard> = yield take("lesson/updateCard");
 
   const userId: string = yield select(selectUserId);
 
   const request = {
     userId,
-    groupId: action.groupId,
-    cardId: action.form.cardId,
+    groupId: action.payload.groupId,
+    cardId: action.payload.form.cardId,
     front: {
-      value: action.form.frontValue,
-      example: action.form.frontExample,
-      isUsed: action.form.frontEnabled,
-      isTicked: action.form.isTicked,
+      value: action.payload.form.frontValue,
+      example: action.payload.form.frontExample,
+      isUsed: action.payload.form.frontEnabled,
+      isTicked: action.payload.form.isTicked,
     },
     back: {
-      value: action.form.backValue,
-      example: action.form.backExample,
-      isUsed: action.form.backEnabled,
-      isTicked: action.form.isTicked,
+      value: action.payload.form.backValue,
+      example: action.payload.form.backExample,
+      isUsed: action.payload.form.backEnabled,
+      isTicked: action.payload.form.isTicked,
     },
   } as api.UpdateCardRequest;
 
   const response: api.UpdateCardResponse | boolean = yield call(api.updateCard2, request);
-  yield put(response !== false ? updateCardSuccess(action.form) : requestFailed({} as any));
+  yield put(
+    response !== false ? updateCardSuccess({ form: action.payload.form }) : requestFailed({} as any)
+  );
 }

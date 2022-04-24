@@ -1,17 +1,16 @@
-import * as actions from "../../actions";
+import * as actions from "../../reducer";
 import * as users from "api/services/users";
 import * as api from "api";
 import { call, put, take } from "redux-saga/effects";
 import { registerUserEffect } from "../registerUser";
 
 describe("registerUserEffect", () => {
-  const action = {
+  const action = actions.register({
     name: "name",
     password: "password",
     email: "email",
     passwordConfirmation: "passwordConfirmation",
-    type: actions.UserActionEnum.REGISTER,
-  };
+  });
   let saga: any;
   let mock: any;
 
@@ -45,7 +44,7 @@ describe("registerUserEffect", () => {
         responseCode: item.responseCode,
       } as api.RegisterResponse;
 
-      expect(saga.next().value).toStrictEqual(take(actions.UserActionEnum.REGISTER));
+      expect(saga.next().value).toStrictEqual(take("user/register"));
       expect(saga.next(action).value).toStrictEqual(call(mock, request));
       expect(saga.next(response).value).toStrictEqual(put(actions.setErrorMessage(item.message)));
       expect(saga.next().done).toBe(true);
@@ -63,9 +62,11 @@ describe("registerUserEffect", () => {
       responseCode: api.RegisterResponseCode.Successful,
     } as api.RegisterResponse;
 
-    expect(saga.next().value).toStrictEqual(take(actions.UserActionEnum.REGISTER));
+    expect(saga.next().value).toStrictEqual(take("user/register"));
     expect(saga.next(action).value).toStrictEqual(call(mock, request));
-    expect(saga.next(response).value).toStrictEqual(put(actions.login("name", "password")));
+    expect(saga.next(response).value).toStrictEqual(
+      put(actions.login({ userName: "name", password: "password" }))
+    );
     expect(saga.next().done).toBe(true);
   });
 });

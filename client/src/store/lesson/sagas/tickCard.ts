@@ -1,5 +1,4 @@
 import { call, select } from "@redux-saga/core/effects";
-import { DailyActionEnum } from "../actions";
 import * as api from "api";
 import { selectUserId } from "store/user/selectors";
 import { ApiResponse } from "common/models/response";
@@ -9,7 +8,7 @@ import { SagaIterator } from "redux-saga";
 import { take } from "redux-saga/effects";
 
 export function* tickCardEffect(): SagaIterator {
-  yield take(DailyActionEnum.TICK_CARD);
+  yield take("lesson/tickCard");
 
   const userId: string = yield select(selectUserId);
   const repeat: Repeat = yield select(selectCurrectRepeat);

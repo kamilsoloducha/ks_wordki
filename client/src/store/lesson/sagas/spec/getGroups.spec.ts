@@ -1,11 +1,11 @@
 import "test/matcher/toDeepEqual";
-import * as actions from "../../actions";
 import * as api from "api";
 import * as groups from "api/services/groups";
 import { call, put, select, take } from "redux-saga/effects";
 import { selectUserId } from "store/user/selectors";
 import { ApiResponse } from "common";
 import { getGroupsEffect } from "../getGroups";
+import { getGroupsSuccess } from "store/lesson/reducer";
 
 describe("getGroupsEffect", () => {
   let saga: any;
@@ -32,10 +32,10 @@ describe("getGroupsEffect", () => {
       isCorrect: false,
     };
 
-    expect(saga.next().value).toStrictEqual(take(actions.DailyActionEnum.GET_GROUPS));
+    expect(saga.next().value).toStrictEqual(take("lesson/getGroups"));
     expect(saga.next().value).toStrictEqual(select(selectUserId));
     expect(saga.next("ownerId").value).toStrictEqual(call(mock, request));
-    expect(saga.next(response).value).toDeepEqual(put(actions.getGroupsSuccess([])));
+    expect(saga.next(response).value).toDeepEqual(put(getGroupsSuccess({ groups: [] })));
 
     expect(saga.next().done).toBe(true);
   });

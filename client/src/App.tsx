@@ -6,14 +6,14 @@ import { lazy, Suspense } from "react";
 import { Route, Router, Switch } from "react-router-dom";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import ErrorPage from "common/components/error/ErrorPage";
-import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "store/user/actions";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
 import GuardedRoute from "common/components/guardedRoute/GuardedRoute";
 import history from "./common/services/history";
 import { selectBreadcrumbs } from "store/root/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
+import { useAppDispatch, useAppSelector } from "store/store";
+import { loginSuccess } from "store/user/reducer";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
 const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
@@ -28,16 +28,16 @@ const LessonPage = lazy(() => import("pages/lesson/LessonPage"));
 const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));
 
 export default function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isLogin = useSelector(selectIsLogin);
-  const breadCrumbs = useSelector(selectBreadcrumbs);
+  const isLogin = useAppSelector(selectIsLogin);
+  const breadCrumbs = useAppSelector(selectBreadcrumbs);
 
   const userId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
 
   if (userId && token) {
-    dispatch(loginSuccess(token, userId, new Date(1)));
+    dispatch(loginSuccess({ id: userId, token: token }));
   }
 
   return (

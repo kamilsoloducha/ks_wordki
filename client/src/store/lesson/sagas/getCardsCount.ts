@@ -1,14 +1,14 @@
-import { call, put, takeLatest, select, take } from "@redux-saga/core/effects";
-import { DailyActionEnum, getCardsCountSuccess } from "../actions";
+import { call, put, select, take } from "@redux-saga/core/effects";
 import * as api from "api";
 import { selectUserId } from "store/user/selectors";
 import { ApiResponse } from "common/models/response";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 import { selectSettings } from "../selectors";
 import { SagaIterator } from "redux-saga";
+import { getCardsCountSuccess } from "../reducer";
 
 export function* getCardsCountEffect(): SagaIterator {
-  yield take(DailyActionEnum.GET_CARDS_COUNT);
+  yield take("lesson/getCardsCount");
   const userId: string = yield select(selectUserId);
   const settings: LessonSettings = yield select(selectSettings);
   const apiResposne: ApiResponse<number> = yield call(
@@ -18,5 +18,5 @@ export function* getCardsCountEffect(): SagaIterator {
         userId: userId,
       })
   );
-  yield put(getCardsCountSuccess(apiResposne.response));
+  yield put(getCardsCountSuccess({ count: apiResposne.response }));
 }

@@ -1,11 +1,12 @@
 import { call, select, takeLatest } from "@redux-saga/core/effects";
 import { selectUserId } from "store/user/selectors";
-import { Correct, DailyActionEnum, Wrong } from "../actions";
 import * as api from "api";
 import { selectLessonHistory, selectShouldSendAnswer } from "../selectors";
 import UserRepeat from "pages/lesson/models/userRepeat";
+import { Correct, Wrong } from "../action-payloads";
+import { PayloadAction } from "@reduxjs/toolkit";
 
-export function* answer(action: Correct | Wrong) {
+export function* answer(action: PayloadAction<Correct> | PayloadAction<Wrong>) {
   const shouldUpdate: boolean = yield select(selectShouldSendAnswer);
   if (!shouldUpdate) return;
 
@@ -16,15 +17,15 @@ export function* answer(action: Correct | Wrong) {
     api.registerAnswer({
       userId,
       sideId: previousRepeat.repeat.sideId,
-      result: action.result,
+      result: action.payload.result,
     } as api.RegisterAnswerRequest)
   );
 }
 
 export function* correctEffect() {
-  yield takeLatest(DailyActionEnum.LESSON_CORRECT, answer);
+  yield takeLatest("lesson/correct", answer);
 }
 
 export function* wrongEffect() {
-  yield takeLatest(DailyActionEnum.LESSON_WRONG, answer);
+  yield takeLatest("lesson/wrong", answer);
 }

@@ -1,5 +1,5 @@
 import "./LessonSetting.scss";
-import * as act from "store/lesson/actions";
+import * as act from "store/lesson/reducer";
 import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsProcessing, selectSettings } from "store/lesson/selectors";
@@ -36,7 +36,7 @@ export default function LessonSettingsPage(): ReactElement {
   ];
 
   const onModeChanged = (value: number) => {
-    dispatch(act.setSettingMode(value + 1));
+    dispatch(act.setSettingsMode({ mode: value + 1 }));
   };
 
   const onStartClick = () => {

@@ -1,13 +1,13 @@
-import * as actions from "../actions";
 import * as api from "api";
-import { call, put, select, take, takeLatest } from "@redux-saga/core/effects";
+import { call, put, select, take } from "@redux-saga/core/effects";
 import { selectSelectedGroup } from "../selectors";
 import { GroupSummary } from "pages/groupsSearch/models/groupSummary";
 import { selectUserId } from "store/user/selectors";
 import { SagaIterator } from "redux-saga";
+import { resetSelection, saveGroupSuccess } from "../reducer";
 
 export function* saveGroupEffect(): SagaIterator {
-  yield take(actions.GroupsSearchActionEnum.SAVE_GROUP);
+  yield take("groupsSearch/saveGroup");
   const ownerId: string = yield select(selectUserId);
   const selectedGroup: GroupSummary = yield select(selectSelectedGroup);
 
@@ -18,6 +18,6 @@ export function* saveGroupEffect(): SagaIterator {
 
   yield call(api.saveGroup, request);
 
-  yield put(actions.saveGroupSuccess());
-  yield put(actions.resetSelection());
+  yield put(saveGroupSuccess());
+  yield put(resetSelection());
 }

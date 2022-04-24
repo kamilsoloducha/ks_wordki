@@ -1,9 +1,9 @@
-import * as actions from "../actions";
 import { Action } from "@reduxjs/toolkit";
+import * as actions from "../reducer";
 import UserState from "../state";
 
 const initialState: UserState = {
-  expirationDate: new Date(),
+  expirationDate: "2022/02/02",
   id: "test",
   isLoading: false,
   isLogin: false,
@@ -25,7 +25,7 @@ export const defaultCtx: Context = {
 
 export const loginCtx: Context = {
   initialState: { ...initialState },
-  action: actions.login("name", "password"),
+  action: actions.login({ userName: "name", password: "password" }),
   resultState: {
     ...initialState,
     isLoading: true,
@@ -34,20 +34,25 @@ export const loginCtx: Context = {
 
 export const loginSuccessCtx: Context = {
   initialState: { ...initialState },
-  action: actions.loginSuccess("token2", "id2", new Date(2)),
+  action: actions.loginSuccess({ token: "token2", id: "id2", expirationDate: "2022/02/02" }),
   resultState: {
     ...initialState,
     isLogin: true,
     isLoading: false,
     id: "id2",
     token: "token2",
-    expirationDate: new Date(2),
+    expirationDate: "2022/02/02",
   },
 };
 
 export const registerCtx: Context = {
   initialState: { ...initialState },
-  action: actions.register("name", "email", "password", "password"),
+  action: actions.register({
+    userName: "name",
+    email: "email",
+    password: "password",
+    passwordConfirmation: "password",
+  }),
   resultState: {
     ...initialState,
     isLoading: true,
@@ -62,7 +67,7 @@ export const logoutCtx: Context = {
     isLoading: false,
     token: "",
     id: "",
-    expirationDate: new Date(1),
+    expirationDate: "",
     errorMessage: "",
   },
 };

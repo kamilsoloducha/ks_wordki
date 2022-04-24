@@ -1,5 +1,5 @@
 import "./LessonResult.scss";
-import * as actions from "store/lesson/actions";
+import * as actions from "store/lesson/reducer";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -60,7 +60,7 @@ export default function LessonResult(): ReactElement {
     if (!selectedItem) return;
     form.backEnabled = null;
     form.frontEnabled = null;
-    dispatch(actions.updateCard(form, selectedItem.repeat.groupId));
+    dispatch(actions.updateCard({ form, groupId: selectedItem.repeat.groupId }));
     setSelectedItem(null);
   };
 

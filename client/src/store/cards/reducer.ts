@@ -1,46 +1,98 @@
-import { Action } from "redux";
-import * as actions from "./actions";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import * as payloads from "./action-payload";
 import CardsState, { initialState } from "./state";
 
-export default function cardsReducer(state = initialState, action: Action): CardsState {
-  switch (action.type) {
-    case actions.CardsActionEnum.ADD_CARD:
-      return actions.reduceAddCard(state);
-    case actions.CardsActionEnum.ADD_CARD_SUCCESS:
-      return actions.reduceAddCardSuccess(state);
-    case actions.CardsActionEnum.APPEND_CARD:
-      return actions.reduceAppendCard(state);
-    case actions.CardsActionEnum.DELETE_CARD:
-      return actions.reduceDeleteCard(state);
-    case actions.CardsActionEnum.DELETE_CARD_SUCCESS:
-      return actions.reduceDeleteCardSuccess(state, action as actions.DeleteCardSuccess);
-    case actions.CardsActionEnum.GET_CARDS:
-      return actions.reduceGetCards(state);
-    case actions.CardsActionEnum.GET_CARDS_SUCCESS:
-      return actions.reduceGetCardsSuccess(state, action as actions.GetCardsSuccess);
-    case actions.CardsActionEnum.RESET_SELECTED_CARD:
-      return actions.reduceResetSelectedCard(state);
-    case actions.CardsActionEnum.SELECT_CARD:
-      return actions.reduceSelectCard(state, action as actions.SelectCard);
-    case actions.CardsActionEnum.UPDATE_CARD:
-      return actions.reduceUpdateCard(state, action as actions.UpdateCard);
-    case actions.CardsActionEnum.UPDATE_CARD_SUCCESS:
-      return actions.reduceUpdateCardSuccess(state, action as actions.UpdateCardSuccess);
-    case actions.CardsActionEnum.SET_FILTER_DRAWER:
-      return actions.reduceSetFilterDrawer(state, action as actions.SetFilterDrawer);
-    case actions.CardsActionEnum.SET_FILTER_LEARNING:
-      return actions.reduceSetFilterLearning(state, action as actions.SetFilterLearning);
-    case actions.CardsActionEnum.SET_FILTER_TEXT:
-      return actions.reduceSetFilterText(state, action as actions.SetFilterText);
-    case actions.CardsActionEnum.SET_FILTER_IS_TICKED:
-      return actions.reduceSetFilterIsTicked(state, action as actions.SetFilterIsTicked);
-    case actions.CardsActionEnum.RESET_FILTERS:
-      return actions.reduceResetFilter(state);
-    case actions.CardsActionEnum.SET_FILTERED_CARDS:
-      return actions.reduceSetFilteredCards(state, action as actions.SetFilteredCards);
-    case actions.CardsActionEnum.APPLY_FILTERS:
-      return actions.reduceApplyFilters(state);
-    default:
-      return state;
-  }
-}
+export const cardsSlice = createSlice({
+  name: "cards",
+  initialState: initialState,
+  reducers: {
+    addCard: (_: CardsState, __: PayloadAction<payloads.AddCard>): void => {},
+    addCardSuccess: (state: CardsState, _: PayloadAction<payloads.AddCardSuccess>): void => {
+      state.selectedItem = null;
+    },
+    deleteCard: (_: CardsState, __: PayloadAction<payloads.DeleteCard>): void => {},
+    deleteCardSuccess: (
+      state: CardsState,
+      action: PayloadAction<payloads.DeleteCardSuccess>
+    ): void => {
+      state.cards = state.cards.filter((item) => item.id !== action.payload.cardId);
+    },
+    getCards: (state: CardsState, _: PayloadAction<payloads.GetCards>): void => {
+      state.isLoading = true;
+    },
+    getCardsSuccess: (state: CardsState, action: PayloadAction<payloads.GetCardsSuccess>): void => {
+      state.id = action.payload.id;
+      state.name = action.payload.name;
+      state.language1 = action.payload.language1;
+      state.language2 = action.payload.language2;
+      state.cards = action.payload.cards;
+      state.isLoading = false;
+      state.selectedItem = null;
+    },
+    resetSelectedCard: (state: CardsState): void => {
+      state.selectedItem = null;
+    },
+    selectCard: (state: CardsState, action: PayloadAction<payloads.SelectCard>): void => {
+      state.selectedItem = action.payload.item;
+    },
+    updateCard: (state: CardsState, _: PayloadAction<payloads.UpdateCard>): void => {},
+    updateCardSuccess: (
+      state: CardsState,
+      action: PayloadAction<payloads.UpdateCardSuccess>
+    ): void => {
+      const index = state.cards.findIndex((item) => item.id === action.payload.card.id);
+      state.cards[index] = action.payload.card;
+      state.selectedItem = null;
+    },
+    setFilterDrawer: (state: CardsState, action: PayloadAction<payloads.SetFilterDrawer>): void => {
+      state.filter.drawer = action.payload.drawer;
+    },
+    setFilterLearning: (
+      state: CardsState,
+      action: PayloadAction<payloads.SetFilterLearning>
+    ): void => {
+      state.filter.isLearning = action.payload.isLearning;
+    },
+    setFilterText: (state: CardsState, action: PayloadAction<payloads.SetFilterText>): void => {
+      state.filter.text = action.payload.text;
+    },
+    setFilterIsTicked: (
+      state: CardsState,
+      action: PayloadAction<payloads.SetFitlerIsTicked>
+    ): void => {
+      state.filter.isTicked = action.payload.isTicked;
+    },
+    setFilteredCards: (
+      state: CardsState,
+      action: PayloadAction<payloads.SetFilteredCards>
+    ): void => {
+      state.filteredCards = action.payload.cards;
+    },
+    resetFilter: (state: CardsState): void => {
+      state.filter = initialState.filter;
+    },
+    applyFilters: (): void => {},
+  },
+});
+
+export default cardsSlice.reducer;
+
+export const {
+  addCard,
+  addCardSuccess,
+  deleteCard,
+  deleteCardSuccess,
+  getCards,
+  getCardsSuccess,
+  updateCard,
+  updateCardSuccess,
+  selectCard,
+  resetSelectedCard,
+  setFilterDrawer,
+  setFilterIsTicked,
+  setFilterLearning,
+  setFilterText,
+  setFilteredCards,
+  resetFilter,
+  applyFilters,
+} = cardsSlice.actions;

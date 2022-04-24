@@ -1,13 +1,9 @@
 import * as redux from "react-redux";
-import * as router from "react-router";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
-import { Router } from "react-router";
-import history from "common/services/history";
 import { ReactElement } from "react";
 import configureStore from "redux-mock-store";
 import { MainState } from "store/store";
-import React from "react";
 import GroupsSearchPage from "../GroupsSearch";
 
 describe("GroupsPage", () => {

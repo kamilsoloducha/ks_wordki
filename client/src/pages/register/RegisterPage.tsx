@@ -1,21 +1,21 @@
 import "./RegisterPage.scss";
 import { useFormik } from "formik";
 import { ReactElement, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { register, setErrorMessage } from "store/user/actions";
 import * as selectors from "store/user/selectors";
 import { initialValue, RegisterFormModel } from "./models";
 import { validate } from "./services/registerFormValidator";
 import { useTitle } from "common";
+import { useAppDispatch, useAppSelector } from "store/store";
+import { register, setErrorMessage } from "store/user/reducer";
 
 export default function RegisterPage(): ReactElement {
   useTitle("Wordki - Login");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const userId = useSelector(selectors.selectUserId);
-  const isLoading = useSelector(selectors.selectIsLoading);
-  const errorMessage = useSelector(selectors.selectErrorMessage);
+  const userId = useAppSelector(selectors.selectUserId);
+  const isLoading = useAppSelector(selectors.selectIsLoading);
+  const errorMessage = useAppSelector(selectors.selectErrorMessage);
 
   useEffect(() => {
     document.title = "Wordki - Register";
@@ -29,7 +29,14 @@ export default function RegisterPage(): ReactElement {
   });
 
   const onSubmit = async (model: RegisterFormModel) => {
-    dispatch(register(model.userName, model.email, model.password, model.passwordConfirmation));
+    dispatch(
+      register({
+        userName: model.userName,
+        email: model.email,
+        password: model.password,
+        passwordConfirmation: model.passwordConfirmation,
+      })
+    );
   };
 
   if (userId) {

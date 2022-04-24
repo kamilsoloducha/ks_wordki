@@ -2,20 +2,20 @@ import "./LoginPage.scss";
 import { useFormik } from "formik";
 import { ReactElement, useEffect } from "react";
 import { Redirect } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { login, setErrorMessage } from "store/user/actions";
 import * as selectors from "store/user/selectors";
 import { initialValues, LoginFormModel } from "./models";
 import { validate } from "./services/loginFormValidator";
 import { useTitle } from "common";
+import { useAppDispatch, useAppSelector } from "store/store";
+import { login, setErrorMessage } from "store/user/reducer";
 
 export default function LoginPage(): ReactElement {
   useTitle("Wordki - Login");
-  const userId = useSelector(selectors.selectUserId);
-  const isLoading = useSelector(selectors.selectIsLoading);
-  const errorMessage = useSelector(selectors.selectErrorMessage);
+  const userId = useAppSelector(selectors.selectUserId);
+  const isLoading = useAppSelector(selectors.selectIsLoading);
+  const errorMessage = useAppSelector(selectors.selectErrorMessage);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setErrorMessage(""));
@@ -32,7 +32,7 @@ export default function LoginPage(): ReactElement {
   }
 
   const onSubmit = (values: LoginFormModel) => {
-    dispatch(login(values.userName, values.password));
+    dispatch(login({ userName: values.userName, password: values.password }));
   };
 
   return (

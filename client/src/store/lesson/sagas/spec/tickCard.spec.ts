@@ -1,5 +1,4 @@
 import "test/matcher/toDeepEqual";
-import * as actions from "../../actions";
 import * as api from "api";
 import { call, select, take } from "redux-saga/effects";
 import { selectUserId } from "store/user/selectors";
@@ -36,7 +35,7 @@ describe("tickCardEffect", () => {
       groupId: "",
     };
     const request: api.TickCardRequest = { userId: "userId", sideId: "sideId" };
-    expect(saga.next().value).toStrictEqual(take(actions.DailyActionEnum.TICK_CARD));
+    expect(saga.next().value).toStrictEqual(take("lesson/tickCard"));
     expect(saga.next().value).toStrictEqual(select(selectUserId));
     expect(saga.next(userId).value).toStrictEqual(select(selectCurrectRepeat));
     expect(saga.next(repeat).value).toStrictEqual(call(api.tickCard, request));

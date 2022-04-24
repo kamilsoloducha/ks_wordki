@@ -2,7 +2,7 @@ import "./LessonController.scss";
 import { LessonStatus } from "pages/lesson/models/lessonState";
 import { ReactElement } from "react";
 import { useDispatch } from "react-redux";
-import { startLesson } from "store/lesson/actions";
+import { startLesson } from "store/lesson/reducer";
 
 function LessonController({ lessonState }: Model): ReactElement {
   const dispatch = useDispatch();
