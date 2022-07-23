@@ -37,7 +37,7 @@ export default function App() {
   const token = localStorage.getItem("token");
 
   if (userId && token) {
-    dispatch(loginSuccess({ id: userId, token: token }));
+    dispatch(loginSuccess({ id: userId, token: token , expirationDate: "2022/12/12"}));
   }
 
   return (
