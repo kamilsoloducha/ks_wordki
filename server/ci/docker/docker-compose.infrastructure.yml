@@ -1,0 +1,42 @@
+version: "3.5"
+services:
+  wordki-postgres:
+    container_name: wordki-postgres
+    image: postgres:alpine
+    restart: always
+    networks:
+      - wordki-network
+    environment:
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD= 
+      - POSTGRES_DB=
+  wordki-postgres-admin:
+    image: dpage/pgadmin4:latest
+    container_name: wordki-postgres-admin
+    restart: always
+    networks:
+      - wordki-network
+    ports:
+      - 8080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=
+      - PGADMIN_DEFAULT_PASSWORD=
+      - PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION=True
+      - PGADMIN_CONFIG_LOGIN_BANNER="Authorised users only!"
+      - PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=10
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    restart: always
+    networks:
+      - wordki-network
+    ports:
+      - 5341:80
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_ADMINPASSWORDHASH=
+
+networks:
+  wordki-network:
+    driver: bridge
+
