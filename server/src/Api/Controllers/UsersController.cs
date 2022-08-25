@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Users.Application;
+using Users.Application.Commands;
 
 namespace Api
 {
@@ -24,6 +25,10 @@ namespace Api
 
         [HttpPut("login")]
         public async Task<IActionResult> Login(LoginUser.Command command, CancellationToken cancellationToken)
+            => Ok(await Mediator.Send(command, cancellationToken));
+        
+        [HttpPut("login/chrome-extension")]
+        public async Task<IActionResult> Login(LoginChromeExtension.Command command, CancellationToken cancellationToken)
             => Ok(await Mediator.Send(command, cancellationToken));
 
         [HttpDelete("delete")]

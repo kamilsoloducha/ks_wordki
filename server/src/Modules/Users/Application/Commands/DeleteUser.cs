@@ -6,7 +6,7 @@ using FluentValidation;
 using MediatR;
 using Users.Domain;
 
-namespace Users.Application
+namespace Users.Application.Commands
 {
     public class DeleteUser
     {

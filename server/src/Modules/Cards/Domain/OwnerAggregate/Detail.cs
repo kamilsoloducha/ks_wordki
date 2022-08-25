@@ -1,5 +1,3 @@
-using System;
-
 namespace Cards.Domain
 {
     public class Detail

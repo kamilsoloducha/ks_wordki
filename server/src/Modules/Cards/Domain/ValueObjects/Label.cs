@@ -1,23 +1,22 @@
 using Blueprints.Domain;
 
-namespace Cards.Domain
+namespace Cards.Domain;
+
+public readonly struct Label
 {
-    public readonly struct Label
+    public string Text { get; }
+
+    private Label(string text)
     {
-        public string Text { get; }
+        Text = text;
+    }
 
-        private Label(string text)
-        {
-            Text = text;
-        }
+    public static Label Create(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) throw new BuissnessArgumentException(nameof(text), text);
 
-        public static Label Create(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text)) throw new BuissnessArgumentException(nameof(text), text);
+        var trimmedText = text.Trim();
 
-            var trimmedText = text.Trim();
-
-            return new Label(trimmedText);
-        }
+        return new Label(trimmedText);
     }
 }

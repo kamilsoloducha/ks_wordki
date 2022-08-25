@@ -1,16 +1,14 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Authentication;
-using FluentValidation;
 using MediatR;
 using Users.Domain;
 using Utils;
 
 namespace Users.Application.Commands;
 
-public class LoginUser
+public class LoginChromeExtension
 {
     internal class CommandHandler : IRequestHandler<Command, Response>
     {
@@ -32,52 +30,19 @@ public class LoginUser
             var hashedPassword = _passwordManager.CreateHashedPassword(request.Password);
             var user = await _userRepository.GetUser(request.UserName, hashedPassword, cancellationToken);
             if (user is null)
-                return new Response { ResponseCode = ResponseCode.UserNotFound };
+                return new Response(string.Empty, LoginUser.ResponseCode.UserNotFound);
 
             var creatingDate = SystemClock.Now;
-            var token = _authenticationService.Authenticate(user.Id, user.Roles.Select(x => x.Type.ToString()));
+            var token = _authenticationService.Authenticate(user.Id, new[] { RoleType.ChromeExtension.ToString() });
 
             user.Login();
             await _userRepository.Update(user, cancellationToken);
 
-            return new Response
-            {
-                ResponseCode = ResponseCode.Successful,
-                Token = token,
-                Id = user.Id,
-                CreatingDateTime = creatingDate,
-                ExpirationDateTime = creatingDate.AddDays(7)
-            };
+            return new Response(token, LoginUser.ResponseCode.Successful);
         }
     }
 
-    public class Command : IRequest<Response>
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
+    public record Command(string UserName, string Password) : IRequest<Response>;
 
-    internal class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
-        {
-            RuleFor(x => x.UserName).NotEmpty();
-            RuleFor(x => x.Password).NotEmpty();
-        }
-    }
-
-    public class Response
-    {
-        public ResponseCode ResponseCode { get; set; }
-        public string Token { get; set; }
-        public Guid Id { get; set; }
-        public DateTime CreatingDateTime { get; set; }
-        public DateTime ExpirationDateTime { get; set; }
-    }
-
-    public enum ResponseCode
-    {
-        Successful,
-        UserNotFound
-    }
+    public record Response(string Token, LoginUser.ResponseCode ResponseCode);
 }
