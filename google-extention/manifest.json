@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Wordki extension",
-    "description": "Context menu to Wordki applicationZ",
-    "version": "1.0",
+    "description": "Context menu to Wordki application",
+    "version": "0.0.0.1",
     "background": {
         "service_worker": "background.js"
     },
@@ -13,7 +13,7 @@
         "contextMenus"
     ],
     "host_permissions": [
-        "http://localhost/*"
+        "http://*"
     ],
     "icons": {
         "16": "/images/get_started16.png",

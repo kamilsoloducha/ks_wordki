@@ -1,9 +1,15 @@
-const apiUrl = "http://localhost:5000";
-
 function getToken() {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get('token', (data) => {
             resolve(data.token);
+        });
+    });
+}
+
+function getHost() {
+    return new Promise((resolve, _) => {
+        chrome.storage.sync.get('host', (data) => {
+            resolve(data.host);
         });
     });
 }
@@ -23,7 +29,10 @@ chrome.contextMenus.onClicked.addListener(async function (info, tab) {
         const selectionText = info.selectionText;
         const request = { value: selectionText };
         const token = await getToken();
-        await fetch(apiUrl + "/cards/add/chrome-extension", {
+        const host  = await getHost();
+        const url = host + "/cards/add/chrome-extension";
+        console.log(url);
+        await fetch(url, {
             body: JSON.stringify(request),
             method: 'POST',
             headers: new Headers({

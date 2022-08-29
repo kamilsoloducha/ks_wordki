@@ -1,4 +1,4 @@
-const updateView = () =>{
+const updateView = () => {
     chrome.storage.sync.get('token', function (data) {
         let loginEl = document.getElementById("login-container");
         let logoutEl = document.getElementById("logout-container");
@@ -12,7 +12,7 @@ updateView();
 
 let loginBtn = document.getElementById("login");
 
-loginBtn.addEventListener("click", () => {
+loginBtn.addEventListener("click", async () => {
     let userNameEl = document.getElementById("userName");
     let passwordEl = document.getElementById("password");
 
@@ -23,8 +23,10 @@ loginBtn.addEventListener("click", () => {
         userName,
         password
     }
-
-    fetch('http://localhost:5000/users/login/chrome-extension', {
+    let host = await getHost();
+    let url = host + '/users/login/chrome-extension';
+    console.log(url);
+    fetch(url, {
         method: 'PUT',
         body: JSON.stringify(request),
         headers: {
@@ -44,58 +46,26 @@ loginBtn.addEventListener("click", () => {
 });
 
 let logoutBtn = document.getElementById("logout");
-logoutBtn.addEventListener("click", () =>{
+logoutBtn.addEventListener("click", () => {
     chrome.storage.sync.remove('token', function () {
-       console.log('token has been removed');
-       updateView();
+        console.log('token has been removed');
+        updateView();
     });
 });
-// let selectedClassName = "current";
-// const presetButtonColors = ["#3aa757", "#e8453c", "#f9bb2d", "#4688f1"];
 
-// // Reacts to a button click by marking the selected button and saving
-// // the selection
-// function handleButtonClick(event) {
-//     // Remove styling from the previously selected color
-//     let current = event.target.parentElement.querySelector(
-//         `.${selectedClassName}`
-//     );
-//     if (current && current !== event.target) {
-//         current.classList.remove(selectedClassName);
-//     }
+let hostInput = document.getElementById("host");
+hostInput.addEventListener("blur", () => {
+    const host = hostInput.value;
+    console.log("setting host", host);
+    chrome.storage.sync.set({ 'host': host }, function () {
+    });
+})
 
-//     // Mark the button as selected
-//     let color = event.target.dataset.color;
-//     event.target.classList.add(selectedClassName);
-//     chrome.storage.sync.set({ color });
-// }
 
-// // Add a button to the page for each supplied color
-// function constructOptions(buttonColors) {
-//     chrome.storage.sync.get("color", (data) => {
-//         let currentColor = data.color;
-//         // For each color we were provided…
-//         for (let buttonColor of buttonColors) {
-//             // …create a button with that color…
-//             let button = document.createElement("button");
-//             button.dataset.color = buttonColor;
-//             button.style.backgroundColor = buttonColor;
-
-//             // …mark the currently selected color…
-//             if (buttonColor === currentColor) {
-//                 button.classList.add(selectedClassName);
-//             }
-
-//             // …and register a listener for when that button is clicked
-//             button.addEventListener("click", handleButtonClick);
-//             page.appendChild(button);
-//         }
-//     });
-// }
-
-// // Initialize the page by constructing the color options
-// constructOptions(presetButtonColors);
-
-function login() {
-    console.log('test');
+function getHost() {
+    return new Promise((resolve, _) => {
+        chrome.storage.sync.get('host', (data) => {
+            resolve(data.host);
+        });
+    });
 }

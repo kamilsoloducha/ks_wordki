@@ -34,7 +34,7 @@ namespace Api.Tests.Model.Cards
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Wordki;User Id=root;Password=changeme;");
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=wordki-test;User Id=root;Password=changeme;");
             }
         }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -8,7 +7,6 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Users.Application.Commands;
-using Wordki.Tests.E2E.Feature;
 
 namespace Api.Tests.Users;
 
@@ -54,33 +52,4 @@ public class RegisterSuccessTests<TContext> : UsersTestBase where TContext : Reg
         user.CreationDate.Should().Be(_context.ExpectedUser.ConfirmationDate);
         user.Password.Should().Be(_context.ExpectedUser.Password);
     }
-}
-
-public abstract class RegisterUserContext
-{
-    public abstract RegisterUser.Command GivenRequest { get; }
-    public abstract User ExpectedUser { get; }
-}
-
-public class SimpleRegistration : RegisterUserContext
-{
-    public override RegisterUser.Command GivenRequest { get; } = new()
-    {
-        UserName = "username",
-        Password = "password",
-        Email = "user@mail.com"
-    };
-
-    public override User ExpectedUser { get; } = new()
-    {
-        Name = "username",
-        Email = "user@mail.com",
-        Password = TestServerMock.MockPassword,
-        ConfirmationDate = TestServerMock.MockDate,
-        CreationDate = TestServerMock.MockDate,
-        Surname = string.Empty,
-        FirstName = string.Empty,
-        LoginDate = DateTime.MinValue,
-        Status = 1
-    };
 }

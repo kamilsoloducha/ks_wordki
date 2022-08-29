@@ -27,7 +27,7 @@ namespace Infrastructure.Services
         }
     }
 
-    internal class TestHashIdsService : IHashIdsService
+    public class TestHashIdsService : IHashIdsService
     {
         public string GetHash(long id)
             => id.ToString();
