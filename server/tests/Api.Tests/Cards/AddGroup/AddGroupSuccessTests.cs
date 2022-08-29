@@ -14,7 +14,7 @@ using Wordki.Tests.E2E.Feature;
 
 namespace Api.Tests.Cards;
 
-[TestFixture(typeof(SimpleGroup))]
+[TestFixture(typeof(SimpleGroup), IgnoreReason = "not ready")]
 public class AddGroupSuccessTests<TContext> : CardsTestBase where TContext : AddGroupSuccessContext, new()
 {
     private readonly TContext _context = new();

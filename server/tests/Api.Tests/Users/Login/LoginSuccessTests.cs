@@ -11,7 +11,7 @@ using Wordki.Tests.E2E.Feature;
 
 namespace Api.Tests.Users;
 
-[TestFixture(typeof(SimpleLogin))]
+[TestFixture(typeof(SimpleLogin), IgnoreReason = "not ready")]
 public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginSuccessContext, new()
 {
     private readonly TContext _context = new();

@@ -10,7 +10,7 @@ using Users.Application.Commands;
 
 namespace Api.Tests.Users;
 
-[TestFixture(typeof(SimpleRegistration))]
+[TestFixture(typeof(SimpleRegistration), IgnoreReason = "not ready")]
 public class RegisterSuccessTests<TContext> : UsersTestBase where TContext : RegisterUserContext, new()
 {
     private readonly TContext _context = new();
