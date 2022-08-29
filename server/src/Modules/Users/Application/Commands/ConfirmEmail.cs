@@ -1,14 +1,14 @@
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Users.Domain;
-using MediatR;
 using Blueprints.Application.Requests;
-using System.Linq;
-using MassTransit;
-using System;
 using FluentValidation;
+using MassTransit;
+using MediatR;
+using Users.Domain;
 
-namespace Users.Application
+namespace Users.Application.Commands
 {
     public class ConfirmEmail
     {

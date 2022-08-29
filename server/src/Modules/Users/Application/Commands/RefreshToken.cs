@@ -1,13 +1,13 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Users.Domain;
-using Blueprints.Application.Requests;
-using System;
 using Blueprints.Application.Authentication;
+using Blueprints.Application.Requests;
 using FluentValidation;
+using Users.Domain;
 using Utils;
 
-namespace Users.Application
+namespace Users.Application.Commands
 {
     public class RefreshToken
     {

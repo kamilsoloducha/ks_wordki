@@ -1,71 +1,54 @@
-// using System;
-// using System.Linq;
-// using System.Net.Http;
-// using System.Text;
-// using System.Threading.Tasks;
-// using Api.Tests.Utils;
-// using FizzWare.NBuilder;
-// using FluentAssertions;
-// using Newtonsoft.Json;
-// using NUnit.Framework;
-// using Users.Application;
-// using Wordki.Tests.E2E.Feature;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Api.Tests.Model.Users;
+using FluentAssertions;
+using Newtonsoft.Json;
+using NUnit.Framework;
+using Users.Application.Commands;
+using Wordki.Tests.E2E.Feature;
 
-// namespace Api.Tests.Users
-// {
-//     [TestFixture(Ignore = "not ready")]
-//     public class LoginSuccessTest : UsersTestBase
-//     {
+namespace Api.Tests.Users;
 
-//         private UserTest _user;
+[TestFixture(typeof(SimpleLogin))]
+public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginSuccessContext, new()
+{
+    private readonly TContext _context = new();
 
-//         [SetUp]
-//         public async Task Setup()
-//         {
-//             _user = UserBuilder.Default.With(x => x.Password = TestServerMock.MockPassword).Build();
+    [SetUp]
+    public async Task Setup()
+    {
+        await ClearUsersSchema();
+        await using var dbContext = new UsersContext();
+        await dbContext.Users.AddAsync(_context.GivenUser);
+        await dbContext.SaveChangesAsync();
+    }
 
-//             await ClearUsersSchema();
-//             using var dbContext = new TestDbContext();
-//             dbContext.Users.Add(_user);
-//             dbContext.SaveChanges();
-//         }
+    [Test]
+    public async Task Test()
+    {
+        var request = JsonConvert.SerializeObject(_context.GivenRequest);
 
-//         [Test]
-//         public async Task Test()
-//         {
-//             var content = new LoginUser.Command
-//             {
-//                 UserName = _user.Name,
-//                 Password = _user.Password,
-//             };
+        Request = new HttpRequestMessage(HttpMethod.Put, "users/login")
+        {
+            Content = new StringContent(request, Encoding.UTF8, "application/json")
+        };
 
-//             Request = new HttpRequestMessage(HttpMethod.Put, "users/login");
-//             Request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+        await SendRequest();
 
-//             await SendRequest();
+        var responseContent = await Response.Content.ReadAsStringAsync();
+        var response = JsonConvert.DeserializeObject<LoginUser.Response>(responseContent);
+        
+        response.Should().NotBeNull(responseContent);
+        response.ResponseCode.Should().Be(LoginUser.ResponseCode.Successful, responseContent);
+        response.Token.Should().Be(TestServerMock.MockToken, responseContent);
+        response.Id.Should().Be(_context.GivenUser.Id, responseContent);
 
-//             Response.IsSuccessStatusCode.Should().BeTrue();
-
-//             var responseContent = await Response.Content.ReadAsStringAsync();
-//             var response = JsonConvert.DeserializeObject<ResponseBaseTest<LoginUser.Response>>(responseContent);
-
-//             response.Should().NotBeNull();
-//             response.IsCorrect.Should().Be(true);
-//             response.Error.Should().BeNull();
-//             response.Response.Should().NotBe(Guid.Empty);
-
-//             using var dbContext = new TestDbContext();
-//             var users = dbContext.Users.ToList();
-//             users.Should().HaveCount(1);
-//             var user = users[0];
-//             // user.Id.Should().Be(response.Response);
-//             // user.Name.Should().Be(content.Name);
-//             // user.Email.Should().Be(content.Email);
-//             user.Status.Should().Be(1);
-//             user.ConfirmationDate.Should().Be(_user.ConfirmationDate);
-//             user.CreationDate.Should().Be(_user.ConfirmationDate);
-//             user.LoginDate.Should().Be(TestServerMock.MockDate);
-//             user.Password.Should().Be(TestServerMock.MockPassword);
-//         }
-//     }
-// }
+        await using var dbContext = new UsersContext();
+        var users = dbContext.Users.ToList();
+        users.Should().HaveCount(1);
+        var user = users[0];
+        user.LoginDate.Should().Be(TestServerMock.MockDate);
+    }
+}

@@ -10,6 +10,7 @@ using Moq;
 using Users.Application;
 using Blueprints.Application.Authentication;
 using System.Collections.Generic;
+using Application.Services;
 
 namespace Wordki.Tests.Utils.ServerMock
 {
@@ -79,6 +80,7 @@ namespace Wordki.Tests.Utils.ServerMock
 
         protected Mock<IPasswordManager> PasswordManagerMock { get; set; }
         protected Mock<IAuthenticationService> AuthenticationServiceMock { get; }
+        protected Mock<IHashIdsService> HashIdsServiceMock { get; }
 
         protected TestBase()
         {
@@ -89,12 +91,15 @@ namespace Wordki.Tests.Utils.ServerMock
 
             AuthenticationServiceMock = new Mock<IAuthenticationService>();
             AuthenticationServiceMock.Setup(x => x.Authenticate(It.IsAny<Guid>(), It.IsAny<IEnumerable<string>>())).Returns("Token");
+
+            HashIdsServiceMock = new Mock<IHashIdsService>();
         }
 
-        protected void ServiceConfig(IServiceCollection services)
+        private void ServiceConfig(IServiceCollection services)
         {
             services.AddSingleton(x => PasswordManagerMock.Object);
             services.AddSingleton(x => AuthenticationServiceMock.Object);
+            services.AddSingleton(x => HashIdsServiceMock.Object);
 
             if (TestServiceConfig is not null) TestServiceConfig(services);
         }

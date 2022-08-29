@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 WORKDIR /server
 COPY . .
@@ -40,7 +40,7 @@ RUN dotnet publish "./src/Api/Api.csproj" -c Release -o /app
 # Run app
 ##########################################################
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS local
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS local
 
 WORKDIR /app
 
@@ -52,7 +52,7 @@ ENTRYPOINT dotnet Api.dll
 # Run app
 ##########################################################
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS release
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS release
 
 WORKDIR /app
 

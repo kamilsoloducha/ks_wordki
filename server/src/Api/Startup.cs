@@ -27,6 +27,8 @@ namespace Api
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+        private IWebHostEnvironment HostingEnvironment { get; }
         public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             var builder = new ConfigurationBuilder()
@@ -37,10 +39,7 @@ namespace Api
             Configuration = builder.Build();
             HostingEnvironment = hostingEnvironment;
         }
-
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment HostingEnvironment { get; }
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureMassTransit();
@@ -67,6 +66,7 @@ namespace Api
                 .AddLessonsApplicationModule()
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             services.AddHashIds(Configuration, HostingEnvironment);
 

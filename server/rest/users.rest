@@ -1,6 +1,6 @@
 @id = 4663083a-ead9-44dd-acf4-11810aaa78da
 
- @host = http://localhost:5000/users
+@host = http://localhost:5000/users
 //@host = http://147.135.208.14:5000/users
 //@host = https://wordki-server.herokuapp.com/users
 
@@ -17,7 +17,7 @@ Content-Type: application/json
     "surname": null
 }
 
-@id = {{register.response.body.$.response}}
+@id = {{register.response.body.$.response.userId}}
 
 ### confirming user
 PUT {{host}}/confirm HTTP/1.1
@@ -33,7 +33,7 @@ PUT {{host}}/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "kamil",
+    "userName": "user",
     "password": "pass"
 }
 

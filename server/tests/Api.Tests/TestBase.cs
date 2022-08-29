@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Api.Tests;
 using Utils;
 
 namespace Wordki.Tests.E2E.Feature

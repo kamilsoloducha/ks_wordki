@@ -35,7 +35,6 @@ namespace Cards.Domain
 
         public GroupId AppendGroup(Group group, ISequenceGenerator sequenceGenerator)
         {
-
             var newGroup = Group.New(group.Name, group.Front, group.Back, sequenceGenerator);
             _groups.Add(newGroup);
 
@@ -58,14 +57,13 @@ namespace Cards.Domain
         public void IncludeToLesson(GroupId groupId, int count, int langauges)
         {
             var group = GetGroup(groupId);
-            var random = new Random();
 
             var detailsPairs = group.Cards.Select(x => new DetailsPair
-            {
-                Front = GetDetail(x.FrontId),
-                Back = GetDetail(x.BackId)
-            }).Where(x => !x.Front.LessonIncluded && !x.Back.LessonIncluded)
-                .OrderBy(x => random.Next())
+                {
+                    Front = GetDetail(x.FrontId),
+                    Back = GetDetail(x.BackId)
+                }).Where(x => !x.Front.LessonIncluded && !x.Back.LessonIncluded)
+                .OrderBy(_ => Random.Shared.Next())
                 .Take(count);
 
             foreach (var item in detailsPairs)
@@ -154,14 +152,14 @@ namespace Cards.Domain
             }
 
             frontDetail.UpdateDetails(
-                updateCommand.Front.IncludeLesson.HasValue ?
-                updateCommand.Front.IncludeLesson.Value :
-                frontDetail.LessonIncluded,
+                updateCommand.Front.IncludeLesson.HasValue
+                    ? updateCommand.Front.IncludeLesson.Value
+                    : frontDetail.LessonIncluded,
                 updateCommand.Front.IsTicked);
             backDetail.UpdateDetails(
-                updateCommand.Back.IncludeLesson.HasValue ?
-                updateCommand.Back.IncludeLesson.Value :
-                backDetail.LessonIncluded,
+                updateCommand.Back.IncludeLesson.HasValue
+                    ? updateCommand.Back.IncludeLesson.Value
+                    : backDetail.LessonIncluded,
                 updateCommand.Back.IsTicked);
 
             return result;

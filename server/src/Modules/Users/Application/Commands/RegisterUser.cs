@@ -1,14 +1,13 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Users.Domain;
-using Blueprints.Application.Requests;
 using FluentValidation;
-using MediatR;
 using MassTransit;
-using System.Linq;
+using MediatR;
+using Users.Domain;
 
-namespace Users.Application
+namespace Users.Application.Commands
 {
     public class RegisterUser
     {
