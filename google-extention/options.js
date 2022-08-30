@@ -60,6 +60,12 @@ hostInput.addEventListener("blur", () => {
     chrome.storage.sync.set({ 'host': host }, function () {
     });
 })
+chrome.storage.sync.get('host', (data) => {
+    const host = data.host;
+    console.log('host found:', host);
+    hostInput.value = host;
+});
+
 
 
 function getHost() {
