@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Services;
 using Cards.Domain;
 using Domain.IntegrationEvents;
 using MassTransit;

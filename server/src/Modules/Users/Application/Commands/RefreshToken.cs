@@ -2,72 +2,64 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Authentication;
-using Blueprints.Application.Requests;
 using FluentValidation;
+using MediatR;
 using Users.Domain;
 using Utils;
 
-namespace Users.Application.Commands
+namespace Users.Application.Commands;
+
+public class RefreshToken
 {
-    public class RefreshToken
+    internal class CommandHandler : IRequestHandler<Command, Response>
     {
-        internal class CommandHandler : RequestHandlerBase<Command, Response>
+        private readonly IUserRepository _userRepository;
+        private readonly IAuthenticationService _authenticationService;
+
+        public CommandHandler(IUserRepository userRepository,
+            IAuthenticationService authenticationService)
         {
-            private readonly IUserRepository _userRepository;
-            private readonly IAuthenticationService _authenticationService;
-
-            public CommandHandler(IUserRepository userRepository,
-                IAuthenticationService authenticationService)
-            {
-                _userRepository = userRepository;
-                _authenticationService = authenticationService;
-            }
-
-            public async override Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var user = await _userRepository.GetUser(request.Id, cancellationToken);
-                if (user == null)
-                {
-                    throw new Exception("User not found");
-                }
-
-                user.Login();
-                await _userRepository.Update(user, cancellationToken);
-
-                var creatingDate = SystemClock.Now;
-                var newToken = _authenticationService.Refresh(request.Token);
-
-                return ResponseBase<Response>.Create(new Response
-                {
-                    Id = request.Id,
-                    Token = newToken,
-                    CreatingDateTime = creatingDate,
-                    ExpirationDateTime = creatingDate.AddDays(7)
-                });
-            }
+            _userRepository = userRepository;
+            _authenticationService = authenticationService;
         }
 
-        public class Command : RequestBase<Response>
+        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
-            public string Token { get; set; }
-            public Guid Id { get; set; }
-        }
+            var user = await _userRepository.GetUser(request.Id, cancellationToken);
+            if (user is null)
+                return new Response(ResponseCode.UserNotFound);
 
-        public class Response
-        {
-            public string Token { get; set; }
-            public Guid Id { get; set; }
-            public DateTime CreatingDateTime { get; set; }
-            public DateTime ExpirationDateTime { get; set; }
-        }
+            user.Login();
+            await _userRepository.Update(user, cancellationToken);
 
-        internal class CommandValidator : AbstractValidator<Command>
+            var creatingDate = SystemClock.Now;
+            var newToken = _authenticationService.Refresh(request.Token);
+
+            return new Response(ResponseCode.Success, newToken, request.Id, creatingDate, creatingDate.AddDays(7));
+        }
+    }
+
+    public record Command(Guid Id, string Token) : IRequest<Response>;
+
+    public record Response(
+        ResponseCode ResponseCode,
+        string Token = null,
+        Guid? Id = null,
+        DateTime? CreatingDateTime = null,
+        DateTime? ExpirationDateTime = null);
+
+    public enum ResponseCode
+    {
+        Success,
+        UserNotFound
+    }
+
+    internal class CommandValidator : AbstractValidator<Command>
+    {
+        public CommandValidator()
         {
-            public CommandValidator()
-            {
-                RuleFor(x => x.Id).Must(x => x != Guid.Empty);
-                RuleFor(x => x.Token).NotEmpty();
-            }
+            RuleFor(x => x.Id).Must(x => x != Guid.Empty);
+            RuleFor(x => x.Token).NotEmpty();
         }
     }
 }

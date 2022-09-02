@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Blueprints.Application.Authentication;
 using Blueprints.Infrastrcuture.Authentication;
 using Blueprints.Infrastructure.DataAccess;
+using Infrastructure.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Application;
 using Users.Domain;
+using Users.Infrastructure.Services;
 
 namespace Users.Infrastructure
 {

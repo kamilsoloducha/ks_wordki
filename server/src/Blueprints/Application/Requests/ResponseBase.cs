@@ -2,11 +2,9 @@ namespace Blueprints.Application.Requests
 {
     public class ResponseBase<TResponse>
     {
-        public TResponse Response { get; private set; }
-        public string Error { get; private set; }
+        public TResponse Response { get; set; }
+        public string Error { get; set; }
         public bool IsCorrect => Response is not null;
-
-        protected ResponseBase() { }
 
         public static ResponseBase<TResponse> Create(TResponse response)
             => new ResponseBase<TResponse>() { Response = response };

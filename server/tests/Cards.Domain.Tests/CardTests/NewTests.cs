@@ -7,24 +7,23 @@ namespace Cards.Domain.Tests.CardTests
     [TestFixture]
     public class NewTests
     {
-        private ISequenceGenerator sequenceGenerator;
+        private readonly ISequenceGenerator _sequenceGenerator = A.Fake<ISequenceGenerator>();
 
         [SetUp]
         public void Setup()
         {
-            sequenceGenerator = A.Fake<ISequenceGenerator>();
-            A.CallTo(() => sequenceGenerator.Generate<CardId>()).Returns(2);
-            A.CallTo(() => sequenceGenerator.Generate<SideId>()).ReturnsNextFromSequence(2, 3);
+            A.CallTo(() => _sequenceGenerator.Generate<CardId>()).Returns(2);
+            A.CallTo(() => _sequenceGenerator.Generate<SideId>()).ReturnsNextFromSequence(2, 3);
         }
 
         [Test]
         public void SimpleNew()
         {
-            Label frontValue = Label.Create("frontValue");
-            Label backValue = Label.Create("backValue");
-            string frontExample = "frontExample";
-            string backExample = "backExample";
-            var card = Card.New(frontValue, backValue, frontExample, backExample, sequenceGenerator);
+            var frontValue = Label.Create("frontValue");
+            var backValue = Label.Create("backValue");
+            const string frontExample = "frontExample";
+            const string backExample = "backExample";
+            var card = Card.New(frontValue, backValue, frontExample, backExample, _sequenceGenerator);
 
             card.Should().NotBeNull();
             card.Id.Value.Should().Be(2);

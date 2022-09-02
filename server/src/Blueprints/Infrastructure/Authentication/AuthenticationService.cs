@@ -5,66 +5,65 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Blueprints.Application.Authentication;
+using Blueprints.Infrastrcuture.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Utils;
 
-namespace Blueprints.Infrastrcuture.Authentication
+namespace Infrastructure.Authentication;
+
+public class AuthenticationService : IAuthenticationService
 {
-    public class AuthenticationService : IAuthenticationService
+    private readonly JwtConfiguration _jwtSettings;
+
+    public AuthenticationService(IOptions<JwtConfiguration> jwtSettings)
     {
-        private readonly JwtConfiguration jwtSettings;
+        _jwtSettings = jwtSettings.Value;
+    }
 
-        public AuthenticationService(IOptions<JwtConfiguration> jwtSettings)
+    public string Authenticate(Guid userId, IEnumerable<string> roles)
+    {
+        var claims = CreateClaim(userId, roles);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            this.jwtSettings = jwtSettings.Value;
-        }
+            Subject = new ClaimsIdentity(claims),
+            Expires = SystemClock.Now.AddDays(7),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+        return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+    }
 
-        public string Authenticate(Guid userId, IEnumerable<string> roles)
-        {
-            var claims = CreateClaim(userId, roles);
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = SystemClock.Now.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
-        }
+    public string Refresh(string token)
+    {
+        return Authenticate(GetId(token), GetRoles(token));
+    }
 
-        public string Refresh(string token)
-        {
-            return Authenticate(GetId(token), GetRoles(token));
-        }
+    private Guid GetId(string token)
+    {
+        var claim = GetClaimsFromToken(token).Single(x => x.Type.Equals("Id")).Value;
+        return Guid.Parse(claim);
+    }
 
-        private Guid GetId(string token)
-        {
-            var claim = GetClaimsFromToken(token).Single(x => x.Type.Equals("Id")).Value;
-            return Guid.Parse(claim);
-        }
+    private IEnumerable<string> GetRoles(string token)
+    {
+        return GetClaimsFromToken(token).Where(x => x.Type.Equals("role")).Select(x => x.Value);
+    }
 
-        private IEnumerable<string> GetRoles(string token)
+    private IEnumerable<Claim> CreateClaim(Guid userId, IEnumerable<string> roles)
+    {
+        yield return new Claim("Id", userId.ToString());
+        foreach (var role in roles)
         {
-            return GetClaimsFromToken(token).Where(x => x.Type.Equals("role")).Select(x => x.Value);
-        }
-
-        private IEnumerable<Claim> CreateClaim(Guid userId, IEnumerable<string> roles)
-        {
-            yield return new Claim("Id", userId.ToString());
-            foreach (var role in roles)
-            {
-                yield return new Claim(ClaimTypes.Role, role);
-            }
-        }
-
-        private IEnumerable<Claim> GetClaimsFromToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.ReadJwtToken(token);
-            return securityToken.Claims;
+            yield return new Claim(ClaimTypes.Role, role);
         }
     }
 
+    private IEnumerable<Claim> GetClaimsFromToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var securityToken = tokenHandler.ReadJwtToken(token);
+        return securityToken.Claims;
+    }
 }

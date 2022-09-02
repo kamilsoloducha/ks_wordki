@@ -1,4 +1,3 @@
-using System;
 using Blueprints.Domain;
 
 namespace Cards.Domain

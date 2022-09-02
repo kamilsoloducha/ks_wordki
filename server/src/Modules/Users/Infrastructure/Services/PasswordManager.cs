@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Users.Application;
 
-namespace Users.Infrastructure
+namespace Users.Infrastructure.Services
 {
     public class PasswordManager : IPasswordManager
     {
@@ -12,9 +12,9 @@ namespace Users.Infrastructure
             {
                 return string.Empty;
             }
-            byte[] data = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
-            StringBuilder builder = new StringBuilder();
-            foreach (byte b in data)
+            var data = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(password));
+            var builder = new StringBuilder();
+            foreach (var b in data)
             {
                 builder.Append(b.ToString("x2"));
             }

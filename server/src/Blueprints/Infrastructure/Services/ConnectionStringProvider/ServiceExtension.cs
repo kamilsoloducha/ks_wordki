@@ -1,7 +1,6 @@
 using Blueprints.Infrastructure.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace Blueprints.Infrastrcuture
 {

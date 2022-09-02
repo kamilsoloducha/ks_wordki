@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Cards.Domain;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;

@@ -26,6 +26,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="../../src/Api/Api.csproj" />
+		<ProjectReference Include="..\E2e.Tests\E2e.Tests.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="appsettings.Test.json">

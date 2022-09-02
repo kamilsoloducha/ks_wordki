@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Api.Configuration;
@@ -16,7 +17,9 @@ namespace Api
         public UsersController(IMediator mediator) : base(mediator) { }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUser.Command command, CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(RegisterUser.Response), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(RegisterUser.Response))]
+        public async Task<IActionResult> Register([FromBody] RegisterUser.Command command, CancellationToken cancellationToken)
             => Ok(await Mediator.Send(command, cancellationToken));
 
         [HttpPut("confirm")]
@@ -34,7 +37,7 @@ namespace Api
         [HttpDelete("delete")]
         [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
         public async Task<IActionResult> Delete(DeleteUser.Command command, CancellationToken cancellationToken)
-            => await HandleRequest(command, cancellationToken);
+            => Ok(await Mediator.Send(command, cancellationToken));
 
         [HttpGet("")]
         [Authorize(Policy = AuthorizationExtensions.AdminOnlyPolicy)]

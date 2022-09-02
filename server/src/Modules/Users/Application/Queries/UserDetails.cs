@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Requests;
 using FluentValidation;
-using MediatR;
 
 namespace Users.Application
 {

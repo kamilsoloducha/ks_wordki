@@ -1,10 +1,8 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Blueprints.Application.Authentication;
 using MediatR;
 using Users.Domain;
-using Utils;
 
 namespace Users.Application.Commands;
 
@@ -30,19 +28,24 @@ public class LoginChromeExtension
             var hashedPassword = _passwordManager.CreateHashedPassword(request.Password);
             var user = await _userRepository.GetUser(request.UserName, hashedPassword, cancellationToken);
             if (user is null)
-                return new Response(string.Empty, LoginUser.ResponseCode.UserNotFound);
+                return new Response(ResponseCode.UserNotFound, string.Empty);
 
-            var creatingDate = SystemClock.Now;
             var token = _authenticationService.Authenticate(user.Id, new[] { RoleType.ChromeExtension.ToString() });
 
             user.Login();
             await _userRepository.Update(user, cancellationToken);
 
-            return new Response(token, LoginUser.ResponseCode.Successful);
+            return new Response(ResponseCode.Success, token);
         }
     }
 
     public record Command(string UserName, string Password) : IRequest<Response>;
 
-    public record Response(string Token, LoginUser.ResponseCode ResponseCode);
+    public record Response(ResponseCode ResponseCode, string Token);
+
+    public enum ResponseCode
+    {
+        Success,
+        UserNotFound
+    }
 }

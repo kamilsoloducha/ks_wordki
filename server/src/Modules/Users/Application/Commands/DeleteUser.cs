@@ -1,45 +1,53 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Blueprints.Application.Requests;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Users.Domain;
 
-namespace Users.Application.Commands
+namespace Users.Application.Commands;
+
+public class DeleteUser
 {
-    public class DeleteUser
+    internal class CommandHandler : IRequestHandler<Command, ResponseCode>
     {
-        public class Command : RequestBase<Unit>
+        private readonly IUserRepository _userRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
+
+        public CommandHandler(IUserRepository userRepository,
+            IPublishEndpoint publishEndpoint)
         {
-            public Guid? Id { get; set; }
+            _userRepository = userRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
-        internal class CommandHandler : RequestHandlerBase<Command, Unit>
+        public async Task<ResponseCode> Handle(Command request, CancellationToken cancellationToken)
         {
-            private readonly IUserRepository _userRepository;
-
-            public CommandHandler(IUserRepository userRepository)
-            {
-                _userRepository = userRepository;
-            }
-
-            public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var user = await _userRepository.GetUser(request.Id.Value, cancellationToken);
-                user.Remove();
-
-                await _userRepository.Update(user, cancellationToken);
-                return ResponseBase<Unit>.Create(Unit.Value);
-            }
+            var user = await _userRepository.GetUser(request.Id, cancellationToken);
+            if (user is null) return ResponseCode.UserNotFound;
+            
+            user.Remove();
+            await _userRepository.Update(user, cancellationToken);
+            await _publishEndpoint.PublishBatch(user.Events, cancellationToken);
+            
+            return ResponseCode.Ok;
         }
+    }
+    
+    public record Command(Guid Id) : IRequest<ResponseCode>;
 
-        internal class CommandValidator : AbstractValidator<Command>
+    internal class CommandValidator : AbstractValidator<Command>
+    {
+        public CommandValidator()
         {
-            public CommandValidator()
-            {
-                RuleFor(x => x.Id).NotEmpty();
-            }
+            RuleFor(x => x.Id).NotEqual(Guid.Empty);
         }
+    }
+    
+    internal enum ResponseCode
+    {
+        Ok,
+        UserNotFound
     }
 }

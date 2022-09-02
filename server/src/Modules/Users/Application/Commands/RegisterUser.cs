@@ -1,93 +1,83 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.MassTransit;
 using FluentValidation;
 using MassTransit;
 using MediatR;
 using Users.Domain;
 
-namespace Users.Application.Commands
+namespace Users.Application.Commands;
+
+public class RegisterUser
 {
-    public class RegisterUser
+    internal class CommandHandler : IRequestHandler<Command, Response>
     {
-        internal class CommandHandler : IRequestHandler<Command, Response>
+        private readonly IDataChecker _dataChecker;
+        private readonly IUserRepository _userRepository;
+        private readonly IPasswordManager _passwordManager;
+        private readonly IPublishEndpoint _publishEndpoint;
+
+        public CommandHandler(
+            IDataChecker dataChecker,
+            IUserRepository userRepository,
+            IPasswordManager passwordManager,
+            IPublishEndpoint publishEndpoint)
         {
-            private readonly IDataChecker _dataChecker;
-            private readonly IUserRepository _userRepository;
-            private readonly IPasswordManager _passwordManager;
-            private readonly IPublishEndpoint _publishEndpoint;
-
-            public CommandHandler(
-                IDataChecker dataChecker,
-                IUserRepository userRepository,
-                IPasswordManager passwordManager,
-                IPublishEndpoint publishEndpoint)
-            {
-                _dataChecker = dataChecker;
-                _userRepository = userRepository;
-                _passwordManager = passwordManager;
-                _publishEndpoint = publishEndpoint;
-            }
-
-            public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
-            {
-                if (await _dataChecker.Any(x => x.Name == request.UserName, cancellationToken))
-                    return new Response { ResponseCode = ResponseCode.UserNameAlreadyOccupied };
-
-                if (!string.IsNullOrEmpty(request.Email) && await _dataChecker.Any(x => x.Email == request.Email, cancellationToken))
-                    return new Response { ResponseCode = ResponseCode.EmailAlreadyOccupied };
-
-                var passwordHash = _passwordManager.CreateHashedPassword(request.Password);
-
-                var user = User.RegisterUser(
-                    request.UserName,
-                    passwordHash,
-                    request.Email,
-                    request.FirstName,
-                    request.Surname
-                );
-
-                await _userRepository.Add(user, cancellationToken);
-                await _publishEndpoint.Publish(user.Events.First(), cancellationToken);
-                return new Response
-                {
-                    UserId = user.Id,
-                    ResponseCode = ResponseCode.Successful
-                };
-            }
-        }
-        public class Command : IRequest<Response>
-        {
-            public string UserName { get; set; }
-            public string Password { get; set; }
-            public string Email { get; set; }
-            public string FirstName { get; set; }
-            public string Surname { get; set; }
+            _dataChecker = dataChecker;
+            _userRepository = userRepository;
+            _passwordManager = passwordManager;
+            _publishEndpoint = publishEndpoint;
         }
 
-        public class Response
+        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
-            public ResponseCode ResponseCode { get; set; }
-            public Guid? UserId { get; set; }
+            if (await _dataChecker.Any(x => x.Name == request.UserName, cancellationToken))
+                return new Response(ResponseCode.UserNameAlreadyOccupied);
+
+            if (await _dataChecker.Any(x => x.Email == request.Email, cancellationToken))
+                return new Response(ResponseCode.EmailAlreadyOccupied);
+
+            var passwordHash = _passwordManager.CreateHashedPassword(request.Password);
+
+            var user = User.RegisterUser(
+                request.UserName,
+                passwordHash,
+                request.Email,
+                request.FirstName,
+                request.Surname
+            );
+
+            await _userRepository.Add(user, cancellationToken);
+            await _publishEndpoint.PublishBatch(user.Events, cancellationToken);
+            return new Response(ResponseCode.Successful, user.Id);
         }
+    }
 
-        public enum ResponseCode
+    public record Command
+    (
+        string UserName,
+        string Password,
+        string Email,
+        string FirstName,
+        string Surname
+    ) : IRequest<Response>;
+
+    public record Response(ResponseCode ResponseCode, Guid? UserId = null);
+    public enum ResponseCode
+    {
+        Successful,
+        UserNameAlreadyOccupied,
+        EmailAlreadyOccupied
+    }
+
+    internal class CommandValidator : AbstractValidator<Command>
+    {
+        public CommandValidator()
         {
-            Successful,
-            UserNameAlreadyOccupied,
-            EmailAlreadyOccupied
-
-        }
-
-        internal class CommandValidator : AbstractValidator<Command>
-        {
-            public CommandValidator()
-            {
-                RuleFor(x => x.UserName).NotEmpty();
-                RuleFor(x => x.Email).NotEmpty();
-                RuleFor(x => x.Password).NotEmpty();
-            }
+            RuleFor(x => x.UserName).NotEmpty();
+            RuleFor(x => x.Email).NotEmpty();
+            RuleFor(x => x.Password).NotEmpty();
         }
     }
 }

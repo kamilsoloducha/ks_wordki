@@ -31,8 +31,9 @@ public class LoginUser
         {
             var hashedPassword = _passwordManager.CreateHashedPassword(request.Password);
             var user = await _userRepository.GetUser(request.UserName, hashedPassword, cancellationToken);
+            
             if (user is null)
-                return new Response { ResponseCode = ResponseCode.UserNotFound };
+                return new Response(ResponseCode.UserNotFound);
 
             var creatingDate = SystemClock.Now;
             var token = _authenticationService.Authenticate(user.Id, user.Roles.Select(x => x.Type.ToString()));
@@ -40,22 +41,11 @@ public class LoginUser
             user.Login();
             await _userRepository.Update(user, cancellationToken);
 
-            return new Response
-            {
-                ResponseCode = ResponseCode.Successful,
-                Token = token,
-                Id = user.Id,
-                CreatingDateTime = creatingDate,
-                ExpirationDateTime = creatingDate.AddDays(7)
-            };
+            return new Response(ResponseCode.Successful, token, user.Id, creatingDate, creatingDate.AddDays(7));
         }
     }
 
-    public class Command : IRequest<Response>
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
+    public record Command(string UserName, string Password) : IRequest<Response>;
 
     internal class CommandValidator : AbstractValidator<Command>
     {
@@ -66,14 +56,12 @@ public class LoginUser
         }
     }
 
-    public class Response
-    {
-        public ResponseCode ResponseCode { get; set; }
-        public string Token { get; set; }
-        public Guid Id { get; set; }
-        public DateTime CreatingDateTime { get; set; }
-        public DateTime ExpirationDateTime { get; set; }
-    }
+    public record Response(
+        ResponseCode ResponseCode,
+        string Token = null,
+        Guid? Id = null,
+        DateTime? CreatingDateTime = null,
+        DateTime? ExpirationDateTime = null);
 
     public enum ResponseCode
     {

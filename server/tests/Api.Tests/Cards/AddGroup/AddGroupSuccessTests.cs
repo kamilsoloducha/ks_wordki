@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +8,6 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using Users.Application.Commands;
-using Wordki.Tests.E2E.Feature;
 
 namespace Api.Tests.Cards;
 

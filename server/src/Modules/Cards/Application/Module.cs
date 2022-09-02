@@ -1,7 +1,6 @@
 using Domain.IntegrationEvents;
 using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cards.Application

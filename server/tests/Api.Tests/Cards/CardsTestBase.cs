@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Api.Tests.Model.Cards;
+using E2e.Tests;
 using Microsoft.EntityFrameworkCore;
-using Wordki.Tests.E2E.Feature;
 
 namespace Api.Tests.Cards;
 
