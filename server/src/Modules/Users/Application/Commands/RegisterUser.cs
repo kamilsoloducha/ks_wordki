@@ -5,7 +5,10 @@ using Application.MassTransit;
 using FluentValidation;
 using MassTransit;
 using MediatR;
+using Users.Application.Services;
 using Users.Domain;
+using Users.Domain.User;
+using Users.Domain.User.Services;
 
 namespace Users.Application.Commands;
 

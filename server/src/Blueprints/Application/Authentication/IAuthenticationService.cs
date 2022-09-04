@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace Blueprints.Application.Authentication
+namespace Application.Authentication;
+
+public interface IAuthenticationService
 {
-    public interface IAuthenticationService
-    {
-        string Authenticate(Guid userId, IEnumerable<string> roles);
-        string Refresh(string token);
-    }
+    string Authenticate(Guid userId, IEnumerable<string> roles);
+    string Refresh(string token);
 }

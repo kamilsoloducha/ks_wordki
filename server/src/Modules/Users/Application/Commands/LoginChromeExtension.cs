@@ -1,8 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Blueprints.Application.Authentication;
+using Application.Authentication;
 using MediatR;
+using Users.Application.Services;
 using Users.Domain;
+using Users.Domain.Role;
+using Users.Domain.User;
 
 namespace Users.Application.Commands;
 

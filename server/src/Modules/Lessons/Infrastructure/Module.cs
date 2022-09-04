@@ -1,30 +1,31 @@
 using System;
 using System.Threading.Tasks;
-using Blueprints.Infrastructure.DataAccess;
+using Infrastructure.Services.ConnectionStringProvider;
 using Lessons.Domain;
+using Lessons.Domain.Performance;
 using Lessons.Infrastructure.DataAccess;
+using Lessons.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lessons.Infrastructure
+namespace Lessons.Infrastructure;
+
+public static class LessonsInfrastructureModule
 {
-    public static class LessonsInfrastructureModule
+    public static IServiceCollection AddLessonsInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddLessonsInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
+        services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
 
-            services.AddDbContext<LessonsContext>();
-            services.AddScoped<IPerformanceRepository, PerformanceRepository>();
-            // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
-            return services;
-        }
+        services.AddDbContext<LessonsContext>();
+        services.AddScoped<IPerformanceRepository, PerformanceRepository>();
+        // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
+        return services;
+    }
 
-        public static async Task CreateLessonsDb(this IServiceProvider services)
-        {
-            var lessonsContext = services.GetService<LessonsContext>();
-            var creator = lessonsContext.Creator;
-            await creator.CreateTablesAsync();
-        }
+    public static async Task CreateLessonsDb(this IServiceProvider services)
+    {
+        var lessonsContext = services.GetService<LessonsContext>();
+        var creator = lessonsContext.Creator;
+        await creator.CreateTablesAsync();
     }
 }

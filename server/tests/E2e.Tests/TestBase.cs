@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Application.Authentication;
 using Application.Services;
-using Blueprints.Application.Authentication;
+using Domain.Utils;
 using Infrastructure.Services;
+using Infrastructure.Services.HashIds;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Users.Application;
-using Utils;
+using Users.Application.Services;
 
 namespace E2e.Tests;
 

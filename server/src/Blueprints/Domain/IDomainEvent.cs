@@ -1,6 +1,5 @@
-namespace Blueprints.Domain
+namespace Domain;
+
+public interface IDomainEvent
 {
-    public interface IDomainEvent
-    {
-    }
 }

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Cards.Domain;
+using Cards.Domain.Enums;
 using Card = Cards.E2e.Tests.Models.Cards.Card;
-using Detail = Api.Tests.Model.Cards.Detail;
-using Group = Api.Tests.Model.Cards.Group;
-using Side = Api.Tests.Model.Cards.Side;
+using Detail = Cards.E2e.Tests.Models.Cards.Detail;
+using Group = Cards.E2e.Tests.Models.Cards.Group;
+using Side = Cards.E2e.Tests.Models.Cards.Side;
 
 namespace Cards.E2e.Tests.AddCard;
 

@@ -1,33 +1,33 @@
 using System;
-using Blueprints.Domain;
+using Cards.Domain.ValueObjects;
+using Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cards.Domain.Tests.GroupNameTests
-{
-    [TestFixture]
-    public class CreateTests
-    {
-        [TestCase("test", "test")]
-        [TestCase("test test", "test test")]
-        [TestCase(" test test ", "test test")]
-        [TestCase("\n test test \n", "test test")]
-        [TestCase("\t test test \t", "test test")]
-        public void CreateSuccess(string parameter, string expectedText)
-        {
-            var label = GroupName.Create(parameter);
-            label.Text.Should().Be(expectedText);
-        }
+namespace Cards.Domain.Tests.GroupNameTests;
 
-        [TestCase("")]
-        [TestCase(" ")]
-        [TestCase(null)]
-        [TestCase("\n")]
-        [TestCase("\t")]
-        public void CreateFailed(string parameter)
-        {
-            Action action = () => GroupName.Create(parameter);
-            action.Should().Throw<BuissnessArgumentException>();
-        }
+[TestFixture]
+public class CreateTests
+{
+    [TestCase("test", "test")]
+    [TestCase("test test", "test test")]
+    [TestCase(" test test ", "test test")]
+    [TestCase("\n test test \n", "test test")]
+    [TestCase("\t test test \t", "test test")]
+    public void CreateSuccess(string parameter, string expectedText)
+    {
+        var label = GroupName.Create(parameter);
+        label.Text.Should().Be(expectedText);
+    }
+
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase(null)]
+    [TestCase("\n")]
+    [TestCase("\t")]
+    public void CreateFailed(string parameter)
+    {
+        Action action = () => GroupName.Create(parameter);
+        action.Should().Throw<BuissnessArgumentException>();
     }
 }

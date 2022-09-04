@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Api.Tests.Model.Cards;
 using Cards.E2e.Tests.Models.Cards;
 using E2e.Tests;
 using Microsoft.EntityFrameworkCore;

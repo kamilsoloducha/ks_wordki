@@ -1,24 +1,22 @@
 ﻿#nullable disable
 
 using System.Collections.Generic;
-using Api.Tests.Model.Cards;
 
-namespace Cards.E2e.Tests.Models.Cards
+namespace Cards.E2e.Tests.Models.Cards;
+
+public partial class Card
 {
-    public partial class Card
+    public Card()
     {
-        public Card()
-        {
-            GroupsCards = new HashSet<GroupsCard>();
-        }
-
-        public long Id { get; set; }
-        public bool IsPrivate { get; set; }
-        public long FrontId { get; set; }
-        public long BackId { get; set; }
-
-        public virtual Side Back { get; set; }
-        public virtual Side Front { get; set; }
-        public virtual ICollection<GroupsCard> GroupsCards { get; set; }
+        GroupsCards = new HashSet<GroupsCard>();
     }
+
+    public long Id { get; set; }
+    public bool IsPrivate { get; set; }
+    public long FrontId { get; set; }
+    public long BackId { get; set; }
+
+    public virtual Side Back { get; set; }
+    public virtual Side Front { get; set; }
+    public virtual ICollection<GroupsCard> GroupsCards { get; set; }
 }

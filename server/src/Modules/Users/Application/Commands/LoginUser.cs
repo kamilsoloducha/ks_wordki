@@ -2,11 +2,13 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Blueprints.Application.Authentication;
+using Application.Authentication;
+using Domain.Utils;
 using FluentValidation;
 using MediatR;
+using Users.Application.Services;
 using Users.Domain;
-using Utils;
+using Users.Domain.User;
 
 namespace Users.Application.Commands;
 

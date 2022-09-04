@@ -1,8 +1,7 @@
 using E2e.Tests;
 using Users.Application.Commands;
-using Users.E2e.Tests.Login;
 
-namespace Api.Tests.Users;
+namespace Users.E2e.Tests.Login;
 
 public class SimpleLogin : LoginSuccessContext
 {

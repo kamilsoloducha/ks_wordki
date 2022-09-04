@@ -1,3 +1,5 @@
+namespace Domain;
+
 public abstract class ValueObject
 {
     protected abstract object GetAtomicValue { get; }

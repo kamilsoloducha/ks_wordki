@@ -1,10 +1,9 @@
 using System;
 
-namespace Blueprints.Application.Services
+namespace Application.Services;
+
+public interface IUserDataProvider
 {
-    public interface IUserDataProvider
-    {
-        Guid GetUserId();
-        bool IsAdmin();
-    }
+    Guid GetUserId();
+    bool IsAdmin();
 }

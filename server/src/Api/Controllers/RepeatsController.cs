@@ -1,11 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Api;
 using Api.Configuration;
 using Cards.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Api.Controllers;
 
 [ApiController]
 [Route("repeats")]

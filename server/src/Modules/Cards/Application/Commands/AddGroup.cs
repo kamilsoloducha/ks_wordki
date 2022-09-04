@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Requests;
 using Application.Services;
-using Blueprints.Application.Requests;
 using Cards.Domain;
+using Cards.Domain.OwnerAggregate;
+using Cards.Domain.Services;
+using Cards.Domain.ValueObjects;
 using FluentValidation;
 
 namespace Cards.Application.Commands;

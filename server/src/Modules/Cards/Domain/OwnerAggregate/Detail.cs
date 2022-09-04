@@ -1,76 +1,78 @@
-namespace Cards.Domain
+using Cards.Domain.Services;
+using Cards.Domain.ValueObjects;
+
+namespace Cards.Domain.OwnerAggregate;
+
+public class Detail
 {
-    public class Detail
+    public long Id { get; private set; }
+
+    public OwnerId OwnerId { get; private set; }
+    public SideId SideId { get; private set; }
+    public Drawer Drawer { get; private set; }
+    public int Counter { get; private set; }
+    public NextRepeatMarker NextRepeat { get; private set; }
+    public bool LessonIncluded { get; private set; }
+    public bool IsTicked { get; private set; }
+
+    public Comment Comment { get; private set; }
+    public Owner Owner { get; private set; }
+
+    private Detail() { }
+
+    public static Detail New(Owner owner, Side side, Comment comment)
+        => new Detail()
+        {
+            OwnerId = owner.Id,
+            SideId = side.Id,
+            Comment = comment,
+            Counter = 0,
+            Drawer = Drawer.New(),
+            LessonIncluded = false,
+            NextRepeat = NextRepeatMarker.New(),
+            Owner = owner,
+        };
+
+    public void Tick()
     {
-        public long Id { get; private set; }
+        IsTicked = true;
+    }
 
-        public OwnerId OwnerId { get; private set; }
-        public SideId SideId { get; private set; }
-        public Drawer Drawer { get; private set; }
-        public int Counter { get; private set; }
-        public NextRepeatMarker NextRepeat { get; private set; }
-        public bool LessonIncluded { get; private set; }
-        public bool IsTicked { get; private set; }
+    public void RegisterAnswer(int result, INextRepeatCalculator nextRepeatCalculator)
+    {
+        LessonIncluded = true;
+        UpdateDrawer(result);
+        NextRepeat = NextRepeatMarker.Restore(nextRepeatCalculator.Calculate(this, result));
+        Counter++;
+    }
 
-        public Comment Comment { get; private set; }
-        public Owner Owner { get; private set; }
+    internal void IncludeInLesson() => LessonIncluded = true;
 
-        private Detail() { }
+    internal void UpdateDetails(bool includeLesson, bool isTicked)
+    {
+        LessonIncluded = includeLesson;
+        IsTicked = isTicked;
+    }
 
-        public static Detail New(Owner owner, Side side, Comment comment)
-            => new Detail()
-            {
-                OwnerId = owner.Id,
-                SideId = side.Id,
-                Comment = comment,
-                Counter = 0,
-                Drawer = Drawer.New(),
-                LessonIncluded = false,
-                NextRepeat = NextRepeatMarker.New(),
-                Owner = owner,
-            };
+    internal void AttachNewSide(SideId sideId) => SideId = sideId;
 
-        public void Tick()
+    internal static Detail Restore(Drawer drawer, int counter)
+        => new Detail
         {
-            IsTicked = true;
-        }
+            Drawer = drawer,
+            Counter = counter
+        };
 
-        public void RegisterAnswer(int result, INextRepeatCalculator nextRepeatCalculator)
-        {
-            LessonIncluded = true;
-            UpdateDrawer(result);
-            NextRepeat = NextRepeatMarker.Restore(nextRepeatCalculator.Calculate(this, result));
-            Counter++;
-        }
+    private void UpdateDrawer(int result)
+    {
+        if (IsCorrect(result))
+            Drawer = Drawer.Increase(ShouldBeBoosted() ? 2 : 1);
+        else if (IsWrong(result))
+            Drawer = Drawer.New();
 
-        internal void IncludeInLesson() => LessonIncluded = true;
-
-        internal void UpdateDetails(bool includeLesson, bool isTicked)
-        {
-            LessonIncluded = includeLesson;
-            IsTicked = isTicked;
-        }
-
-        internal void AttachNewSide(SideId sideId) => SideId = sideId;
-
-        internal static Detail Restore(Drawer drawer, int counter)
-            => new Detail
-            {
-                Drawer = drawer,
-                Counter = counter
-            };
-
-        private void UpdateDrawer(int result)
-        {
-            if (IsCorrect(result))
-                Drawer = Drawer.Increase(ShouldBeBoosted() ? 2 : 1);
-            else if (IsWrong(result))
-                Drawer = Drawer.New();
-
-            bool IsCorrect(int result) => result > 0;
-            bool IsWrong(int result) => result < 0;
-            bool ShouldBeBoosted() => (Counter == 0 && Drawer.CorrectRepeat == 0)
-                || (Counter == 1 && Drawer.CorrectRepeat == 2);
-        }
+        bool IsCorrect(int result) => result > 0;
+        bool IsWrong(int result) => result < 0;
+        bool ShouldBeBoosted() => (Counter == 0 && Drawer.CorrectRepeat == 0)
+                                  || (Counter == 1 && Drawer.CorrectRepeat == 2);
     }
 }

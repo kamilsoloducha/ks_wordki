@@ -1,11 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Blueprints.Domain
+namespace Domain.Rules;
+
+public interface IBuissnessRule
 {
-    public interface IBuissnessRule
-    {
-        Task<bool> IsCorrect(CancellationToken cancellationToken);
-        string Message { get; }
-    }
+    Task<bool> IsCorrect(CancellationToken cancellationToken);
+    string Message { get; }
 }

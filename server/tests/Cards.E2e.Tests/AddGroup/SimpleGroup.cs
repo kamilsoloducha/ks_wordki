@@ -1,4 +1,4 @@
-using Api.Tests.Model.Cards;
+using Cards.E2e.Tests.Models.Cards;
 
 namespace Cards.E2e.Tests.AddGroup;
 

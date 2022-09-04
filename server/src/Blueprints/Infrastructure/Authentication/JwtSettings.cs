@@ -1,8 +1,6 @@
-namespace Blueprints.Infrastrcuture.Authentication
-{
-    public class JwtConfiguration
-    {
-        public string Secret { get; set; }
-    }
+namespace Infrastructure.Authentication;
 
+public class JwtConfiguration
+{
+    public string Secret { get; set; }
 }

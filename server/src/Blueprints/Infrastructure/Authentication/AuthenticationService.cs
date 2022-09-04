@@ -4,11 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Blueprints.Application.Authentication;
-using Blueprints.Infrastrcuture.Authentication;
+using Application.Authentication;
+using Domain.Utils;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Utils;
 
 namespace Infrastructure.Authentication;
 

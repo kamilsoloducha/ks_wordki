@@ -26,7 +26,7 @@
     "typescript": "^4.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "GENERATE_SOURCEMAP=false react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test --testPathIgnorePatterns=.mocks.spec.ts",
     "test:coverage": "react-scripts test --testPathIgnorePatterns=.mocks.spec.ts --watchAll=false --ci --coverage --coverageReporters=html",

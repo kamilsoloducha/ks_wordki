@@ -1,23 +1,21 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Blueprints.Domain;
 
-namespace Cards.Domain
+namespace Domain.Rules;
+
+public abstract class StringValueHaveToBeDefined : IBuissnessRule
 {
-    public abstract class StringValueHaveToBeDefined : IBuissnessRule
+    private readonly string _value;
+    public string Message { get; }
+
+    public StringValueHaveToBeDefined(string value, string propertyName)
     {
-        private readonly string _value;
-        public string Message { get; }
+        _value = value;
+        Message = $"{propertyName} have to be defined";
+    }
 
-        public StringValueHaveToBeDefined(string value, string propertyName)
-        {
-            _value = value;
-            Message = $"{propertyName} have to be defined";
-        }
-
-        public Task<bool> IsCorrect(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(!string.IsNullOrEmpty(_value));
-        }
+    public Task<bool> IsCorrect(CancellationToken cancellationToken)
+    {
+        return Task.FromResult(!string.IsNullOrEmpty(_value));
     }
 }

@@ -1,25 +1,25 @@
 using System;
-using Utils;
+using Cards.Domain.OwnerAggregate;
+using Domain.Utils;
 
-namespace Cards.Domain
+namespace Cards.Domain.Services;
+
+public interface INextRepeatCalculator
 {
-    public interface INextRepeatCalculator
-    {
-        DateTime Calculate(Detail side, int result);
-    }
+    DateTime Calculate(Detail side, int result);
+}
 
-    public class StandartCalculator : INextRepeatCalculator
+public class StandartCalculator : INextRepeatCalculator
+{
+    public DateTime Calculate(Detail side, int result)
     {
-        public DateTime Calculate(Detail side, int result)
-        {
-            var daysToAdded = 0;
-            if (result < 0)
-                daysToAdded = 1;
-            else if (result == 0)
-                daysToAdded = 2;
-            else
-                daysToAdded = Helpers.GetFibbonacciNumber(side.Drawer.CorrectRepeat + 3);
-            return SystemClock.Now.AddDays(daysToAdded);
-        }
+        var daysToAdded = 0;
+        if (result < 0)
+            daysToAdded = 1;
+        else if (result == 0)
+            daysToAdded = 2;
+        else
+            daysToAdded = Helpers.GetFibbonacciNumber(side.Drawer.CorrectRepeat + 3);
+        return SystemClock.Now.AddDays(daysToAdded);
     }
 }

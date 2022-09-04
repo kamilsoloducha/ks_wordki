@@ -1,9 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Api;
 using Lessons.Application.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Api.Controllers;
 
 [ApiController]
 [Route("lesson")]

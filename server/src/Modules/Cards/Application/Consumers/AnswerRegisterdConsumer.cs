@@ -1,41 +1,42 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Cards.Domain;
+using Cards.Domain.OwnerAggregate;
+using Cards.Domain.Services;
+using Cards.Domain.ValueObjects;
 using Domain.IntegrationEvents;
 using MassTransit;
 using MassTransit.Definition;
 
-namespace Cards.Application
+namespace Cards.Application.Consumers;
+
+internal class AnswerRegisteredDefinition : ConsumerDefinition<AnswerRegisterdConsumer>
 {
-    internal class AnswerRegisteredDefinition : ConsumerDefinition<AnswerRegisterdConsumer>
+    public AnswerRegisteredDefinition() { }
+}
+
+internal class AnswerRegisterdConsumer : IConsumer<AnswerRegistered>
+{
+    private readonly INextRepeatCalculator _nextRepeatCalculator;
+    private readonly IOwnerRepository _cardsRepository;
+
+
+    public AnswerRegisterdConsumer(INextRepeatCalculator nextRepeatCalculator,
+        IOwnerRepository cardsRepository)
     {
-        public AnswerRegisteredDefinition() { }
+        _nextRepeatCalculator = nextRepeatCalculator;
+        _cardsRepository = cardsRepository;
     }
 
-    internal class AnswerRegisterdConsumer : IConsumer<AnswerRegistered>
+    public async Task Consume(ConsumeContext<AnswerRegistered> context)
     {
-        private readonly INextRepeatCalculator _nextRepeatCalculator;
-        private readonly IOwnerRepository _cardsRepository;
+        var userId = OwnerId.Restore(context.Message.UserId);
+        var sideId = SideId.Restore(context.Message.SideId);
 
+        var detail = await _cardsRepository.Get(userId, sideId, CancellationToken.None);
+        var result = context.Message.Result;
 
-        public AnswerRegisterdConsumer(INextRepeatCalculator nextRepeatCalculator,
-            IOwnerRepository cardsRepository)
-        {
-            _nextRepeatCalculator = nextRepeatCalculator;
-            _cardsRepository = cardsRepository;
-        }
+        detail.RegisterAnswer(result, _nextRepeatCalculator);
 
-        public async Task Consume(ConsumeContext<AnswerRegistered> context)
-        {
-            var userId = OwnerId.Restore(context.Message.UserId);
-            var sideId = SideId.Restore(context.Message.SideId);
-
-            var detail = await _cardsRepository.Get(userId, sideId, CancellationToken.None);
-            var result = context.Message.Result;
-
-            detail.RegisterAnswer(result, _nextRepeatCalculator);
-
-            await _cardsRepository.Update(CancellationToken.None);
-        }
+        await _cardsRepository.Update(CancellationToken.None);
     }
 }

@@ -2,7 +2,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Api.Tests.Users;
 using E2e.Tests;
 using FluentAssertions;
 using Newtonsoft.Json;

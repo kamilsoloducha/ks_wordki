@@ -1,9 +1,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Blueprints.Application.Requests;
-using Blueprints.Application.Services;
+using Application.Requests;
+using Application.Services;
 using Cards.Domain;
+using Cards.Domain.OwnerAggregate;
+using Cards.Domain.Services;
+using Cards.Domain.ValueObjects;
 using MediatR;
 
 namespace Cards.Application.Commands;

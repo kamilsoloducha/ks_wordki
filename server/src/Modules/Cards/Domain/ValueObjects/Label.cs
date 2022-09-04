@@ -1,6 +1,6 @@
-using Blueprints.Domain;
+using Domain;
 
-namespace Cards.Domain;
+namespace Cards.Domain.ValueObjects;
 
 public readonly struct Label
 {

@@ -1,7 +1,6 @@
-namespace Blueprints.Infrastructure.DataAccess
+namespace Infrastructure.Services.ConnectionStringProvider;
+
+public interface IConnectionStringProvider
 {
-    public interface IConnectionStringProvider
-    {
-        string ConnectionString { get; }
-    }
+    string ConnectionString { get; }
 }

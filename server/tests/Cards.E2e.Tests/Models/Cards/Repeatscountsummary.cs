@@ -1,13 +1,12 @@
-﻿using System;
+﻿#nullable disable
 
-#nullable disable
+using System;
 
-namespace Api.Tests.Model.Cards
+namespace Cards.E2e.Tests.Models.Cards;
+
+public partial class Repeatscountsummary
 {
-    public partial class Repeatscountsummary
-    {
-        public long? Count { get; set; }
-        public DateTime? Date { get; set; }
-        public Guid? OwnerId { get; set; }
-    }
+    public long? Count { get; set; }
+    public DateTime? Date { get; set; }
+    public Guid? OwnerId { get; set; }
 }

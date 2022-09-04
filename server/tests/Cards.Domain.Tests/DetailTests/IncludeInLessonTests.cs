@@ -1,21 +1,20 @@
 using NUnit.Framework;
 using FluentAssertions;
 
-namespace Cards.Domain.Tests.DetailTests
+namespace Cards.Domain.Tests.DetailTests;
+
+[TestFixture]
+public class IncludeInLessonTests
 {
-    [TestFixture]
-    public class IncludeInLessonTests
+    [TestCase(true)]
+    [TestCase(false)]
+    public void IncludeInLessonAndCheckLessonInclude(bool initialValue)
     {
-        [TestCase(true)]
-        [TestCase(false)]
-        public void IncludeInLessonAndCheckLessonInclude(bool initialValue)
-        {
-            var sut = DetailsBuilder.Default.Build();
-            sut.SetProperty(nameof(sut.LessonIncluded), initialValue);
+        var sut = DetailsBuilder.Default.Build();
+        sut.SetProperty(nameof(sut.LessonIncluded), initialValue);
 
-            sut.IncludeInLesson();
+        sut.IncludeInLesson();
 
-            sut.LessonIncluded.Should().BeTrue();
-        }
+        sut.LessonIncluded.Should().BeTrue();
     }
 }

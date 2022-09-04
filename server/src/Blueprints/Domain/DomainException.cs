@@ -1,10 +1,9 @@
 using System;
 
-namespace Blueprints.Domain
+namespace Domain;
+
+public abstract class DomainException : Exception
 {
-    public abstract class DomainException : Exception
-    {
-        protected DomainException() : base() { }
-        protected DomainException(string message) : base(message) { }
-    }
+    protected DomainException() : base() { }
+    protected DomainException(string message) : base(message) { }
 }

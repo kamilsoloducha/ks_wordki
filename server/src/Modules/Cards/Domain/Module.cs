@@ -1,15 +1,15 @@
 using System.Runtime.CompilerServices;
+using Cards.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Cards.Domain.Tests")]
-namespace Cards.Domain
+namespace Cards.Domain;
+
+public static class Module
 {
-    public static class Module
+    public static IServiceCollection AddCardDomainModule(this IServiceCollection services)
     {
-        public static IServiceCollection AddCardDomainModule(this IServiceCollection services)
-        {
-            services.AddScoped<INextRepeatCalculator, StandartCalculator>();
-            return services;
-        }
+        services.AddScoped<INextRepeatCalculator, StandartCalculator>();
+        return services;
     }
 }

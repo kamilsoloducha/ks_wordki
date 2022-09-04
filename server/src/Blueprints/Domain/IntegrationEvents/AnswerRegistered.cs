@@ -1,11 +1,10 @@
 using System;
 
-namespace Domain.IntegrationEvents
+namespace Domain.IntegrationEvents;
+
+public class AnswerRegistered
 {
-    public class AnswerRegistered
-    {
-        public Guid UserId { get; set; }
-        public long SideId { get; set; }
-        public int Result { get; set; }
-    }
+    public Guid UserId { get; set; }
+    public long SideId { get; set; }
+    public int Result { get; set; }
 }

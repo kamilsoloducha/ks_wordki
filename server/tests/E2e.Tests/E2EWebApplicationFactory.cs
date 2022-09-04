@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Testing;

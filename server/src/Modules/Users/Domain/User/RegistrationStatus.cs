@@ -1,10 +1,8 @@
-namespace Users.Domain
-{
-    public enum RegistrationStatus
-    {
-        WaitingForConfirmation,
-        Registered,
-        Removed
-    }
-}
+namespace Users.Domain.User;
 
+public enum RegistrationStatus
+{
+    WaitingForConfirmation,
+    Registered,
+    Removed
+}

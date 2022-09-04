@@ -1,50 +1,52 @@
 using System;
 using System.Linq;
+using Cards.Domain.OwnerAggregate;
+using Cards.Domain.Services;
+using Cards.Domain.ValueObjects;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-namespace Cards.Domain.Tests.Owner
+namespace Cards.Domain.Tests.OwnerTests;
+
+[TestFixture]
+public class AddGroupTests
 {
-    [TestFixture]
-    public class AddGroupTests
+
+    private Mock<ISequenceGenerator> _sequenceGeneratorMock;
+    private long _groupIdValue = 100;
+    private Owner _owner;
+
+    [SetUp]
+    public void Setup()
     {
+        _sequenceGeneratorMock = new Mock<ISequenceGenerator>();
+        _sequenceGeneratorMock.Setup(x => x.Generate<GroupId>()).Returns(_groupIdValue);
 
-        private Mock<ISequenceGenerator> _sequenceGeneratorMock;
-        private long _groupIdValue = 100;
-        private Domain.Owner _owner;
+        _owner = Owner.Restore(
+            OwnerId.Restore(
+                Guid.Parse("227682f3-5c39-4fff-8e4f-61880795d8f5")
+            )
+        );
+    }
 
-        [SetUp]
-        public void Setup()
-        {
-            _sequenceGeneratorMock = new Mock<ISequenceGenerator>();
-            _sequenceGeneratorMock.Setup(x => x.Generate<Domain.GroupId>()).Returns(_groupIdValue);
+    [Test]
+    public void Add_Simple()
+    {
+        var groupName = GroupName.Create("simple group name");
+        var front = Language.Create(1);
+        var back = Language.Create(2);
 
-            _owner = Domain.Owner.Restore(
-                Domain.OwnerId.Restore(
-                    Guid.Parse("227682f3-5c39-4fff-8e4f-61880795d8f5")
-                )
-            );
-        }
+        var result = _owner.AddGroup(groupName, front, back, _sequenceGeneratorMock.Object);
 
-        [Test]
-        public void Add_Simple()
-        {
-            var groupName = Domain.GroupName.Create("simple group name");
-            var front = Domain.Language.Create(1);
-            var back = Domain.Language.Create(2);
+        _owner.Groups.Count.Should().Be(1);
+        var group = _owner.Groups.Single();
 
-            var result = _owner.AddGroup(groupName, front, back, _sequenceGeneratorMock.Object);
-
-            _owner.Groups.Count.Should().Be(1);
-            var group = _owner.Groups.Single();
-
-            group.Id.Value.Should().Be(_groupIdValue);
-            result.Should().Be(Domain.GroupId.Restore(_groupIdValue));
-            group.Name.Should().Be(groupName);
-            group.Front.Should().Be(front);
-            group.Back.Should().Be(back);
-            group.Cards.Count.Should().Be(0);
-        }
+        group.Id.Value.Should().Be(_groupIdValue);
+        result.Should().Be(GroupId.Restore(_groupIdValue));
+        group.Name.Should().Be(groupName);
+        group.Front.Should().Be(front);
+        group.Back.Should().Be(back);
+        group.Cards.Count.Should().Be(0);
     }
 }
