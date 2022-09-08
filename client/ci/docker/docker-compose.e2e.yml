@@ -1,23 +1,23 @@
 version: "3.5"
 services:
-  wordki-client.ci.e2etests:
-    container_name: wordki-client.ci.e2etests
-    image: wordki-client/ci/build:${BUILD_BUILDID}
+  wordki.ci.e2e:
+    container_name: wordki.ci.e2e
+    image: wordki.ci.e2e:${BUILD_BUILDID}
     build:
       context: ../../
-      dockerfile: ./build/docker/Dockerfile
+      dockerfile: ./ci/docker/Dockerfile
       target: e2e
-    expose:
-      - 81
-  wordki.ci.e2etests:
-    container_name: wordki.ci.e2etests
-    image: wordki.ci.e2etests
+    ports:
+      - "81:81"
+  wordki.ci.e2e.tests:
+    container_name: wordki.ci.e2e.tests
+    image: wordki.ci.e2e.tests:latest
     build:
-      context: ../../../testsUi/Wordki.Tests.UI
+      context: ../../../tests/Wordki.Tests.UI
       dockerfile: Dockerfile
     expose:
       - 5001
     depends_on:
-      - wordki-client.ci.e2etests
+      - wordki.ci.e2e
     environment:
-      - ClientUrl=http://wordki-client.ci.e2etests:81
+      - ClientUrl=http://wordki.ci.e2e:81
