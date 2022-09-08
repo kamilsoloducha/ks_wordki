@@ -42,6 +42,7 @@ steps:
   #     testResultsFiles: "*.xml"
   - task: DockerCompose@0
     displayName: Release
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
       containerregistrytype: "Container Registry"
       dockerRegistryEndpoint: "docker-hub"
