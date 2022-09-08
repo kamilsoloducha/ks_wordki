@@ -1,17 +1,23 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 
 namespace Api.Configuration;
 
 public static class LoggingExtensions
 {
-    public static IServiceCollection AddCustomLogging(this IServiceCollection services)
+    public static void AddCustomLogging(this WebApplicationBuilder builder)
     {
-        return services.AddLogging(loggingBuilder =>
-        {
-            var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
-            loggingBuilder.AddSeq(configuration.GetSection("Seq"));
-        });
+        builder.Logging.ClearProviders();
+        var logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .CreateLogger();
+        builder.Host.UseSerilog(logger);
     }
+}
+
+public class LoggingConfiguration
+{
+    
 }

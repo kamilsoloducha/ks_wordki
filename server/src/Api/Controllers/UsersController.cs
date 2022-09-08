@@ -32,6 +32,8 @@ public class UsersController : BaseController
         => await HandleRequest(command, cancellationToken);
 
     [HttpPut("login")]
+    [ProducesResponseType(typeof(LoginUser.Response), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(LoginUser.Response), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginUser.Command command, CancellationToken cancellationToken)
         => Ok(await Mediator.Send(command, cancellationToken));
         

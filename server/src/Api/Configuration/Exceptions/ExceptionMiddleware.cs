@@ -3,16 +3,16 @@ using System.Threading.Tasks;
 using Application.Requests;
 using Domain;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Api.Configuration.Exceptions;
 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger<ExceptionMiddleware> _logger;
+    private readonly ILogger _logger;
 
-    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+    public ExceptionMiddleware(RequestDelegate next, ILogger logger)
     {
         _next = next;
         _logger = logger;
@@ -26,12 +26,12 @@ public class ExceptionMiddleware
         }
         catch (BuissnessRuleFailedException ex)
         {
-            _logger.LogError("A buissness rule '{rule}' has been breached", ex.Rule.GetType().Name);
+            _logger.Error(ex, "A buissness rule '{rule}' has been breached", ex.Rule.GetType().Name);
             await HandleBuissnessException(context, ex);
         }
         catch (BuissnessArgumentException ex)
         {
-            _logger.LogCritical("Domain object creation failed. Argument {argument} cannot have value {value}", ex.ArgumentName, ex.Value);
+            _logger.Fatal(ex, "Domain object creation failed. Argument {argument} cannot have value {value}", ex.ArgumentName, ex.Value);
             var response = ResponseBase<object>.Create(ex.Message);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
@@ -39,7 +39,7 @@ public class ExceptionMiddleware
         }
         catch (Exception e)
         {
-            _logger.LogError("A buissness rule '{rule}' has been breached", e);
+            _logger.Error(e, "");
             throw;
         }
     }

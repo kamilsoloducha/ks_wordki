@@ -5,6 +5,7 @@ using Application.MassTransit;
 using FluentValidation;
 using MassTransit;
 using MediatR;
+using Serilog;
 using Users.Application.Services;
 using Users.Domain;
 using Users.Domain.User;
@@ -20,17 +21,20 @@ public class RegisterUser
         private readonly IUserRepository _userRepository;
         private readonly IPasswordManager _passwordManager;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly ILogger _logger; 
 
         public CommandHandler(
             IDataChecker dataChecker,
             IUserRepository userRepository,
             IPasswordManager passwordManager,
-            IPublishEndpoint publishEndpoint)
+            IPublishEndpoint publishEndpoint,
+            ILogger logger)
         {
             _dataChecker = dataChecker;
             _userRepository = userRepository;
             _passwordManager = passwordManager;
             _publishEndpoint = publishEndpoint;
+            _logger = logger;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -53,6 +57,7 @@ public class RegisterUser
 
             await _userRepository.Add(user, cancellationToken);
             await _publishEndpoint.PublishBatch(user.Events, cancellationToken);
+            _logger.Information("User created: {UserId}", user.Id);
             return new Response(ResponseCode.Successful, user.Id);
         }
     }
