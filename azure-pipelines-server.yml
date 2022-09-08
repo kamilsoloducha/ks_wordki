@@ -1,7 +1,4 @@
 trigger:
-  branches:
-    include:
-      - master
   paths:
     include:
       - "server/*"
@@ -42,7 +39,6 @@ steps:
   #     testResultsFiles: "*.xml"
   - task: DockerCompose@0
     displayName: Release
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
       containerregistrytype: "Container Registry"
       dockerRegistryEndpoint: "docker-hub"
@@ -51,11 +47,13 @@ steps:
       dockerComposeCommand: build
   - task: Docker@2
     displayName: Login to Docker Hub
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
       containerRegistry: "docker-hub"
       command: "login"
   - task: Docker@2
     displayName: Push
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
       containerRegistry: "docker-hub"
       repository: "kamilsoloducha/wordki-server"
