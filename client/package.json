@@ -28,6 +28,7 @@
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "GENERATE_SOURCEMAP=false react-scripts --openssl-legacy-provider build",
+    "build:e2e": "GENERATE_SOURCEMAP=false REACT_APP_API_HOST=http://localhost:5001 react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test --testPathIgnorePatterns=.mocks.spec.ts",
     "test:coverage": "react-scripts test --testPathIgnorePatterns=.mocks.spec.ts --watchAll=false --ci --coverage --coverageReporters=html",
     "test:ci": "react-scripts test --testPathIgnorePatterns=.mocks.spec.ts --watchAll=false --ci --testResultsProcessor=\"jest-junit\" --coverage --coverageReporters=cobertura",

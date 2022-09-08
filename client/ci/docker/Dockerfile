@@ -36,21 +36,21 @@ COPY . .
 #####################################################
 # Build app for tests e2e
 #####################################################
-# FROM build as pre-e2e
+FROM build as pre-e2e
 
-# RUN npm run build:e2e
+RUN yarn run build:e2e
 
 #####################################################
 # Run app for tests e2e
 #####################################################
 
-# FROM nginx:alpine as e2e
+FROM nginx:alpine as e2e
 
-# RUN rm -rf /usr/share/nginx/html/*
-# COPY --from=pre-e2e /usr/src/app/dist/wordki /usr/share/nginx/html
-# COPY ./nginx.conf /etc/nginx/nginx.conf
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=pre-e2e /usr/src/app/build /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# CMD sed -i -e 's/$PORT/'81'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+CMD sed -i -e 's/$PORT/'81'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
 
 #####################################################
