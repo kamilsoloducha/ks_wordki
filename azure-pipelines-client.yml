@@ -37,7 +37,7 @@ steps:
     inputs:
       containerregistrytype: "Container Registry"
       dockerRegistryEndpoint: "docker-hub"
-      dockerComposeFile: "client/build/docker/docker-compose.e2e.yml"
+      dockerComposeFile: "client/ci/docker/docker-compose.e2e.yml"
       action: "Run a Docker Compose command"
       dockerComposeCommand: up --build --abort-on-container-exit
   - task: CmdLine@2
