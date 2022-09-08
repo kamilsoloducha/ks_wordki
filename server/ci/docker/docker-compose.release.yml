@@ -8,4 +8,4 @@ services:
       dockerfile: ./ci/docker/Dockerfile
       target: release
     environment:
-      - MY_CUSTOM_ENV=MY_CUSTOM_VALUE
+      - ASPNETCORE_ENVIRONMENT=Production
