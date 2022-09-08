@@ -15,14 +15,18 @@ steps:
       dockerComposeFile: "client/ci/docker/docker-compose.build.yml"
       action: "Run a Docker Compose command"
       dockerComposeCommand: up
-  - task: DockerCompose@0
-    displayName: Run Tests
+  # - task: DockerCompose@0
+  #   displayName: Run Tests
+  #   inputs:
+  #     containerregistrytype: "Container Registry"
+  #     dockerRegistryEndpoint: "docker-hub"
+  #     dockerComposeFile: "client/ci/docker/docker-compose.test.yml"
+  #     action: "Run a Docker Compose command"
+  #     dockerComposeCommand: up --abort-on-container-exit
+  - task: CmdLine@2
+    displayName: Run tests 
     inputs:
-      containerregistrytype: "Container Registry"
-      dockerRegistryEndpoint: "docker-hub"
-      dockerComposeFile: "client/ci/docker/docker-compose.test.yml"
-      action: "Run a Docker Compose command"
-      dockerComposeCommand: up
+      script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
   - task: CmdLine@2
     displayName: Copy test results
     inputs:
