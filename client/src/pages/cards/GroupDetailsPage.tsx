@@ -80,8 +80,8 @@ export default function GroupDetailsPage(): ReactElement {
     }
   };
 
-  const onDelete = () => {
-    // dispatch(actions.deleteCard({cardId:}));
+  const onDelete = (item: FormModel) => {
+    dispatch(actions.deleteCard({cardId:item.cardId}));
     setFormItem(null);
   };
 
