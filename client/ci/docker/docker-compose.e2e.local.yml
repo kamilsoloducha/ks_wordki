@@ -20,4 +20,5 @@ services:
     depends_on:
       - wordki.ci.e2e
     environment:
-      - ClientUrl=http://wordki.ci.e2e:81
+      - CLIENT_HOST=http://wordki.ci.e2e:81
+      - HEADLESS=true
