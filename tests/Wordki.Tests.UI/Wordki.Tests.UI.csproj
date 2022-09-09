@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -19,5 +18,9 @@
     <PackageReference Include="TestStack.BDDfy" Version="4.3.2" />
     <PackageReference Include="WireMock.Net" Version="1.5.5" />
   </ItemGroup>
+  
+  <PropertyGroup>
+    <TEST>test</TEST>
+  </PropertyGroup>
 
 </Project>

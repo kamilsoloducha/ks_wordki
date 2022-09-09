@@ -3,17 +3,18 @@ using TestStack.BDDfy;
 using OpenQA.Selenium.Support.UI;
 using FluentAssertions;
 using System;
+using Wordki.Tests.UI.Utils;
 
 namespace Wordki.Tests.UI.Login;
 
 [TestFixture]
-public class FillFormLoginPage : UITestBase
+public class FillFormLoginPage : Utils.UITestBase
 {
     private readonly LoginPage _page;
 
     public FillFormLoginPage()
     {
-        _page = new LoginPage(Driver);
+        _page = new LoginPage(Driver, ClientHost);
     }
     void GivenSetupServer()
     {
@@ -30,9 +31,9 @@ public class FillFormLoginPage : UITestBase
             b => true
         );
     }
-    void WhenUserNavigateToLoginPage() => _page.NavigateTo();
-    void AndWhenUserFillUserNameField() => _page.InsertIntoInput(_page.UserNameInput, "testUserName", false);
-    void AndWhenUserFillPasswordField() => _page.InsertIntoInput(_page.PasswordInput, "testPassword", false);
+    void WhenUserNavigateToLoginPage() => Driver.Navigate().GoToUrl(_page.Address);
+    void AndWhenUserFillUserNameField() => _page.UserNameInput.InsertIntoInput("testUserName", false);
+    void AndWhenUserFillPasswordField() => _page.PasswordInput.InsertIntoInput("testPassword", false);
     void AndWhenUserClickSubmit()
     {
         _page.Submit.Click();
@@ -40,7 +41,7 @@ public class FillFormLoginPage : UITestBase
             .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs("Wordki - Dashboard"));
     }
     void ThenUserShouldBeRedirectToDashboard() => Assert.AreEqual("Wordki - Dashboard", Driver.Title);
-    void AndThenServerShouldRecivedRequests() => Server.LogEntries.Should().HaveCount(4);
+    void AndThenServerShouldReceivedRequests() => Server.LogEntries.Should().HaveCount(4);
 
     [Test]
     public void ExecuteTest() => this.BDDfy();

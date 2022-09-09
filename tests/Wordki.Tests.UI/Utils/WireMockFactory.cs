@@ -5,7 +5,7 @@ using WireMock.ResponseBuilders;
 using WireMock.Server;
 using WireMock.Settings;
 
-namespace Wordki.Tests.UI;
+namespace Wordki.Tests.UI.Utils;
 
 public static class WireMockFactory
 {
@@ -13,7 +13,7 @@ public static class WireMockFactory
         => WireMockServer.Start(new WireMockServerSettings()
         {
             Urls = new[] { url },
-            StartAdminInterface = true,
+            StartAdminInterface = true
         });
 
 

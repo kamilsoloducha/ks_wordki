@@ -1,11 +1,7 @@
 using NUnit.Framework;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
-using System.Threading;
 using WireMock.Server;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using OpenQA.Selenium.Support.UI;
 
 namespace Wordki.Tests.UI;
@@ -18,6 +14,7 @@ public abstract class UITestBase : IDisposable
 
     protected UITestBase()
     {
+        var test = Environment.GetEnvironmentVariable("TEST");
         var clientUrl =  Environment.GetEnvironmentVariable("ClientUrl");
         if (!string.IsNullOrEmpty(clientUrl)) AppUrl = clientUrl;
         

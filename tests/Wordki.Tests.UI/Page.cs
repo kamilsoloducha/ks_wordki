@@ -1,6 +1,4 @@
 using OpenQA.Selenium;
-using FluentAssertions;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
 
