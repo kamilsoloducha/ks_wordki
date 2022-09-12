@@ -9,4 +9,6 @@ public static class PageExtensions
         if (!append) element.Clear();
         element.SendKeys(text);
     }
+
+    
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Net.Http;
 using FluentAssertions;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -10,12 +9,12 @@ using Wordki.Tests.UI.Utils;
 namespace Wordki.Tests.UI.Dashboard;
 
 [TestFixture]
-public class NavigateToDashboard : Utils.UITestBase
+public class DashboardClickGroups : Utils.UITestBase
 {
-    private static readonly DateTime _today = new (2022, 2, 2);
+    private static readonly DateTime _today = new(2022, 2, 2);
     private readonly DashboardPage _page;
 
-    public NavigateToDashboard()
+    public DashboardClickGroups()
     {
         _page = new DashboardPage(Driver, ClientHost);
     }
@@ -38,33 +37,25 @@ public class NavigateToDashboard : Utils.UITestBase
                     new { Count = 0, Date = _today.AddDays(5) },
                     new { Count = 0, Date = _today.AddDays(6) },
                 }
-            );
+            )
+            .AddGetEndpoint(
+                "/groups/userid",
+                new { });
     }
 
     void GivenLoginUser() => SetAuthorizationCookies();
+
     void WhenUserGoToDashboardPage() => Driver.Navigate().GoToUrl(_page.Address);
-
-    void ThenRepeatInfoIsDisplayed()
-    {
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(100))
-            .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
-        _page.Repeats.Text.Should().Contain("30");
-        _page.Cards.Text.Should().Contain("20");
-        _page.Groups.Text.Should().Contain("10");
-    }
-
-    void AndThenServerReceivedSummaryRequest()
-    {
-        Server.LogEntries.Should().Contain(x => x.RequestMessage.Method == HttpMethod.Get.Method &&
-                                                x.RequestMessage.Path == "/dashboard/summary/userid");
-    }
     
-    void AndThenServerReceivedForecastRequest()
-    {
-        Server.LogEntries.Should().Contain(x => x.RequestMessage.Method == HttpMethod.Get.Method &&
-                                                x.RequestMessage.Path.Contains("/dashboard/forecast"));
-    }
+    void AndPageIsLoaded() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+        .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
+
+    void AndWhenUserClickGroups() => _page.Groups.Click();
+
+    void ThenGroupsInfoIsDisplayed() => Driver.Url.Should().Contain("groups");
 
     [Test]
     public void ExecuteTest() => this.BDDfy();
+    
+    
 }

@@ -4,6 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using TestStack.BDDfy;
+using Wordki.Tests.UI.Dashboard;
 using Wordki.Tests.UI.Utils;
 
 namespace Wordki.Tests.UI.Register;
@@ -57,10 +58,10 @@ public class FillFormRegisterPage : Utils.UITestBase
     {
         _page.Submit.Click();
         new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
-            .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs("Wordki - Dashboard"));
+            .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs(DashboardPage.DASHBOARD_TITLE));
     }
 
-    void ThenUserShouldBeRedirectToDashboard() => Driver.Title.Should().Be("Wordki - Dashboard");
+    void ThenUserShouldBeRedirectToDashboard() => Driver.Title.Should().Be(DashboardPage.DASHBOARD_TITLE);
 
     void AndThenServerShouldReceivedRegisterRequest() =>
         Server.LogEntries.Should().Contain(x => x.RequestMessage.Method == HttpMethod.Post.Method &&

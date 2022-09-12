@@ -2,16 +2,20 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 
-namespace Wordki.Tests.UI.Login;
+namespace Wordki.Tests.UI.Dashboard;
 
-class DashboardPage : Page
+class DashboardPage : Utils.Page
 {
-    protected override string Url => "http://wordki.ui.clinet:81/dashboard";
-    protected override string Title => "Wordki - Dashboard";
-
-    public DashboardPage(IWebDriver driver) : base(driver) { }
+    public const string DASHBOARD_TITLE = "Wordki - Dashboard";
+    public const string DASHBAORD_URL = "/dashboard";
+    public DashboardPage(IWebDriver driver, string host) : base(driver, DASHBOARD_TITLE, DASHBAORD_URL, host)
+    {
+    }
+    
     public IEnumerable<IWebElement> Infos => Driver.FindElements(By.ClassName("info-container"));
     public IWebElement Repeats => Infos.First(x => x.Text.Contains("Repeats"));
     public IWebElement Groups => Infos.First(x => x.Text.Contains("Groups"));
     public IWebElement Cards => Infos.First(x => x.Text.Contains("Cards"));
+
+    
 }

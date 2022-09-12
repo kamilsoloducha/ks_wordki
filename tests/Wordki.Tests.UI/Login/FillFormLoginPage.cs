@@ -3,6 +3,7 @@ using TestStack.BDDfy;
 using OpenQA.Selenium.Support.UI;
 using FluentAssertions;
 using System;
+using Wordki.Tests.UI.Dashboard;
 using Wordki.Tests.UI.Utils;
 
 namespace Wordki.Tests.UI.Login;
@@ -38,9 +39,9 @@ public class FillFormLoginPage : Utils.UITestBase
     {
         _page.Submit.Click();
         new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
-            .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs("Wordki - Dashboard"));
+            .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs(DashboardPage.DASHBOARD_TITLE));
     }
-    void ThenUserShouldBeRedirectToDashboard() => Assert.AreEqual("Wordki - Dashboard", Driver.Title);
+    void ThenUserShouldBeRedirectToDashboard() => Assert.AreEqual(DashboardPage.DASHBOARD_TITLE, Driver.Title);
     void AndThenServerShouldReceivedRequests() => Server.LogEntries.Should().HaveCount(4);
 
     [Test]

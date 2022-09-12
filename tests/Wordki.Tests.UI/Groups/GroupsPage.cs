@@ -6,11 +6,11 @@ using SeleniumExtras.WaitHelpers;
 
 namespace Wordki.Tests.UI.Groups;
 
-class GroupsPage : Page
+class GroupsPage : Utils.Page
 {
-    protected override string Url => "http://wordki.ui.clinet:81/groups";
-    protected override string Title => "React App";
-    public GroupsPage(IWebDriver driver) : base(driver) { }
+    public const string GROUPS_TITLE = "Wordki - Groups";
+    public const string GROUPS_PATH = "/groups";
+    public GroupsPage(IWebDriver driver, string host) : base(driver, GROUPS_TITLE, GROUPS_PATH, host) { }
 
     public IWebElement CreateNewGroupButton => Driver.FindElement(By.XPath("//*[text()='Create new group']"));
     public IEnumerable<IWebElement> Groups => Driver.FindElements(By.ClassName("group-row-container"));

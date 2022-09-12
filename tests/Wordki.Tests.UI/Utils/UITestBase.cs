@@ -2,12 +2,13 @@ using System;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 using WireMock.Server;
+using Wordki.Tests.UI.Login;
 
 namespace Wordki.Tests.UI.Utils;
 
 public abstract class UITestBase : IDisposable
 {
-    protected string ClientHost { get; } = "http://localhost:81";
+    protected string ClientHost { get; } = "http://localhost:3000";
     protected ChromeDriver Driver { get; }
     protected WireMockServer Server { get; private set; }
 
@@ -20,7 +21,7 @@ public abstract class UITestBase : IDisposable
         
         var options = new ChromeOptions();
         
-        if(!string.IsNullOrEmpty(headless)) options.AddArguments("headless");
+        if(!string.IsNullOrEmpty(headless) || true) options.AddArguments("headless");
         
         options.AddArguments("diable-dev-shm-usage",
             "disable-gpu",
@@ -30,11 +31,18 @@ public abstract class UITestBase : IDisposable
         
         Driver = new ChromeDriver(options);
     }
+    
+    public void SetAuthorizationCookies()
+    {
+        Driver.Navigate().GoToUrl($"{ClientHost}{LoginPage.LOGIN_URL}");
+        Driver.ExecuteScript("localStorage.setItem(\"id\", \"userid\");");
+        Driver.ExecuteScript("localStorage.setItem(\"token\", \"token\");");
+    }
 
     [SetUp]
     protected void SetupUtils()
     {
-        Server = UI.WireMockFactory.Create("http://*:5001");
+        Server = WireMockFactory.Create("http://*:5000");
     }
 
     [TearDown]
