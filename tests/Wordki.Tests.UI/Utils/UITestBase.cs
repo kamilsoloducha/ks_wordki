@@ -21,7 +21,7 @@ public abstract class UITestBase : IDisposable
         
         var options = new ChromeOptions();
         
-        if(!string.IsNullOrEmpty(headless) || true) options.AddArguments("headless");
+        if(!string.IsNullOrEmpty(headless)) options.AddArguments("headless");
         
         options.AddArguments("diable-dev-shm-usage",
             "disable-gpu",

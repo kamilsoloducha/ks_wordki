@@ -54,7 +54,7 @@ export const lessonSlice = createSlice({
       action: PayloadAction<p.GetCardsCountSuccess>
     ): void => {
       const count =
-        state.settings.count > action.payload.count ? action.payload.count : state.settings.count;
+        state.settings.count < action.payload.count ? action.payload.count : state.settings.count;
       state.cardsCount = count;
       state.settings.count = count;
     },
