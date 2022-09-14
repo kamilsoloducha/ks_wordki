@@ -2,7 +2,7 @@ version: "3.5"
 services:
   wordki.ci.e2e:
     container_name: wordki.ci.e2e
-    image: wordki.ci.e2e:${BUILD_BUILDID}
+    image: wordki.ci.e2e:latest
     build:
       context: ../../
       dockerfile: ./ci/docker/Dockerfile

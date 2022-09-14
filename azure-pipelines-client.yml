@@ -15,14 +15,10 @@ steps:
       dockerComposeFile: "client/ci/docker/docker-compose.build.yml"
       action: "Run a Docker Compose command"
       dockerComposeCommand: up
-  - task: DockerCompose@0
-    displayName: Run Tests
+  - task: CmdLine@2
+    displayName: Run tests 
     inputs:
-      containerregistrytype: "Container Registry"
-      dockerRegistryEndpoint: "docker-hub"
-      dockerComposeFile: "client/ci/docker/docker-compose.test.yml"
-      action: "Run a Docker Compose command"
-      dockerComposeCommand: up
+      script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
   - task: CmdLine@2
     displayName: Copy test results
     inputs:
@@ -31,24 +27,24 @@ steps:
         docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/junit.xml
         docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
         ls $(System.DefaultWorkingDirectory)
-  # - task: DockerCompose@0
-  #   continueOnError: true
-  #   displayName: Run UI Tests
-  #   inputs:
-  #     containerregistrytype: "Container Registry"
-  #     dockerRegistryEndpoint: "docker-hub"
-  #     dockerComposeFile: "client/build/docker/docker-compose.e2e.yml"
-  #     action: "Run a Docker Compose command"
-  #     dockerComposeCommand: up --build --abort-on-container-exit
-  # - task: CmdLine@2
-  #   continueOnError: true
-  #   displayName: Copy ui test results
-  #   inputs:
-  #     script: |
-  #       docker ps -a
-  #       docker cp wordki.ci.e2etests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/test/results
-  #       docker cp wordki.ci.e2etests:/src/ $(System.DefaultWorkingDirectory)/temp
-  #       tree $(System.DefaultWorkingDirectory)
+  - task: DockerCompose@0
+    continueOnError: true
+    displayName: Run UI Tests
+    inputs:
+      containerregistrytype: "Container Registry"
+      dockerRegistryEndpoint: "docker-hub"
+      dockerComposeFile: "client/ci/docker/docker-compose.e2e.yml"
+      action: "Run a Docker Compose command"
+      dockerComposeCommand: up --build --abort-on-container-exit
+  - task: CmdLine@2
+    continueOnError: true
+    displayName: Copy ui test results
+    inputs:
+      script: |
+        docker ps -a
+        docker cp wordki.ci.e2e.tests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/test/results
+        docker cp wordki.ci.e2e.tests:/src/ $(System.DefaultWorkingDirectory)/temp
+        tree $(System.DefaultWorkingDirectory)
   - task: PublishTestResults@2
     displayName: Publish test results
     inputs:

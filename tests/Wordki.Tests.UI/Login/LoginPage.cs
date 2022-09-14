@@ -1,18 +1,16 @@
 using OpenQA.Selenium;
 
-namespace Wordki.Tests.UI.Login
+namespace Wordki.Tests.UI.Login;
+
+public class LoginPage : Utils.Page
 {
-    class LoginPage : Page
+    public const string LOGIN_TITLE = "Wordki - Login";
+    public const string LOGIN_URL = "/login";
+    public LoginPage(IWebDriver driver, string host) : base(driver, LOGIN_TITLE, LOGIN_URL, host)
     {
-        protected override string Url => "http://localhost:3000/login";
-        protected override string Title => "Wordki - Login";
-
-        public LoginPage(IWebDriver driver) : base(driver) { }
-
-        public IWebElement UserNameInput => Driver.FindElement(By.Id("userName"));
-
-        public IWebElement PasswordInput => Driver.FindElement(By.Id("password"));
-
-        public IWebElement Submit => Driver.FindElement(By.CssSelector("input[type=submit]"));
     }
+    
+    public IWebElement UserNameInput => Driver.FindElement(By.Id("userName"));
+    public IWebElement PasswordInput => Driver.FindElement(By.Id("password"));
+    public IWebElement Submit => Driver.FindElement(By.CssSelector("input[type=submit]"));
 }

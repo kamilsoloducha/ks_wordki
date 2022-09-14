@@ -4,4 +4,5 @@
 .vs/
 .vscode/
 **/TestResults/
+**/.idea/
 server/Wordki.sln.DotSettings.user

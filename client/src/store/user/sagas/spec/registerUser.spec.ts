@@ -6,7 +6,7 @@ import { registerUserEffect } from "../registerUser";
 
 describe("registerUserEffect", () => {
   const action = actions.register({
-    name: "name",
+    userName: "name",
     password: "password",
     email: "email",
     passwordConfirmation: "passwordConfirmation",
