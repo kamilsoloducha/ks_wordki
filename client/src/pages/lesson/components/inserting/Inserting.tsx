@@ -51,7 +51,7 @@ export default function Inserting(): ReactElement {
   const onAnswerChanged = useCallback(
     (event: any) => {
       const answer = event.target.value;
-      dispatch(act.setAnswer(answer));
+      dispatch(act.setAnswer({answer}));
     },
     [dispatch]
   );
