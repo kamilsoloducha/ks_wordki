@@ -8,10 +8,12 @@ import { take } from "redux-saga/effects";
 import { getCardsSuccess } from "../reducer";
 
 export function* getCardsEffect(): SagaIterator {
-  yield take("groupsSearch/getCards");
-  const selectedGroup: GroupSummary = yield select(selectSelectedGroup);
+  while (true) {
+    yield take("groupsSearch/getCards");
+    const selectedGroup: GroupSummary = yield select(selectSelectedGroup);
 
-  const cards: CardSummary[] = yield call(api.getCards, selectedGroup.id);
+    const cards: CardSummary[] = yield call(api.getCards, selectedGroup.id);
 
-  yield put(getCardsSuccess({ cards }));
+    yield put(getCardsSuccess({ cards }));
+  }
 }

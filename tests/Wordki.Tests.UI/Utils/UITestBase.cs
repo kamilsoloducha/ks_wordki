@@ -56,7 +56,7 @@ public abstract class UITestBase : IDisposable
 
     public void Dispose()
     {
-        // Driver.Quit();
-        // Driver.Dispose();
+        Driver.Quit();
+        Driver.Dispose();
     }
 }

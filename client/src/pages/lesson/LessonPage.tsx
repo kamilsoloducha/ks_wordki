@@ -2,9 +2,9 @@ import "./LessonPage.scss";
 import * as actions from "store/lesson/reducer";
 import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
-import { ReactElement, useCallback, useEffect } from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, RelativeRoutingType, useNavigate } from "react-router-dom";
 import Fiszka from "./components/fiszka/Fiszka";
 import Inserting from "./components/inserting/Inserting";
 import RepeatsController from "./components/repeatsController/RepeatsController";
@@ -13,7 +13,6 @@ import { LessonInformation } from "./components/lessonInformation/LessonInformat
 import { useTitle } from "common";
 
 export default function LessonPage(): ReactElement {
-  console.log('testtest');
   useTitle("Wordki - Lesson");
   const questions = useSelector(sel.selectRepeats);
   const status = useSelector(sel.selectLessonState);
@@ -24,18 +23,16 @@ export default function LessonPage(): ReactElement {
 
   useEffect(() => {
     if (status === FinishPending) {
-      history("lesson-result");
+      history("/lesson-result");
     }
     if (questions.length <= 0 && status.type < FinishPending.type) {
-      history("");
+      history("/dashboard");
     }
-  }, [status, questions, history]);
+  }, [status, questions, history, dispatch]);
 
-  useEffect(() => {
-    console.log("effect");
+  useEffectOnce(() => {
     dispatch(actions.resetResults());
     return () => {
-      console.log("close effect");
       dispatch(actions.resetLesson());
     };
   }, [dispatch]);
@@ -73,3 +70,31 @@ export default function LessonPage(): ReactElement {
     </div>
   );
 }
+
+
+export const useEffectOnce = (effect: any, dependencies?: any[]) => {
+
+  const destroyFunc = useRef<any>();
+  const effectCalled = useRef(false);
+  const renderAfterCalled = useRef(false);
+  const [val, setVal] = useState(0);
+
+  if (effectCalled.current) {
+    renderAfterCalled.current = true;
+  }
+
+  useEffect(() => {
+
+    if (!effectCalled.current) {
+      destroyFunc.current = effect();
+      effectCalled.current = true;
+    }
+
+    setVal(val => val + 1);
+
+    return () => {
+      if (!renderAfterCalled.current) { return; }
+      if (destroyFunc.current) { destroyFunc.current(); }
+    };
+  }, dependencies);
+};

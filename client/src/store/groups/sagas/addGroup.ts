@@ -10,18 +10,20 @@ import { AddGroup } from "../action-payloads";
 import { getGroupsSummary } from "../reducer";
 
 export function* addGroupEffect(): SagaIterator {
-  const action: PayloadAction<AddGroup> = yield take("groups/addGroup");
-  const userId: string = yield select(selectUserId);
+  while (true) {
+    const action: PayloadAction<AddGroup> = yield take("groups/addGroup");
+    const userId: string = yield select(selectUserId);
 
-  const request = {
-    userId,
-    groupName: action.payload.group.name,
-    back: action.payload.group.back,
-    front: action.payload.group.front,
-  } as api.AddGroupRequest;
-  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
-    api.addGroup,
-    request
-  );
-  yield put(data ? getGroupsSummary() : requestFailed(error));
+    const request = {
+      userId,
+      groupName: action.payload.group.name,
+      back: action.payload.group.back,
+      front: action.payload.group.front,
+    } as api.AddGroupRequest;
+    const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
+      api.addGroup,
+      request
+    );
+    yield put(data ? getGroupsSummary() : requestFailed(error));
+  }
 }

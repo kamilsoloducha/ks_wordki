@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "store/store";
 import { logout } from "store/user/reducer";
 
-function LogoutPage(): ReactElement {
+export default function LogoutPage(): ReactElement {
   const dispatch = useAppDispatch();
   useEffect(() => {
     localStorage.removeItem("id");
@@ -12,5 +12,3 @@ function LogoutPage(): ReactElement {
   }, [dispatch]);
   return <Navigate to={"/login"}/>;
 }
-
-export default LogoutPage;

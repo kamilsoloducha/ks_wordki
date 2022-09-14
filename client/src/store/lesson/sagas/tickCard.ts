@@ -8,13 +8,15 @@ import { SagaIterator } from "redux-saga";
 import { take } from "redux-saga/effects";
 
 export function* tickCardEffect(): SagaIterator {
-  yield take("lesson/tickCard");
+  while (true) {
+    yield take("lesson/tickCard");
 
-  const userId: string = yield select(selectUserId);
-  const repeat: Repeat = yield select(selectCurrectRepeat);
-  const request = { userId, sideId: repeat.sideId } as api.TickCardRequest;
-  const response: ApiResponse<any> = yield call(api.tickCard, request);
-  if (!response.isCorrect) {
-    console.error("Error occured");
+    const userId: string = yield select(selectUserId);
+    const repeat: Repeat = yield select(selectCurrectRepeat);
+    const request = { userId, sideId: repeat.sideId } as api.TickCardRequest;
+    const response: ApiResponse<any> = yield call(api.tickCard, request);
+    if (!response.isCorrect) {
+      console.error("Error occured");
+    }
   }
 }
