@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from "react";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "store/store";
 import { logout } from "store/user/reducer";
 
@@ -10,7 +10,7 @@ function LogoutPage(): ReactElement {
     localStorage.removeItem("token");
     dispatch(logout());
   }, [dispatch]);
-  return <Redirect to="" />;
+  return <Navigate to={"/login"}/>;
 }
 
 export default LogoutPage;

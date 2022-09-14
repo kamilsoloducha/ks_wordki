@@ -5,31 +5,34 @@ import { selectUserId } from "store/user/selectors";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
 import { getDashboardSummarySuccess, getForecastSuccess } from "../reducer";
+import { takeEvery } from "redux-saga/effects";
 
 export function* getDashbaordSummaryEffect(): SagaIterator {
-  yield take("dashboard/getDashboardSummary");
-  const userId: string = yield select(selectUserId);
-  const { data, error }: { data: api.DashboardSummaryResponse; error: any } = yield call(
-    api.getDashboardSummaryApi,
-    userId
-  );
-
-  const tomorrow = new Date(Date.now() + 1000 * 60 * 60 * 24);
-  const getForecastRequest: api.ForecastQuery = {
-    count: 7,
-    ownerId: userId,
-    startDate: tomorrow,
-  };
-
-  const result: ForecastModel[] = yield call(api.getForecast, getForecastRequest);
-  yield put(
-    data
-      ? getDashboardSummarySuccess({
-          dailyRepeats: data.dailyRepeats,
-          groupsCount: data.groupsCount,
-          cardsCount: data.cardsCount,
-        })
-      : requestFailed(error)
-  );
-  yield put(getForecastSuccess({ forecast: result }));
+  yield takeEvery("dashboard/getDashboardSummary", function* () {
+    const userId: string = yield select(selectUserId);
+    const response: { data: api.DashboardSummaryResponse, error: any } = yield call(
+      api.getDashboardSummaryApi,
+      userId
+    );
+  
+    const tomorrow = new Date(Date.now() + 1000 * 60 * 60 * 24);
+    const getForecastRequest: api.ForecastQuery = {
+      count: 7,
+      ownerId: userId,
+      startDate: tomorrow,
+    };
+  
+    const result: ForecastModel[] = yield call(api.getForecast, getForecastRequest);
+    yield put(
+      response.data
+        ? getDashboardSummarySuccess({
+            dailyRepeats: response.data.dailyRepeats,
+            groupsCount: response.data.groupsCount,
+            cardsCount: response.data.cardsCount,
+          })
+        : requestFailed(response.error)
+    );
+    yield put(getForecastSuccess({ forecast: result }));
+  });
+  
 }

@@ -36,12 +36,12 @@ export default function GroupDetailsPage(): ReactElement {
   const [page, setPage] = useState(1);
   const [actionsVisible, setActionsVisible] = useState(false);
   const [editedGroup, setEditedGroup] = useState<any>(null);
-  const { groupId }: { groupId: string } = useParams();
+  const { groupId }  = useParams<{ groupId: string }>();
 
   useTitle(`Wordki - ${groupDetails.name}`);
 
   useEffect(() => {
-    dispatch(actions.getCards({ groupId }));
+    dispatch(actions.getCards({ groupId: groupId ? groupId : "" }));
   }, [groupId, dispatch]);
 
   useEffect(() => {

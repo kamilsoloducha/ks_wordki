@@ -20,7 +20,7 @@ public class StartLesson
             _repository = repository;
         }
 
-        public async override Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
         {
             var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
 

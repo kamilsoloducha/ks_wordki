@@ -20,7 +20,7 @@ public abstract class Page
         Host = host;
     }
 
-    protected void NavigateTo()
+    public void NavigateTo()
     {
         Driver.Navigate().GoToUrl(Address);
         EnsurePageLoaded();

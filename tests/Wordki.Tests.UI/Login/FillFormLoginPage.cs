@@ -32,7 +32,7 @@ public class FillFormLoginPage : Utils.UITestBase
             b => true
         );
     }
-    void WhenUserNavigateToLoginPage() => Driver.Navigate().GoToUrl(_page.Address);
+    void WhenUserNavigateToLoginPage() => _page.NavigateTo();
     void AndWhenUserFillUserNameField() => _page.UserNameInput.InsertIntoInput("testUserName", false);
     void AndWhenUserFillPasswordField() => _page.PasswordInput.InsertIntoInput("testPassword", false);
     void AndWhenUserClickSubmit()
@@ -42,7 +42,7 @@ public class FillFormLoginPage : Utils.UITestBase
             .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs(DashboardPage.DASHBOARD_TITLE));
     }
     void ThenUserShouldBeRedirectToDashboard() => Assert.AreEqual(DashboardPage.DASHBOARD_TITLE, Driver.Title);
-    void AndThenServerShouldReceivedRequests() => Server.LogEntries.Should().HaveCount(4);
+    void AndThenServerShouldReceivedRequests() => Server.LogEntries.Should().HaveCount(6);
 
     [Test]
     public void ExecuteTest() => this.BDDfy();

@@ -25,7 +25,7 @@ public class ConfirmEmail
             _publishEndpoint = publishEndpoint;
         }
 
-        public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetUser(request.Id, cancellationToken);
 

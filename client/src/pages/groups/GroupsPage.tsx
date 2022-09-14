@@ -6,7 +6,7 @@ import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent"
 import { Pagination } from "common/components/pagination/Pagination";
 import { Fragment, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   addGroup,
   getGroupsSummary,
@@ -24,7 +24,7 @@ const pageSize = 30;
 export default function GroupsPage(): ReactElement {
   useTitle("Wordki - Groups");
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
   const [page, setPage] = useState(1);
   const [paginatedItems, setPaginatedItems] = useState<GroupSummary[]>([]);
   const isLoading = useSelector(selectIsLoading);
@@ -61,7 +61,7 @@ export default function GroupsPage(): ReactElement {
   };
 
   const selectGroup = (group: GroupSummary) => {
-    history.push("/cards/" + group.id);
+    history("/cards/" + group.id);
   };
 
   const onPageChagned = (event: PageChangedEvent) => {
@@ -69,7 +69,7 @@ export default function GroupsPage(): ReactElement {
   };
 
   const onSearchGroup = () => {
-    history.push("/groups/search");
+    history("/groups/search");
   };
 
   return (

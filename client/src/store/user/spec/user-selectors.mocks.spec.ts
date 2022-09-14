@@ -4,7 +4,7 @@ import UserState from "../state";
 
 const initialMainState: { userReducer: UserState } = {
   userReducer: {
-    expirationDate: new Date(),
+    expirationDate: new Date().toDateString(),
     id: "test",
     isLoading: true,
     isLogin: true,

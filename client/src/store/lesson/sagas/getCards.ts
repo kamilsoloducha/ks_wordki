@@ -40,5 +40,6 @@ function prepareRequest(settings: LessonSettings, userId: string): api.RepeatsQu
 }
 
 function forwardTo(location: any) {
-  history.push(location);
+  console.log(location);
+  history.go(location);
 }

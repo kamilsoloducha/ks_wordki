@@ -1,6 +1,6 @@
 import "./DashboardPage.scss";
 import { ReactElement, useEffect } from "react";
-import * as router from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { Info } from "./components/info/Info";
 import { useDispatch, useSelector } from "react-redux";
 import { getDashboardSummary } from "store/dashboard/reducer";
@@ -13,7 +13,7 @@ export default function DashboardPage(): ReactElement {
   useTitle("Wordki - Dashboard");
   const data = useSelector(selectData);
   const dispatch = useDispatch();
-  const history = router.useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getDashboardSummary());
@@ -26,10 +26,10 @@ export default function DashboardPage(): ReactElement {
         <Info
           title="Repeats"
           value={data.dailyRepeats}
-          onClick={() => history.push("/lesson-settings")}
+          onClick={() => navigate("/lesson-settings")}
         />
-        <Info title="Groups" value={data.groupsCount} onClick={() => history.push("/groups")} />
-        <Info title="Cards" value={data.cardsCount} onClick={() => history.push("/cards")} />
+        <Info title="Groups" value={data.groupsCount} onClick={() => navigate("/groups")} />
+        <Info title="Cards" value={data.cardsCount} onClick={() => navigate("/cards")} />
       </div>
       <Forecast />
     </>

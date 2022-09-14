@@ -4,7 +4,7 @@ import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
 import { ReactElement, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Fiszka from "./components/fiszka/Fiszka";
 import Inserting from "./components/inserting/Inserting";
 import RepeatsController from "./components/repeatsController/RepeatsController";
@@ -13,26 +13,29 @@ import { LessonInformation } from "./components/lessonInformation/LessonInformat
 import { useTitle } from "common";
 
 export default function LessonPage(): ReactElement {
+  console.log('testtest');
   useTitle("Wordki - Lesson");
   const questions = useSelector(sel.selectRepeats);
   const status = useSelector(sel.selectLessonState);
   const isCorrect = useSelector(sel.selectIsCorrect);
   const lessonType = useSelector(sel.selectLessonType);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
 
   useEffect(() => {
     if (status === FinishPending) {
-      history.push("lesson-result");
+      history("lesson-result");
     }
     if (questions.length <= 0 && status.type < FinishPending.type) {
-      history.push("");
+      history("");
     }
   }, [status, questions, history]);
 
   useEffect(() => {
+    console.log("effect");
     dispatch(actions.resetResults());
     return () => {
+      console.log("close effect");
       dispatch(actions.resetLesson());
     };
   }, [dispatch]);
