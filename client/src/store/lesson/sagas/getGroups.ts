@@ -7,10 +7,12 @@ import { take } from "redux-saga/effects";
 import { getGroupsSuccess } from "../reducer";
 
 export function* getGroupsEffect(): SagaIterator {
-  yield take("lesson/getGroups");
-  const ownerId: string = yield select(selectUserId);
-  const request = { ownerId } as api.GetGroupsToLessonQuery;
+  while (true) {
+    yield take("lesson/getGroups");
+    const ownerId: string = yield select(selectUserId);
+    const request = { ownerId } as api.GetGroupsToLessonQuery;
 
-  const apiResponse: ApiResponse<api.GetGroupToLessonResponse> = yield call(api.getGroups, request);
-  yield put(getGroupsSuccess({ groups: apiResponse.response.groups }));
+    const apiResponse: ApiResponse<api.GetGroupToLessonResponse> = yield call(api.getGroups, request);
+    yield put(getGroupsSuccess({ groups: apiResponse.response.groups }));
+  }
 }

@@ -7,10 +7,12 @@ import { SagaIterator } from "redux-saga";
 import { getOverviewSuccess } from "../reducer";
 
 export function* getOverviewEffect(): SagaIterator {
-  yield take("cardsSearch/getOverview");
-  const userId: string = yield select(selectUserId);
+  while (true) {
+    yield take("cardsSearch/getOverview");
+    const userId: string = yield select(selectUserId);
 
-  const overview: CardsOverview = yield call(api.cardsOverview, userId);
+    const overview: CardsOverview = yield call(api.cardsOverview, userId);
 
-  yield put(getOverviewSuccess({ overview }));
+    yield put(getOverviewSuccess({ overview }));
+  }
 }

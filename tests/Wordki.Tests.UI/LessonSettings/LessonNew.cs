@@ -31,7 +31,7 @@ public class LessonNew : UITestBase
     }
     
     void GivenCookies() => SetAuthorizationCookies();
-    void WhenUserNavigatesToSettings() => Driver.Navigate().GoToUrl(_settingsPage.Address);
+    void WhenUserNavigatesToSettings() => _settingsPage.NavigateAndEnsure();
     void AndWhenUserChangeTab() => _settingsPage.NewWordsTab.Click();
     void AndWhenUserSetsLanguage() => _settingsPage.SelectEnglishLanguage();
     void AndWhenUserSetsMode() => _settingsPage.SelectFiszki();

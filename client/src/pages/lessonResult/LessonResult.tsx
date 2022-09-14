@@ -2,7 +2,7 @@ import "./LessonResult.scss";
 import * as actions from "store/lesson/reducer";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { selectLessonHistory, selectResults, selectSettings } from "store/lesson/selectors";
 import { History } from "pages/lesson/components/history/History";
 import UserRepeat from "pages/lesson/models/userRepeat";
@@ -14,7 +14,7 @@ import { useTitle } from "common";
 export default function LessonResult(): ReactElement {
   useTitle("Wordki - Results");
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
   const results = useSelector(selectResults);
   const lessonHistory = useSelector(selectLessonHistory);
   const lessonSettings = useSelector(selectSettings);
@@ -33,11 +33,11 @@ export default function LessonResult(): ReactElement {
   }, [dispatch]);
 
   const startNew = useCallback(() => {
-    history.push("/lesson-settings");
+    history("/lesson-settings");
   }, [history]);
 
   const finish = useCallback(() => {
-    history.push("/dashboard");
+    history("/dashboard");
   }, [history]);
 
   const showCorrect = () => {

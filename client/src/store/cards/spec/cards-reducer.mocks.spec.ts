@@ -29,7 +29,7 @@ export class GetCards implements Context {
   givenState = {
     ...initialState,
   };
-  givenAction = actions.getCards("1");
+  givenAction = actions.getCards({groupId:"1"});
   expectedResult: CardsState = {
     ...initialState,
     isLoading: true,

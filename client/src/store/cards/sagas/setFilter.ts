@@ -6,28 +6,30 @@ import { SagaIterator } from "redux-saga";
 import { setFilteredCards } from "../reducer";
 
 export function* filterCards(): SagaIterator {
-  const filterState: FilterModel = yield select(selectFilterState);
-  let cards: CardSummary[] = yield select(selectCards);
-  if (filterState.drawer !== null) {
-    cards = cards.filter((item) => isCardFromDrawer(item, Number(filterState.drawer)));
-  }
+  while (true) {
+    const filterState: FilterModel = yield select(selectFilterState);
+    let cards: CardSummary[] = yield select(selectCards);
+    if (filterState.drawer !== null) {
+      cards = cards.filter((item) => isCardFromDrawer(item, Number(filterState.drawer)));
+    }
 
-  if (filterState.isLearning !== null) {
-    const filterMethod = filterState.isLearning ? isCardInUsed : isCardNotInUsed;
-    cards = cards.filter((item) => filterMethod(item));
-  }
+    if (filterState.isLearning !== null) {
+      const filterMethod = filterState.isLearning ? isCardInUsed : isCardNotInUsed;
+      cards = cards.filter((item) => filterMethod(item));
+    }
 
-  if (filterState.isTicked) {
-    cards = cards.filter((item) => {
-      console.log(item.front.isTicked, item.back.isTicked);
-      return item.front.isTicked || item.back.isTicked;
-    });
-  }
+    if (filterState.isTicked) {
+      cards = cards.filter((item) => {
+        console.log(item.front.isTicked, item.back.isTicked);
+        return item.front.isTicked || item.back.isTicked;
+      });
+    }
 
-  if (filterState.text.length > 2) {
-    cards = filterByText(String(filterState.text), cards);
+    if (filterState.text.length > 2) {
+      cards = filterByText(String(filterState.text), cards);
+    }
+    yield put(setFilteredCards({ cards: cards }));
   }
-  yield put(setFilteredCards({ cards: cards }));
 }
 
 function isCardFromDrawer(card: CardSummary, drawer: number): boolean {

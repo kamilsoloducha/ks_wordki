@@ -9,30 +9,32 @@ import { UpdateCard } from "../action-payloads";
 import { updateCardSuccess } from "../reducer";
 
 export function* updateCardEffect(): SagaIterator {
-  const action: PayloadAction<UpdateCard> = yield take("lesson/updateCard");
+  while (true) {
+    const action: PayloadAction<UpdateCard> = yield take("lesson/updateCard");
 
-  const userId: string = yield select(selectUserId);
+    const userId: string = yield select(selectUserId);
 
-  const request = {
-    userId,
-    groupId: action.payload.groupId,
-    cardId: action.payload.form.cardId,
-    front: {
-      value: action.payload.form.frontValue,
-      example: action.payload.form.frontExample,
-      isUsed: action.payload.form.frontEnabled,
-      isTicked: action.payload.form.isTicked,
-    },
-    back: {
-      value: action.payload.form.backValue,
-      example: action.payload.form.backExample,
-      isUsed: action.payload.form.backEnabled,
-      isTicked: action.payload.form.isTicked,
-    },
-  } as api.UpdateCardRequest;
+    const request = {
+      userId,
+      groupId: action.payload.groupId,
+      cardId: action.payload.form.cardId,
+      front: {
+        value: action.payload.form.frontValue,
+        example: action.payload.form.frontExample,
+        isUsed: action.payload.form.frontEnabled,
+        isTicked: action.payload.form.isTicked,
+      },
+      back: {
+        value: action.payload.form.backValue,
+        example: action.payload.form.backExample,
+        isUsed: action.payload.form.backEnabled,
+        isTicked: action.payload.form.isTicked,
+      },
+    } as api.UpdateCardRequest;
 
-  const response: api.UpdateCardResponse | boolean = yield call(api.updateCard2, request);
-  yield put(
-    response !== false ? updateCardSuccess({ form: action.payload.form }) : requestFailed({} as any)
-  );
+    const response: api.UpdateCardResponse | boolean = yield call(api.updateCard2, request);
+    yield put(
+      response !== false ? updateCardSuccess({ form: action.payload.form }) : requestFailed({} as any)
+    );
+  }
 }

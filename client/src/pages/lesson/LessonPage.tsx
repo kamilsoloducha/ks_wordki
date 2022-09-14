@@ -2,9 +2,9 @@ import "./LessonPage.scss";
 import * as actions from "store/lesson/reducer";
 import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
-import { ReactElement, useCallback, useEffect } from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { Navigate, RelativeRoutingType, useNavigate } from "react-router-dom";
 import Fiszka from "./components/fiszka/Fiszka";
 import Inserting from "./components/inserting/Inserting";
 import RepeatsController from "./components/repeatsController/RepeatsController";
@@ -19,18 +19,18 @@ export default function LessonPage(): ReactElement {
   const isCorrect = useSelector(sel.selectIsCorrect);
   const lessonType = useSelector(sel.selectLessonType);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
 
   useEffect(() => {
     if (status === FinishPending) {
-      history.push("lesson-result");
+      history("/lesson-result");
     }
     if (questions.length <= 0 && status.type < FinishPending.type) {
-      history.push("");
+      history("/dashboard");
     }
-  }, [status, questions, history]);
+  }, [status, questions, history, dispatch]);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     dispatch(actions.resetResults());
     return () => {
       dispatch(actions.resetLesson());
@@ -70,3 +70,31 @@ export default function LessonPage(): ReactElement {
     </div>
   );
 }
+
+
+export const useEffectOnce = (effect: any, dependencies?: any[]) => {
+
+  const destroyFunc = useRef<any>();
+  const effectCalled = useRef(false);
+  const renderAfterCalled = useRef(false);
+  const [val, setVal] = useState(0);
+
+  if (effectCalled.current) {
+    renderAfterCalled.current = true;
+  }
+
+  useEffect(() => {
+
+    if (!effectCalled.current) {
+      destroyFunc.current = effect();
+      effectCalled.current = true;
+    }
+
+    setVal(val => val + 1);
+
+    return () => {
+      if (!renderAfterCalled.current) { return; }
+      if (destroyFunc.current) { destroyFunc.current(); }
+    };
+  }, dependencies);
+};

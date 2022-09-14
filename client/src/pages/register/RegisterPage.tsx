@@ -1,17 +1,18 @@
 import "./RegisterPage.scss";
 import { useFormik } from "formik";
 import { ReactElement, useEffect } from "react";
-import { Redirect } from "react-router-dom";
 import * as selectors from "store/user/selectors";
 import { initialValue, RegisterFormModel } from "./models";
 import { validate } from "./services/registerFormValidator";
 import { useTitle } from "common";
 import { useAppDispatch, useAppSelector } from "store/store";
 import { register, setErrorMessage } from "store/user/reducer";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage(): ReactElement {
   useTitle("Wordki - Login");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const userId = useAppSelector(selectors.selectUserId);
   const isLoading = useAppSelector(selectors.selectIsLoading);
@@ -40,8 +41,9 @@ export default function RegisterPage(): ReactElement {
   };
 
   if (userId) {
-    return <Redirect to="/dashboard" />;
+    navigate('/dashboard');
   }
+  
   return (
     <div className="register-page-container">
       <form className="register-form" onSubmit={formik.handleSubmit} autoComplete="off">

@@ -17,7 +17,7 @@ public class GetUsers
             _userRepository = userRepository;
         }
 
-        public async override Task<ResponseBase<Response>> Handle(Query request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
             var users = await _userRepository.GetUsers(cancellationToken);
             return ResponseBase<Response>.Create(new Response

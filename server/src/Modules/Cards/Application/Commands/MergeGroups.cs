@@ -22,7 +22,7 @@ public class MergeGroups
             _repository = repository;
         }
 
-        public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var ownerId = OwnerId.Restore(request.UserId);
             var owner = await _repository.Get(ownerId, cancellationToken);

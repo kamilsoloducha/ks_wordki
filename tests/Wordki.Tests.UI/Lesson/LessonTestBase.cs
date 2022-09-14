@@ -77,7 +77,7 @@ class LessonTestBase : UITestBase
 
     protected void SetFiszkiLesson()
     {
-        Driver.Navigate().GoToUrl(_settingsPage.Address);
+        _settingsPage.NavigateAndEnsure();
         _settingsPage.SelectEnglishLanguage();
         _settingsPage.SelectFiszki();
         _settingsPage.SelectAllCards();
@@ -87,7 +87,7 @@ class LessonTestBase : UITestBase
     
     protected void SetInsertingLesson()
     {
-        Driver.Navigate().GoToUrl(_settingsPage.Address);
+        _settingsPage.NavigateAndEnsure();
         _settingsPage.SelectEnglishLanguage();
         _settingsPage.SelectInserting();
         _settingsPage.SelectAllCards();

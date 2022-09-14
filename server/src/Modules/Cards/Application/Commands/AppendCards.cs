@@ -24,7 +24,7 @@ public class AppendCards
             _hash = hash;
         }
 
-        public async override Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var ownerId = OwnerId.Restore(request.OwnerId);
             var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));

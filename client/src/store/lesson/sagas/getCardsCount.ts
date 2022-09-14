@@ -8,15 +8,17 @@ import { SagaIterator } from "redux-saga";
 import { getCardsCountSuccess } from "../reducer";
 
 export function* getCardsCountEffect(): SagaIterator {
-  yield take("lesson/getCardsCount");
-  const userId: string = yield select(selectUserId);
-  const settings: LessonSettings = yield select(selectSettings);
-  const apiResposne: ApiResponse<number> = yield call(
-    api.repeatsCount,
-    {
-      questionLanguage: settings.languages ?? [],
-      userId: userId,
-    }
-  );
-  yield put(getCardsCountSuccess({ count: apiResposne.response }));
+  while (true) {
+    yield take("lesson/getCardsCount");
+    const userId: string = yield select(selectUserId);
+    const settings: LessonSettings = yield select(selectSettings);
+    const apiResposne: ApiResponse<number> = yield call(
+      api.repeatsCount,
+      {
+        questionLanguage: settings.languages ?? [],
+        userId: userId,
+      }
+    );
+    yield put(getCardsCountSuccess({ count: apiResposne.response }));
+  }
 }

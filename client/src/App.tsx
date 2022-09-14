@@ -3,17 +3,17 @@ import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova/theme.css";
 import "primereact/resources/primereact.min.css";
 import { lazy, Suspense } from "react";
-import { Route, Router, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import ErrorPage from "common/components/error/ErrorPage";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
-import GuardedRoute from "common/components/guardedRoute/GuardedRoute";
-import history from "./common/services/history";
 import { selectBreadcrumbs } from "store/root/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "store/store";
 import { loginSuccess } from "store/user/reducer";
+import {CustomRouter} from "common/components/CustomRouter";
+import history from "common/services/history";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
 const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
@@ -37,38 +37,34 @@ export default function App() {
   const token = localStorage.getItem("token");
 
   if (userId && token) {
-    dispatch(loginSuccess({ id: userId, token: token , expirationDate: "2022/12/12"}));
+    dispatch(loginSuccess({ id: userId, token: token, expirationDate: "2022/12/12" }));
   }
 
   return (
     <>
       <AxiosEx>
-        <Router history={history}>
+        <CustomRouter history={history}>
           <TopBar isLogin={isLogin} breadCrumbs={breadCrumbs} />
           <div className="content">
             <Suspense fallback={<LoadingSpinner />}>
-              <Switch>
-                <Route path="/logout" component={LogoutPage} />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/register" component={RegisterPage} />
-                <GuardedRoute path="/dashboard" component={DashboardPage} auth={isLogin} />
-                <GuardedRoute path="/groups/search" component={GroupsSearchPage} auth={isLogin} />
-                <GuardedRoute path="/groups" component={GroupsPage} auth={isLogin} />
-                <GuardedRoute path="/cards/:groupId" component={GroupDetails} auth={isLogin} />
-                <GuardedRoute path="/cards" component={CardsPage} auth={isLogin} />
-                <Route path="/error" component={ErrorPage} />
-                <GuardedRoute
-                  path="/lesson-settings"
-                  component={LessonSettingsPage}
-                  auth={isLogin}
-                />
-                <GuardedRoute path="/lesson-result" component={LessonResultPage} auth={isLogin} />
-                <GuardedRoute path="/lesson" component={LessonPage} auth={isLogin} />
-                <GuardedRoute path="/" component={DashboardPage} auth={isLogin} />
-              </Switch>
+              <Routes>
+                <Route path="/logout" element={<LogoutPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/groups/search" element={<GroupsSearchPage />} />
+                <Route path="/groups" element={<GroupsPage />} />
+                <Route path="/cards/:groupId" element={<GroupDetails />} />
+                <Route path="/cards" element={<CardsPage />} />
+                <Route path="/error" element={<ErrorPage />} />
+                <Route path="/lesson-settings" element={<LessonSettingsPage />}/>
+                <Route path="/lesson-result" element={<LessonResultPage />} />
+                <Route path="/lesson" element={<LessonPage/>}/>
+                <Route path="/" element={<DashboardPage />} />
+              </Routes>
             </Suspense>
           </div>
-        </Router>
+        </CustomRouter>
       </AxiosEx>
     </>
   );
