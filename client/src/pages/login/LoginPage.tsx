@@ -1,19 +1,20 @@
 import "./LoginPage.scss";
 import { useFormik } from "formik";
 import { ReactElement, useEffect } from "react";
-import { Redirect } from "react-router";
 import * as selectors from "store/user/selectors";
 import { initialValues, LoginFormModel } from "./models";
 import { validate } from "./services/loginFormValidator";
 import { useTitle } from "common";
 import { useAppDispatch, useAppSelector } from "store/store";
 import { login, setErrorMessage } from "store/user/reducer";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(): ReactElement {
   useTitle("Wordki - Login");
   const userId = useAppSelector(selectors.selectUserId);
   const isLoading = useAppSelector(selectors.selectIsLoading);
   const errorMessage = useAppSelector(selectors.selectErrorMessage);
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -28,7 +29,7 @@ export default function LoginPage(): ReactElement {
   });
 
   if (userId) {
-    return <Redirect to="/dashboard" />;
+    navigate('/dashboard');
   }
 
   const onSubmit = (values: LoginFormModel) => {

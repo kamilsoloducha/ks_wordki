@@ -8,29 +8,31 @@ import { applyFilters, getCardsSuccess } from "../reducer";
 import { GetCards } from "../action-payload";
 
 export function* getCardsEffect(): SagaIterator {
-  const action: PayloadAction<GetCards> = yield take("cards/getCards");
+  while (true) {
+    const action: PayloadAction<GetCards> = yield take("cards/getCards");
 
-  const userId: string = yield select(selectUserId);
+    const userId: string = yield select(selectUserId);
 
-  const cardsSummaryResponse: api.CardsSummaryResponse = yield call(
-    api.cardsSummary,
-    userId,
-    action.payload.groupId
-  );
+    const cardsSummaryResponse: api.CardsSummaryResponse = yield call(
+      api.cardsSummary,
+      userId,
+      action.payload.groupId
+    );
 
-  const groupDetailsResponse: api.GroupDetailsResponse = yield call(
-    api.groupDetails,
-    action.payload.groupId
-  );
+    const groupDetailsResponse: api.GroupDetailsResponse = yield call(
+      api.groupDetails,
+      action.payload.groupId
+    );
 
-  yield put(
-    getCardsSuccess({
-      id: groupDetailsResponse.id,
-      name: groupDetailsResponse.name,
-      language1: groupDetailsResponse.front,
-      language2: groupDetailsResponse.back,
-      cards: cardsSummaryResponse.cards,
-    })
-  );
-  yield put(applyFilters());
+    yield put(
+      getCardsSuccess({
+        id: groupDetailsResponse.id,
+        name: groupDetailsResponse.name,
+        language1: groupDetailsResponse.front,
+        language2: groupDetailsResponse.back,
+        cards: cardsSummaryResponse.cards,
+      })
+    );
+    yield put(applyFilters());
+  }
 }

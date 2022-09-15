@@ -26,7 +26,7 @@ public class UpdateCard
             _hash = hash;
         }
 
-        public async override Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<Response>> Handle(Command request, CancellationToken cancellationToken)
         {
             var ownerId = OwnerId.Restore(request.UserId);
             var owner = await _repository.Get(ownerId, cancellationToken);

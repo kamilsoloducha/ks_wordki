@@ -1,12 +1,12 @@
-import { ReactElement } from "react";
-import { Redirect, Route, RouteComponentProps } from "react-router";
+import { ReactElement, ReactFragment } from "react";
+import {  Route, Navigate } from "react-router-dom";
 
-export default function GuardedRoute({ path, component, auth }: Model): ReactElement {
-  return auth ? <Route path={path} component={component} /> : <Redirect to="/login" />;
+export default function GuardedRoute({ path, component, auth }: Model) {
+  return <Route path={path} element={component} />;
 }
 
 interface Model {
   path: string;
-  component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any> | undefined;
+  component: ReactElement
   auth: boolean;
 }

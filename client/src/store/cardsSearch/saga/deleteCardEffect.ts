@@ -7,8 +7,10 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { DeleteCard } from "../action-payloads";
 
 export function* deleteCardEffect(): SagaIterator {
-  const action: PayloadAction<DeleteCard> = yield take("cardsSearch/deleteCard");
-  const userId: string = yield select(selectUserId);
-  yield call(api.deleteCard, userId, action.payload.groupId, action.payload.cardId);
-  yield put(search());
+  while (true) {
+    const action: PayloadAction<DeleteCard> = yield take("cardsSearch/deleteCard");
+    const userId: string = yield select(selectUserId);
+    yield call(api.deleteCard, userId, action.payload.groupId, action.payload.cardId);
+    yield put(search());
+  }
 }

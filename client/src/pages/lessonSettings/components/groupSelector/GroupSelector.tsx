@@ -28,7 +28,7 @@ interface Model {
   onSelectedChanged: (groupId: string) => void;
 }
 
-const dropdownItemLayout = (option: Group, props: any) => {
+const dropdownItemLayout = (option: Group, props: any = null) => {
   if (option) {
     return (
       <div className="group-item">

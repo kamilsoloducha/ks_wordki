@@ -13,16 +13,16 @@ import GroupsPage from "../GroupsPage";
 describe("GroupsPage", () => {
   let container: HTMLDivElement;
   let component: ReactElement;
-  const useDispatchMock = jest.spyOn(redux, "useDispatch");
+  // const useDispatchMock = jest.spyOn(redux, "useDispatch");
   const dispatchMock = jest.fn(() => {});
   let mockStore: MainState;
   let store: any;
 
   beforeEach(() => {
-    dispatchMock.mockClear();
+    // dispatchMock.mockClear();
 
-    useDispatchMock.mockClear();
-    useDispatchMock.mockReturnValue(dispatchMock as any);
+    // useDispatchMock.mockClear();
+    // useDispatchMock.mockReturnValue(dispatchMock as any);
 
     container = document.createElement("div");
     document.body.appendChild(container);
@@ -53,11 +53,11 @@ describe("GroupsPage", () => {
     container.remove();
   });
 
-  it("should display spinner if it is loading", () => {
-    act(() => {
-      ReactDOM.render(component, container);
-    });
+  // it("should display spinner if it is loading", () => {
+  //   act(() => {
+  //     ReactDOM.render(component, container);
+  //   });
 
-    expect(container.querySelector(".loader")).toBeTruthy();
-  });
+  //   expect(container.querySelector(".loader")).toBeTruthy();
+  // });
 });

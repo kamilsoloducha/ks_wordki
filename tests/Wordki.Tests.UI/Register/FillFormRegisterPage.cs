@@ -45,7 +45,7 @@ public class FillFormRegisterPage : Utils.UITestBase
         );
     }
 
-    void GivenRegisterPage() => Driver.Navigate().GoToUrl(_page.Address);
+    void GivenRegisterPage() => _page.NavigateTo();
 
     void WhenUserFillUserName() => _page.UserNameInput.InsertIntoInput("testUserName", false);
     void AndWhenUserFillEmail() => _page.EmailInput.InsertIntoInput("test@mail.com", false);

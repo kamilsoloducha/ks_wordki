@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 using TestStack.BDDfy;
@@ -32,7 +33,7 @@ public class LessonRepetition : UITestBase
 
     void GivenCookies() => SetAuthorizationCookies();
 
-    void WhenUserNavigatesToSettings() => Driver.Navigate().GoToUrl(_settingsPage.Address);
+    void WhenUserNavigatesToSettings() => _settingsPage.NavigateAndEnsure();
     void AndWhenUserSetsLanguage() => _settingsPage.SelectEnglishLanguage();
     void AndWhenUserSetsMode() => _settingsPage.SelectFiszki();
     void AndWhenUserSetsCount() => _settingsPage.SelectAllCards();

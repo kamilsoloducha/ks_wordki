@@ -9,14 +9,16 @@ import { take } from "redux-saga/effects";
 import { deleteCardSuccess } from "../reducer";
 
 export function* deleteCardEffect(): SagaIterator {
-  yield take("cards/deleteCard");
+  while (true) {
+    yield take("cards/deleteCard");
 
-  const userId: string = yield select(selectUserId);
-  const groupId: string = yield select(selectGroupId);
-  const selectedItem: CardSummary = yield select(selectSelectedCard);
+    const userId: string = yield select(selectUserId);
+    const groupId: string = yield select(selectGroupId);
+    const selectedItem: CardSummary = yield select(selectSelectedCard);
 
-  const response: {} | boolean = yield call(api.deleteCard, userId, groupId, selectedItem.id);
-  yield put(
-    response !== false ? deleteCardSuccess({ cardId: selectedItem.id }) : requestFailed({} as any)
-  );
+    const response: {} | boolean = yield call(api.deleteCard, userId, groupId, selectedItem.id);
+    yield put(
+      response !== false ? deleteCardSuccess({ cardId: selectedItem.id }) : requestFailed({} as any)
+    );
+  }
 }

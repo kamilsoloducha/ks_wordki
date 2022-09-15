@@ -7,17 +7,19 @@ import { SagaIterator } from "redux-saga";
 import { resetSelection, saveGroupSuccess } from "../reducer";
 
 export function* saveGroupEffect(): SagaIterator {
-  yield take("groupsSearch/saveGroup");
-  const ownerId: string = yield select(selectUserId);
-  const selectedGroup: GroupSummary = yield select(selectSelectedGroup);
+  while (true) {
+    yield take("groupsSearch/saveGroup");
+    const ownerId: string = yield select(selectUserId);
+    const selectedGroup: GroupSummary = yield select(selectSelectedGroup);
 
-  const request: api.SaveGroupRequest = {
-    ownerId,
-    groupId: selectedGroup.id,
-  };
+    const request: api.SaveGroupRequest = {
+      ownerId,
+      groupId: selectedGroup.id,
+    };
 
-  yield call(api.saveGroup, request);
+    yield call(api.saveGroup, request);
 
-  yield put(saveGroupSuccess());
-  yield put(resetSelection());
+    yield put(saveGroupSuccess());
+    yield put(resetSelection());
+  }
 }

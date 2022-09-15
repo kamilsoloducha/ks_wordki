@@ -26,7 +26,7 @@ public class RegisterAnswer
             _hash = hash;
         }
 
-        public async override Task<ResponseBase<Resposne>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<Resposne>> Handle(Command request, CancellationToken cancellationToken)
         {
             var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
 

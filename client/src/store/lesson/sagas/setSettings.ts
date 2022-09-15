@@ -7,10 +7,12 @@ import { SagaIterator } from "redux-saga";
 import { getCardsCount } from "../reducer";
 
 export function* setSettingLanguageEffect(): SagaIterator {
-  yield take("lesson/setSettingLanguage");
-  const settings: LessonSettings = yield select(selectSettings);
-  if (settings.mode === lessonMode.LessonMode.New) {
-    return;
+  while (true) {
+    yield take("lesson/setSettingLanguage");
+    const settings: LessonSettings = yield select(selectSettings);
+    if (settings.mode === lessonMode.LessonMode.New) {
+      return;
+    }
+    yield put(getCardsCount());
   }
-  yield put(getCardsCount());
 }

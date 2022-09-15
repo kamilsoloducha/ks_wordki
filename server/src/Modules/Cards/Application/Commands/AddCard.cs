@@ -26,7 +26,7 @@ public class AddCard
             _hash = hash;
         }
 
-        public async override Task<ResponseBase<string>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<ResponseBase<string>> Handle(Command request, CancellationToken cancellationToken)
         {
             var ownerId = OwnerId.Restore(request.UserId);
 

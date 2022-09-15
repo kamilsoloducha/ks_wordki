@@ -84,7 +84,7 @@ interface Model {
   onSubmit: (group: GroupDetails) => void;
 }
 
-const dropdownItemLayout = (option: Language, props: any) => {
+const dropdownItemLayout = (option: Language, props: any = null) => {
   return option ? (
     <div className="language-options-item">
       <img className="flag" src={option.icon} width="24px" alt={option.label} />

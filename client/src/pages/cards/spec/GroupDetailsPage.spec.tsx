@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import GroupDetailsPage from "../GroupDetailsPage";
 import { Router } from "react-router";
-import history from "common/services/history";
 import { ReactElement } from "react";
 import configureStore from "redux-mock-store";
 import { MainState } from "store/store";
@@ -55,9 +54,9 @@ describe("CardItem", () => {
     component = (
       <>
         <redux.Provider store={store}>
-          <Router history={history}>
+          {/* <Router history={history}>
             <GroupDetailsPage />
-          </Router>
+          </Router> */}
         </redux.Provider>
       </>
     );
