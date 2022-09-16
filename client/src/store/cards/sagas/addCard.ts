@@ -10,15 +10,16 @@ import { UpdateCard } from "../action-payload";
 import { selectCard } from "../reducer";
 import { CardSummary } from "pages/cards/models";
 
-export function* addCardEffect(): SagaIterator {
-  while (true) {
-    const action: PayloadAction<UpdateCard> = yield take("cards/addCard");
-    const userId: string = yield select(selectUserId);
-    const id: string = yield select(selectGroupId);
+export function* addCardWorker(action: PayloadAction<UpdateCard>): any {
+  const userId: string = yield select(selectUserId);
+  const id: string = yield select(selectGroupId);
 
-    const response: string | boolean = yield call(addCard, userId, id, action.payload.card);
-    yield put(
-      response !== false ? selectCard({ item: {} as CardSummary }) : requestFailed({} as any)
-    );
-  }
+  const response: string | boolean = yield call(addCard, userId, id, action.payload.card);
+  yield put(
+    response !== false ? selectCard({ item: {} as CardSummary }) : requestFailed({} as any)
+  );
+}
+
+export function* addCardEffect(): SagaIterator {
+  yield takeEvery("cards/addCard", addCardWorker);
 }

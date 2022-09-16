@@ -7,32 +7,33 @@ import { SagaIterator } from "redux-saga";
 import { getDashboardSummarySuccess, getForecastSuccess } from "../reducer";
 import { takeEvery } from "redux-saga/effects";
 
-export function* getDashbaordSummaryEffect(): SagaIterator {
-  while (true) {
-    yield take("dashboard/getDashboardSummary");
-    const userId: string = yield select(selectUserId);
-    const response: { data: api.DashboardSummaryResponse, error: any } = yield call(
-      api.getDashboardSummaryApi,
-      userId
-    );
+export function* getDashbaordSummaryWorker():any{
+  const userId: string = yield select(selectUserId);
+  const response: { data: api.DashboardSummaryResponse, error: any } = yield call(
+    api.getDashboardSummaryApi,
+    userId
+  );
 
-    const tomorrow = new Date(Date.now() + 1000 * 60 * 60 * 24);
-    const getForecastRequest: api.ForecastQuery = {
-      count: 7,
-      ownerId: userId,
-      startDate: tomorrow,
-    };
-
-    const result: ForecastModel[] = yield call(api.getForecast, getForecastRequest);
-    yield put(
-      response.data
-        ? getDashboardSummarySuccess({
-          dailyRepeats: response.data.dailyRepeats,
-          groupsCount: response.data.groupsCount,
-          cardsCount: response.data.cardsCount,
-        })
-        : requestFailed(response.error)
-    );
-    yield put(getForecastSuccess({ forecast: result }));
+  const tomorrow = new Date(Date.now() + 1000 * 60 * 60 * 24);
+  const getForecastRequest: api.ForecastQuery = {
+    count: 7,
+    ownerId: userId,
+    startDate: tomorrow,
   };
+
+  const result: ForecastModel[] = yield call(api.getForecast, getForecastRequest);
+  yield put(
+    response.data
+      ? getDashboardSummarySuccess({
+        dailyRepeats: response.data.dailyRepeats,
+        groupsCount: response.data.groupsCount,
+        cardsCount: response.data.cardsCount,
+      })
+      : requestFailed(response.error)
+  );
+  yield put(getForecastSuccess({ forecast: result }));
+}
+
+export function* getDashbaordSummaryEffect(): SagaIterator {
+    yield takeEvery("dashboard/getDashboardSummary", getDashbaordSummaryWorker);
 }

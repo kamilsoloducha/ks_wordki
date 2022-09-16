@@ -3,7 +3,7 @@ import * as selectors from "store/cards/selectors";
 import * as actions from "store/cards/reducer";
 import * as groupActions from "store/groups/reducer";
 import * as utils from "./services";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import CardsList from "./components/cardsList/CardsList";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -37,10 +37,9 @@ export default function GroupDetailsPage(): ReactElement {
   const [actionsVisible, setActionsVisible] = useState(false);
   const [editedGroup, setEditedGroup] = useState<any>(null);
   const { groupId }  = useParams<{ groupId: string }>();
-
   useTitle(`Wordki - ${groupDetails.name}`);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     dispatch(actions.getCards({ groupId: groupId ? groupId : "" }));
   }, [groupId, dispatch]);
 
@@ -250,3 +249,31 @@ function getFormModelFromCardSummary(card: CardSummary): FormModel {
 }
 
 const drawers = [1, 2, 3, 4, 5];
+
+
+export const useEffectOnce = (effect: any, dependencies?: any[]) => {
+
+  const destroyFunc = useRef<any>();
+  const effectCalled = useRef(false);
+  const renderAfterCalled = useRef(false);
+  const [val, setVal] = useState(0);
+
+  if (effectCalled.current) {
+    renderAfterCalled.current = true;
+  }
+
+  useEffect(() => {
+
+    if (!effectCalled.current) {
+      destroyFunc.current = effect();
+      effectCalled.current = true;
+    }
+
+    setVal(val => val + 1);
+
+    return () => {
+      if (!renderAfterCalled.current) { return; }
+      if (destroyFunc.current) { destroyFunc.current(); }
+    };
+  }, dependencies);
+};

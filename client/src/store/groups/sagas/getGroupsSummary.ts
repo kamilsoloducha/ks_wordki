@@ -3,17 +3,18 @@ import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
-import { take } from "redux-saga/effects";
+import { take, takeEvery } from "redux-saga/effects";
 import { getGroupsSummarySuccess } from "../reducer";
 
+export function* getGroupsSummaryWorker(): any {
+  const userId: string = yield select(selectUserId);
+  const { data, error }: { data: api.GroupsSummaryResponse; error: any } = yield call(
+    api.groups,
+    userId
+  );
+  yield put(data ? getGroupsSummarySuccess({ groups: data.groups }) : requestFailed(error));
+}
+
 export function* getGroupsSummaryEffect(): SagaIterator {
-  while(true){
-    yield take("groups/getGroupsSummary");
-    const userId: string = yield select(selectUserId);
-    const { data, error }: { data: api.GroupsSummaryResponse; error: any } = yield call(
-      api.groups,
-      userId
-    );
-    yield put(data ? getGroupsSummarySuccess({ groups: data.groups }) : requestFailed(error));
-  }
+  yield takeEvery("groups/getGroupsSummary", getGroupsSummaryWorker);
 }
