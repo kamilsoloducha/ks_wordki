@@ -3,7 +3,7 @@ import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
-import { take, takeEvery } from "redux-saga/effects";
+import { takeEvery } from "redux-saga/effects";
 import { getGroupsSummarySuccess } from "../reducer";
 
 export function* getGroupsSummaryWorker(): any {

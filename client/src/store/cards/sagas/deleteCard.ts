@@ -5,7 +5,7 @@ import { selectGroupId, selectSelectedCard } from "../selectors";
 import * as api from "api";
 import { CardSummary } from "pages/cards/models";
 import { SagaIterator } from "redux-saga";
-import { take, takeEvery } from "redux-saga/effects";
+import { takeEvery } from "redux-saga/effects";
 import { deleteCardSuccess } from "../reducer";
 
 export function* deleteCardWorker():any{

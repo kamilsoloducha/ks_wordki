@@ -256,7 +256,7 @@ export const useEffectOnce = (effect: any, dependencies?: any[]) => {
   const destroyFunc = useRef<any>();
   const effectCalled = useRef(false);
   const renderAfterCalled = useRef(false);
-  const [val, setVal] = useState(0);
+  const [, setVal] = useState(0);
 
   if (effectCalled.current) {
     renderAfterCalled.current = true;
@@ -275,5 +275,6 @@ export const useEffectOnce = (effect: any, dependencies?: any[]) => {
       if (!renderAfterCalled.current) { return; }
       if (destroyFunc.current) { destroyFunc.current(); }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
   }, dependencies);
 };

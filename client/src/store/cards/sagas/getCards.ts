@@ -2,7 +2,7 @@ import { call, put, select } from "@redux-saga/core/effects";
 import { selectUserId } from "store/user/selectors";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
-import { take, takeEvery } from "redux-saga/effects";
+import { takeEvery } from "redux-saga/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { applyFilters, getCardsSuccess } from "../reducer";
 import { GetCards } from "../action-payload";

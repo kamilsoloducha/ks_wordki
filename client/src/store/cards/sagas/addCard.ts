@@ -4,7 +4,7 @@ import { selectUserId } from "store/user/selectors";
 import { selectGroupId } from "../selectors";
 import { addCard } from "api";
 import { SagaIterator } from "redux-saga";
-import { take, takeEvery } from "redux-saga/effects";
+import { takeEvery } from "redux-saga/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { UpdateCard } from "../action-payload";
 import { selectCard } from "../reducer";

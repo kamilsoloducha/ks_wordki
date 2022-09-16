@@ -4,7 +4,7 @@ import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
 import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, RelativeRoutingType, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Fiszka from "./components/fiszka/Fiszka";
 import Inserting from "./components/inserting/Inserting";
 import RepeatsController from "./components/repeatsController/RepeatsController";
@@ -72,12 +72,12 @@ export default function LessonPage(): ReactElement {
 }
 
 
-export const useEffectOnce = (effect: any, dependencies?: any[]) => {
+export const useEffectOnce = (effect: any, dependencies?: React.DependencyList) => {
 
   const destroyFunc = useRef<any>();
   const effectCalled = useRef(false);
   const renderAfterCalled = useRef(false);
-  const [val, setVal] = useState(0);
+  const [, setVal] = useState(0);
 
   if (effectCalled.current) {
     renderAfterCalled.current = true;
@@ -96,5 +96,6 @@ export const useEffectOnce = (effect: any, dependencies?: any[]) => {
       if (!renderAfterCalled.current) { return; }
       if (destroyFunc.current) { destroyFunc.current(); }
     };
-  }, dependencies);
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
+  }, [dependencies]);
 };

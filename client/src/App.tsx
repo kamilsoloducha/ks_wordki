@@ -3,7 +3,7 @@ import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova/theme.css";
 import "primereact/resources/primereact.min.css";
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import ErrorPage from "common/components/error/ErrorPage";
 import { selectIsLogin } from "store/user/selectors";

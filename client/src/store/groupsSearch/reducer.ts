@@ -1,4 +1,4 @@
-import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GroupsSearchState, initialGroupsSearchState } from "./state";
 import * as p from "./action-payloads";
 

@@ -1,4 +1,4 @@
-import { call, put, select, take } from "@redux-saga/core/effects";
+import { call, put, select } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
 import { selectUserId } from "store/user/selectors";
 import * as api from "api";
