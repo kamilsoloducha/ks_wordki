@@ -2,7 +2,7 @@ import "./LessonPage.scss";
 import * as actions from "store/lesson/reducer";
 import * as sel from "store/lesson/selectors";
 import * as type from "./models/resultTypes";
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Fiszka from "./components/fiszka/Fiszka";
@@ -11,6 +11,7 @@ import RepeatsController from "./components/repeatsController/RepeatsController"
 import { FinishPending } from "./models/lessonState";
 import { LessonInformation } from "./components/lessonInformation/LessonInformation";
 import { useTitle } from "common";
+import { useEffectOnce } from "common/hooks/useEffectOnce";
 
 export default function LessonPage(): ReactElement {
   useTitle("Wordki - Lesson");
@@ -71,31 +72,3 @@ export default function LessonPage(): ReactElement {
   );
 }
 
-
-export const useEffectOnce = (effect: any, dependencies?: React.DependencyList) => {
-
-  const destroyFunc = useRef<any>();
-  const effectCalled = useRef(false);
-  const renderAfterCalled = useRef(false);
-  const [, setVal] = useState(0);
-
-  if (effectCalled.current) {
-    renderAfterCalled.current = true;
-  }
-
-  useEffect(() => {
-
-    if (!effectCalled.current) {
-      destroyFunc.current = effect();
-      effectCalled.current = true;
-    }
-
-    setVal(val => val + 1);
-
-    return () => {
-      if (!renderAfterCalled.current) { return; }
-      if (destroyFunc.current) { destroyFunc.current(); }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps 
-  }, [dependencies]);
-};
