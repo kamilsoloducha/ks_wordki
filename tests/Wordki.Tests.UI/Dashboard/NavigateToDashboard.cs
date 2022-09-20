@@ -46,7 +46,7 @@ public class NavigateToDashboard : Utils.UITestBase
 
     void ThenRepeatInfoIsDisplayed()
     {
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(100))
+        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
             .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
         _page.Repeats.Text.Should().Contain("30");
         _page.Cards.Text.Should().Contain("20");

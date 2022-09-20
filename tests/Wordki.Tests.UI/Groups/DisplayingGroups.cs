@@ -35,7 +35,7 @@ public class DisplayingGroups : Utils.UITestBase
     
     
     void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
-    void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(100))
+    void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
     
     

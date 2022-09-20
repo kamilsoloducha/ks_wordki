@@ -42,7 +42,7 @@ public abstract class UITestBase : IDisposable
     [SetUp]
     protected void SetupUtils()
     {
-        Server = WireMockFactory.Create("http://*:5000");
+        Server = WireMockFactory.Create("http://*:5001");
     }
 
     [TearDown]
