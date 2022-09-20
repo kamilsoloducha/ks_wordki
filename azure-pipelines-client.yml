@@ -41,7 +41,7 @@ steps:
     inputs:
       script: |
         docker ps -a
-        docker cp wordki.ci.e2e.tests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/TESTS-ui-e2e.xml
+        docker cp wordki.ci.e2e.tests:/src/TestResults/TestResults.xml $(System.DefaultWorkingDirectory)/TESTS-ui-e2e.xml
   - task: PublishTestResults@2
     continueOnError: true
     displayName: Publish test results
