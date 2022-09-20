@@ -20,15 +20,14 @@ steps:
     inputs:
       script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
   - task: CmdLine@2
+    continueOnError: true
     displayName: Copy test results
     inputs:
       script: |
         docker ps -a
         docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/junit.xml
         docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
-        ls $(System.DefaultWorkingDirectory)
   - task: DockerCompose@0
-    continueOnError: true
     displayName: Run UI Tests
     inputs:
       containerregistrytype: "Container Registry"
@@ -42,20 +41,27 @@ steps:
     inputs:
       script: |
         docker ps -a
-        docker cp wordki.ci.e2e.tests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/test/results
-        docker cp wordki.ci.e2e.tests:/src/ $(System.DefaultWorkingDirectory)/temp
-        tree $(System.DefaultWorkingDirectory)
+        docker cp wordki.ci.e2e.tests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/TESTS-ui-e2e.xml
   - task: PublishTestResults@2
+    continueOnError: true
     displayName: Publish test results
     inputs:
       testResultsFormat: "JUnit"
       searchFolder: $(System.DefaultWorkingDirectory)
       testResultsFiles: "junit.xml"
   - task: PublishCodeCoverageResults@1
+    continueOnError: true
     displayName: Publish code coverage
     inputs:
       codeCoverageTool: "Cobertura"
       summaryFileLocation: "$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml"
+  - task: PublishTestResults@2
+    continueOnError: true
+    displayName: Publish ui test results
+    inputs:
+      testResultsFormat: "JUnit"
+      searchFolder: $(System.DefaultWorkingDirectory)
+      testResultsFiles: "TESTS-ui-e2e.xml"
   - task: DockerCompose@0
     displayName: Release
     inputs:
