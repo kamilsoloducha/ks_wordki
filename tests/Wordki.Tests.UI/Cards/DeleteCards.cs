@@ -59,10 +59,9 @@ public sealed class DeleteCards : Utils.UITestBase
     void GivenLoginUser() => SetAuthorizationCookies();
 
 
-    void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
-
+    void WhenUserGoToCardsPage() => _page.NavigateTo();
     void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
-        .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
+        .Until(driver => driver.FindElements(By.ClassName("card-item")).Count != 0);
 
     void AndWhenUserClickOnCard() => _page.Cards.First().Click();
     void AndWhenUserDeleteCard() => _cardDialog.DeleteAndWait();

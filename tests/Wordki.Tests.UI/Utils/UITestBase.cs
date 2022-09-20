@@ -34,7 +34,7 @@ public abstract class UITestBase : IDisposable
     
     public void SetAuthorizationCookies()
     {
-        Driver.Navigate().GoToUrl($"{ClientHost}{LoginPage.LOGIN_URL}");
+        new LoginPage(Driver, ClientHost).NavigateTo();
         Driver.ExecuteScript("localStorage.setItem(\"id\", \"userid\");");
         Driver.ExecuteScript("localStorage.setItem(\"token\", \"token\");");
     }
