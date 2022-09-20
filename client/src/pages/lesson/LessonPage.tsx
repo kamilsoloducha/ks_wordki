@@ -36,7 +36,7 @@ export default function LessonPage(): ReactElement {
     return () => {
       dispatch(actions.resetLesson());
     };
-  }, [dispatch]);
+  });
 
   const correct = useCallback(() => {
     dispatch(actions.correct({ result: isCorrect ? type.Correct : type.Accepted }));

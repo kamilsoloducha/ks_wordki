@@ -26,7 +26,7 @@ public class DashboardClickGroups : Utils.UITestBase
                 "/dashboard/summary/userid",
                 new { groupsCount = 10, cardsCount = 20, dailyRepeats = 30 })
             .AddGetEndpoint(
-                "/dashboard/forecast",
+                x => x.StartsWith("/dashboard/forecast"),
                 new object[]
                 {
                     new { Count = 0, Date = _today },
@@ -45,9 +45,9 @@ public class DashboardClickGroups : Utils.UITestBase
 
     void GivenLoginUser() => SetAuthorizationCookies();
 
-    void WhenUserGoToDashboardPage() => Driver.Navigate().GoToUrl(_page.Address);
+    void WhenUserGoToDashboardPage() => _page.NavigateTo();
     
-    void AndPageIsLoaded() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsLoaded() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
 
     void AndWhenUserClickGroups() => _page.Groups.Click();

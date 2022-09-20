@@ -1,5 +1,7 @@
+using System;
 using FluentAssertions;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace Wordki.Tests.UI.Utils;
 
@@ -28,6 +30,8 @@ public abstract class Page
 
     private void EnsurePageLoaded()
     {
+        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+            .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs(Title));
         Driver.Url.Should().Be(Address);
         Driver.Title.Should().Be(Title);
     }

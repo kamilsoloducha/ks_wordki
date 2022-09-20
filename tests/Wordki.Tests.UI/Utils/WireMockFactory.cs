@@ -36,7 +36,27 @@ public static class WireMockFactory
         return server;
     }
 
-    public static WireMockServer AddPutEndpoint(this WireMockServer server, string path, object response, Func<string, bool> bodyMatcher)
+    public static WireMockServer AddGetEndpoint(this WireMockServer server, Func<string, bool> path, object response)
+    {
+        server.AddOptionEndpoint(path);
+
+        server.Given(
+                Request.Create()
+                    .WithPath(path)
+                    .UsingGet()
+            )
+            .RespondWith(
+                Response.Create()
+                    .AddHeaders()
+                    .WithBody(SerializeObject(response))
+                    .WithStatusCode(200)
+            );
+
+        return server;
+    }
+
+    public static WireMockServer AddPutEndpoint(this WireMockServer server, string path, object response,
+        Func<string, bool> bodyMatcher)
     {
         server.AddOptionEndpoint(path);
 
@@ -56,7 +76,8 @@ public static class WireMockFactory
         return server;
     }
 
-    public static WireMockServer AddPostEndpoint(this WireMockServer server, string path, object response, Func<string, bool> bodyMatcher)
+    public static WireMockServer AddPostEndpoint(this WireMockServer server, string path, object response,
+        Func<string, bool> bodyMatcher)
     {
         server.AddOptionEndpoint(path);
 
@@ -107,6 +128,21 @@ public static class WireMockFactory
             );
         return server;
     }
+
+    public static WireMockServer AddOptionEndpoint(this WireMockServer server, Func<string, bool> path)
+    {
+        server.Given(
+                Request.Create()
+                    .WithPath(path)
+                    .UsingOptions()
+            )
+            .RespondWith(
+                Response.Create()
+                    .AddHeaders()
+            );
+        return server;
+    }
+
     private static IResponseBuilder AddHeaders(this IResponseBuilder builder)
         => builder.WithStatusCode(204)
             .WithHeader("Access-Control-Allow-Origin", "*")
@@ -121,5 +157,4 @@ public static class WireMockFactory
                 PropertyNameCaseInsensitive = false,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
-
 }
