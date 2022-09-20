@@ -1,34 +1,30 @@
-import * as redux from "react-redux";
-import { CardSummary } from "pages/cards/models";
+import { render } from "@testing-library/react";
 import { LessonStatus, StartLessonPending } from "pages/lesson/models/lessonState";
-import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import createMockStore from "redux-mock-store";
 import LessonController from "../LessonController";
 
 describe("LessonController", () => {
-  let container: HTMLDivElement;
-  const useDispatchMock = jest.spyOn(redux, "useDispatch");
-  const dispatchMock = jest.fn(() => {});
+  const mockStore = createMockStore([])({});
+  let container: HTMLElement;
 
   beforeEach(() => {
-    dispatchMock.mockClear();
-
-    useDispatchMock.mockClear();
-    useDispatchMock.mockReturnValue(dispatchMock as any);
-
-    container = document.createElement("div");
-    document.body.appendChild(container);
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
+    mockStore.clearActions;
+    jest.clearAllMocks();
   });
 
   it("should be created", async () => {
     const lessonState: LessonStatus = StartLessonPending;
     act(() => {
-      ReactDOM.render(<LessonController lessonState={lessonState} />, container);
+      container = render(
+        <Provider store={mockStore}>
+          <LessonController lessonState={lessonState} />
+        </Provider>
+      ).container;
     });
 
     expect(container.querySelector("button")).toBeTruthy();

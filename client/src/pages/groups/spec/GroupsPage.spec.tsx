@@ -1,63 +1,58 @@
-import * as redux from "react-redux";
-import * as router from "react-router";
-import ReactDOM from "react-dom";
-import { act } from "react-dom/test-utils";
-import { Router } from "react-router";
-import history from "common/services/history";
-import { ReactElement } from "react";
-import configureStore from "redux-mock-store";
-import { MainState } from "store/store";
-import React from "react";
+import { render } from "@testing-library/react";
+import GroupsState from "store/groups/state";
+import configureMockStore from 'redux-mock-store';
+import { Provider } from "react-redux";
 import GroupsPage from "../GroupsPage";
 
+
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockedUsedNavigate,
+}));
+
 describe("GroupsPage", () => {
-  let container: HTMLDivElement;
-  let component: ReactElement;
-  // const useDispatchMock = jest.spyOn(redux, "useDispatch");
-  const dispatchMock = jest.fn(() => {});
-  let mockStore: MainState;
-  let store: any;
 
+  const mockState: GroupsState = {
+    isLoading: false,
+    groups: [],
+    selectedItem: null,
+    selectedItems: [],
+    searchingGroups: []
+  }
+
+  const mockStore = configureMockStore([])({ groupsReducer: mockState });
   beforeEach(() => {
-    // dispatchMock.mockClear();
-
-    // useDispatchMock.mockClear();
-    // useDispatchMock.mockReturnValue(dispatchMock as any);
-
-    container = document.createElement("div");
-    document.body.appendChild(container);
-
-    mockStore = {
-      groupsReducer: {
-        isLoading: true,
-        groups: [],
-        selectedItem: null,
-        selectedItems: [],
-        searchingGroups: [],
-      },
-    } as any;
-
-    store = configureStore([])(mockStore);
-
-    component = (
-      <>
-        <redux.Provider store={store}>
-          <GroupsPage />
-        </redux.Provider>
-      </>
-    );
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
+    jest.clearAllMocks();
+    mockStore.clearActions();
   });
 
-  // it("should display spinner if it is loading", () => {
-  //   act(() => {
-  //     ReactDOM.render(component, container);
-  //   });
+  it("should be rendered", () => {
+    mockState.isLoading = false;
 
-  //   expect(container.querySelector(".loader")).toBeTruthy();
-  // });
+    const { container } = render(
+      <Provider store={mockStore}>
+        <GroupsPage />
+      </Provider>
+    );
+
+    expect(container.getElementsByClassName("groups-action-container").length).toBe(1);
+  });
+
+  it("should render spinner if isLoading", () => {
+    mockState.isLoading = true;
+
+    const { container } = render(
+      <Provider store={mockStore}>
+        <GroupsPage />
+      </Provider>
+    );
+
+    expect(container.getElementsByClassName("loader").length).toBe(1);
+  });
+
 });

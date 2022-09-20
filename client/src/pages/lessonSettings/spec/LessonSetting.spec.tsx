@@ -1,78 +1,66 @@
 import * as redux from "react-redux";
-import * as router from "react-router";
-import ReactDOM from "react-dom";
-import { act } from "react-dom/test-utils";
-import { Router } from "react-router";
-import history from "common/services/history";
 import { ReactElement } from "react";
-import configureStore from "redux-mock-store";
-import { MainState } from "store/store";
-import React from "react";
-import { SetLesson } from "pages/lesson/models/lessonState";
+import configureMockStore from 'redux-mock-store';
+import { LessonStatus } from "pages/lesson/models/lessonState";
 import Results from "pages/lesson/models/results";
 import LessonSettingsPage from "../LessonSetting";
 import { LessonSettings } from "../models/lessonSettings";
-import { BrowserRouter } from "react-router-dom";
+import { render } from "@testing-library/react";
+import LessonState from "store/lesson/state";
+
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockedUsedNavigate,
+}));
 
 describe("GroupsPage", () => {
-  let container: HTMLDivElement;
   let component: ReactElement;
-  let mockStore: MainState;
-  let store: any;
+
+  const mockState: LessonState = {
+    isProcessing: false,
+    repeats: [],
+    lessonState: {} as LessonStatus,
+    isCorrect: null,
+    isSecondChangeUsed: false,
+    answer: "",
+    cardsCount: null,
+    lessonCount: 0,
+    lessonType: 0,
+    results: {} as Results,
+    settings: {} as LessonSettings,
+    lessonHistory: []
+  };
+
+  const mockStore = configureMockStore([])({ lessonReducer: mockState });;
 
   beforeEach(() => {
-
-    container = document.createElement("div");
-    document.body.appendChild(container);
-
-    mockStore = {
-      lessonReducer: {
-        isProcessing: false,
-        repeats: [{}],
-        lessonState: SetLesson,
-        isCorrect: null,
-        isSecondChangeUsed: false,
-        answer: "",
-        cardsCount: null,
-        results: {} as Results,
-        lessonCount: 0,
-        lessonType: 0,
-        settings: {
-          mode: 1,
-          count: 0,
-          languages: [],
-          type: -1,
-          groups: [],
-          selectedGroupId: null,
-          wrongLimit: 15,
-        } as LessonSettings,
-        lessonHistory: [],
-      },
-    } as any;
-
-    store = configureStore([])(mockStore);
-
     component = (
-      <>
-        <redux.Provider store={store}>
-          <BrowserRouter>
-            <LessonSettingsPage />
-          </BrowserRouter>
-        </redux.Provider>
-      </>
+      <redux.Provider store={mockStore}>
+        <LessonSettingsPage />
+      </redux.Provider>
     );
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
+    jest.clearAllMocks();
+    mockStore.clearActions();
   });
 
-  // it("should be created", () => {
-  //   act(() => {
-  //     ReactDOM.render(component, container);
-  //   });
+  it("should hide spinner", () => {
+    mockState.isProcessing = false;
 
-  //   expect(container.querySelector(".settings-container")).toBeTruthy();
-  // });
+    const { container } = render(component);
+
+    expect(container.querySelector(".loader")).toBeFalsy();
+  });
+
+  it("should show spinner", () => {
+    mockState.isProcessing = true;
+
+    const { container } = render(component);
+
+    expect(container.querySelector(".loader")).toBeTruthy();
+  });
 });

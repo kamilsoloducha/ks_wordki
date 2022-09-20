@@ -1,41 +1,44 @@
 import { render } from "@testing-library/react";
+import { Provider } from "react-redux";
 import DashboardPage from "../DashbaordPage";
-import * as redux from "react-redux";
+import configureMockStore from 'redux-mock-store'
+import { getDashboardSummary } from "store/dashboard/reducer";
+import DashboardState from "store/dashboard/state";
 
-const historyRecorder: any[] = [];
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: () => ({
-    push: (val: any) => {
-      historyRecorder.push(val);
-    },
-  }),
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockedUsedNavigate,
 }));
 
-describe("", () => {
-  const useSelectorMock = jest.spyOn(redux, "useSelector");
 
-  const useDispatchMock = jest.spyOn(redux, "useDispatch");
-  const dispatchMock = jest.fn(() => {});
+describe("DashboardPage", () => {
 
-  beforeEach(() => {
-    useSelectorMock.mockClear();
+  const mockState: DashboardState = {
+    isLoading: false,
+    dailyRepeats: 0,
+    groupsCount: 0,
+    cardsCount: 0,
+    forecast: [],
+    isForecastLoading: false
+  }
 
-    useDispatchMock.mockClear();
-    dispatchMock.mockClear();
-    useDispatchMock.mockReturnValue(dispatchMock as any);
+  const mockStore = configureMockStore([])({ dashboardReducer: mockState });
 
-    historyRecorder.splice(0, historyRecorder.length);
+  afterEach(() => {
+    jest.clearAllMocks();
+    mockStore.clearActions();
   });
 
   it("should be rendered", () => {
-    useSelectorMock.mockReturnValueOnce({
-      dailyRepeats: 1,
-      groupsCount: 1,
-      cardsCount: 1,
-      isLoading: false,
-    });
-    const { container } = render(<DashboardPage />);
+    mockState.isLoading = false;
+
+    const { container } = render(
+      <Provider store={mockStore}>
+        <DashboardPage />
+      </Provider>
+    );
 
     expect(container.getElementsByClassName("info-container").length).toBe(3);
   });
@@ -46,43 +49,43 @@ describe("", () => {
     { index: 2, path: "/cards" },
   ].forEach((item, index) => {
     it("should be redirect proper page :: " + index, () => {
-      useSelectorMock.mockReturnValueOnce({
-        dailyRepeats: 1,
-        groupsCount: 1,
-        cardsCount: 1,
-        isLoading: false,
-      });
-      const { container } = render(<DashboardPage />);
+      mockState.isLoading = false;
+
+      const { container } = render(
+        <Provider store={mockStore}>
+          <DashboardPage />
+        </Provider>
+      );
       const repeatInfo = container.getElementsByClassName("info-container")[
         item.index
       ] as HTMLElement;
 
       repeatInfo.click();
-      expect(historyRecorder[0]).toBe(item.path);
+
+      expect(mockedUsedNavigate.mock.calls[0][0]).toBe(item.path);
     });
   });
 
   it("should dispatch action", () => {
-    useSelectorMock.mockReturnValueOnce({
-      dailyRepeats: 1,
-      groupsCount: 1,
-      cardsCount: 1,
-      isLoading: false,
-    });
-    const { container } = render(<DashboardPage />);
-    expect(dispatchMock).toHaveBeenCalledTimes(1);
-    // expect(dispatchMock).toBeCalledWith(getDashboardSummary());
+
+    render(
+      <Provider store={mockStore}>
+        <DashboardPage />
+      </Provider>
+    );
+    expect(mockStore.getActions().length).toBe(1)
+    expect(mockStore.getActions()[0]).toStrictEqual(getDashboardSummary());
   });
 
   it("should display spinner if is loading", () => {
-    useSelectorMock.mockReturnValueOnce({
-      isLoading: true,
-    });
-    const { container } = render(<DashboardPage />);
+    mockState.isLoading = true;
+
+    const { container } = render(
+      <Provider store={mockStore}>
+        <DashboardPage />
+      </Provider>
+    );
     expect(container.getElementsByClassName("loader").length).toBe(1);
   });
 
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
 });

@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react";
 import { CardSummary } from "pages/cards/models";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
@@ -20,11 +21,13 @@ describe("CardItem", () => {
   });
 
   it("should responce on onClick", async () => {
+    let container = {} as any;
     const card = new CardSummaryBuilder().build();
     act(() => {
-      ReactDOM.render(<CardItem card={card} onClick={(item) => mockFunc(item)} />, container);
+      container = render(<CardItem card={card} onClick={(item) => mockFunc(item)} />).container;
     });
 
+    expect(container).toBeTruthy();
     const submitButton = container.querySelector(".row-container") as HTMLElement;
     await act(async () => {
       submitButton.click();

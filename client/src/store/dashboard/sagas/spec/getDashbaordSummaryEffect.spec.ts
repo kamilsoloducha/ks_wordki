@@ -2,8 +2,8 @@ import "test/matcher/toDeepEqual";
 import * as dashboard from "api/services/dashboard";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
-import { getDashbaordSummaryEffect } from "../getDashboardSummary";
+import { call, put, select, take, takeEvery } from "redux-saga/effects";
+import { getDashbaordSummaryEffect, getDashbaordSummaryWorker } from "../getDashboardSummary";
 import { selectUserId } from "store/user/selectors";
 import { DashboardSummaryResponse } from "api";
 import { ForecastModel } from "pages/dashboard/models/forecastModel";
@@ -24,6 +24,10 @@ describe("getCardsEffect", () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
+  });
+
+  it("should go through", () => {
+    expect(saga.next().value).toStrictEqual(takeEvery("dashboard/getDashboardSummary", getDashbaordSummaryWorker));
   });
 
   // it("should go through", () => {

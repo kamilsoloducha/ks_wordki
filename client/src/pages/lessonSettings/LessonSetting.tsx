@@ -44,9 +44,12 @@ export default function LessonSettingsPage(): ReactElement {
     dispatch(act.getCards());
   };
 
+  if (isProcessing) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
-      {isProcessing && <LoadingSpinner />}
       <TabView selectedValue={settings.mode} items={items} onItemChanged={onModeChanged} />
       <div className="settings-container">
         <button disabled={!canLessonStart(settings) || isProcessing} onClick={onStartClick}>

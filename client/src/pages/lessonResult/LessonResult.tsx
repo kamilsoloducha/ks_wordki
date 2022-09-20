@@ -65,7 +65,6 @@ export default function LessonResult(): ReactElement {
   };
 
   const onDelete = (form: FormModel) => {
-    console.log(form);
   };
 
   return (

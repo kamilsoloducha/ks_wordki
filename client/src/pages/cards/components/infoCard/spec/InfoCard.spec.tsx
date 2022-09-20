@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import { render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import InfoCard from "../InfoCard";
 
@@ -15,7 +15,9 @@ afterEach(() => {
 });
 
 it("tet", () => {
+  let container;
   act(() => {
-    ReactDOM.render(<InfoCard value={"test"} label={"test"} />, container);
+    container = render(<InfoCard value={"test"} label={"test"} />).container;
   });
+  expect(container).toBeTruthy();
 });

@@ -1,83 +1,45 @@
 import * as redux from "react-redux";
-import * as router from "react-router";
-import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
-import { Router } from "react-router";
-import history from "common/services/history";
 import { ReactElement } from "react";
-import configureStore from "redux-mock-store";
-import { MainState } from "store/store";
-import React from "react";
+import configureMockStore, { MockStoreEnhanced } from "redux-mock-store";
 import Fiszka from "../Fiszka";
-import { CheckPending, SetLesson } from "pages/lesson/models/lessonState";
-import Results from "pages/lesson/models/results";
-import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
+import LessonState, { initialState } from "store/lesson/state";
+import { render } from "@testing-library/react";
+import { CheckPending } from "pages/lesson/models/lessonState";
+
+jest.mock("../../answer/Answer", () => () => <div>Answer</div>);
 
 describe("Fiszka", () => {
-  let container: HTMLDivElement;
+  let mockState: LessonState;
+  let mockStore: MockStoreEnhanced<any, any>;
   let component: ReactElement;
-  const useDispatchMock = jest.spyOn(redux, "useDispatch");
-  const dispatchMock = jest.fn(() => {});
-  let mockStore: MainState;
-  let store: any;
+  let container: HTMLElement;
 
   beforeEach(() => {
-    dispatchMock.mockClear();
+    mockState = {
+      ...initialState,
+      repeats: [{} as any],
+      lessonState: CheckPending,
+      answer:"test"
+    };
 
-    useDispatchMock.mockClear();
-    useDispatchMock.mockReturnValue(dispatchMock as any);
-
-    container = document.createElement("div");
-    document.body.appendChild(container);
-
-    mockStore = {
-      lessonReducer: {
-        isProcessing: false,
-        repeats: [
-          {
-            answer: "test",
-          },
-        ],
-        lessonState: CheckPending,
-        isCorrect: null,
-        isSecondChangeUsed: false,
-        answer: "test",
-        cardsCount: null,
-        results: {} as Results,
-        lessonCount: 0,
-        lessonType: 0,
-        settings: {
-          mode: 1,
-          count: 0,
-          languages: [],
-          type: -1,
-          groups: [],
-          selectedGroupId: null,
-          wrongLimit: 15,
-        } as LessonSettings,
-        lessonHistory: [],
-      },
-    } as any;
-
-    store = configureStore([])(mockStore);
+    mockStore = configureMockStore([])({ lessonReducer: mockState });
 
     component = (
-      <>
-        <redux.Provider store={store}>
-          <Fiszka />
-        </redux.Provider>
-      </>
+      <redux.Provider store={mockStore}>
+        <Fiszka />
+      </redux.Provider>
     );
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
+    mockStore.clearActions();
+    jest.clearAllMocks();
   });
 
   it("should be created", () => {
     act(() => {
-      ReactDOM.render(component, container);
+      container = render(component).container;
     });
 
     expect(container.querySelector("div")).toBeTruthy();

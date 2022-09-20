@@ -1,31 +1,27 @@
 import * as redux from "react-redux";
-import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import { ReactElement } from "react";
-import configureStore from "redux-mock-store";
-import { MainState } from "store/store";
+import configureMockStore, { MockStoreEnhanced } from "redux-mock-store";
 import GroupsSearchPage from "../GroupsSearch";
+import { GroupsSearchState } from "store/groupsSearch/state";
+import { render } from "@testing-library/react";
+
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockedUsedNavigate,
+}));
 
 describe("GroupsPage", () => {
-  let container: HTMLDivElement;
+  let container: HTMLElement;
   let component: ReactElement;
-  const useDispatchMock = jest.spyOn(redux, "useDispatch");
-  const dispatchMock = jest.fn(() => {});
-  let mockStore: MainState;
-  let store: any;
+  let mockState: GroupsSearchState;
+  let mockStore: MockStoreEnhanced<any, any>;
 
   beforeEach(() => {
-    dispatchMock.mockClear();
-
-    useDispatchMock.mockClear();
-    useDispatchMock.mockReturnValue(dispatchMock as any);
-
-    container = document.createElement("div");
-    document.body.appendChild(container);
-
-    mockStore = {
-      groupsSearchReducer: {
-        isSearching: false,
+    mockState = {
+      isSearching: false,
 
         groups: [],
         groupsCount: 0,
@@ -35,29 +31,27 @@ describe("GroupsPage", () => {
         cards: [],
 
         groupName: "",
-      },
-    } as any;
+    }
 
-    store = configureStore([])(mockStore);
+    mockStore = configureMockStore([])({ groupsSearchReducer: mockState });
 
     component = (
-      <>
-        <redux.Provider store={store}>
+        <redux.Provider store={mockStore}>
           <GroupsSearchPage />
         </redux.Provider>
-      </>
     );
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
+    mockStore.clearActions();
+    jest.clearAllMocks();
   });
 
   it("should display spinner if it is loading", () => {
-    mockStore.groupsSearchReducer.isSearching = true;
+    mockState.isSearching = true;
+
     act(() => {
-      ReactDOM.render(component, container);
+      container = render(component).container;
     });
 
     expect(container.querySelector(".loader")).toBeTruthy();

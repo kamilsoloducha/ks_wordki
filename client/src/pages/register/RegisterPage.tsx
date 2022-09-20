@@ -10,7 +10,7 @@ import { register, setErrorMessage } from "store/user/reducer";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage(): ReactElement {
-  useTitle("Wordki - Login");
+  useTitle("Wordki - Register");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +19,6 @@ export default function RegisterPage(): ReactElement {
   const errorMessage = useAppSelector(selectors.selectErrorMessage);
 
   useEffect(() => {
-    document.title = "Wordki - Register";
     dispatch(setErrorMessage(""));
   }, [dispatch]);
 
