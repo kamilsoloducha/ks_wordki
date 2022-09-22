@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using Wordki.Tests.UI.Utils;
 
 namespace Wordki.Tests.UI.Common;
@@ -15,7 +17,10 @@ public sealed class GroupDialog
     }
 
     IWebElement Dialog => _driver.FindElement(By.ClassName("p-dialog"));
-    public IWebElement GroupName => Dialog.FindElement(By.CssSelector("input[name=name]"));
+    public void WaitFor() =>
+        new WebDriverWait(_driver, TimeSpan.FromSeconds(2)).Until(driver => driver.FindElements(By.CssSelector("input[name=name]")).Count != 0);
+    
+    public IWebElement GroupName => _driver.FindElement(By.CssSelector("input[name=name]"));
 
     private IWebElement FrontLanguage => Dialog.FindElements(By.ClassName("dialog-form-item"))[1];
     public void SelectFront(int index)
@@ -42,6 +47,7 @@ public sealed class GroupDialog
 
     public void FillFormWith(string groupName, int frontLanguage, int backLanguage)
     {
+        new WebDriverWait(_driver, TimeSpan.FromSeconds(2)).Until(ExpectedConditions.ElementIsVisible(By.CssSelector("input[name=name]")));
         GroupName.InsertIntoInput(groupName, false);
         SelectFront(frontLanguage);
         SelectBack(backLanguage);

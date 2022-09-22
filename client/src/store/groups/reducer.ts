@@ -34,7 +34,7 @@ export const groupsSlice = createSlice({
     addGroupSuccess: (state: GroupsState): void => {
       state.selectedItem = null;
     },
-    updateGroup: (state: GroupsState, _: PayloadAction<p.UpdateGroup>): void => {},
+    updateGroup: (_: GroupsState, __: PayloadAction<p.UpdateGroup>): void => {},
     updateGroupSuccess: (state: GroupsState): void => {
       state.selectedItem = null;
     },

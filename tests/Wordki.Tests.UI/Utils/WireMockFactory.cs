@@ -35,6 +35,24 @@ public static class WireMockFactory
 
         return server;
     }
+    
+    public static WireMockServer AddErrorResponse(this WireMockServer server, string path, int responseCode)
+    {
+        server.AddOptionEndpoint(path);
+
+        server.Given(
+                Request.Create()
+                    .WithPath(path)
+                    .UsingAnyMethod()
+            )
+            .RespondWith(
+                Response.Create()
+                    .AddHeaders()
+                    .WithStatusCode(responseCode)
+            );
+
+        return server;
+    }
 
     public static WireMockServer AddGetEndpoint(this WireMockServer server, Func<string, bool> path, object response)
     {

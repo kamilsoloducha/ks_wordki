@@ -21,4 +21,5 @@ services:
       - wordki.ci.e2e
     environment:
       - CLIENT_HOST=http://wordki.ci.e2e:81
+      - SERVICE_HOST=http://*:5001
       - HEADLESS=true

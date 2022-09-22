@@ -9,6 +9,7 @@ namespace Wordki.Tests.UI.Utils;
 public abstract class UITestBase : IDisposable
 {
     protected string ClientHost { get; } = "http://localhost:3000";
+    private string ServiceHost { get; } = "http://*:5000";
     protected ChromeDriver Driver { get; }
     protected WireMockServer Server { get; private set; }
 
@@ -17,11 +18,14 @@ public abstract class UITestBase : IDisposable
         var clientHost = Environment.GetEnvironmentVariable("CLIENT_HOST");
         if (!string.IsNullOrEmpty(clientHost)) ClientHost = clientHost;
         
+        var serviceHost = Environment.GetEnvironmentVariable("SERVICE_HOST");
+        if (!string.IsNullOrEmpty(serviceHost)) ServiceHost = serviceHost;
+        
         var headless = Environment.GetEnvironmentVariable("HEADLESS");
         
         var options = new ChromeOptions();
         
-        if(!string.IsNullOrEmpty(headless)) options.AddArguments("headless");
+        if(!string.IsNullOrEmpty(headless) || true) options.AddArguments("headless");
         
         options.AddArguments("diable-dev-shm-usage",
             "disable-gpu",
@@ -42,7 +46,7 @@ public abstract class UITestBase : IDisposable
     [SetUp]
     protected void SetupUtils()
     {
-        Server = WireMockFactory.Create("http://*:5001");
+        Server = WireMockFactory.Create(ServiceHost);
     }
 
     [TearDown]

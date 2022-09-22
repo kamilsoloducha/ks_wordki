@@ -15,4 +15,5 @@ public sealed class CardsPage : Utils.Page
     }
 
     public IEnumerable<IWebElement> Cards => Driver.FindElements(By.ClassName("card-item"));
+    public IWebElement GroupSettingsButton => Driver.FindElement(By.ClassName("group-details-settings"));
 }

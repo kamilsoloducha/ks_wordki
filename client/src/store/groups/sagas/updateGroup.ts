@@ -12,7 +12,6 @@ import { takeEvery } from "redux-saga/effects";
 export function* updateGroupWorker(action: PayloadAction<UpdateGroup>): any {
 
   const userId: string = yield select(selectUserId);
-
   const request = {
     userId,
     groupId: action.payload.group.id,
@@ -24,7 +23,6 @@ export function* updateGroupWorker(action: PayloadAction<UpdateGroup>): any {
     api.updateGroup,
     request
   );
-  debugger;
   yield put(data ? getCards({ groupId: action.payload.group.id }) : requestFailed(error));
 }
 

@@ -5,7 +5,6 @@ import "primereact/resources/primereact.min.css";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
-import ErrorPage from "common/components/error/ErrorPage";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
 import { selectBreadcrumbs } from "store/root/selectors";
@@ -26,6 +25,7 @@ const CardsPage = lazy(() => import("pages/cardsSearch/CardsPage"));
 const LessonSettingsPage = lazy(() => import("pages/lessonSettings/LessonSetting"));
 const LessonPage = lazy(() => import("pages/lesson/LessonPage"));
 const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));
+const ErrorPage = lazy(() => import("pages/error/ErrorPage"));
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -61,6 +61,7 @@ export default function App() {
                 <Route path="/lesson-result" element={<LessonResultPage />} />
                 <Route path="/lesson" element={<LessonPage/>}/>
                 <Route path="/" element={<DashboardPage />} />
+                <Route path="/error" element={<ErrorPage />} />
               </Routes>
             </Suspense>
           </div>

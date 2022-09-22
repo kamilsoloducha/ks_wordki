@@ -28,6 +28,9 @@ export default function AxiosEx({ children }: Model) {
       if (error?.response?.status === 401) {
         history?.push("/logout");
       }
+      if (error?.response?.status >= 500) {
+        history?.push("/error");
+      }
       return error;
     }
   );

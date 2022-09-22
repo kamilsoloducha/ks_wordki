@@ -38,6 +38,7 @@ export default function GroupDetailsPage(): ReactElement {
   const [actionsVisible, setActionsVisible] = useState(false);
   const [editedGroup, setEditedGroup] = useState<any>(null);
   const { groupId }  = useParams<{ groupId: string }>();
+  
   useTitle(`Wordki - ${groupDetails.name}`);
 
   useEffectOnce(() => {
@@ -144,7 +145,10 @@ export default function GroupDetailsPage(): ReactElement {
   };
 
   const onSubmitGroupDialog = (group: any) => {
-    dispatch(groupActions.updateGroup(group));
+    if(group === null){
+      return;
+    }
+    dispatch(groupActions.updateGroup({ group }));
     onHideGroupDialog();
   };
 
