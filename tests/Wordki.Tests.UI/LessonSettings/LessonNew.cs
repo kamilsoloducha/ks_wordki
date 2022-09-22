@@ -11,14 +11,18 @@ namespace Wordki.Tests.UI.LessonSettings;
 [TestFixture]
 public class LessonNew : UITestBase
 {
-    private LessonSettingsPage _settingsPage;
-    private LessonPage _lessonPage;
+    private readonly LessonSettingsPage _settingsPage;
+    private readonly LessonPage _lessonPage;
+
+    public LessonNew()
+    {
+        _settingsPage = new LessonSettingsPage(Driver, ClientHost);
+        _lessonPage = new LessonPage(Driver, ClientHost);
+    }
 
     [SetUp]
     public void Setup()
     {
-        _settingsPage = new LessonSettingsPage(Driver, ClientHost);
-        _lessonPage = new LessonPage(Driver, ClientHost);
         Server
             .AddPostEndpoint("/repeats/count", 100, x => true)
             .AddPostEndpoint("/repeats", new {repeats=new []{new {}}}, x => true)
@@ -26,8 +30,8 @@ public class LessonNew : UITestBase
             .AddPostEndpoint("/lesson/start", new { StartDate = new DateTime(2022, 2, 2) }, x => true);
     }
     
-    void GivenCookies() => LoginUser();
-    void WhenUserNavigatesToSettings() => _settingsPage.NavigateTo();
+    void GivenCookies() => SetAuthorizationCookies();
+    void WhenUserNavigatesToSettings() => _settingsPage.NavigateAndEnsure();
     void AndWhenUserChangeTab() => _settingsPage.NewWordsTab.Click();
     void AndWhenUserSetsLanguage() => _settingsPage.SelectEnglishLanguage();
     void AndWhenUserSetsMode() => _settingsPage.SelectFiszki();

@@ -13,24 +13,28 @@ namespace Wordki.Tests.UI.Groups;
 [TestFixture]
 public class CreatingGroup : Utils.UITestBase
 {
-    private  GroupsPage _page;
-    private  GroupDialog _groupDialog;
+    private readonly GroupsPage _page;
+    private readonly GroupDialog _groupDialog;
+
+    public CreatingGroup()
+    {
+        _page = new GroupsPage(Driver, ClientHost);
+        _groupDialog = new GroupDialog(Driver);
+    }
 
     [SetUp]
     public void Setup()
     {
-        _page = new GroupsPage(Driver, ClientHost);
-        _groupDialog = new GroupDialog(Driver);
         Server.AddGetEndpoint("/groups/userid", new
         {
             groups = Array.Empty<object>()
         }).AddPostEndpoint("/groups/add", "groupId", x => true);
     }
 
-    void GivenLoginUser() => LoginUser();
+    void GivenLoginUser() => SetAuthorizationCookies();
 
 
-    void WhenUserGoToGroupsPage() => _page.NavigateTo();
+    void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
 
     void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);

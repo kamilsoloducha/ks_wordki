@@ -7,16 +7,18 @@ namespace Wordki.Tests.UI.Lesson;
 
 class LessonTestBase : UITestBase
 {
-    private LessonSettingsPage _settingsPage;
-    protected LessonPage _lessonPage;
+    private readonly LessonSettingsPage _settingsPage;
+    protected readonly LessonPage _lessonPage;
 
+    public LessonTestBase()
+    {
+        _settingsPage = new LessonSettingsPage(Driver, ClientHost);
+        _lessonPage = new LessonPage(Driver, ClientHost);
+    }
 
     [SetUp]
     public void Setup()
     {
-        _settingsPage = new LessonSettingsPage(Driver, ClientHost);
-        _lessonPage = new LessonPage(Driver, ClientHost);
-        
         Server
             .AddPostEndpoint("/lesson/answer", new { }, x => true)
             .AddPostEndpoint("/repeats/count", 100, x => true)
@@ -75,7 +77,7 @@ class LessonTestBase : UITestBase
 
     protected void SetFiszkiLesson()
     {
-        _settingsPage.NavigateTo();
+        _settingsPage.NavigateAndEnsure();
         _settingsPage.SelectEnglishLanguage();
         _settingsPage.SelectFiszki();
         _settingsPage.SelectAllCards();
@@ -85,7 +87,7 @@ class LessonTestBase : UITestBase
     
     protected void SetInsertingLesson()
     {
-        _settingsPage.NavigateTo();
+        _settingsPage.NavigateAndEnsure();
         _settingsPage.SelectEnglishLanguage();
         _settingsPage.SelectInserting();
         _settingsPage.SelectAllCards();

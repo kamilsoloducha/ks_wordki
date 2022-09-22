@@ -6,49 +6,15 @@ using Wordki.Tests.UI.Login;
 
 namespace Wordki.Tests.UI.Utils;
 
-public abstract class UITestBase
+public abstract class UITestBase : IDisposable
 {
-    private static ChromeDriver _driver;
-    private static WireMockServer _server;
-    private static bool _isLogin;
-    
-    protected string ClientHost { get; private set; } = "http://localhost:3000";
-    protected string ServiceHost { get; private set; } = "http://*:5000";
-    protected ChromeDriver Driver => _driver;
-    protected WireMockServer Server => _server;
+    protected string ClientHost { get; } = "http://localhost:3000";
+    private string ServiceHost { get; } = "http://*:5000";
+    protected ChromeDriver Driver { get; }
+    protected WireMockServer Server { get; private set; }
 
-    protected void LoginUser()
+    protected UITestBase()
     {
-        if (_isLogin) return;
-        _isLogin = true;
-        new LoginPage(Driver, ClientHost).NavigateTo();
-        Driver.ExecuteScript("localStorage.setItem(\"id\", \"userid\");");
-        Driver.ExecuteScript("localStorage.setItem(\"token\", \"token\");");
-    }
-
-    protected void LogoutUser()
-    {
-        _isLogin = false;
-        Driver.ExecuteScript("localStorage.clear();");
-    } 
-
-    [SetUp]
-    protected void SetupUtils()
-    {
-        DriverSetup();
-        ServerSetup();
-    }
-
-    [TearDown]
-    protected void TearDownUtils()
-    {
-        Server.Reset();
-    }
-
-    private void DriverSetup()
-    {
-        if (_driver is not null) return;
-        
         var clientHost = Environment.GetEnvironmentVariable("CLIENT_HOST");
         if (!string.IsNullOrEmpty(clientHost)) ClientHost = clientHost;
         
@@ -59,7 +25,7 @@ public abstract class UITestBase
         
         var options = new ChromeOptions();
         
-        if(!string.IsNullOrEmpty(headless)||true) options.AddArguments("headless");
+        if(!string.IsNullOrEmpty(headless) || true) options.AddArguments("headless");
         
         options.AddArguments("diable-dev-shm-usage",
             "disable-gpu",
@@ -67,13 +33,34 @@ public abstract class UITestBase
             "ignore-certificate-errors",
             "no-sandbox");
         
-        _driver = new ChromeDriver(options);
+        Driver = new ChromeDriver(options);
+    }
+    
+    public void SetAuthorizationCookies()
+    {
+        new LoginPage(Driver, ClientHost).NavigateTo();
+        Driver.ExecuteScript("localStorage.setItem(\"id\", \"userid\");");
+        Driver.ExecuteScript("localStorage.setItem(\"token\", \"token\");");
     }
 
-    private void ServerSetup()
+    [SetUp]
+    protected void SetupUtils()
     {
-        if (_server is not null) return;
-        
-        _server = WireMockFactory.Create(ServiceHost);
+        Server = WireMockFactory.Create(ServiceHost);
+    }
+
+    [TearDown]
+    protected void TearDownUtils()
+    {
+        Server.Stop();
+        Server.Dispose();
+
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        Driver.Quit();
+        Driver.Dispose();
     }
 }

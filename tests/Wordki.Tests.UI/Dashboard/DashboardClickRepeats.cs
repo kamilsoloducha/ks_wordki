@@ -12,13 +12,16 @@ namespace Wordki.Tests.UI.Dashboard;
 public class DashboardClickRepeats : Utils.UITestBase
 {
     private static readonly DateTime _today = new(2022, 2, 2);
-    private DashboardPage _page;
+    private readonly DashboardPage _page;
+
+    public DashboardClickRepeats()
+    {
+        _page = new DashboardPage(Driver, ClientHost);
+    }
 
     [SetUp]
     public void Setup()
     {
-        _page = new DashboardPage(Driver, ClientHost);
-
         Server.AddGetEndpoint(
                 "/dashboard/summary/userid",
                 new { groupsCount = 10, cardsCount = 20, dailyRepeats = 30 })
@@ -37,10 +40,10 @@ public class DashboardClickRepeats : Utils.UITestBase
             );
     }
 
-    void GivenLoginUser() => LoginUser();
+    void GivenLoginUser() => SetAuthorizationCookies();
 
-    void WhenUserGoToDashboardPage() => _page.NavigateTo();
-
+    void WhenUserGoToDashboardPage() => Driver.Navigate().GoToUrl(_page.Address);
+    
     void AndWhenPageIsLoaded() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
 

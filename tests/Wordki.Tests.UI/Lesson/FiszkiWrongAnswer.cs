@@ -8,7 +8,7 @@ namespace Wordki.Tests.UI.Lesson;
 [TestFixture]
 class FiszkiWrongAnswer : LessonTestBase
 {
-    void GivenLoginUser() => LoginUser();
+    void GivenLoginUser() => SetAuthorizationCookies();
     void AndGivenLessonSetup() => SetFiszkiLesson();
     void AndGivenLessonStarted() => _lessonPage.StartButton.Click();
 

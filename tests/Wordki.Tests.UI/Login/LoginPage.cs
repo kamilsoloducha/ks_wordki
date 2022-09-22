@@ -14,13 +14,3 @@ public class LoginPage : Utils.Page
     public IWebElement PasswordInput => Driver.FindElement(By.Id("password"));
     public IWebElement Submit => Driver.FindElement(By.CssSelector("input[type=submit]"));
 }
-
-public class LogoutPage : Utils.Page
-{
-    public const string LOGIN_TITLE = "''";
-    public const string LOGIN_URL = "/logout";
-    public LogoutPage(IWebDriver driver, string host) : base(driver, LOGIN_TITLE, LOGIN_URL, host)
-    {
-    }
-    
-}

@@ -12,13 +12,16 @@ namespace Wordki.Tests.UI.Register;
 [TestFixture]
 public class FillFormRegisterPage : Utils.UITestBase
 {
-    private RegisterPage _page;
+    private readonly RegisterPage _page;
+
+    public FillFormRegisterPage()
+    {
+        _page = new RegisterPage(Driver, ClientHost);
+    }
 
     [SetUp]
     public void Setup()
     {
-        _page = new RegisterPage(Driver, ClientHost);
-
         Server.AddPostEndpoint(
             "/users/register",
             new
@@ -42,8 +45,7 @@ public class FillFormRegisterPage : Utils.UITestBase
         );
     }
 
-    void GivenLogoutUser() => LogoutUser();
-    void AndGivenRegisterPage() => _page.NavigateTo();
+    void GivenRegisterPage() => _page.NavigateTo();
 
     void WhenUserFillUserName() => _page.UserNameInput.InsertIntoInput("testUserName", false);
     void AndWhenUserFillEmail() => _page.EmailInput.InsertIntoInput("test@mail.com", false);
@@ -64,11 +66,11 @@ public class FillFormRegisterPage : Utils.UITestBase
     void AndThenServerShouldReceivedRegisterRequest() =>
         Server.LogEntries.Should().Contain(x => x.RequestMessage.Method == HttpMethod.Post.Method &&
                                                 x.RequestMessage.Path == "/users/register");
-
+    
     void AndThenServerShouldReceivedLoginRequest() =>
         Server.LogEntries.Should().Contain(x => x.RequestMessage.Method == HttpMethod.Put.Method &&
                                                 x.RequestMessage.Path == "/users/login");
-
+    
     [Test]
     public void Test() => this.BDDfy();
 }

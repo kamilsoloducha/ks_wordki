@@ -14,15 +14,18 @@ namespace Wordki.Tests.UI.Cards;
 [TestFixture]
 public sealed class EditingCards : Utils.UITestBase
 {
-    private CardsPage _page;
-    private CardDialog _cardDialog;
+    private readonly CardsPage _page;
+    private readonly CardDialog _cardDialog;
+
+    public EditingCards()
+    {
+        _page = new CardsPage(Driver, ClientHost);
+        _cardDialog = new CardDialog(Driver);
+    }
 
     [SetUp]
     public void SetUp()
     {
-        _page = new CardsPage(Driver, ClientHost);
-        _cardDialog = new CardDialog(Driver);
-        
         Server.AddGetEndpoint($"/cards/userid/{CardsPage.GROUP_ID}", new
             {
                 cards = new[]
@@ -53,10 +56,10 @@ public sealed class EditingCards : Utils.UITestBase
             .AddPutEndpoint("/cards/update", new { }, x => true);
     }
 
-    void GivenLoginUser() => LoginUser();
+    void GivenLoginUser() => SetAuthorizationCookies();
 
 
-    void WhenUserGoToGroupsPage() => _page.NavigateTo();
+    void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
 
     void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);

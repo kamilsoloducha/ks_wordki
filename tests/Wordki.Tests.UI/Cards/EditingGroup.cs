@@ -15,17 +15,20 @@ namespace Wordki.Tests.UI.Groups;
 [TestFixture]
 public class EditingGroup : Utils.UITestBase
 {
-    private CardsPage _cardsPage;
-    private GroupDialog _groupDialog;
-    private GroupSettingsDialog _groupSettingsDialog;
+    private readonly CardsPage _cardsPage;
+    private readonly GroupDialog _groupDialog;
+    private readonly GroupSettingsDialog _groupSettingsDialog;
 
-    [SetUp]
-    public void Setup()
+    public EditingGroup()
     {
         _cardsPage = new CardsPage(Driver, ClientHost);
         _groupDialog = new GroupDialog(Driver);
         _groupSettingsDialog = new GroupSettingsDialog(Driver);
-        
+    }
+
+    [SetUp]
+    public void Setup()
+    {
         Server.AddGetEndpoint($"/cards/userid/{CardsPage.GROUP_ID}", new
             {
                 cards = Array.Empty<object>()
@@ -40,7 +43,7 @@ public class EditingGroup : Utils.UITestBase
             .AddPutEndpoint("/groups/update", new { }, x => true);
     }
 
-    void GivenLoginUser() => LoginUser();
+    void GivenLoginUser() => SetAuthorizationCookies();
 
     void WhenUserGoToGroupsPage() => _cardsPage.NavigateTo();
     void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
