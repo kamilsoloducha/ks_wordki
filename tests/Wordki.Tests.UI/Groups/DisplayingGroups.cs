@@ -12,39 +12,38 @@ namespace Wordki.Tests.UI.Groups;
 [TestFixture]
 public class DisplayingGroups : Utils.UITestBase
 {
-    private readonly GroupsPage _page;
+    private GroupsPage _page;
 
-    public DisplayingGroups()
-    {
-        _page = new GroupsPage(Driver, ClientHost);
-    }
 
     [SetUp]
     public void Setup()
     {
+        _page = new GroupsPage(Driver, ClientHost);
         Server.AddGetEndpoint("/groups/userid", new
+        {
+            groups = new object[]
             {
-                groups = new object[]
-                {
-                    new { id = 1, name = "groupName1", front = 1, back = 2, cardsCount = 2 }
-                }
-            });
+                new { id = 1, name = "groupName1", front = 1, back = 2, cardsCount = 2 }
+            }
+        });
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
-    
-    
-    void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
+    void GivenLoginUser() => LoginUser();
+
+
+    void WhenUserGoToGroupsPage() => _page.NavigateTo();
+
     void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
-    
-    
+
+
     void ThenTitleShouldBeCorrect() => Driver.Title.Should().Be(GroupsPage.GROUPS_TITLE);
     void AndThenGroupsShouldBeVisible() => _page.Groups.Should().HaveCount(1);
+
     void AndThenServerShouldHandlesRequest() => Server.LogEntries.Should()
         .Contain(x => x.RequestMessage.Method == HttpMethod.Get.Method &&
                       x.RequestMessage.Path.Contains("/groups/userid"));
 
     [Test]
-    public void Test() =>this.BDDfy(); 
+    public void Test() => this.BDDfy();
 }

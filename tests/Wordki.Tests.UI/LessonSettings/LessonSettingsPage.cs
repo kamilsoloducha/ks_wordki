@@ -14,13 +14,13 @@ class LessonSettingsPage : Page
     {
     }
 
-    public void NavigateAndEnsure()
-    {
-        Driver.Navigate().GoToUrl(Address);
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
-            .Until(driver => driver.Title == SETTINGS_TITLE);
-        
-    }
+    // public void NavigateAndEnsure()
+    // {
+    //     Driver.Navigate().GoToUrl(Address);
+    //     new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    //         .Until(driver => driver.Title == SETTINGS_TITLE);
+    //     
+    // }
     private IWebElement TabView => Driver.FindElement(By.ClassName("tab-view-header-container"));
     public IWebElement RepetitionTab => TabView.FindElements(By.ClassName("tab-view-header-item"))[0];
     public IWebElement NewWordsTab => TabView.FindElements(By.ClassName("tab-view-header-item"))[1];

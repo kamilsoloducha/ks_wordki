@@ -11,14 +11,11 @@ namespace Wordki.Tests.UI.Login;
 [TestFixture]
 public class FillFormLoginPage : Utils.UITestBase
 {
-    private readonly LoginPage _page;
+    private  LoginPage _page;
 
-    public FillFormLoginPage()
-    {
-        _page = new LoginPage(Driver, ClientHost);
-    }
     void GivenSetupServer()
     {
+        _page = new LoginPage(Driver, ClientHost);
         Server.AddPutEndpoint(
             "/users/login",
             new
@@ -32,6 +29,8 @@ public class FillFormLoginPage : Utils.UITestBase
             b => true
         );
     }
+
+    void AndGivenLogoutUser() => LogoutUser();
     void WhenUserNavigateToLoginPage() => _page.NavigateTo();
     void AndWhenUserFillUserNameField() => _page.UserNameInput.InsertIntoInput("testUserName", false);
     void AndWhenUserFillPasswordField() => _page.PasswordInput.InsertIntoInput("testPassword", false);

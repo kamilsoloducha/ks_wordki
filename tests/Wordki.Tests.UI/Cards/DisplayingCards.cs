@@ -12,16 +12,12 @@ namespace Wordki.Tests.UI.Cards;
 [TestFixture]
 public sealed class DisplayingCards : Utils.UITestBase
 {
-    private readonly CardsPage _page;
-
-    public DisplayingCards()
-    {
-        _page = new CardsPage(Driver, ClientHost);
-    }
+    private CardsPage _page;
 
     [SetUp]
     public void SetUp()
     {
+        _page = new CardsPage(Driver, ClientHost);
         Server.AddGetEndpoint($"/cards/userid/{CardsPage.GROUP_ID}", new
             {
                 cards = new []
@@ -49,10 +45,10 @@ public sealed class DisplayingCards : Utils.UITestBase
             });
     }
     
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
 
-    void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
+    void WhenUserGoToGroupsPage() => _page.NavigateTo();
     void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
 

@@ -14,18 +14,15 @@ namespace Wordki.Tests.UI.Cards;
 [TestFixture]
 public sealed class DeleteCards : Utils.UITestBase
 {
-    private readonly CardsPage _page;
-    private readonly CardDialog _cardDialog;
-
-    public DeleteCards()
-    {
-        _page = new CardsPage(Driver, ClientHost);
-        _cardDialog = new CardDialog(Driver);
-    }
+    private CardsPage _page;
+    private CardDialog _cardDialog;
 
     [SetUp]
     public void SetUp()
     {
+        _page = new CardsPage(Driver, ClientHost);
+        _cardDialog = new CardDialog(Driver);
+        
         Server.AddGetEndpoint($"/cards/userid/{CardsPage.GROUP_ID}", new
             {
                 cards = new[]
@@ -56,7 +53,7 @@ public sealed class DeleteCards : Utils.UITestBase
             .AddDeleteEndpoint($"/cards/delete/userid/{CardsPage.GROUP_ID}/cardId1");
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
 
     void WhenUserGoToCardsPage() => _page.NavigateTo();

@@ -9,7 +9,7 @@ namespace Wordki.Tests.UI.Lesson;
 [TestFixture]
 class InsertingCorrectAnswer : LessonTestBase
 {
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
     void AndGivenLessonSetup() => SetInsertingLesson();
     void AndGivenLessonStarted() => _lessonPage.StartButton.Click();
 
@@ -35,7 +35,7 @@ class InsertingCorrectAnswer : LessonTestBase
 [TestFixture]
 class InsertingWrongAnswer : LessonTestBase
 {
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
     void AndGivenLessonSetup() => SetInsertingLesson();
     void AndGivenLessonStarted() => _lessonPage.StartButton.Click();
 
@@ -61,7 +61,7 @@ class InsertingWrongAnswer : LessonTestBase
 [TestFixture]
 class InsertingAcceptedAnswer : LessonTestBase
 {
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
     void AndGivenLessonSetup() => SetInsertingLesson();
     void AndGivenLessonStarted() => _lessonPage.StartButton.Click();
 
