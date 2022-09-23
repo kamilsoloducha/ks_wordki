@@ -41,12 +41,12 @@ public class NavigateToDashboard : Utils.UITestBase
             );
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
     void WhenUserGoToDashboardPage() => Driver.Navigate().GoToUrl(_page.Address);
 
     void ThenRepeatInfoIsDisplayed()
     {
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+        DefaultDriverWait
             .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
         _page.Repeats.Text.Should().Contain("30");
         _page.Cards.Text.Should().Contain("20");

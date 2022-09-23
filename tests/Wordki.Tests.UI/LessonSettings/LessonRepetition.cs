@@ -31,7 +31,7 @@ public class LessonRepetition : UITestBase
             .AddPostEndpoint("/lesson/start", new { StartDate = new DateTime(2022, 2, 2) }, x => true);
     }
 
-    void GivenCookies() => SetAuthorizationCookies();
+    void GivenCookies() => LoginUser();
 
     void WhenUserNavigatesToSettings() => _settingsPage.NavigateAndEnsure();
     void AndWhenUserSetsLanguage() => _settingsPage.SelectEnglishLanguage();

@@ -39,7 +39,7 @@
 //
 //     void ThenRepeatInfoIsDisplayed()
 //     {
-//         new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+//         DefaultDriverWait
 //             .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.ClassName("info-container")));
 //         _page.Repeats.Click();
 //     }

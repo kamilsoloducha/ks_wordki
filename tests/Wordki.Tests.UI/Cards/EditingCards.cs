@@ -56,12 +56,12 @@ public sealed class EditingCards : Utils.UITestBase
             .AddPutEndpoint("/cards/update", new { }, x => true);
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
 
     void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
 
-    void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsReady() => DefaultDriverWait
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
 
     void AndWhenUserClickOnCard() => _page.Cards.First().Click();

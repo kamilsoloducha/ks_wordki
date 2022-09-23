@@ -31,11 +31,11 @@ public class DisplayingGroups : Utils.UITestBase
             });
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
     
     
     void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
-    void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsReady() => DefaultDriverWait
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
     
     

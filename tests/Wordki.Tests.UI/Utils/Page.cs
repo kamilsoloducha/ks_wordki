@@ -30,9 +30,15 @@ public abstract class Page
 
     private void EnsurePageLoaded()
     {
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+        DefaultDriverWait
             .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs(Title));
         Driver.Url.Should().Be(Address);
         Driver.Title.Should().Be(Title);
     }
+    
+    protected WebDriverWait DefaultDriverWait => new(
+        new SystemClock(),
+        Driver,
+        TimeSpan.FromSeconds(2),
+        TimeSpan.FromMilliseconds(100));
 }

@@ -40,11 +40,11 @@ public class DashboardClickRepeats : Utils.UITestBase
             );
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
     void WhenUserGoToDashboardPage() => Driver.Navigate().GoToUrl(_page.Address);
     
-    void AndWhenPageIsLoaded() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsLoaded() => DefaultDriverWait
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
 
     void AndWhenUserClickRepeats() => _page.Repeats.Click();

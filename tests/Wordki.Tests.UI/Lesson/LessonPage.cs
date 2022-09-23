@@ -15,7 +15,7 @@ class LessonPage : Page
     {
     }
     
-    public void WaitForLoaded() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    public void WaitForLoaded() => DefaultDriverWait
         .Until(ExpectedConditions.ElementIsVisible(By.ClassName("lesson-page")));
 
     public IWebElement StartButton => Driver.FindElement(By.XPath("//*[text()='Start']"));

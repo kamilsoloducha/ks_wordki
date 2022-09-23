@@ -43,11 +43,11 @@ public class DashboardClickGroups : Utils.UITestBase
                 new { });
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
     void WhenUserGoToDashboardPage() => _page.NavigateTo();
     
-    void AndWhenPageIsLoaded() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsLoaded() => DefaultDriverWait
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
 
     void AndWhenUserClickGroups() => _page.Groups.Click();

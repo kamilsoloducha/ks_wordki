@@ -17,7 +17,7 @@ class LessonSettingsPage : Page
     public void NavigateAndEnsure()
     {
         Driver.Navigate().GoToUrl(Address);
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+        DefaultDriverWait
             .Until(driver => driver.Title == SETTINGS_TITLE);
         
     }
@@ -41,7 +41,7 @@ class LessonSettingsPage : Page
     {
         var countSelector = Driver.FindElement(By.ClassName("count-container"));
         var count = countSelector.FindElement(By.CssSelector("strong"));
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+        DefaultDriverWait
             .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TextToBePresentInElement(count, "100"));
 
         var buttons = countSelector.FindElements(By.CssSelector("button"));
