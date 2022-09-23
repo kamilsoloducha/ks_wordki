@@ -17,6 +17,7 @@ steps:
       dockerComposeCommand: up
   - task: CmdLine@2
     displayName: Run tests 
+    continueOnError: true
     inputs:
       script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
   - task: CmdLine@2
@@ -29,6 +30,7 @@ steps:
         docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
   - task: DockerCompose@0
     displayName: Run UI Tests
+    continueOnError: true
     inputs:
       containerregistrytype: "Container Registry"
       dockerRegistryEndpoint: "docker-hub"
