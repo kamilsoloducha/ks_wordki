@@ -17,7 +17,6 @@ steps:
       dockerComposeCommand: up
   - task: CmdLine@2
     displayName: Run tests 
-    continueOnError: true
     inputs:
       script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
   - task: CmdLine@2

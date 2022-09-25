@@ -24,22 +24,6 @@ public abstract class UITestBase
 
         var serviceHost = Environment.GetEnvironmentVariable("SERVICE_HOST");
         if (!string.IsNullOrEmpty(serviceHost)) ServiceHost = serviceHost;
-
-        var headless = Environment.GetEnvironmentVariable("HEADLESS");
-
-        var options = new ChromeOptions();
-
-        if (!string.IsNullOrEmpty(headless)) options.AddArguments("headless");
-
-        options.AddArguments("diable-dev-shm-usage",
-            "disable-gpu",
-            "disable-infobars",
-            "ignore-certificate-errors",
-            "no-sandbox");
-
-        _driver ??= new ChromeDriver(options);
-
-        _server ??= WireMockFactory.Create(ServiceHost);
     }
 
     protected void LoginUser()
@@ -60,9 +44,31 @@ public abstract class UITestBase
         Driver.ExecuteScript("localStorage.clear();");
     }
 
+    [SetUp]
+    protected void SetupAll()
+    {
+        Console.WriteLine("SetupAll");
+        if (_driver == null)
+        {
+            Console.WriteLine("DriverSetuping");
+            var headless = Environment.GetEnvironmentVariable("HEADLESS");
+            var options = new ChromeOptions();
+            if (!string.IsNullOrEmpty(headless)) options.AddArguments("headless");
+            options.AddArguments("diable-dev-shm-usage",
+                "disable-gpu",
+                "disable-infobars",
+                "ignore-certificate-errors",
+                "no-sandbox");
+
+            _driver = new ChromeDriver(options);    
+        }
+        _server ??= WireMockFactory.Create(ServiceHost);
+    }
+
     [TearDown]
     protected void TearDownUtils()
     {
+        Console.WriteLine("TearDownUtils");
         _server.Reset();
     }
 

@@ -16,4 +16,4 @@ COPY . .
 
 RUN dotnet restore Wordki.Tests.UI.csproj
 
-ENTRYPOINT dotnet test --test-adapter-path:. --logger:"junit;LogFilepath=TESTS-ui-e2e.xml"
+ENTRYPOINT dotnet test -l "console;v=d" --test-adapter-path:. --logger:"junit;LogFilepath=TESTS-ui-e2e.xml"
