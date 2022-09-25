@@ -39,6 +39,6 @@ public abstract class Page
     protected WebDriverWait DefaultDriverWait => new(
         new SystemClock(),
         Driver,
-        TimeSpan.FromSeconds(2),
+        TimeSpan.FromSeconds(4),
         TimeSpan.FromMilliseconds(100));
 }

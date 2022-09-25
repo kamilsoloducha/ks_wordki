@@ -69,6 +69,6 @@ public abstract class UITestBase
     protected WebDriverWait DefaultDriverWait => new(
         new SystemClock(),
         Driver,
-        TimeSpan.FromSeconds(2),
+        TimeSpan.FromSeconds(4),
         TimeSpan.FromMilliseconds(100));
 }
