@@ -55,5 +55,5 @@ public class DashboardClickRepeats : Utils.UITestBase
     }
 
     [Test]
-    public void ExecuteTest() => this.BDDfy();
+    public void NavigateToLessonAfterRepeatClick() => this.BDDfy();
 }

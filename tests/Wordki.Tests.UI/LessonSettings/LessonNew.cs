@@ -52,5 +52,5 @@ public class LessonNew : UITestBase
     }
 
     [Test]
-    public void ExecuteTest() => this.BDDfy();
+    public void StartLessonWithNewWords() => this.BDDfy();
 }

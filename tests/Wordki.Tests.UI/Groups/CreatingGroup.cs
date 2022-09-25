@@ -49,5 +49,5 @@ public class CreatingGroup : Utils.UITestBase
                           x.RequestMessage.Path.Contains("/groups/add"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void CreateGroup() => this.BDDfy();
 }

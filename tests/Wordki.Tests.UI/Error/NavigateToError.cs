@@ -33,5 +33,5 @@ public class NavigateToError : UITestBase
     void ThenUserSeeErrorPage() => _errorPage.Header.Should().NotBeNull();
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void ShowErrorPage() => this.BDDfy();
 }

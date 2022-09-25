@@ -61,5 +61,5 @@ public class EditingGroup : Utils.UITestBase
                           x.RequestMessage.Path.Contains("/groups/update"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void EditGroup() => this.BDDfy();
 }

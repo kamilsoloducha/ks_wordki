@@ -72,5 +72,5 @@ public sealed class DeleteCards : Utils.UITestBase
                           x.RequestMessage.Path.Contains($"/cards/delete/userid/{CardsPage.GROUP_ID}/cardId1"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void DeleteCard() => this.BDDfy();
 }

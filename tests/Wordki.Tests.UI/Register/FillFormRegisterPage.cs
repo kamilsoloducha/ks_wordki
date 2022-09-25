@@ -90,7 +90,7 @@ public class FillFormRegisterPage : Utils.UITestBase
                                                 x.RequestMessage.Path == "/users/login");
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void CreateAccount() => this.BDDfy();
 
     [TearDown]
     public void TearDown()

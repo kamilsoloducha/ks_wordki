@@ -74,5 +74,5 @@ public sealed class EditingCards : Utils.UITestBase
                           x.RequestMessage.Path.Contains("/cards/update"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void EditCard() => this.BDDfy();
 }

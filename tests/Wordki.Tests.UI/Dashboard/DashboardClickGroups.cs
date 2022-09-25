@@ -55,7 +55,7 @@ public class DashboardClickGroups : Utils.UITestBase
     void ThenGroupsInfoIsDisplayed() => Driver.Url.Should().Contain("groups");
 
     [Test]
-    public void ExecuteTest() => this.BDDfy();
+    public void NavigateToLessonAfterGroupsClick() => this.BDDfy();
     
     
 }

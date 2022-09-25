@@ -27,5 +27,5 @@ class FiszkiCorrectAnswer : LessonTestBase
                       x.RequestMessage.Body == "{\"userId\":\"userid\",\"sideId\":\"sideId\",\"result\":1}");
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void SendAnswerWhenFiszkiCorrectAnswer() => this.BDDfy();
 }

@@ -46,5 +46,5 @@ public class DisplayingGroups : Utils.UITestBase
                       x.RequestMessage.Path.Contains("/groups/userid"));
 
     [Test]
-    public void Test() =>this.BDDfy(); 
+    public void ShowGroups() =>this.BDDfy(); 
 }

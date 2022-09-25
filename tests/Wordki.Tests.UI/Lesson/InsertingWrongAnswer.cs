@@ -2,17 +2,19 @@ using System.Net.Http;
 using FluentAssertions;
 using NUnit.Framework;
 using TestStack.BDDfy;
+using Wordki.Tests.UI.Utils;
 
 namespace Wordki.Tests.UI.Lesson;
 
 [TestFixture]
-class FiszkiWrongAnswer : LessonTestBase
+class InsertingWrongAnswer : LessonTestBase
 {
     void GivenLoginUser() => LoginUser();
-    void AndGivenLessonSetup() => SetFiszkiLesson();
+    void AndGivenLessonSetup() => SetInsertingLesson();
     void AndGivenLessonStarted() => _lessonPage.StartButton.Click();
 
-    void WhenCheckHasBeenClicked() => _lessonPage.CheckButton.Click();
+    void WhenAnswerIsFilled() => _lessonPage.AnswerInput.InsertIntoInput("answer2", false);
+    void AndWhenCheckHasBeenClicked() => _lessonPage.CheckButton.Click();
     void AndWhenWrongHasBeenClicked() => _lessonPage.WrongButton.Click();
 
     void ThenShowsRemained() => _lessonPage.Remaining.Text.Should().Be("2");
@@ -27,5 +29,5 @@ class FiszkiWrongAnswer : LessonTestBase
                       x.RequestMessage.Body == "{\"userId\":\"userid\",\"sideId\":\"sideId\",\"result\":-1}");
 
     [Test]
-    public void SendAnswerWhenFiszkiWrongAnswer() => this.BDDfy();
+    public void SendAnswerWhenInsertingWrongAnswer() => this.BDDfy();
 }

@@ -52,5 +52,5 @@ public class LessonRepetition : UITestBase
     }
 
     [Test]
-    public void ExecuteTest() => this.BDDfy();
+    public void StartRepetitionLesson() => this.BDDfy();
 }

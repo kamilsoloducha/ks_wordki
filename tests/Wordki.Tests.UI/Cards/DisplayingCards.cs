@@ -66,5 +66,5 @@ public sealed class DisplayingCards : Utils.UITestBase
                       x.RequestMessage.Path.Contains($"/groups/details/{CardsPage.GROUP_ID}"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void ShowCards() => this.BDDfy();
 }

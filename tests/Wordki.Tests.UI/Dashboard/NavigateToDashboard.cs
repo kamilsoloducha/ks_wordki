@@ -66,5 +66,5 @@ public class NavigateToDashboard : Utils.UITestBase
     }
 
     [Test]
-    public void ExecuteTest() => this.BDDfy();
+    public void ShowDashboard() => this.BDDfy();
 }

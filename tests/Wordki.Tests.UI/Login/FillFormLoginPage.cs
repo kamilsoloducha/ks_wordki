@@ -64,7 +64,7 @@ public class FillFormLoginPage : Utils.UITestBase
     // void AndThenServerShouldReceivedRequests() => Server.LogEntries.Should().HaveCount(6);
 
     [Test]
-    public void ExecuteTest() => this.BDDfy();
+    public void LoginToApplication() => this.BDDfy();
     
     [TearDown]
     public void TearDown()
