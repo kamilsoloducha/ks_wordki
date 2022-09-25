@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -11,7 +13,7 @@ public abstract class UITestBase
 {
     private static ChromeDriver _driver;
     private static WireMockServer _server;
-    protected static bool _isLogin = false;
+    protected static bool IsLogin;
     protected string ClientHost { get; } = "http://localhost:3000";
     private string ServiceHost { get; } = "http://*:5000";
     protected ChromeDriver Driver => _driver;
@@ -24,27 +26,29 @@ public abstract class UITestBase
 
         var serviceHost = Environment.GetEnvironmentVariable("SERVICE_HOST");
         if (!string.IsNullOrEmpty(serviceHost)) ServiceHost = serviceHost;
-        
+
         if (_driver == null)
         {
             var headless = Environment.GetEnvironmentVariable("HEADLESS");
             var options = new ChromeOptions();
             if (!string.IsNullOrEmpty(headless)) options.AddArguments("headless");
-            options.AddArguments("diable-dev-shm-usage",
+            options.AddArguments("disable-dev-shm-usage",
                 "disable-gpu",
+                "disable-popup-blocking",
                 "disable-infobars",
                 "ignore-certificate-errors",
                 "no-sandbox");
 
-            _driver = new ChromeDriver(options);    
+            _driver = new ChromeDriver(options);
         }
+
         _server ??= WireMockFactory.Create(ServiceHost);
     }
 
     protected void LoginUser()
     {
-        if (_isLogin) return;
-        _isLogin = true;
+        if (IsLogin) return;
+        IsLogin = true;
 
         new LoginPage(Driver, ClientHost).NavigateTo();
         Driver.ExecuteScript("localStorage.setItem(\"id\", \"userid\");");
@@ -53,8 +57,8 @@ public abstract class UITestBase
 
     protected void LogoutUser()
     {
-        if (!_isLogin) return;
-        _isLogin = false;
+        if (!IsLogin) return;
+        IsLogin = false;
         Driver.Navigate().GoToUrl(ClientHost + "/logout");
         Driver.ExecuteScript("localStorage.clear();");
     }

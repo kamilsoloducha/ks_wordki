@@ -95,6 +95,6 @@ public class FillFormRegisterPage : Utils.UITestBase
     [TearDown]
     public void TearDown()
     {
-        _isLogin = true;
+        IsLogin = true;
     }
 }
