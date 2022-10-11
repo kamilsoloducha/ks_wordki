@@ -8,14 +8,7 @@ ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 # https://github.com/phusion/baseimage-docker/issues/319#issuecomment-245857919
 # https://stackoverflow.com/questions/51023312/docker-having-issues-installing-apt-utils
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -yq --no-install-recommends apt-utils
-
-
-# Install chrome for tests
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
-	sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' &&\
-	apt-get update &&\
-  apt-get install -yq google-chrome-stable
+#RUN apt-get update && apt-get install -yq --no-install-recommends apt-utils
 
 
 RUN mkdir -p /usr/src/app && chown node:node /usr/src/app

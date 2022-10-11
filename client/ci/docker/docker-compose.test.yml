@@ -5,6 +5,6 @@ services:
     image: wordki-client/ci/build:${BUILD_BUILDID}
     build:
       context: ../../
-      dockerfile: ./build/docker/Dockerfile
+      dockerfile: ./ci/docker/Dockerfile
       target: build
     command: sh -c "yarn test:ci"

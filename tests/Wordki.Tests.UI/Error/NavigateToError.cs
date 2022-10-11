@@ -28,10 +28,10 @@ public class NavigateToError : UITestBase
     }
 
     void WhenUserNavigateToDashboard() => _dashboardPage.NavigateTo();
-    void AndWhenErrorResponseAppears() =>  new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenErrorResponseAppears() =>  DefaultDriverWait
         .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs(ErrorPage.ERROR_TITLE));
     void ThenUserSeeErrorPage() => _errorPage.Header.Should().NotBeNull();
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void ShowErrorPage() => this.BDDfy();
 }

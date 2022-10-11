@@ -30,7 +30,7 @@ public class LessonNew : UITestBase
             .AddPostEndpoint("/lesson/start", new { StartDate = new DateTime(2022, 2, 2) }, x => true);
     }
     
-    void GivenCookies() => SetAuthorizationCookies();
+    void GivenCookies() => LoginUser();
     void WhenUserNavigatesToSettings() => _settingsPage.NavigateAndEnsure();
     void AndWhenUserChangeTab() => _settingsPage.NewWordsTab.Click();
     void AndWhenUserSetsLanguage() => _settingsPage.SelectEnglishLanguage();
@@ -52,5 +52,5 @@ public class LessonNew : UITestBase
     }
 
     [Test]
-    public void ExecuteTest() => this.BDDfy();
+    public void StartLessonWithNewWords() => this.BDDfy();
 }

@@ -14,6 +14,6 @@ class GroupsPage : Utils.Page
 
     public IWebElement CreateNewGroupButton => Driver.FindElement(By.XPath("//*[text()='Create new group']"));
     public IEnumerable<IWebElement> Groups => Driver.FindElements(By.ClassName("group-row-container"));
-    public void WaitForInitialLoad() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    public void WaitForInitialLoad() => DefaultDriverWait
         .Until(ExpectedConditions.ElementIsVisible(By.ClassName("groups-action-container")));
 }

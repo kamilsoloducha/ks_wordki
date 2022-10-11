@@ -29,6 +29,7 @@ steps:
         docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
   - task: DockerCompose@0
     displayName: Run UI Tests
+    continueOnError: true
     inputs:
       containerregistrytype: "Container Registry"
       dockerRegistryEndpoint: "docker-hub"

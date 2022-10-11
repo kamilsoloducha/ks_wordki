@@ -56,11 +56,11 @@ public sealed class DeleteCards : Utils.UITestBase
             .AddDeleteEndpoint($"/cards/delete/userid/{CardsPage.GROUP_ID}/cardId1");
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
 
     void WhenUserGoToCardsPage() => _page.NavigateTo();
-    void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsReady() => DefaultDriverWait
         .Until(driver => driver.FindElements(By.ClassName("card-item")).Count != 0);
 
     void AndWhenUserClickOnCard() => _page.Cards.First().Click();
@@ -72,5 +72,5 @@ public sealed class DeleteCards : Utils.UITestBase
                           x.RequestMessage.Path.Contains($"/cards/delete/userid/{CardsPage.GROUP_ID}/cardId1"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void DeleteCard() => this.BDDfy();
 }

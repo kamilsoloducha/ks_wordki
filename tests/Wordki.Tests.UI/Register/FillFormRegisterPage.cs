@@ -13,6 +13,7 @@ namespace Wordki.Tests.UI.Register;
 public class FillFormRegisterPage : Utils.UITestBase
 {
     private readonly RegisterPage _page;
+    private static readonly DateTime _today = new (2022, 2, 2);
 
     public FillFormRegisterPage()
     {
@@ -27,7 +28,7 @@ public class FillFormRegisterPage : Utils.UITestBase
             new
             {
                 responseCode = 0,
-                id = "string",
+                id = "userid",
             },
             b => true
         );
@@ -36,16 +37,33 @@ public class FillFormRegisterPage : Utils.UITestBase
             new
             {
                 responseCode = 0,
-                id = "string",
-                token = "string",
+                id = "userid",
+                token = "userid",
                 creatingDateTime = new DateTime(),
                 expirationDateTime = new DateTime()
             },
             b => true
         );
+        Server.AddGetEndpoint(
+                "/dashboard/summary/userid",
+                new { groupsCount = 10, cardsCount = 20, dailyRepeats = 30 })
+            .AddGetEndpoint(
+                "/dashboard/forecast",
+                new object[]
+                {
+                    new { Count = 0, Date = _today },
+                    new { Count = 0, Date = _today.AddDays(1) },
+                    new { Count = 0, Date = _today.AddDays(2) },
+                    new { Count = 0, Date = _today.AddDays(3) },
+                    new { Count = 0, Date = _today.AddDays(4) },
+                    new { Count = 0, Date = _today.AddDays(5) },
+                    new { Count = 0, Date = _today.AddDays(6) },
+                }
+            );
     }
 
-    void GivenRegisterPage() => _page.NavigateTo();
+    void GivenLogoutUser() => LogoutUser();
+    void AndGivenRegisterPage() => _page.NavigateTo();
 
     void WhenUserFillUserName() => _page.UserNameInput.InsertIntoInput("testUserName", false);
     void AndWhenUserFillEmail() => _page.EmailInput.InsertIntoInput("test@mail.com", false);
@@ -57,7 +75,7 @@ public class FillFormRegisterPage : Utils.UITestBase
     void AndWhenUserClickSubmitButton()
     {
         _page.Submit.Click();
-        new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+        DefaultDriverWait
             .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleIs(DashboardPage.DASHBOARD_TITLE));
     }
 
@@ -66,11 +84,17 @@ public class FillFormRegisterPage : Utils.UITestBase
     void AndThenServerShouldReceivedRegisterRequest() =>
         Server.LogEntries.Should().Contain(x => x.RequestMessage.Method == HttpMethod.Post.Method &&
                                                 x.RequestMessage.Path == "/users/register");
-    
+
     void AndThenServerShouldReceivedLoginRequest() =>
         Server.LogEntries.Should().Contain(x => x.RequestMessage.Method == HttpMethod.Put.Method &&
                                                 x.RequestMessage.Path == "/users/login");
-    
+
     [Test]
-    public void Test() => this.BDDfy();
+    public void CreateAccount() => this.BDDfy();
+
+    [TearDown]
+    public void TearDown()
+    {
+        IsLogin = true;
+    }
 }

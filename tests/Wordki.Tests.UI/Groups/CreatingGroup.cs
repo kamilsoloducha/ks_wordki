@@ -31,12 +31,12 @@ public class CreatingGroup : Utils.UITestBase
         }).AddPostEndpoint("/groups/add", "groupId", x => true);
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
 
     void WhenUserGoToGroupsPage() => Driver.Navigate().GoToUrl(_page.Address);
 
-    void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsReady() => DefaultDriverWait
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
 
     void AndWhenUserClickCreateGroupButton() => _page.CreateNewGroupButton.Click();
@@ -49,5 +49,5 @@ public class CreatingGroup : Utils.UITestBase
                           x.RequestMessage.Path.Contains("/groups/add"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void CreateGroup() => this.BDDfy();
 }

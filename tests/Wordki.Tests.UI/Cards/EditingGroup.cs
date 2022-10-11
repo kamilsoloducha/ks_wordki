@@ -43,10 +43,10 @@ public class EditingGroup : Utils.UITestBase
             .AddPutEndpoint("/groups/update", new { }, x => true);
     }
 
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
 
     void WhenUserGoToGroupsPage() => _cardsPage.NavigateTo();
-    void AndWhenPageIsReady() => new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+    void AndWhenPageIsReady() => DefaultDriverWait
         .Until(driver => driver.FindElements(By.ClassName("loader")).Count == 0);
     void AndWhenUserOpenOptions() => _cardsPage.GroupSettingsButton.Click();
     void AndWhenUserSeeOptions() => _groupSettingsDialog.WaitFor();
@@ -61,5 +61,5 @@ public class EditingGroup : Utils.UITestBase
                           x.RequestMessage.Path.Contains("/groups/update"));
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void EditGroup() => this.BDDfy();
 }

@@ -8,7 +8,7 @@ namespace Wordki.Tests.UI.Lesson;
 [TestFixture]
 class FiszkiCorrectAnswer : LessonTestBase
 {
-    void GivenLoginUser() => SetAuthorizationCookies();
+    void GivenLoginUser() => LoginUser();
     void AndGivenLessonSetup() => SetFiszkiLesson();
     void AndGivenLessonStarted() => _lessonPage.StartButton.Click();
 
@@ -27,5 +27,5 @@ class FiszkiCorrectAnswer : LessonTestBase
                       x.RequestMessage.Body == "{\"userId\":\"userid\",\"sideId\":\"sideId\",\"result\":1}");
 
     [Test]
-    public void Test() => this.BDDfy();
+    public void SendAnswerWhenFiszkiCorrectAnswer() => this.BDDfy();
 }

@@ -9,6 +9,8 @@ services:
       target: e2e
     ports:
       - "81:81"
+    logging:
+      driver: none
   wordki.ci.e2e.tests:
     container_name: wordki.ci.e2e.tests
     image: wordki.ci.e2e.tests:latest
@@ -21,4 +23,5 @@ services:
       - wordki.ci.e2e
     environment:
       - CLIENT_HOST=http://wordki.ci.e2e:81
+      - SERVICE_HOST=http://*:5001
       - HEADLESS=true

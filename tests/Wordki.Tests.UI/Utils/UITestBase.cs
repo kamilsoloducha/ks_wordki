@@ -1,66 +1,77 @@
 using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using WireMock.Server;
 using Wordki.Tests.UI.Login;
 
 namespace Wordki.Tests.UI.Utils;
 
-public abstract class UITestBase : IDisposable
+public abstract class UITestBase
 {
+    private static ChromeDriver _driver;
+    private static WireMockServer _server;
+    protected static bool IsLogin;
     protected string ClientHost { get; } = "http://localhost:3000";
     private string ServiceHost { get; } = "http://*:5000";
-    protected ChromeDriver Driver { get; }
-    protected WireMockServer Server { get; private set; }
+    protected ChromeDriver Driver => _driver;
+    protected WireMockServer Server => _server;
 
     protected UITestBase()
     {
         var clientHost = Environment.GetEnvironmentVariable("CLIENT_HOST");
         if (!string.IsNullOrEmpty(clientHost)) ClientHost = clientHost;
-        
+
         var serviceHost = Environment.GetEnvironmentVariable("SERVICE_HOST");
         if (!string.IsNullOrEmpty(serviceHost)) ServiceHost = serviceHost;
-        
-        var headless = Environment.GetEnvironmentVariable("HEADLESS");
-        
-        var options = new ChromeOptions();
-        
-        if(!string.IsNullOrEmpty(headless) || true) options.AddArguments("headless");
-        
-        options.AddArguments("diable-dev-shm-usage",
-            "disable-gpu",
-            "disable-infobars",
-            "ignore-certificate-errors",
-            "no-sandbox");
-        
-        Driver = new ChromeDriver(options);
+
+        if (_driver == null)
+        {
+            var headless = Environment.GetEnvironmentVariable("HEADLESS");
+            var options = new ChromeOptions();
+            if (!string.IsNullOrEmpty(headless)) options.AddArguments("headless");
+            options.AddArguments("disable-dev-shm-usage",
+                "disable-gpu",
+                "disable-popup-blocking",
+                "disable-infobars",
+                "ignore-certificate-errors",
+                "no-sandbox");
+
+            _driver = new ChromeDriver(options);
+        }
+
+        _server ??= WireMockFactory.Create(ServiceHost);
     }
-    
-    public void SetAuthorizationCookies()
+
+    protected void LoginUser()
     {
+        if (IsLogin) return;
+        IsLogin = true;
+
         new LoginPage(Driver, ClientHost).NavigateTo();
         Driver.ExecuteScript("localStorage.setItem(\"id\", \"userid\");");
         Driver.ExecuteScript("localStorage.setItem(\"token\", \"token\");");
     }
 
-    [SetUp]
-    protected void SetupUtils()
+    protected void LogoutUser()
     {
-        Server = WireMockFactory.Create(ServiceHost);
+        if (!IsLogin) return;
+        IsLogin = false;
+        Driver.Navigate().GoToUrl(ClientHost + "/logout");
+        Driver.ExecuteScript("localStorage.clear();");
     }
 
     [TearDown]
     protected void TearDownUtils()
     {
-        Server.Stop();
-        Server.Dispose();
-
-        Dispose();
+        _server.Reset();
     }
 
-    public void Dispose()
-    {
-        Driver.Quit();
-        Driver.Dispose();
-    }
+    protected WebDriverWait DefaultDriverWait => new(
+        new SystemClock(),
+        Driver,
+        TimeSpan.FromSeconds(4),
+        TimeSpan.FromMilliseconds(100));
 }
