@@ -3,7 +3,7 @@ import { CardsSearchState, initialCardsSearchState } from "./state";
 import * as p from "./action-payloads";
 
 export const cardsSerachSlice = createSlice({
-  name: "cardsSerach",
+  name: "cardsSearch",
   initialState: initialCardsSearchState,
   reducers: {
     getOverview: (_: CardsSearchState): void => {},

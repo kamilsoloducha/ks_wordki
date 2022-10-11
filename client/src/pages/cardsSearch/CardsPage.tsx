@@ -1,6 +1,6 @@
 import * as selectors from "store/cardsSearch/selectors";
 import * as actions from "store/cardsSearch/reducer";
-import { Fragment, ReactElement, useEffect, useState } from "react";
+import { Fragment, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "common/components/pagination/Pagination";
 import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
@@ -10,6 +10,7 @@ import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
 import { CardsOverview, CardSummary } from "./models";
 import { Row } from "./components/row/Row";
 import { useTitle } from "common";
+import { useEffectOnce } from "common/hooks/useEffectOnce";
 
 export default function CardsPage(): ReactElement {
   useTitle("Wordki - Cards");
@@ -22,10 +23,10 @@ export default function CardsPage(): ReactElement {
 
   const [selectedItem, setSelectedItem] = useState<CardSummary | null>(null);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     dispatch(actions.getOverview());
     dispatch(actions.search());
-  }, [dispatch]);
+  });
 
   const onPageChagned = (event: PageChangedEvent) => {
     dispatch(actions.filterSetPagination({ pageNumber: event.currectPage, pageSize: event.count }));
