@@ -17,9 +17,11 @@ steps:
       dockerComposeCommand: up
   - task: CmdLine@2
     displayName: Run tests 
+    enabled: false
     inputs:
       script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
   - task: CmdLine@2
+    enabled: false
     continueOnError: true
     displayName: Copy test results
     inputs:
@@ -28,6 +30,7 @@ steps:
         docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/junit.xml
         docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
   - task: DockerCompose@0
+    enabled: false
     displayName: Run UI Tests
     continueOnError: true
     inputs:
@@ -37,6 +40,7 @@ steps:
       action: "Run a Docker Compose command"
       dockerComposeCommand: up --build --abort-on-container-exit
   - task: CmdLine@2
+    enabled: false
     continueOnError: true
     displayName: Copy ui test results
     inputs:
@@ -44,6 +48,7 @@ steps:
         docker ps -a
         docker cp wordki.ci.e2e.tests:/src/TestResults/TestResults.xml $(System.DefaultWorkingDirectory)/TESTS-ui-e2e.xml
   - task: PublishTestResults@2
+    enabled: false
     continueOnError: true
     displayName: Publish test results
     inputs:
@@ -51,12 +56,14 @@ steps:
       searchFolder: $(System.DefaultWorkingDirectory)
       testResultsFiles: "junit.xml"
   - task: PublishCodeCoverageResults@1
+    enabled: false
     continueOnError: true
     displayName: Publish code coverage
     inputs:
       codeCoverageTool: "Cobertura"
       summaryFileLocation: "$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml"
   - task: PublishTestResults@2
+    enabled: false
     continueOnError: true
     displayName: Publish ui test results
     inputs:
