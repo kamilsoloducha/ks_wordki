@@ -6,17 +6,14 @@ trigger:
 pool: ARM
 
 steps:
-  - task: CmdLine@2
+  - task: DockerCompose@0
+    displayName: Build
     inputs:
-      script: |
-        cd client
-        docker run --privileged --rm tonistiigi/binfmt --install linux/arm64
-        docker buildx create --use
-        docker buildx build --platform linux/arm64 \
-        -f ./ci/docker/Dockerfile \
-        -t kamilsoloducha/wordki-client:$(build.buildNumber) \
-        -t kamilsoloducha/wordki-client:latest \
-        .
+      containerregistrytype: "Container Registry"
+      dockerRegistryEndpoint: "docker-hub"
+      dockerComposeFile: "client/ci/docker/docker-compose.build.yml"
+      action: "Run a Docker Compose command"
+      dockerComposeCommand: up
   - task: CmdLine@2
     displayName: Run tests 
     enabled: false
@@ -74,7 +71,6 @@ steps:
       testResultsFiles: "TESTS-ui-e2e.xml"
   - task: DockerCompose@0
     displayName: Release
-    enabled: false
     inputs:
       containerregistrytype: "Container Registry"
       dockerRegistryEndpoint: "docker-hub"
@@ -96,4 +92,3 @@ steps:
       command: "push"
       tags: |
         $(Build.BuildId)
-        latest
