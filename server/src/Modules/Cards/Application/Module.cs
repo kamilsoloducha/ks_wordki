@@ -1,4 +1,5 @@
 using Cards.Application.Consumers;
+using Cards.Domain;
 using Domain.IntegrationEvents;
 using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using MediatR;
@@ -10,6 +11,7 @@ public static class Module
 {
     public static IServiceCollection AddCardsApplicationModule(this IServiceCollection services)
     {
+        services.AddCardDomainModule();
         services.AddMediatR(typeof(Module).Assembly);
 
         return services;

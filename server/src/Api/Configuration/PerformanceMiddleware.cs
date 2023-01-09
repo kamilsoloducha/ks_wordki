@@ -27,5 +27,4 @@ public class PerformanceMiddleware
         stopWatch.Stop();
         _logger.LogInformation("Finish handling {request} at {startTime}.Execution time: {executionTime}", context.Request.Path, SystemClock.Now, stopWatch.ElapsedMilliseconds);
     }
-
 }

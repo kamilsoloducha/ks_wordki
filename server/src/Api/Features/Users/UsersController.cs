@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Api.Configuration;
+using Api.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Users.Application.Commands;
 using Users.Application.Queries;
 
-namespace Api.Controllers;
+namespace Api.Features.Users;
 
 [ApiController]
 [Route("users")]
@@ -50,6 +51,4 @@ public class UsersController : BaseController
     [Authorize(Policy = AuthorizationExtensions.AdminOnlyPolicy)]
     public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
         => await HandleRequest(new GetUsers.Query(), cancellationToken);
-
-
 }

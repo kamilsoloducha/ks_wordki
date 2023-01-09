@@ -1,3 +1,4 @@
+using Cards.Application;
 using Cards.Application.Services;
 using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
@@ -14,6 +15,7 @@ public static class Module
 {
     public static IServiceCollection AddCardsInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddCardsApplicationModule();
         services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
 
         services.AddDbContext<CardsContext>();

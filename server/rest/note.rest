@@ -1,0 +1,39 @@
+@host = http://localhost:5000
+
+### logining user
+# @name login
+PUT {{host}}/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "kamil",
+    "password": "pass"
+}
+
+#
+@authToken = Bearer {{login.response.body.$.token}}
+@userId = {{login.response.body.$.id}}
+
+
+### add note
+# @name addNote
+POST {{host}}/notes/add HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "note":"sample note"
+}
+
+### get all notes
+# @name getAll
+GET {{host}}/notes/all/{{userId}} HTTP/1.1
+Content-Type: application/json
+
+
+### get all notes
+# @name remove
+Delete {{host}}/notes/remove/2 HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+

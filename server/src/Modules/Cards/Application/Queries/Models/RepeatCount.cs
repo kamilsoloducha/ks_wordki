@@ -9,5 +9,5 @@ public class RepeatCount
     public DateTime Date { get; set; }
 
     [JsonIgnore]
-    public Guid OwnerId { get; set; }
+    public Guid UserId { get; set; }
 }

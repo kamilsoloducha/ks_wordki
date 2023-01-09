@@ -20,6 +20,7 @@ public static class Module
 {
     public static IServiceCollection AddUsersInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddUsersApplicationModule();
         services.JwtConfig(configuration);
         services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
         services.Configure<AdminAccountConfiguration>(options => configuration.GetSection(nameof(AdminAccountConfiguration)).Bind(options));

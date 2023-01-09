@@ -14,36 +14,36 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN mkdir -p /usr/src/app && chown node:node /usr/src/app
 WORKDIR /usr/src/app
 
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+# ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # Install packages with npm
-#COPY package.json package-lock.json ./
-#RUN npm install
+COPY package.json package-lock.json ./
+RUN npm install
 
 # Install packages with yarn
-COPY package.json yarn.lock ./
-RUN yarn install
+#COPY package.json yarn.lock ./
+#RUN yarn install --verbose
 
 COPY . .
 
 #####################################################
 # Build app for tests e2e
 #####################################################
-FROM build as pre-e2e
+# FROM build as pre-e2e
 
-RUN yarn run build:e2e
+# RUN yarn run build:e2e
 
 #####################################################
 # Run app for tests e2e
 #####################################################
 
-FROM nginx:alpine as e2e
+# FROM nginx:alpine as e2e
 
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=pre-e2e /usr/src/app/build /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/nginx.conf
+# RUN rm -rf /usr/share/nginx/html/*
+# COPY --from=pre-e2e /usr/src/app/build /usr/share/nginx/html
+# COPY ./nginx.conf /etc/nginx/nginx.conf
 
-CMD sed -i -e 's/$PORT/'81'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+# CMD sed -i -e 's/$PORT/'81'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
 
 #####################################################
@@ -52,7 +52,7 @@ CMD sed -i -e 's/$PORT/'81'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
 FROM build as pre-release
 
-RUN yarn build
+RUN npm run build
 
 
 #####################################################

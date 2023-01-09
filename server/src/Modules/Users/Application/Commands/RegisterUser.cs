@@ -1,13 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.MassTransit;
-using FluentValidation;
 using MassTransit;
 using MediatR;
 using Serilog;
 using Users.Application.Services;
-using Users.Domain;
 using Users.Domain.User;
 using Users.Domain.User.Services;
 
@@ -77,15 +74,5 @@ public class RegisterUser
         Successful,
         UserNameAlreadyOccupied,
         EmailAlreadyOccupied
-    }
-
-    internal class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
-        {
-            RuleFor(x => x.UserName).NotEmpty();
-            RuleFor(x => x.Email).NotEmpty();
-            RuleFor(x => x.Password).NotEmpty();
-        }
     }
 }

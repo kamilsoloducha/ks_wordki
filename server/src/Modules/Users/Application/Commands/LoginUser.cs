@@ -4,10 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Authentication;
 using Domain.Utils;
-using FluentValidation;
 using MediatR;
 using Users.Application.Services;
-using Users.Domain;
 using Users.Domain.User;
 
 namespace Users.Application.Commands;
@@ -42,21 +40,11 @@ public class LoginUser
 
             user.Login();
             await _userRepository.Update(user, cancellationToken);
-
             return new Response(ResponseCode.Successful, token, user.Id, creatingDate, creatingDate.AddDays(7));
         }
     }
 
     public record Command(string UserName, string Password) : IRequest<Response>;
-
-    internal class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
-        {
-            RuleFor(x => x.UserName).NotEmpty();
-            RuleFor(x => x.Password).NotEmpty();
-        }
-    }
 
     public record Response(
         ResponseCode ResponseCode,

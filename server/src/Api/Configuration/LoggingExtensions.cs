@@ -16,8 +16,3 @@ public static class LoggingExtensions
         builder.Host.UseSerilog(logger);
     }
 }
-
-public class LoggingConfiguration
-{
-    
-}

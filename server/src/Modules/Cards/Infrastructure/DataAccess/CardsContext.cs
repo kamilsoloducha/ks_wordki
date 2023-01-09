@@ -68,7 +68,6 @@ internal class CardsContext : DbContext
         modelBuilder.ApplyConfiguration(new RepeatCountEntityConfiguration());
         modelBuilder.ApplyConfiguration(new GroupsToLessonEntityConfiguration());
         modelBuilder.ApplyConfiguration(new CardsOverviewEntityConfiguration());
-
     }
 
     internal RelationalDatabaseCreator Creator => Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;

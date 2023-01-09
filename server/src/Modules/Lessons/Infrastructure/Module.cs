@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Infrastructure.Services.ConnectionStringProvider;
+using Lessons.Application;
 using Lessons.Domain;
 using Lessons.Domain.Performance;
 using Lessons.Infrastructure.DataAccess;
@@ -14,6 +15,7 @@ public static class LessonsInfrastructureModule
 {
     public static IServiceCollection AddLessonsInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddLessonsApplicationModule();
         services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
 
         services.AddDbContext<LessonsContext>();
