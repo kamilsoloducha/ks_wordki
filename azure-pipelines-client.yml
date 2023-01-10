@@ -26,7 +26,7 @@ parameters:
 
 jobs:
   - job: build
-    displayName: build
+    displayName: Build wordki client
 
     pool: 
         name: ${{ parameters.AgentSelect }}
@@ -110,6 +110,11 @@ jobs:
         inputs:
           containerRegistry: "docker-hub"
           command: "login"
+      - task: CmdLine@2
+        enabled: ${{ parameters.PublishImage }}
+        displayName: Tag Docker Image
+        inputs:
+          script: 'docker tag kamilsoloducha/wordki-client:$(Build.BuildId) kamilsoloducha/wordki-client:latest'
       - task: Docker@2
         enabled: ${{ parameters.PublishImage }}
         displayName: Push
