@@ -13,7 +13,7 @@ parameters:
       - Azure Pipelines
 
 pool: 
-  name: ${{ parameters.AgentSelect }}
+  name: Azure Pipelines
 
 steps:
   - task: DockerCompose@0
