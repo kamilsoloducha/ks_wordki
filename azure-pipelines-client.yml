@@ -3,6 +3,10 @@ trigger:
     include:
       - "client/*"
 
+variables:
+  - name: pooltype
+    value: Hosted
+
 parameters:
   - name: AgentSelect
     displayName: Select Agent
@@ -13,7 +17,10 @@ parameters:
       - Azure Pipelines
 
 pool: 
-  name: ${{AgentSelect}}
+  ${{ if eq(variables['pooltype'], 'Self-Hosted') }}:
+    name: ARM
+  ${{ if ne(variables['pooltype'], 'Self-Hosted') }}:
+    vmimage: 'ubuntu-latest'
 
 steps:
   - task: DockerCompose@0
