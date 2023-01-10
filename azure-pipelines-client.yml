@@ -12,7 +12,8 @@ parameters:
       - ARM
       - Azure Pipelines
 
-pool: ${{ parameters.AgentSelect }}
+pool: 
+  name: ${{ parameters.AgentSelect }}
 
 steps:
   - task: DockerCompose@0
