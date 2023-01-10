@@ -5,17 +5,14 @@ import { MainState } from "store/store";
 import { Forecast } from "../Forecast";
 import configureStore from "redux-mock-store";
 import { ReactElement } from "react";
+import { render } from "@testing-library/react";
 
 describe("Forecast", () => {
   let component: ReactElement;
-  let container: HTMLDivElement;
   let mockStore: MainState;
   let store: any;
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
-
     mockStore = {
       dashboardReducer: {
         isLoading: true,
@@ -39,13 +36,12 @@ describe("Forecast", () => {
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
   });
 
   it("should responce on onClick", async () => {
+    let container = {} as HTMLElement;
     act(() => {
-      ReactDOM.render(component, container);
+     container =  render(component).container;
     });
 
     expect(container.querySelector(".forecast-container")).toBeTruthy();

@@ -17,12 +17,12 @@ WORKDIR /usr/src/app
 # ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # Install packages with npm
-COPY package.json package-lock.json ./
-RUN npm install
+# COPY package.json package-lock.json ./
+# RUN npm install
 
 # Install packages with yarn
-#COPY package.json yarn.lock ./
-#RUN yarn install --verbose
+COPY package.json yarn.lock ./
+RUN yarn install
 
 COPY . .
 

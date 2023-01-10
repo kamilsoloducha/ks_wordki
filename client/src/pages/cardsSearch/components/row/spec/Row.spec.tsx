@@ -1,19 +1,16 @@
+import { render } from "@testing-library/react";
 import { CardSummary, Side } from "pages/cardsSearch/models";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import { Row } from "../Row";
 
 describe("Row", () => {
-  let container: HTMLDivElement;
+  let container: HTMLElement;
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
   });
 
   it("should responce on onClick", async () => {
@@ -25,7 +22,7 @@ describe("Row", () => {
       back: {} as Side,
     };
     act(() => {
-      ReactDOM.render(<Row card={card} />, container);
+      container = render(<Row card={card} />).container;
     });
 
     expect(container.querySelector(".row-container")).toBeTruthy();

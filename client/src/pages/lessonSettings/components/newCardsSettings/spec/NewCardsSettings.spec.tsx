@@ -8,18 +8,15 @@ import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 import { SetLesson } from "pages/lesson/models/lessonState";
 import Results from "pages/lesson/models/results";
 import NewCardsSettings from "../NewCardsSettings";
+import { render } from "@testing-library/react";
 
 describe("GroupsPage", () => {
-  let container: HTMLDivElement;
   let component: ReactElement;
   const dispatchMock = jest.fn(() => {});
   let mockStore: MainState;
   let store: any;
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
-
     mockStore = {
       lessonReducer: {
         isProcessing: false,
@@ -57,13 +54,12 @@ describe("GroupsPage", () => {
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
   });
 
   it("should be created", () => {
+    let container = {} as HTMLElement;
     act(() => {
-      ReactDOM.render(component, container);
+      container = render(component).container;
     });
 
     expect(container.querySelector(".setting-item")).toBeTruthy();

@@ -1,27 +1,22 @@
 import { render } from "@testing-library/react";
 import { CardSummary } from "pages/cards/models";
-import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import { CardSummaryBuilder } from "test/builders";
 import { CardItem } from "../CardItem";
 
 describe("CardItem", () => {
-  let container: HTMLDivElement;
+  
   const mockFunc = jest.fn((item: CardSummary) => {});
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
     mockFunc.mockClear();
   });
 
   it("should responce on onClick", async () => {
-    let container = {} as any;
+    let container = {} as HTMLElement;
     const card = new CardSummaryBuilder().build();
     act(() => {
       container = render(<CardItem card={card} onClick={(item) => mockFunc(item)} />).container;
