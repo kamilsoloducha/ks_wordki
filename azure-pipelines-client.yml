@@ -13,7 +13,7 @@ parameters:
       - Azure Pipelines
 
 pool: 
-  name: Azure Pipelines
+  name: $(AgentSelect)
 
 steps:
   - task: DockerCompose@0
