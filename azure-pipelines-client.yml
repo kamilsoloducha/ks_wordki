@@ -3,10 +3,6 @@ trigger:
     include:
       - "client/*"
 
-variables:
-  - name: pooltype
-    value: Hosted
-
 parameters:
   - name: AgentSelect
     displayName: Select Agent
@@ -15,6 +11,10 @@ parameters:
     values:
       - ARM
       - Azure Pipelines
+  - name: TestSelect
+    displayName: Run tests
+    type: boolean
+    default: true
 
 jobs:
   - job: build
@@ -34,7 +34,7 @@ jobs:
           dockerComposeCommand: up
       - task: CmdLine@2
         displayName: Run tests 
-        enabled: false
+        enabled: ${{ parameters.TestSelect }}
         inputs:
           script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
       - task: CmdLine@2
