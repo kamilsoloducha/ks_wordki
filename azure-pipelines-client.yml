@@ -11,10 +11,18 @@ parameters:
     values:
       - ARM
       - Azure Pipelines
-  - name: TestSelect
-    displayName: Run tests
+  - name: UnitTests
+    displayName: Run unit tests
     type: boolean
     default: true
+  - name: UiTests
+    displayName: Run ui tests
+    type: boolean
+    default: true
+  - name: PublishImage
+    displayName: Publish docker image
+    type: boolean
+    default: false
 
 jobs:
   - job: build
@@ -34,11 +42,11 @@ jobs:
           dockerComposeCommand: up
       - task: CmdLine@2
         displayName: Run tests 
-        enabled: ${{ parameters.TestSelect }}
+        enabled: ${{ parameters.UnitTests }}
         inputs:
           script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
       - task: CmdLine@2
-        enabled: false
+        enabled: ${{ parameters.UnitTests }}
         continueOnError: true
         displayName: Copy test results
         inputs:
@@ -47,7 +55,7 @@ jobs:
             docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/junit.xml
             docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
       - task: DockerCompose@0
-        enabled: false
+        enabled: ${{ parameters.UiTests }}
         displayName: Run UI Tests
         continueOnError: true
         inputs:
@@ -57,7 +65,7 @@ jobs:
           action: "Run a Docker Compose command"
           dockerComposeCommand: up --build --abort-on-container-exit
       - task: CmdLine@2
-        enabled: false
+        enabled: ${{ parameters.UiTests }}
         continueOnError: true
         displayName: Copy ui test results
         inputs:
@@ -65,7 +73,7 @@ jobs:
             docker ps -a
             docker cp wordki.ci.e2e.tests:/src/TestResults/TestResults.xml $(System.DefaultWorkingDirectory)/TESTS-ui-e2e.xml
       - task: PublishTestResults@2
-        enabled: false
+        enabled: ${{ parameters.UnitTests }}
         continueOnError: true
         displayName: Publish test results
         inputs:
@@ -73,14 +81,14 @@ jobs:
           searchFolder: $(System.DefaultWorkingDirectory)
           testResultsFiles: "junit.xml"
       - task: PublishCodeCoverageResults@1
-        enabled: false
+        enabled: ${{ parameters.UnitTests }}
         continueOnError: true
         displayName: Publish code coverage
         inputs:
           codeCoverageTool: "Cobertura"
           summaryFileLocation: "$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml"
       - task: PublishTestResults@2
-        enabled: false
+        enabled: ${{ parameters.UiTests }}
         continueOnError: true
         displayName: Publish ui test results
         inputs:
@@ -95,13 +103,15 @@ jobs:
           dockerComposeFile: "client/ci/docker/docker-compose.release.yml"
           action: "Run a Docker Compose command"
           dockerComposeCommand: build
-      - task: Docker@2
+      - task: Docker@2 
+        enabled: ${{ parameters.PublishImage }}
         displayName: Login to Docker Hub
         condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
           containerRegistry: "docker-hub"
           command: "login"
       - task: Docker@2
+        enabled: ${{ parameters.PublishImage }}
         displayName: Push
         condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
@@ -110,3 +120,4 @@ jobs:
           command: "push"
           tags: |
             $(Build.BuildId)
+            latest
