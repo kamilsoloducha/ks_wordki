@@ -3,7 +3,16 @@ trigger:
     include:
       - "client/*"
 
-pool: ARM
+parameters:
+  - name: AgentSelect
+    displayName: Select Agent
+    type: string
+    default: Azure Pipelines
+    values:
+      - ARM
+      - Azure Pipelines
+
+pool: ${{ parameters.AgentSelect }}
 
 steps:
   - task: DockerCompose@0
