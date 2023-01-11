@@ -3,60 +3,96 @@ trigger:
     include:
       - "server/*"
 
-pool:
-  vmImage: "ubuntu-latest"
+parameters:
+  - name: AgentSelect
+    displayName: Select Agent
+    type: string
+    default: Azure Pipelines
+    values:
+      - ARM
+      - Azure Pipelines
+  - name: UnitTests
+    displayName: Run unit tests
+    type: boolean
+    default: false
+  - name: E2eTests
+    displayName: Run e2e tests
+    type: boolean
+    default: false
+  - name: PublishImage
+    displayName: Publish docker image
+    type: boolean
+    default: false
 
-steps:
-  - task: DockerCompose@0
-    displayName: Build
-    inputs:
-      containerregistrytype: "Container Registry"
-      dockerRegistryEndpoint: "docker-hub"
-      dockerComposeFile: "server/ci/docker/docker-compose.build.yml"
-      action: "Run a Docker Compose command"
-      dockerComposeCommand: up
-  # - task: DockerCompose@0
-  #   displayName: Run Tests
-  #   inputs:
-  #     containerregistrytype: "Container Registry"
-  #     dockerRegistryEndpoint: "docker-hub"
-  #     dockerComposeFile: "server/ci/docker/docker-compose.unittests.yml"
-  #     action: "Run a Docker Compose command"
-  #     dockerComposeCommand: up --build --abort-on-container-exit
-  # - task: CmdLine@2
-  #   displayName: Copy test results
-  #   inputs:
-  #     script: |
-  #       docker ps -a
-  #       docker cp wordki-server.ci.unittests:/server/tests/Cards.Domain.Tests/TestResults $(System.DefaultWorkingDirectory)/test
-  #       docker cp wordki-server.ci.unittests:/server/tests/Api.Tests/TestResults $(System.DefaultWorkingDirectory)/test
-  #       ls $(System.DefaultWorkingDirectory)/test
-  # - task: PublishTestResults@2
-  #   displayName: Publish test results
-  #   inputs:
-  #     testResultsFormat: "JUnit"
-  #     searchFolder: $(System.DefaultWorkingDirectory)/test
-  #     testResultsFiles: "*.xml"
-  - task: DockerCompose@0
-    displayName: Release
-    inputs:
-      containerregistrytype: "Container Registry"
-      dockerRegistryEndpoint: "docker-hub"
-      dockerComposeFile: "server/ci/docker/docker-compose.release.yml"
-      action: "Run a Docker Compose command"
-      dockerComposeCommand: build
-  - task: Docker@2
-    displayName: Login to Docker Hub
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-    inputs:
-      containerRegistry: "docker-hub"
-      command: "login"
-  - task: Docker@2
-    displayName: Push
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-    inputs:
-      containerRegistry: "docker-hub"
-      repository: "kamilsoloducha/wordki-server"
-      command: "push"
-      tags: |
-        $(Build.BuildId)
+jobs:
+  - job: build
+    displayName: Build wordki client
+
+    pool: 
+        name: ${{ parameters.AgentSelect }}
+
+    steps:
+      - task: DockerCompose@0
+        displayName: Build
+        inputs:
+          containerregistrytype: "Container Registry"
+          dockerRegistryEndpoint: "docker-hub"
+          dockerComposeFile: "server/ci/docker/docker-compose.build.yml"
+          action: "Run a Docker Compose command"
+          dockerComposeCommand: up
+      - task: DockerCompose@0
+        enabled: ${{ parameters.UnitTests }}
+        displayName: Run Tests
+        inputs:
+          containerregistrytype: "Container Registry"
+          dockerRegistryEndpoint: "docker-hub"
+          dockerComposeFile: "server/ci/docker/docker-compose.unittests.yml"
+          action: "Run a Docker Compose command"
+          dockerComposeCommand: up --build --abort-on-container-exit
+      - task: CmdLine@2
+        enabled: ${{ parameters.UnitTests }}
+        displayName: Copy test results
+        inputs:
+          script: |
+            docker ps -a
+            docker cp wordki-server.ci.unittests:/server/tests/Cards.Domain.Tests/TestResults $(System.DefaultWorkingDirectory)/test
+            docker cp wordki-server.ci.unittests:/server/tests/Api.Tests/TestResults $(System.DefaultWorkingDirectory)/test
+            ls $(System.DefaultWorkingDirectory)/test
+      - task: PublishTestResults@2
+        enabled: ${{ parameters.UnitTests }}
+        displayName: Publish test results
+        inputs:
+          testResultsFormat: "JUnit"
+          searchFolder: $(System.DefaultWorkingDirectory)/test
+          testResultsFiles: "*.xml"
+      - task: DockerCompose@0
+        displayName: Release
+        inputs:
+          containerregistrytype: "Container Registry"
+          dockerRegistryEndpoint: "docker-hub"
+          dockerComposeFile: "server/ci/docker/docker-compose.release.yml"
+          action: "Run a Docker Compose command"
+          dockerComposeCommand: build
+      - task: Docker@2
+        displayName: Login to Docker Hub
+        enabled: ${{ parameters.PublishImage }}
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+        inputs:
+          containerRegistry: "docker-hub"
+          command: "login"
+      - task: CmdLine@2
+        enabled: ${{ parameters.PublishImage }}
+        displayName: Tag Docker Image
+        inputs:
+          script: 'docker tag kamilsoloducha/wordki-client:$(Build.BuildId) kamilsoloducha/wordki-client:latest'
+      - task: Docker@2
+        enabled: ${{ parameters.PublishImage }}
+        displayName: Push
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+        inputs:
+          containerRegistry: "docker-hub"
+          repository: "kamilsoloducha/wordki-server"
+          command: "push"
+          tags: |
+            $(Build.BuildId)
+            latest
