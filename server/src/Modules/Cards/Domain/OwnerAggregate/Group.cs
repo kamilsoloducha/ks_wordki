@@ -41,7 +41,8 @@ public class Group
 
     internal void RemoveCard(CardId cardId)
     {
-        var card = GetCard(cardId);
+        var card = Cards.FirstOrDefault(x => x.Id == cardId);
+        if (card is null) return;
         _cards.Remove(card);
     }
 
@@ -54,8 +55,8 @@ public class Group
     internal Card AddCard(
         Label frontValue,
         Label backValue,
-        string frontExample,
-        string backExample,
+        Example frontExample,
+        Example backExample,
         ISequenceGenerator sequenceGenerator)
     {
         var card = Card.New(

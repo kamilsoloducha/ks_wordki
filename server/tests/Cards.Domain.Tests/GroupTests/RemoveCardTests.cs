@@ -23,14 +23,14 @@ public class RemoveCardTests
         group.AddCard(
             Label.Create("front"),
             Label.Create("back"),
-            "frontExample",
-            "backExample",
+            new Example("frontExample"),
+            new Example("backExample"),
             sequenceGenerator);
         group.AddCard(
             Label.Create("front"),
             Label.Create("back"),
-            "frontExample",
-            "backExample",
+            new Example("frontExample"),
+            new Example("backExample"),
             sequenceGenerator);
 
         group.RemoveCard(CardId.Restore(2));
@@ -43,8 +43,8 @@ public class RemoveCardTests
     {
         var group = Builder<Group>.CreateNew().Build();
 
-        Action action = () => group.RemoveCard(CardId.Restore(1));
+        var action = () => group.RemoveCard(CardId.Restore(1));
 
-        action.Should().Throw<Exception>();
+        action.Should().NotThrow();
     }
 }

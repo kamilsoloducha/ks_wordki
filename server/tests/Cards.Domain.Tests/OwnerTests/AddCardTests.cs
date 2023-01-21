@@ -46,8 +46,8 @@ public class AddCardTests
         var groupId = GroupId.Restore(_groupIdValue);
         var frontValue = Label.Create("front value");
         var backValue = Label.Create("back value");
-        var frontExample = "front example";
-        var backExample = "back example";
+        var frontExample = new Example("front example");
+        var backExample = new Example("back example");
         var frontComment = Comment.Create("front comment");
         var backComment = Comment.Create("back comment");
 

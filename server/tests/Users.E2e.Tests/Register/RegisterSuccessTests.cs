@@ -1,12 +1,14 @@
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using E2e.Model.Tests.Model.Users;
 using FluentAssertions;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Users.Application.Commands;
-using Users.E2e.Tests.Models.Users;
 
 namespace Users.E2e.Tests.Register;
 
@@ -51,5 +53,7 @@ public class RegisterSuccessTests<TContext> : UsersTestBase where TContext : Reg
         user.ConfirmationDate.Should().Be(_context.ExpectedUser.ConfirmationDate);
         user.CreationDate.Should().Be(_context.ExpectedUser.ConfirmationDate);
         user.Password.Should().Be(_context.ExpectedUser.Password);
+
+        PublishEndpointMock.Verify(x => x.Publish(It.IsAny<object>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

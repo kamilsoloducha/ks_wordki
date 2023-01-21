@@ -21,7 +21,7 @@ public class E2EWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Test");
+        builder.UseEnvironment("Development");
         builder.ConfigureServices(services =>
         {
             _serviceConfig?.Invoke(services);

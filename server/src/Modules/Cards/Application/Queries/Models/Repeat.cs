@@ -6,7 +6,7 @@ namespace Cards.Application.Queries.Models;
 public class Repeat
 {
     [JsonIgnore]
-    public Guid UserId { get; set; }
+    public Guid OwnerId { get; set; }
     public long SideId { get; set; }
     public long CardId { get; set; }
     [JsonIgnore]

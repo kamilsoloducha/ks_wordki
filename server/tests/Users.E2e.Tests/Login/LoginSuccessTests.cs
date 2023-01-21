@@ -2,12 +2,12 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using E2e.Model.Tests.Model.Users;
 using E2e.Tests;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Users.Application.Commands;
-using Users.E2e.Tests.Models.Users;
 
 namespace Users.E2e.Tests.Login;
 

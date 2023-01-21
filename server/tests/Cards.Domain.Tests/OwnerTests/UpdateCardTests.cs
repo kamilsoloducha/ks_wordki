@@ -42,8 +42,8 @@ public class UpdateCardTests
         _owner.AddCard(GroupId.Restore(_groupIdValue),
             Label.Create("front value"),
             Label.Create("back value"),
-            "front example",
-            "back example",
+            new Example("front example"),
+            new Example("back example"),
             Comment.Create("front comment"),
             Comment.Create("back comment"),
             _sequenceGeneratorMock.Object);
@@ -56,8 +56,8 @@ public class UpdateCardTests
         var cardId = CardId.Restore(_cardIdValue);
         var frontValue = Label.Create("front value updated");
         var backValue = Label.Create("back value updated");
-        var frontExample = "front example updated";
-        var backExample = "back example updated";
+        var frontExample = new Example("front example updated");
+        var backExample = new Example("back example updated");
         var frontComment = Comment.Create("front comment updated");
         var backComment = Comment.Create("back comment updated");
 
@@ -97,8 +97,6 @@ public class UpdateCardTests
 
         card.IsPrivate.Should().BeTrue();
 
-        var front = card.Front;
-
         card.Front.Id.Value.Should().Be(200);
         card.Front.Value.Text.Should().Be(frontValue.Text);
         card.Front.Example.Should().Be(frontExample);
@@ -137,8 +135,8 @@ public class UpdateCardTests
         var cardId = CardId.Restore(_cardIdValue);
         var frontValue = Label.Create("front value updated");
         var backValue = Label.Create("back value updated");
-        var frontExample = "front example updated";
-        var backExample = "back example updated";
+        var frontExample = new Example("front example updated");
+        var backExample = new Example("back example updated");
         var frontComment = Comment.Create("front comment updated");
         var backComment = Comment.Create("back comment updated");
 
@@ -180,15 +178,13 @@ public class UpdateCardTests
 
         card.IsPrivate.Should().BeTrue();
 
-        var front = card.Front;
-
         card.Front.Id.Value.Should().Be(202);
         card.Front.Value.Text.Should().Be("front value updated");
-        card.Front.Example.Should().Be("front example updated");
+        card.Front.Example.Value.Should().Be("front example updated");
 
         card.Back.Id.Value.Should().Be(203);
         card.Back.Value.Text.Should().Be("back value updated");
-        card.Back.Example.Should().Be("back example updated");
+        card.Back.Example.Value.Should().Be("back example updated");
 
         _owner.Details.Count.Should().Be(2);
 

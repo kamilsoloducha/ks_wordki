@@ -1,4 +1,5 @@
-using Cards.E2e.Tests.Models.Cards;
+
+using E2e.Model.Tests.Model.Cards;
 
 namespace Cards.E2e.Tests.AddGroup;
 

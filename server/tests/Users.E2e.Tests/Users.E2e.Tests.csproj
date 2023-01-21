@@ -12,7 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\E2e.Tests\E2e.Tests.csproj" />
+        <ProjectReference Include="..\E2e.Tests\E2e.Tests.csproj" />
+        <ProjectReference Include="..\E2e.Model.Tests\E2e.Model.Tests.csproj" />
     </ItemGroup>
 
 </Project>

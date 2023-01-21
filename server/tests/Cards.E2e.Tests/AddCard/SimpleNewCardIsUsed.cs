@@ -1,10 +1,6 @@
 using System.Collections.Generic;
-using Cards.Domain;
 using Cards.Domain.Enums;
-using Card = Cards.E2e.Tests.Models.Cards.Card;
-using Detail = Cards.E2e.Tests.Models.Cards.Detail;
-using Group = Cards.E2e.Tests.Models.Cards.Group;
-using Side = Cards.E2e.Tests.Models.Cards.Side;
+using E2e.Model.Tests.Model.Cards;
 
 namespace Cards.E2e.Tests.AddCard;
 
@@ -12,7 +8,7 @@ public class SimpleNewCardIsUsed : AddCardSuccessContext
 {
     public override Application.Commands.AddCard.Command GivenRequest { get; } = new()
     {
-        UserId = CardsTestBase.OwnerId,
+        UserId = CardsTestBase.UserId,
         GroupId = "1",
         Front = new Application.Commands.AddCard.CardSide
             { Value = "FrontValue", Example = "FrontExample", IsUsed = true },

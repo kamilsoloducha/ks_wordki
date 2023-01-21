@@ -47,8 +47,8 @@ internal class CardsContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseLoggerFactory(_loggerFactory)
-            .EnableSensitiveDataLogging()
+            // .UseLoggerFactory(_loggerFactory)
+            // .EnableSensitiveDataLogging()
             .UseNpgsql(_connectionString);
     }
 

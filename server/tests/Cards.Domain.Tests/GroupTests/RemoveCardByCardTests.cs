@@ -23,14 +23,14 @@ public class RemoveCardByCardTests
         var card = group.AddCard(
             Label.Create("front"),
             Label.Create("back"),
-            "frontExample",
-            "backExample",
+            new Example("frontExample"),
+            new Example("backExample"),
             sequenceGenerator);
         group.AddCard(
             Label.Create("front"),
             Label.Create("back"),
-            "frontExample",
-            "backExample",
+            new Example("frontExample"),
+            new Example("backExample"),
             sequenceGenerator);
 
         group.RemoveCard(card);

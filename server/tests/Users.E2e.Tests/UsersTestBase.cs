@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
+using E2e.Model.Tests.Model.Users;
 using E2e.Tests;
 using Microsoft.EntityFrameworkCore;
-using Users.E2e.Tests.Models.Users;
 
 namespace Users.E2e.Tests;
 

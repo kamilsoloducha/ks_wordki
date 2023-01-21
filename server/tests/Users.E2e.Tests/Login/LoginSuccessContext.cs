@@ -1,7 +1,7 @@
 using System;
+using E2e.Model.Tests.Model.Users;
 using E2e.Tests;
 using Users.Application.Commands;
-using Users.E2e.Tests.Models.Users;
 
 namespace Users.E2e.Tests.Login;
 

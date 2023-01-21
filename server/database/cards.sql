@@ -34,7 +34,7 @@ CREATE TABLE cards.cards (
 );
 
 CREATE TABLE cards.details (
-    "Id" bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    "Id" bigserial NOT NULL GENERATED ALWAYS AS IDENTITY,
     "OwnerId" uuid NOT NULL,
     "SideId" bigint NOT NULL,
     "Drawer" integer NOT NULL,

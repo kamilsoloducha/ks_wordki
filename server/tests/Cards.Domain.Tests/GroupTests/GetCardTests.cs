@@ -23,8 +23,8 @@ public class GetCardTests
         group.AddCard(
             Label.Create("front"),
             Label.Create("back"),
-            "frontExample",
-            "backExample",
+            new Example("frontExample"),
+            new Example("backExample"),
             sequenceGenerator);
 
         var card = group.GetCard(CardId.Restore(2));

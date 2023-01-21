@@ -29,13 +29,13 @@ public class CardsToRepeat : GetDashboardSummaryContext
         group.Cards.Add(card);
 
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 1).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 1).With(x => x.SideId = 1).With(x => x.OwnerId = owner.Id)
                 .With(x => x.LessonIncluded = true)
                 .With(x => x.NextRepeat = new DateTime(2022, 1, 1))
                 .Build());
 
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 2).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 2).With(x => x.SideId = 2).With(x => x.OwnerId = owner.Id)
                 .With(x => x.LessonIncluded = false)
                 .With(x => x.NextRepeat = new DateTime(2022, 1, 1))
                 .Build());

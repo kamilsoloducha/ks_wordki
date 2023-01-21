@@ -8,7 +8,7 @@ public static class ConfigurationExtensions {
     {
         builder.Configuration
             .SetBasePath(builder.Environment.ContentRootPath)
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, false)
             .AddEnvironmentVariables().Build();
     }
 }

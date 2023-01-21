@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Cards.E2e.Tests.Models.Cards;
+using E2e.Model.Tests.Model.Cards;
 using E2e.Tests;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +8,11 @@ namespace Cards.E2e.Tests;
 
 public class CardsTestBase : TestBase
 {
-    public static Guid OwnerId = Guid.Parse("12345678-1234-1234-1234-1234567890AB"); 
-    
-    protected readonly Owner Owner = new()
+    public static Guid UserId = new ("12345678-1234-1234-1234-1234567890ab");
+
+    protected Owner Owner => new()
     {
-        Id = OwnerId
+        Id = UserId
     };
     
     protected async Task ClearCardsSchema()
@@ -20,8 +20,8 @@ public class CardsTestBase : TestBase
         await using var dbContext = new CardsContext();
         await dbContext.Database.ExecuteSqlRawAsync("Delete from cards.\"owners\"");
         await dbContext.Database.ExecuteSqlRawAsync("Delete from cards.\"cards\"");
+        await dbContext.Database.ExecuteSqlRawAsync("Delete from cards.\"sides\"");
 
-        await dbContext.Owners.AddAsync(Owner);
-        await dbContext.SaveChangesAsync();
+        
     }
 }

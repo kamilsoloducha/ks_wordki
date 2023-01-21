@@ -1,4 +1,5 @@
-using Cards.E2e.Tests.Models.Cards;
+
+using E2e.Model.Tests.Model.Cards;
 
 namespace Cards.E2e.Tests.AddGroup;
 
@@ -6,7 +7,7 @@ public class SimpleGroup : AddGroupSuccessContext
 {
     public override Application.Commands.AddGroup.Command GivenRequest { get; } = new()
     {
-        UserId = CardsTestBase.OwnerId,
+        UserId = CardsTestBase.UserId,
         GroupName = "groupName",
         Front = 1,
         Back = 2
@@ -17,6 +18,6 @@ public class SimpleGroup : AddGroupSuccessContext
         Back = 2, 
         Front = 1,
         Name = "groupName",
-        OwnerId = CardsTestBase.OwnerId,
+        OwnerId = CardsTestBase.UserId,
     };
 }

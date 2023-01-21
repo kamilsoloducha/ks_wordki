@@ -44,7 +44,7 @@ public class UpdateCard
                 Front = new UpdateCardCommand.Side
                 {
                     Value = frontValue,
-                    Example = request.Front.Example,
+                    Example = new Example(request.Front.Example),
                     Comment = frontComment,
                     IncludeLesson = request.Front.IsUsed,
                     IsTicked = request.Front.IsTicked
@@ -52,7 +52,7 @@ public class UpdateCard
                 Back = new UpdateCardCommand.Side
                 {
                     Value = backValue,
-                    Example = request.Back.Example,
+                    Example = new Example(request.Back.Example),
                     Comment = backComment,
                     IncludeLesson = request.Back.IsUsed,
                     IsTicked = request.Back.IsTicked

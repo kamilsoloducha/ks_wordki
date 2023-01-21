@@ -6,10 +6,10 @@ namespace Cards.Domain.OwnerAggregate;
 
 public class Side
 {
-    public SideId Id { get; private set; }
-    public SideType Type { get; private set; }
-    public Label Value { get; private set; }
-    public string Example { get; private set; }
+    public SideId Id { get; private init; }
+    public SideType Type { get; private init; }
+    public Label Value { get; internal set; }
+    public Example Example { get; internal set; }
 
     private Side()
     { }
@@ -18,7 +18,7 @@ public class Side
         CardId cardId,
         SideType type,
         Label value,
-        string example,
+        Example example,
         ISequenceGenerator sequenceGenerator)
     {
         return new Side
@@ -28,11 +28,5 @@ public class Side
             Value = value,
             Example = example,
         };
-    }
-
-    internal void Update(Label value, string example)
-    {
-        Value = value;
-        Example = example;
     }
 }

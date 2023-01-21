@@ -16,39 +16,38 @@ public class AllDates : GetForecastContext
     {
         var owner = new Owner
         {
-            UserId = CardsTestBase.UserId,
-            Id = CardsTestBase.OwnerId
+            Id = CardsTestBase.UserId,
         };
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 1).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 1).With(x => x.SideId = 1).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 1))
                 .Build());
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 2).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 2).With(x => x.SideId = 2).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 2))
                 .Build());
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 3).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 3).With(x => x.SideId = 3).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 3))
                 .Build());
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 4).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 4).With(x => x.SideId = 4).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 4))
                 .Build());
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 5).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 5).With(x => x.SideId = 5).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 5))
                 .Build());
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 6).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 6).With(x => x.SideId = 6).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 6))
                 .Build());
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 7).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 7).With(x => x.SideId = 7).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 6))
                 .Build());
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 8).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 8).With(x => x.SideId = 8).With(x => x.OwnerId = owner.Id)
                 .With(x => x.NextRepeat = new DateTime(2022, 2, 7))
                 .Build());
         GivenOwners = new[] { owner };

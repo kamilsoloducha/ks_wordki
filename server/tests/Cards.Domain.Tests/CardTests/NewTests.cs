@@ -25,8 +25,8 @@ public class NewTests
     {
         var frontValue = Label.Create("frontValue");
         var backValue = Label.Create("backValue");
-        const string frontExample = "frontExample";
-        const string backExample = "backExample";
+        var frontExample = new Example("frontExample");
+        var backExample = new Example("backExample");
         var card = Card.New(frontValue, backValue, frontExample, backExample, _sequenceGenerator);
 
         card.Should().NotBeNull();

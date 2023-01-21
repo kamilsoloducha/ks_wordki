@@ -33,8 +33,8 @@ internal class UsersContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseLoggerFactory(loggerFactory)
-            .EnableSensitiveDataLogging()
+            // .UseLoggerFactory(loggerFactory)
+            // .EnableSensitiveDataLogging()
             .UseNpgsql(_connectionString);
     }
 

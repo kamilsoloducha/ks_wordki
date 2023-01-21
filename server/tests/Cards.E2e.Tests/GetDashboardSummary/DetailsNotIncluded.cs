@@ -28,12 +28,12 @@ public class DetailsNotIncluded : GetDashboardSummaryContext
         group.Cards.Add(card);
 
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 1).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 1).With(x => x.SideId = 1).With(x => x.OwnerId = owner.Id)
                 .With(x => x.LessonIncluded = false)
                 .Build());
 
         owner.Details.Add(
-            DataBuilder.Detail().With(x => x.SideId = 2).With(x => x.OwnerId = owner.Id)
+            DataBuilder.Detail().With(x => x.Id = 2).With(x => x.SideId = 2).With(x => x.OwnerId = owner.Id)
                 .With(x => x.LessonIncluded = false)
                 .Build());
 

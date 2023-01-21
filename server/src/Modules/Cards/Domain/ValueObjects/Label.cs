@@ -6,7 +6,7 @@ public readonly struct Label
 {
     public string Text { get; }
 
-    private Label(string text)
+    public Label(string text)
     {
         Text = text;
     }

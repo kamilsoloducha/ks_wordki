@@ -24,19 +24,19 @@ public class AddCardTests
         var card = group.AddCard(
             Label.Create("front"),
             Label.Create("back"),
-            "frontExample",
-            "backExample",
+            new Example("frontExample"),
+            new Example("backExample"),
             sequenceGenerator);
 
         group.Cards.Should().Contain(card);
         card.Id.Value.Should().Be(2);
 
         card.Front.Value.Text.Should().Be("front");
-        card.Front.Example.Should().Be("frontExample");
+        card.Front.Example.Value.Should().Be("frontExample");
         card.Front.Id.Value.Should().Be(2);
 
         card.Back.Value.Text.Should().Be("back");
-        card.Back.Example.Should().Be("backExample");
+        card.Back.Example.Value.Should().Be("backExample");
         card.Back.Id.Value.Should().Be(3);
     }
 }

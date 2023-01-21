@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Cards.Domain.Enums;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
+using Domain;
 
 namespace Cards.Domain.OwnerAggregate;
 
@@ -22,7 +24,7 @@ public class Card
         _groups = new();
     }
 
-    public static Card New(Label frontValue, Label backValue, string frontExample, string backExample, ISequenceGenerator sequenceGenerator)
+    public static Card New(Label frontValue, Label backValue, Example frontExample, Example backExample, ISequenceGenerator sequenceGenerator)
     {
         var cardId = CardId.New(sequenceGenerator);
         var front = Side.New(cardId, SideType.Front, frontValue, frontExample, sequenceGenerator);
@@ -38,9 +40,14 @@ public class Card
         };
     }
 
-    internal void Update(Label frontValue, Label backValue, string frontExample, string backExample)
+    internal void Update(Label frontValue, Label backValue, Example frontExample, Example backExample)
     {
-        Front.Update(frontValue, frontExample);
-        Back.Update(backValue, backExample);
+        if (!IsPrivate) throw new Exception("Can not update public card");
+        Front.Value = frontValue;
+        Front.Example = frontExample;
+        
+        Back.Value = backValue;
+        Back.Example = backExample;
+        
     }
 }

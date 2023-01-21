@@ -14,8 +14,7 @@ public class NewOwner : GetForecastContext
     {
         var owner = new Owner
         {
-            UserId = CardsTestBase.UserId,
-            Id = CardsTestBase.OwnerId
+            Id = CardsTestBase.UserId
         };
         GivenOwners = new[] { owner };
 

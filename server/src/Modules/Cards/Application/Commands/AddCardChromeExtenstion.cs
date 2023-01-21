@@ -35,18 +35,20 @@ public class AddCardChromeExtenstion
             var ownerId = OwnerId.Restore(userGuid);
             var owner = await _repository.Get(ownerId, cancellationToken);
             var chromeExtensionGroup = owner.Groups.FirstOrDefault(x => x.Name == GroupName.ChromeExtenstionGroupName);
-            
-            var groupId = chromeExtensionGroup?.Id ?? owner.AddGroup(GroupName.ChromeExtenstionGroupName, Language.Create(1), Language.Create(2), _sequenceGenerator);
+
+            var groupId = chromeExtensionGroup?.Id ?? owner.AddGroup(GroupName.ChromeExtenstionGroupName,
+                Language.Create(1), Language.Create(2), _sequenceGenerator);
             var value = Label.Create(request.Value);
             var comment = Comment.Create(string.Empty);
-            owner.AddCard(groupId, value, value,string.Empty, string.Empty,comment,comment, _sequenceGenerator);
+            owner.AddCard(groupId, value, value, new Example(string.Empty), new Example(string.Empty), comment, comment,
+                _sequenceGenerator);
 
             await _repository.Update(owner, cancellationToken);
             return ResponseBase<Unit>.Create(Unit.Value);
         }
     }
 
-    public class Command:RequestBase<Unit>
+    public class Command : RequestBase<Unit>
     {
         public string Value { get; set; }
     }

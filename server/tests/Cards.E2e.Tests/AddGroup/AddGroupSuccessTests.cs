@@ -2,9 +2,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Requests;
-using Cards.E2e.Tests.Models.Cards;
+using E2e.Model.Tests.Model.Cards;
 using FluentAssertions;
-using Infrastructure.Services;
 using Infrastructure.Services.HashIds;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -21,6 +20,10 @@ public class AddGroupSuccessTests<TContext> : CardsTestBase where TContext : Add
     public async Task Setup()
     {
         await ClearCardsSchema();
+        
+        await using var dbContext = new CardsContext();
+        await dbContext.Owners.AddAsync(Owner);
+        await dbContext.SaveChangesAsync();
     }
 
     [Test]

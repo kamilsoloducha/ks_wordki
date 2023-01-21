@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Api.Configuration;
@@ -46,10 +47,10 @@ public class GroupsController : BaseController
     public async Task<IActionResult> Merge(MergeGroups.Command command, CancellationToken cancellationToken)
         => await HandleRequest(command, cancellationToken);
 
-    [HttpDelete("delete")]
+    [HttpDelete("delete/{userId}/{groupId}")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Delete(DeleteGroup.Command command, CancellationToken cancellationToken)
-        => await HandleRequest(command, cancellationToken);
+    public async Task<IActionResult> Delete([FromRoute] Guid userId, [FromRoute] string groupId, CancellationToken cancellationToken)
+        => await HandleRequest(new DeleteGroup.Command{UserId = userId, GroupId = groupId}, cancellationToken);
 
     [HttpGet("dashboard/summary")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]

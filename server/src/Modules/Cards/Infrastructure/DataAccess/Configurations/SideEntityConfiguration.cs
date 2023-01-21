@@ -22,5 +22,10 @@ class SideEntityConfiguration : IEntityTypeConfiguration<Side>
             x => x.Text,
             x => Label.Create(x)
         );
+        
+        builder.Property(x => x.Example).HasConversion(
+            x => x.Value,
+            x => new Example(x)
+        );
     }
 }

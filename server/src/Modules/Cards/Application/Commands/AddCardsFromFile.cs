@@ -55,8 +55,8 @@ public class AddCardsFromFile
                     groupId,
                     Label.Create(frontValue),
                     Label.Create(backValue),
-                    frontExample,
-                    backExample,
+                    new Example(frontExample),
+                    new Example(backExample),
                     Comment.Create(string.Empty),
                     Comment.Create(string.Empty),
                     _sequenceGenerator

@@ -16,6 +16,7 @@ public class UpdateTests
     {
         sut = Builder<Card>.CreateNew().Build();
         sut.SetProperty(nameof(sut.Id), CardId.Restore(2));
+        sut.SetProperty(nameof(sut.IsPrivate), true);
         sut.SetProperty(nameof(sut.Front), Builder<Side>.CreateNew().Build());
         sut.Front.SetProperty(nameof(sut.Front.Id), SideId.Restore(2));
         sut.SetProperty(nameof(sut.FrontId), SideId.Restore(2));
@@ -29,8 +30,8 @@ public class UpdateTests
     {
         Label frontValue = Label.Create("frontValue");
         Label backValue = Label.Create("backValue");
-        string frontExample = "frontExample";
-        string backExample = "backExample";
+        var frontExample = new Example("frontExample");
+        var backExample = new Example("backExample");
         sut.Update(frontValue, backValue, frontExample, backExample);
 
         sut.Id.Value.Should().Be(2);

@@ -87,7 +87,7 @@ internal class QueryRepository : IQueryRepository
             .ToListAsync(cancellationToken);
 
     public async Task<IEnumerable<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop, CancellationToken cancellationToken)
-        => await _cardsContext.RepeatCounts.Where(x => x.UserId == ownerId && x.Date >= start.Date && x.Date <= stop.Date).ToListAsync(cancellationToken);
+        => await _cardsContext.RepeatCounts.Where(x => x.OwnerId == ownerId && x.Date >= start.Date && x.Date <= stop.Date).ToListAsync(cancellationToken);
 
     public async Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchGroupsQuery query, CancellationToken cancellationToken)
         => await _cardsContext.GroupSummaries

@@ -36,6 +36,8 @@ public class AddCard
             var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
             var frontValue = Label.Create(request.Front.Value);
             var backValue = Label.Create(request.Back.Value);
+            var frontExample = new Example(request.Front.Example);
+            var backExample = new Example(request.Back.Example);
             var frontComment = Comment.Create(request.Comment);
             var backComment = Comment.Create(request.Comment);
 
@@ -43,8 +45,8 @@ public class AddCard
                 groupId,
                 frontValue,
                 backValue,
-                request.Front.Example,
-                request.Back.Example,
+                frontExample,
+                backExample,
                 frontComment,
                 backComment,
                 _sequenceGenerator);

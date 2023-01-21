@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Card = Cards.E2e.Tests.Models.Cards.Card;
-using Detail = Cards.E2e.Tests.Models.Cards.Detail;
-using Group = Cards.E2e.Tests.Models.Cards.Group;
+using E2e.Model.Tests.Model.Cards;
 
 namespace Cards.E2e.Tests.AddCard;
 

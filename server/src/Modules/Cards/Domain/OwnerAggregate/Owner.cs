@@ -90,16 +90,28 @@ public class Owner
 
     public void RemoveGroup(GroupId groupId)
     {
-        var group = GetGroup(groupId);
+        var group = _groups.FirstOrDefault(x => x.Id == groupId);
+        if (group is null) return;
+        
         _groups.Remove(group);
+
+        var sideIds = group.Cards.Select(x => x.BackId).Concat(group.Cards.Select(x => x.FrontId));
+
+        foreach (var sideId in sideIds)
+        {
+            var details = _details.FirstOrDefault(x => x.SideId == sideId);
+            if(details is null) continue;
+
+            _details.Remove(details);
+        }
     }
 
     public CardId AddCard(
         GroupId groupId,
         Label frontValue,
         Label backValue,
-        string frontExample,
-        string backExample,
+        Example frontExample,
+        Example backExample,
         Comment frontComment,
         Comment backComment,
         ISequenceGenerator sequenceGenerator)
@@ -169,8 +181,9 @@ public class Owner
 
     public void RemoveCard(GroupId groupId, CardId cardId)
     {
-        var group = GetGroup(groupId);
-        var card = group.GetCard(cardId);
+        var group = _groups.FirstOrDefault(x => x.Id == groupId);
+        var card = group?.Cards.FirstOrDefault(x => x.Id == cardId);
+        if (card is null) return;
 
         if (card.IsPrivate)
         {
