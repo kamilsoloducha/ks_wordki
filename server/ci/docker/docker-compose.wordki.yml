@@ -1,0 +1,9 @@
+version: "3.5"
+services:
+  wordki-server:
+    container_name: wordki-server
+    image: kamilsoloducha/wordki-server:latest
+    ports:
+      - 5000:5000
+    env_file:
+      - secrects.Production.env
