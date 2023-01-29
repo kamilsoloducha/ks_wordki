@@ -29,7 +29,7 @@ public class GetForecast
                 result.Add(new RepeatCount { Count = 0, Date = request.StartDate.AddDays(i).Date });
             }
 
-            var data = await _queryRepository.GetRepeatsPerDay(request.UserId, request.StartDate, stop, cancellationToken);
+            var data = await _queryRepository.GetRepeatsPerDay(request.OwnerId, request.StartDate, stop, cancellationToken);
             for (int i = 0; i < request.Count; i++)
             {
                 var item = data.FirstOrDefault(x => x.Date == result[i].Date);
@@ -42,7 +42,7 @@ public class GetForecast
 
     public class Query : IRequest<IEnumerable<RepeatCount>>
     {
-        public Guid UserId { get; set; }
+        public Guid OwnerId { get; set; }
         public DateTime StartDate { get; set; }
         public int Count { get; set; }
     }

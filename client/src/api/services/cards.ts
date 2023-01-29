@@ -18,6 +18,19 @@ export async function cardsSummary(
   }
 }
 
+export async function getCard(
+  userId: string,
+  groupId: string,
+  cardId: string
+): Promise<CardSummary | boolean> {
+  try {
+    const resposnse = await http.get<CardSummary>(`/cards/${userId}/${groupId}/${cardId}`);
+    return resposnse.data;
+  } catch (error: any) {
+    return false;
+  }
+}
+
 export async function updateCard(
   userId: string,
   groupId: string,
@@ -69,7 +82,7 @@ export async function addCard(
   } as commands.AddCardRequest;
   try {
     const response = await http.post<string>(`/cards/add`, request);
-    return response.data;
+    return (response.data as any).response;
   } catch (error) {
     return false;
   }

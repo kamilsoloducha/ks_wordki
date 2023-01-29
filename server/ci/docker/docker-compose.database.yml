@@ -18,7 +18,6 @@ services:
       - 8080:80
     environment:
       - PGADMIN_DEFAULT_EMAIL=kamilsoloducha@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+      - PGADMIN_DEFAULT_PASSWORD=password
       - PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION=True
-      - PGADMIN_CONFIG_LOGIN_BANNER="Authorised users only!"
       - PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=10

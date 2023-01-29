@@ -4,6 +4,11 @@ export interface GetCards {
   groupId: string;
 }
 
+export interface GetCard {
+  groupId: string;
+  cardId: string;
+}
+
 export interface GetCardsSuccess {
   id: string;
   name: string;

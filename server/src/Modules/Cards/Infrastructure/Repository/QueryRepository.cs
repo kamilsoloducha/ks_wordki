@@ -40,8 +40,8 @@ internal class QueryRepository : IQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<int> GetDailyRepeatsCount(OwnerId ownerId, DateTime dateTime, IEnumerable<int> questionLanguage, CancellationToken cancellationToken)
-        => await _cardsContext.Repeats
+    public Task<int> GetDailyRepeatsCount(OwnerId ownerId, DateTime dateTime, IEnumerable<int> questionLanguage, CancellationToken cancellationToken)
+        => _cardsContext.Repeats
             .CountAsync(x =>
                     x.OwnerId == ownerId.Value &&
                     x.NextRepeat <= dateTime &&
@@ -49,19 +49,19 @@ internal class QueryRepository : IQueryRepository
                     (!questionLanguage.Any() || questionLanguage.Contains(x.QuestionLanguage)),
                 cancellationToken);
 
-    public async Task<int> GetGroupsCount(OwnerId ownerId, CancellationToken cancellationToken)
-        => await _cardsContext.Groups
+    public Task<int> GetGroupsCount(OwnerId ownerId, CancellationToken cancellationToken)
+        => _cardsContext.Groups
             .CountAsync(x => x.OwnerId == ownerId, cancellationToken);
 
-    public async Task<int> GetCardsCount(OwnerId ownerId, CancellationToken cancellationToken)
-        => await _cardsContext.Details
+    public Task<int> GetCardsCount(OwnerId ownerId, CancellationToken cancellationToken)
+        =>  _cardsContext.Details
             .CountAsync(x => x.OwnerId == ownerId, cancellationToken);
 
     public async Task<IEnumerable<RepeatCount>> GetRepeatsCountSummary(OwnerId userId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
         => await _cardsContext.RepeatCounts.Where(x => x.OwnerId == userId.Value && x.Date >= dateFrom && x.Date <= dateTo).ToListAsync(cancellationToken);
 
-    public async Task<int> GetNewRepeatsCount(OwnerId ownerId, int questionLanguage, long? groupId, CancellationToken cancellationToken)
-        => await _cardsContext.Repeats
+    public Task<int> GetNewRepeatsCount(OwnerId ownerId, int questionLanguage, long? groupId, CancellationToken cancellationToken)
+        => _cardsContext.Repeats
             .CountAsync(x =>
                     x.OwnerId == ownerId.Value &&
                     x.LessonIncluded == true &&
@@ -72,14 +72,17 @@ internal class QueryRepository : IQueryRepository
     public async Task<IEnumerable<GroupSummary>> GetGroupSummaries(Guid ownerId, CancellationToken cancellationToken)
         => await _cardsContext.GroupSummaries.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
 
+    public Task<CardSummary> GetCardSummary(Guid ownerId, long groupId, long cardId, CancellationToken cancellationToken)
+        => _cardsContext.CardsDetails.SingleOrDefaultAsync(x => x.OwnerId == ownerId && x.GroupId == groupId && x.CardId == cardId, cancellationToken);
+
     public async Task<IEnumerable<CardSummary>> GetCardSummaries(Guid ownerId, long groupId, CancellationToken cancellationToken)
         => await _cardsContext.CardsDetails.Where(x => x.OwnerId == ownerId && x.GroupId == groupId).ToListAsync(cancellationToken);
 
     public async Task<IEnumerable<CardSummary>> GetCardSummaries(long groupId, CancellationToken cancellationToken)
         => await _cardsContext.CardsDetails.Where(x => x.GroupId == groupId).ToListAsync(cancellationToken);
 
-    public async Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken)
-        => await _cardsContext.GroupSummaries.SingleOrDefaultAsync(x => x.Id == groupId, cancellationToken);
+    public Task<GroupSummary> GetGroupDetails(long groupId, CancellationToken cancellationToken)
+        => _cardsContext.GroupSummaries.SingleOrDefaultAsync(x => x.Id == groupId, cancellationToken);
 
     public async Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken)
         => await _cardsContext.GroupsToLesson
@@ -96,8 +99,8 @@ internal class QueryRepository : IQueryRepository
             .Take(query.Take)
             .ToListAsync(cancellationToken);
 
-    public async Task<int> GetGroupSummariesCount(SearchGroupsQuery query, CancellationToken cancellationToken)
-        => await _cardsContext.GroupSummaries
+    public Task<int> GetGroupSummariesCount(SearchGroupsQuery query, CancellationToken cancellationToken)
+        => _cardsContext.GroupSummaries
             .Where(x => x.Name.Contains(query.SearchingTerm))
             .CountAsync(cancellationToken);
 
@@ -112,8 +115,8 @@ internal class QueryRepository : IQueryRepository
             .Take(query.Take)
             .ToListAsync(cancellationToken);
 
-    public async Task<int> SearchCardsCount(SearchCardsQuery query, CancellationToken cancellationToken)
-        => await _cardsContext.CardsDetails
+    public Task<int> SearchCardsCount(SearchCardsQuery query, CancellationToken cancellationToken)
+        => _cardsContext.CardsDetails
             .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) || x.FrontValue.Contains(query.SearchingTerm) || x.BackValue.Contains(query.SearchingTerm))
             .Where(x => !query.SearchingDrawers.Any() || query.SearchingDrawers.Contains(x.FrontDrawer) || query.SearchingDrawers.Contains(x.BackDrawer))
             .Where(x => !query.LessonIncluded.HasValue || x.BackLessonIncluded == query.LessonIncluded || x.FrontLessonIncluded == query.LessonIncluded)
@@ -121,6 +124,6 @@ internal class QueryRepository : IQueryRepository
             .Where(x => x.OwnerId == query.OwnerId)
             .CountAsync(cancellationToken);
 
-    public async Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
-        => await _cardsContext.CardsOverviews.FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken);
+    public Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
+        => _cardsContext.CardsOverviews.FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken);
 }

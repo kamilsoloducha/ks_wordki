@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CardSummary } from "pages/cards/models";
 import * as payloads from "./action-payload";
 import CardsState, { initialState } from "./state";
 
@@ -16,6 +17,10 @@ export const cardsSlice = createSlice({
       action: PayloadAction<payloads.DeleteCardSuccess>
     ): void => {
       state.cards = state.cards.filter((item) => item.id !== action.payload.cardId);
+    },
+    getCard: (state: CardsState, _: PayloadAction<payloads.GetCard>): void => {},
+    getCardSuccess: (state: CardsState, action: PayloadAction<CardSummary>): void => {
+      state.cards.push(action.payload);
     },
     getCards: (state: CardsState, _: PayloadAction<payloads.GetCards>): void => {
       state.isLoading = true;
@@ -82,6 +87,8 @@ export const {
   addCardSuccess,
   deleteCard,
   deleteCardSuccess,
+  getCard,
+  getCardSuccess,
   getCards,
   getCardsSuccess,
   updateCard,

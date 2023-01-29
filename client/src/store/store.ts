@@ -43,6 +43,7 @@ sagaMiddleware.run(cards.updateCardEffect);
 sagaMiddleware.run(cards.addCardEffect);
 sagaMiddleware.run(cards.deleteCardEffect);
 sagaMiddleware.run(cards.setFilterEffect);
+sagaMiddleware.run(cards.getCardEffect);
 
 sagaMiddleware.run(groups.getGroupsSummaryEffect);
 sagaMiddleware.run(groups.addGroupEffect);

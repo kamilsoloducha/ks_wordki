@@ -32,7 +32,7 @@ public class GetForecastTests<TContext> : CardsTestBase where TContext : GetFore
     public async Task Test()
     {
         Request = new HttpRequestMessage(HttpMethod.Get, $"dashboard/forecast?" +
-                                                         $"{nameof(Application.Queries.GetForecast.Query.UserId)}={UserId}&" +
+                                                         $"{nameof(Application.Queries.GetForecast.Query.OwnerId)}={UserId}&" +
                                                          $"{nameof(Application.Queries.GetForecast.Query.StartDate)}=2022-02-02&" +
                                                          $"{nameof(Application.Queries.GetForecast.Query.Count)}=5");
 

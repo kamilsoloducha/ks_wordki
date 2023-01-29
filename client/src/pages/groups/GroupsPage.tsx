@@ -44,9 +44,9 @@ export default function GroupsPage(): ReactElement {
     setPaginatedItems(groups.slice(first, last));
   }, [page, groups]);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
 
   const onhide = () => {
     dispatch(resetSelectedItem());
@@ -97,6 +97,7 @@ export default function GroupsPage(): ReactElement {
       ))}
       <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
       <GroupDialog group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
+      {isLoading && <LoadingSpinner />}
     </>
   );
 }

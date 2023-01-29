@@ -24,6 +24,11 @@ public class CardsController : BaseController
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
     public async Task<IActionResult> Get([FromRoute] GetCards.Query query, CancellationToken cancellationToken)
         => Ok(await Mediator.Send(query, cancellationToken));
+        
+    [HttpGet("{ownerId}/{groupId}/{cardId}")]
+    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+    public async Task<IActionResult> Get([FromRoute] GetCardSummary.Query query, CancellationToken cancellationToken)
+        => Ok(await Mediator.Send(query, cancellationToken));
 
     [HttpPost("add")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
