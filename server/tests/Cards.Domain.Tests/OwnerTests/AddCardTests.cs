@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Cards.Domain.Commands;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
@@ -51,14 +52,10 @@ public class AddCardTests
         var frontComment = Comment.Create("front comment");
         var backComment = Comment.Create("back comment");
 
-        var result = _owner.AddCard(groupId,
-            frontValue,
-            backValue,
-            frontExample,
-            backExample,
-            frontComment,
-            backComment,
-            _sequenceGeneratorMock.Object);
+        var addCardCommand = new AddCardCommand(
+            groupId, frontValue, backValue, frontExample, backExample, frontComment, backComment, true, true);
+
+        var result = _owner.AddCard(addCardCommand, _sequenceGeneratorMock.Object);
 
         result.Value.Should().Be(_cardIdValue);
 
@@ -94,7 +91,7 @@ public class AddCardTests
             item.Counter.Should().Be(0);
             item.Drawer.Value.Should().Be(1);
             item.Drawer.CorrectRepeat.Should().Be(0);
-            item.LessonIncluded.Should().BeFalse();
+            item.LessonIncluded.Should().BeTrue();
             item.NextRepeat.Date.Should().Be(DateTime.MinValue);
         }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Requests;
 using Application.Services;
 using Cards.Domain;
+using Cards.Domain.Commands;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
@@ -51,7 +52,7 @@ public class AddCardsFromFile
                 var frontExample = frontExampleIndex >= 0 ? elements[frontExampleIndex] : string.Empty;
                 var backExample = backExampleIndex >= 0 ? elements[backExampleIndex] : string.Empty;
 
-                owner.AddCard(
+                var addCardCommand = new AddCardCommand(
                     groupId,
                     Label.Create(frontValue),
                     Label.Create(backValue),
@@ -59,8 +60,9 @@ public class AddCardsFromFile
                     new Example(backExample),
                     Comment.Create(string.Empty),
                     Comment.Create(string.Empty),
-                    _sequenceGenerator
-                );
+                    false, false);
+
+                owner.AddCard(addCardCommand, _sequenceGenerator);
             }
 
             await _repository.Update(owner, cancellationToken);

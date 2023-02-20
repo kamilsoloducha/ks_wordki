@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Requests;
 using Application.Services;
 using Cards.Domain;
+using Cards.Domain.Commands;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
@@ -39,9 +40,18 @@ public class AddCardChromeExtenstion
             var groupId = chromeExtensionGroup?.Id ?? owner.AddGroup(GroupName.ChromeExtenstionGroupName,
                 Language.Create(1), Language.Create(2), _sequenceGenerator);
             var value = Label.Create(request.Value);
-            var comment = Comment.Create(string.Empty);
-            owner.AddCard(groupId, value, value, new Example(string.Empty), new Example(string.Empty), comment, comment,
-                _sequenceGenerator);
+            
+            var addCardCommand = new AddCardCommand(
+                groupId,
+                value,
+                value,
+                new Example(string.Empty),
+                new Example(string.Empty),
+                Comment.Create(string.Empty),
+                Comment.Create(string.Empty),
+                false,false);
+            
+            owner.AddCard(addCardCommand, _sequenceGenerator);
 
             await _repository.Update(owner, cancellationToken);
             return ResponseBase<Unit>.Create(Unit.Value);

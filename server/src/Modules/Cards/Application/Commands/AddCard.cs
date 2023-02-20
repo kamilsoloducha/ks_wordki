@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Requests;
 using Application.Services;
 using Cards.Domain;
+using Cards.Domain.Commands;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
@@ -33,23 +34,18 @@ public class AddCard
             var owner = await _repository.Get(ownerId, cancellationToken);
             if (owner is null) return ResponseBase<string>.Create("set is null");
 
-            var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
-            var frontValue = Label.Create(request.Front.Value);
-            var backValue = Label.Create(request.Back.Value);
-            var frontExample = new Example(request.Front.Example);
-            var backExample = new Example(request.Back.Example);
-            var frontComment = Comment.Create(request.Comment);
-            var backComment = Comment.Create(request.Comment);
+            var addCardCommand = new AddCardCommand(
+                GroupId.Restore(_hash.GetLongId(request.GroupId)),
+                Label.Create(request.Front.Value),
+                Label.Create(request.Back.Value),
+                new Example(request.Front.Example),
+                new Example(request.Back.Example),
+                Comment.Create(request.Comment),
+                Comment.Create(request.Comment),
+                request.Front.IsUsed,
+                request.Back.IsUsed);
 
-            var cardId = owner.AddCard(
-                groupId,
-                frontValue,
-                backValue,
-                frontExample,
-                backExample,
-                frontComment,
-                backComment,
-                _sequenceGenerator);
+            var cardId = owner.AddCard(addCardCommand, _sequenceGenerator);
 
             await _repository.Update(owner, cancellationToken);
             return ResponseBase<string>.Create(_hash.GetHash(cardId.Value));

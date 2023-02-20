@@ -14,7 +14,7 @@ public class Card
     public Side Front { get; private set; }
     public Side Back { get; private set; }
     public bool IsPrivate { get; internal set; }
-    public IReadOnlyCollection<Group> Groups => _groups;
+    public IReadOnlyList<Group> Groups => _groups.AsReadOnly();
 
     public SideId FrontId { get; private set; }
     public SideId BackId { get; private set; }

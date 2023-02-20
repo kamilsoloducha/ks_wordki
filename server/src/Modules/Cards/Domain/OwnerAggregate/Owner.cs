@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using Cards.Domain.Commands;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
 using Domain;
@@ -45,7 +47,7 @@ public class Owner
             card.IsPrivate = false;
 
             newGroup.AddCard(card);
-            AddDetails(card, Comment.Create(string.Empty), Comment.Create(string.Empty));
+            AddDetails(card, Comment.Create(string.Empty), Comment.Create(string.Empty), false, false);
         }
 
         return newGroup.Id;
@@ -92,7 +94,7 @@ public class Owner
     {
         var group = _groups.FirstOrDefault(x => x.Id == groupId);
         if (group is null) return;
-        
+
         _groups.Remove(group);
 
         var sideIds = group.Cards.Select(x => x.BackId).Concat(group.Cards.Select(x => x.FrontId));
@@ -100,32 +102,30 @@ public class Owner
         foreach (var sideId in sideIds)
         {
             var details = _details.FirstOrDefault(x => x.SideId == sideId);
-            if(details is null) continue;
+            if (details is null) continue;
 
             _details.Remove(details);
         }
     }
 
-    public CardId AddCard(
-        GroupId groupId,
-        Label frontValue,
-        Label backValue,
-        Example frontExample,
-        Example backExample,
-        Comment frontComment,
-        Comment backComment,
+    public CardId AddCard(AddCardCommand command,
         ISequenceGenerator sequenceGenerator)
     {
-        var group = GetGroup(groupId);
+        var group = GetGroup(command.GroupId);
 
         var card = group.AddCard(
-            frontValue,
-            backValue,
-            frontExample,
-            backExample,
+            command.FrontValue,
+            command.BackValue,
+            command.FrontExample,
+            command.BackExample,
             sequenceGenerator);
 
-        AddDetails(card, frontComment, backComment);
+        AddDetails(
+            card,
+            command.FrontComment,
+            command.BackComment,
+            command.FrontIsUsed,
+            command.BackIsUsed);
 
         return card.Id;
     }
@@ -211,10 +211,11 @@ public class Owner
         return detail;
     }
 
-    private void AddDetails(Card card, Comment frontComment, Comment backComment)
+    private void AddDetails(Card card, Comment frontComment, Comment backComment, bool frontIsIncluded,
+        bool backIsIncluded)
     {
-        var frontDetails = Detail.New(this, card.Front, frontComment);
-        var backDetails = Detail.New(this, card.Back, backComment);
+        var frontDetails = Detail.New(this, card.Front, frontComment, frontIsIncluded);
+        var backDetails = Detail.New(this, card.Back, backComment, backIsIncluded);
         _details.AddRange(new[] { frontDetails, backDetails });
     }
 

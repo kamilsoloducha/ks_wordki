@@ -24,13 +24,13 @@ public class NewTests
         var side = SideBuilder.Default.Build();
         var comment = Comment.Create("commet");
 
-        var details = Detail.New(owner, side, comment);
+        var details = Detail.New(owner, side, comment, true);
 
         details.OwnerId.Should().Be(owner.Id);
         details.SideId.Should().Be(side.Id);
         details.Drawer.Should().Be(Drawer.New());
         details.Counter.Should().Be(0);
-        details.LessonIncluded.Should().Be(false);
+        details.LessonIncluded.Should().Be(true);
         details.NextRepeat.Date.Should().Be(DateTime.MinValue);
         details.Comment.Should().Be(comment);
         details.Owner.Should().Be(owner);

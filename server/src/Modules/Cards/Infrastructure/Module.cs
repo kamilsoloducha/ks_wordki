@@ -16,8 +16,9 @@ public static class Module
     public static IServiceCollection AddCardsInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCardsApplicationModule();
-        services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
 
+        services.AddOptions<DatabaseConfiguration>().Bind(configuration.GetSection(nameof(DatabaseConfiguration))).ValidateDataAnnotations();
+        
         services.AddDbContext<CardsContext>();
         services.AddScoped<IOwnerRepository, CardsRepository>();
         services.AddScoped<IQueryRepository, QueryRepository>();

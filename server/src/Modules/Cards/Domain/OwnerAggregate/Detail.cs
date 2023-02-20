@@ -18,17 +18,19 @@ public class Detail
     public Comment Comment { get; private set; }
     public Owner Owner { get; private set; }
 
-    private Detail() { }
+    private Detail()
+    {
+    }
 
-    public static Detail New(Owner owner, Side side, Comment comment)
-        => new Detail()
+    public static Detail New(Owner owner, Side side, Comment comment, bool lessonIncluded)
+        => new()
         {
             OwnerId = owner.Id,
             SideId = side.Id,
             Comment = comment,
             Counter = 0,
             Drawer = Drawer.New(),
-            LessonIncluded = false,
+            LessonIncluded = lessonIncluded,
             NextRepeat = NextRepeatMarker.New(),
             Owner = owner,
         };
@@ -72,6 +74,7 @@ public class Detail
 
         bool IsCorrect(int result) => result > 0;
         bool IsWrong(int result) => result < 0;
+
         bool ShouldBeBoosted() => (Counter == 0 && Drawer.CorrectRepeat == 0)
                                   || (Counter == 1 && Drawer.CorrectRepeat == 2);
     }

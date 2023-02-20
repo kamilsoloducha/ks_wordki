@@ -8,7 +8,7 @@ import GroupDetails from "./groupDetails";
 
 export default function GroupForm({ group, onSubmit }: Model): ReactElement {
   const onsubmit = (values: FormModel) => {
-    const updated = !group ? ({} as GroupDetails) : { ...group };
+    const updated = group ? { ...group } : ({} as GroupDetails);
     updated.name = values.name;
     updated.front = values.front;
     updated.back = values.back;
@@ -75,7 +75,7 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
 
 interface FormModel {
   name: string;
-  front: any;
+  front: number;
   back: number;
 }
 
