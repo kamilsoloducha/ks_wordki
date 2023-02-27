@@ -1,0 +1,45 @@
+@host = http://localhost:5000
+
+### logining user
+
+# @name login
+PUT {{host}}/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "userName",
+    "password": "pass"
+}
+
+@authToken = Bearer {{login.response.body.$.token}}
+
+### add group
+
+# @name addGroup
+POST {{host}}/groups/add HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "name":"",
+    "front":1,
+    "back":2,
+}
+
+@groupId = {{addGroup.response.body.*}}
+
+### update group
+PUT {{host}}/groups/update/{{groupId}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "name":"Information: Executed action Api.GroupsController.Add (Api) in 390.7392ms",
+    "front":1,
+    "back":2,
+}
+
+### delete group
+DELETE {{host}}/groups/{{groupId}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}

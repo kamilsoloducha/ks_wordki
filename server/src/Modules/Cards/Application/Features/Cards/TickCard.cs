@@ -2,32 +2,27 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
-using Application.Services;
-using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
-using FluentValidation;
 using MediatR;
 
 namespace Cards.Application.Commands;
 
-public class TickCard
+public abstract class TickCard
 {
     internal class CommandHandler : RequestHandlerBase<Command, Unit>
     {
         private readonly IOwnerRepository _repository;
-        private readonly IHashIdsService _hash;
 
-        public CommandHandler(IOwnerRepository repository, IHashIdsService hash)
+        public CommandHandler(IOwnerRepository repository)
         {
             _repository = repository;
-            _hash = hash;
         }
 
         public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var ownerId = OwnerId.Restore(request.UserId);
-            var sideId = SideId.Restore(_hash.GetLongId(request.SideId));
+            var sideId = SideId.Restore(request.SideId);
 
             var side = await _repository.Get(ownerId, sideId, cancellationToken);
 
@@ -40,18 +35,5 @@ public class TickCard
         }
     }
 
-    public class Command : RequestBase<Unit>
-    {
-        public Guid UserId { get; set; }
-        public string SideId { get; set; }
-    }
-
-    internal class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
-        {
-            RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
-            RuleFor(x => x.SideId).NotEmpty();
-        }
-    }
+    public record Command(Guid UserId, long SideId) : IRequest<ResponseBase<Unit>>;
 }

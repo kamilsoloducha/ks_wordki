@@ -6,13 +6,13 @@ namespace Cards.E2e.Tests.AddCard;
 
 public class SimpleNewCardIsUsed : AddCardSuccessContext
 {
-    public override Application.Commands.AddCard.Command GivenRequest { get; } = new()
+    public override Application.Features.Cards.AddCard.Command GivenRequest { get; } = new()
     {
         UserId = CardsTestBase.UserId,
         GroupId = "1",
-        Front = new Application.Commands.AddCard.CardSide
+        Front = new Application.Features.Cards.AddCard.CardSide
             { Value = "FrontValue", Example = "FrontExample", IsUsed = true },
-        Back = new Application.Commands.AddCard.CardSide
+        Back = new Application.Features.Cards.AddCard.CardSide
             { Value = "BackValue", Example = "BackExample", IsUsed = false },
         Comment = "Comment"
     };

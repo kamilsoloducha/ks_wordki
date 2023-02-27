@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Cards.E2e.Tests.DeleteCard;
 using Cards.E2e.Tests.Utils;
 using E2e.Model.Tests.Model.Cards;
 using FizzWare.NBuilder;

@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Cards.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 

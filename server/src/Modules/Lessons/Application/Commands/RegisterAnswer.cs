@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
 using Application.Services;
-using Lessons.Domain;
 using Lessons.Domain.Performance;
 using MassTransit;
 

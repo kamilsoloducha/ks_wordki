@@ -1,9 +1,7 @@
 using System;
 using System.Data;
 using System.Threading.Tasks;
-using Cards.Application.Queries;
 using Cards.Application.Queries.Models;
-using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
 using Cards.Infrastructure.DataAccess.Configurations;
 using Infrastructure.Services.ConnectionStringProvider;

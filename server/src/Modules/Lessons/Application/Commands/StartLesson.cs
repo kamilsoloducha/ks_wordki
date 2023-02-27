@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
 using FluentValidation;
-using Lessons.Domain;
 using Lessons.Domain.Lesson;
 using Lessons.Domain.Performance;
 

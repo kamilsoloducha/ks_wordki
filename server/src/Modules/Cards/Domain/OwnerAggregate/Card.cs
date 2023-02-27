@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cards.Domain.Enums;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
-using Domain;
 
 namespace Cards.Domain.OwnerAggregate;
 

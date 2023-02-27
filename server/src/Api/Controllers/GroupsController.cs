@@ -1,11 +1,12 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Api.Configuration;
-using Cards.Application.Commands;
+using Application.Services;
+using Cards.Application.Features.Groups;
 using Cards.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -14,43 +15,79 @@ namespace Api.Controllers;
 [Route("groups")]
 public class GroupsController : BaseController
 {
-    public GroupsController(IMediator mediator) : base(mediator) { }
+    private readonly IHashIdsService _hashIds;
 
-    [HttpGet("{ownerId}")]
-    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> GetAll([FromRoute] GetGroupsSummary.Query query, CancellationToken cancellationToken)
-        => Ok(await Mediator.Send(query, cancellationToken));
-
-    [HttpGet("details/{groupId}")]
-    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Get([FromRoute] GetGroupDetails.Query query, CancellationToken cancellationToken)
-        => Ok(await Mediator.Send(query, cancellationToken));
+    public GroupsController(IMediator mediator, IHashIdsService hashIds) : base(mediator)
+    {
+        _hashIds = hashIds;
+    }
 
     [HttpPost("add")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Add(AddGroup.Command command, CancellationToken cancellationToken)
-        => await HandleRequest(command, cancellationToken);
+    public async Task<IActionResult> Add(Model.Requests.AddGroup request, CancellationToken cancellationToken)
+    {
+        if (!TryGetUserIdFromToken(out var userId)) return Unauthorized();
 
+        var addGroupCommand = new AddGroup.Command(userId, request.Name, request.Back, request.Front);
+        var response = await Mediator.Send(addGroupCommand, cancellationToken);
 
-    [HttpPost("append")]
+        if (!response.IsCorrect) return BadRequest(response.Error);
+
+        var hashedGroupId = _hashIds.GetHash(response.Response);
+        return Created($"/groups/details/{hashedGroupId}", hashedGroupId);
+    }
+    
+    [HttpPut("update/{groupId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Append(AppendGroup.Command command, CancellationToken cancellationToken)
-        => Ok(await Mediator.Send(command, cancellationToken));
+    public async Task<IActionResult> Update([FromRoute] string groupId, [FromBody] Model.Requests.UpdateGroup request,
+        CancellationToken cancellationToken)
+    {
+        if (!TryGetUserIdFromToken(out var userId)) return Unauthorized();
 
-    [HttpPut("update")]
-    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Update(UpdateGroup.Command command, CancellationToken cancellationToken)
-        => await HandleRequest(command, cancellationToken);
+        if (!_hashIds.TryGetLongId(groupId, out var unHashedGroupId))
+            return BadRequest();
 
-    [HttpPut("merge")]
-    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Merge(MergeGroups.Command command, CancellationToken cancellationToken)
-        => await HandleRequest(command, cancellationToken);
+        var command = new UpdateGroup.Command(userId, unHashedGroupId, request.Name, request.Front, request.Back);
 
-    [HttpDelete("delete/{userId}/{groupId}")]
+        var response = await Mediator.Send(command, cancellationToken);
+
+        return response.IsCorrect
+            ? NoContent()
+            : BadRequest(response.Error);
+    }
+    
+    [HttpDelete("{groupId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Delete([FromRoute] Guid userId, [FromRoute] string groupId, CancellationToken cancellationToken)
-        => await HandleRequest(new DeleteGroup.Command{UserId = userId, GroupId = groupId}, cancellationToken);
+    public async Task<IActionResult> Delete([FromRoute] string groupId, CancellationToken cancellationToken)
+    {
+        if (!TryGetUserIdFromToken(out var userId)) return Unauthorized();
+
+        if (!_hashIds.TryGetLongId(groupId, out var unHashedGroupId))
+            return BadRequest();
+
+        var response = await Mediator.Send(new DeleteGroup.Command(userId, unHashedGroupId), cancellationToken);
+
+        return response.IsCorrect ? NoContent() : BadRequest(response.Error);
+    }
+    
+    [HttpPost("attach")]
+    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+    public async Task<IActionResult> Attach(Model.Requests.AttachGroup requests, CancellationToken cancellationToken)
+    {
+        if (!TryGetUserIdFromToken(out var userId)) return Unauthorized();
+
+        if (!_hashIds.TryGetLongId(requests.GroupId, out var unHashedGroupId))
+            return BadRequest();
+
+        var attachGroupCommand = new AttachGroup.Command(userId, unHashedGroupId);
+        var result = await Mediator.Send(attachGroupCommand, cancellationToken);
+
+        var hashedGroupId = _hashIds.GetHash(result);
+        return Created($"/groups/details/{hashedGroupId}", hashedGroupId);
+    }
 
     [HttpGet("dashboard/summary")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
@@ -71,4 +108,18 @@ public class GroupsController : BaseController
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
     public async Task<IActionResult> Put([FromBody] SearchGroupsCount.Query query, CancellationToken cancellationToken)
         => Ok(await Mediator.Send(query, cancellationToken));
+    
+    [HttpGet("{ownerId}")]
+    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+    public async Task<IActionResult> GetAll([FromRoute] GetGroupsSummary.Query query,
+        CancellationToken cancellationToken)
+        => Ok(await Mediator.Send(query, cancellationToken));
+
+    [HttpGet("details/{groupId}")]
+    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+    public async Task<IActionResult> Get([FromRoute] GetGroupDetails.Query query, CancellationToken cancellationToken)
+        => Ok(await Mediator.Send(query, cancellationToken));
+
+
+    
 }

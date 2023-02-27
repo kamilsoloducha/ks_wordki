@@ -6,7 +6,6 @@ using Application.Requests;
 using FluentValidation;
 using MassTransit;
 using MediatR;
-using Users.Domain;
 using Users.Domain.User;
 
 namespace Users.Application.Commands;

@@ -1,38 +1,33 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
-using Application.Services;
-using Cards.Domain;
 using Cards.Domain.Commands;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
 using MediatR;
 
-namespace Cards.Application.Commands;
+namespace Cards.Application.Features.Cards;
 
-public class AddCardsFromFile
+public abstract class AddCardsFromFile
 {
-    public class CommandHandler : RequestHandlerBase<Command, Unit>
+    internal class CommandHandler : RequestHandlerBase<Command, Unit>
     {
         private readonly IOwnerRepository _repository;
         private readonly ISequenceGenerator _sequenceGenerator;
-        private readonly IHashIdsService _hash;
 
         public CommandHandler(IOwnerRepository repository,
-            ISequenceGenerator sequenceGenerator, IHashIdsService hash)
+            ISequenceGenerator sequenceGenerator)
         {
             _repository = repository;
             _sequenceGenerator = sequenceGenerator;
-            _hash = hash;
         }
 
         public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var ownerId = OwnerId.Restore(request.UserId);
-            var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
+            var groupId = GroupId.Restore(request.GroupId);
 
             var owner = await _repository.Get(ownerId, cancellationToken);
 
@@ -41,10 +36,10 @@ public class AddCardsFromFile
             {
                 var elements = itemLine.Split(request.ElementSeparator);
 
-                var frontValueIndex = request.ItemsOrder.FindIndex(x => x == "FV");
-                var frontExampleIndex = request.ItemsOrder.FindIndex(x => x == "FE");
-                var backValueIndex = request.ItemsOrder.FindIndex(x => x == "BV");
-                var backExampleIndex = request.ItemsOrder.FindIndex(x => x == "BE");
+                var frontValueIndex = Array.IndexOf(request.ItemsOrder, "FV");
+                var frontExampleIndex = Array.IndexOf(request.ItemsOrder, "FE");
+                var backValueIndex = Array.IndexOf(request.ItemsOrder, "BV");
+                var backExampleIndex = Array.IndexOf(request.ItemsOrder, "BE");
 
                 var frontValue = elements[frontValueIndex];
                 var backValue = elements[backValueIndex];
@@ -71,13 +66,6 @@ public class AddCardsFromFile
         }
     }
 
-    public class Command : RequestBase<Unit>
-    {
-        public Guid UserId { get; set; }
-        public string GroupId { get; set; }
-        public string Content { get; set; }
-        public string ItemSeparator { get; set; }
-        public string ElementSeparator { get; set; }
-        public List<string> ItemsOrder { get; set; }
-    }
+    public record Command(Guid UserId, long GroupId, string Content, string ItemSeparator, string ElementSeparator,
+        string[] ItemsOrder) : IRequest<ResponseBase<Unit>>;
 }

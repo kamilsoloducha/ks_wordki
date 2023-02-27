@@ -1,6 +1,7 @@
 using System;
 using Api.Configuration;
 using Api.Configuration.Exceptions;
+using Api.Model;
 using Application.Services;
 using Cards.Application;
 using Cards.Infrastructure;
@@ -26,6 +27,8 @@ builder.AddCustomLogging();
 var configurator = new ServiceCollectionBusConfigurator(builder.Services);
 configurator.AddCardsConsumers();
 configurator.AddLessonsConsumers();
+
+builder.Services.AddModel();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserDataProvider, UserDataProvider>();

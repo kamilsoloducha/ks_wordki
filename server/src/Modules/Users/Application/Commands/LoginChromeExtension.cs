@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Application.Authentication;
 using MediatR;
 using Users.Application.Services;
-using Users.Domain;
 using Users.Domain.Role;
 using Users.Domain.User;
 

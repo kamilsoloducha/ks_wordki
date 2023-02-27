@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Application;
 using Users.Application.Services;
-using Users.Domain;
 using Users.Domain.User;
 using Users.Infrastructure.DataAccess;
 using Users.Infrastructure.Repositories;

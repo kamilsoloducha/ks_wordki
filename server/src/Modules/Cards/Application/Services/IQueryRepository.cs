@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Cards.Application.Queries;
 using Cards.Application.Queries.Models;
-using Cards.Domain;
 using Cards.Domain.ValueObjects;
 
 namespace Cards.Application.Services;

@@ -10,7 +10,7 @@ POST {{host}}/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "userName2",
+    "userName": "userName",
     "password": "pass",
     "email": "user3@email.com",
     "firstName": null,

@@ -9,11 +9,11 @@ public abstract class UpdateGroupContext
     public const int GroupId = 1;
     public Owner GivenOwner { get; }
 
-    public Application.Commands.UpdateGroup.Command GivenCommand => new()
+    public Application.Features.Groups.UpdateGroup.Command GivenCommand => new()
     {
         UserId = CardsTestBase.UserId,
         GroupId = GroupId.ToString(),
-        GroupName = "NewGroupName",
+        Name = "NewGroupName",
         Front = 3,
         Back = 4
     };
@@ -51,6 +51,6 @@ public abstract class UpdateGroupContext
         Id = 1,
         Front = GivenCommand.Front,
         Back = GivenCommand.Back,
-        Name = GivenCommand.GroupName,
+        Name = GivenCommand.Name,
     };
 }

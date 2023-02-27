@@ -77,7 +77,7 @@ public abstract class UpdateCardContext
     public int GroupId { get; } = 1;
     public int CardId { get; } = 1;
 
-    public virtual Application.Commands.UpdateCard.Command GivenCommand => new()
+    public virtual Application.Features.Cards.UpdateCard.Command GivenCommand => new()
     {
         UserId = CardsTestBase.UserId,
         GroupId = GroupId.ToString(),

@@ -1,10 +1,6 @@
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 using E2e.Model.Tests.Model.Users;
 using E2e.Tests;
-using FluentAssertions;
-using Newtonsoft.Json;
 using Users.Application.Commands;
 
 namespace Users.E2e.Tests.Register;

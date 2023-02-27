@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using E2e.Model.Tests.Model.Cards;
 using FizzWare.NBuilder;
-using NUnit.Framework.Internal;
 
 namespace Cards.E2e.Tests.Utils;
 

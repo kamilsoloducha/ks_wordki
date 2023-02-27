@@ -1,3 +1,5 @@
+using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
@@ -10,7 +12,7 @@ public abstract class BaseController : ControllerBase
 {
     protected readonly IMediator Mediator;
 
-    public BaseController(IMediator mediator)
+    protected BaseController(IMediator mediator)
     {
         Mediator = mediator;
     }
@@ -19,5 +21,11 @@ public abstract class BaseController : ControllerBase
     {
         var result = await Mediator.Send(request, cancellationToken);
         return result.IsCorrect ? Ok(result) : BadRequest(result);
+    }
+
+    protected bool TryGetUserIdFromToken(out Guid guid)
+    {
+        var tokenValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return Guid.TryParse(tokenValue, out guid);
     }
 }

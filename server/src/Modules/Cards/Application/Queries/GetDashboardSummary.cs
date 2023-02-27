@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Services;
-using Cards.Domain;
 using Cards.Domain.ValueObjects;
 using Domain.Utils;
 using MediatR;

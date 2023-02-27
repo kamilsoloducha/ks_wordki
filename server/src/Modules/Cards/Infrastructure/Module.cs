@@ -1,6 +1,5 @@
 using Cards.Application;
 using Cards.Application.Services;
-using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Infrastructure.DataAccess;

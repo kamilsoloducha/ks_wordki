@@ -1,4 +1,3 @@
-using Cards.Application.Queries;
 using Cards.Application.Queries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

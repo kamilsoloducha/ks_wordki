@@ -13,6 +13,9 @@ internal class HashIdsService : IHashIdsService
         _hash = new Hashids(config.Value.Salt, config.Value.MinLength);
     }
 
+    public bool TryGetLongId(string hash, out long value)
+        => _hash.TryDecodeSingleLong(hash, out value);
+
     public string GetHash(long id)
         => _hash.EncodeLong(id);
 
@@ -29,6 +32,9 @@ internal class HashIdsService : IHashIdsService
 
 public class TestHashIdsService : IHashIdsService
 {
+    public bool TryGetLongId(string hash, out long value)
+        => long.TryParse(hash, out value);
+
     public string GetHash(long id)
         => id.ToString();
 

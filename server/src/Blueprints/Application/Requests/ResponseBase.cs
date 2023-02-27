@@ -9,4 +9,7 @@ public class ResponseBase<TResponse>
     public static ResponseBase<TResponse> Create(TResponse response)
         => new ResponseBase<TResponse>() { Response = response };
 
+    public static ResponseBase<TResponse> CreateError(string message)
+        => new ResponseBase<TResponse> { Error = message };
+
 }

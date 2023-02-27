@@ -5,7 +5,6 @@ using Application.Authentication;
 using Domain.Utils;
 using FluentValidation;
 using MediatR;
-using Users.Domain;
 using Users.Domain.User;
 
 namespace Users.Application.Commands;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace E2e.Model.Tests.Model.Cards
 {

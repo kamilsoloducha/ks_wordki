@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using Cards.Infrastructure.DataAccess;

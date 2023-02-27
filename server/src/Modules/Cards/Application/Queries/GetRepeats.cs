@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Application.Services;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
-using Cards.Domain;
 using Cards.Domain.ValueObjects;
 using Domain.Utils;
 using MediatR;

@@ -1,13 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Cards.Application.Queries;
-using Cards.Application.Queries.Models;
 using Cards.E2e.Tests.Utils;
 using E2e.Model.Tests.Model.Cards;
-using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 

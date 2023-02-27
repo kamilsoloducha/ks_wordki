@@ -1,17 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
-using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using MediatR;
 
-namespace Cards.Application.Commands;
+namespace Cards.Application.Features.Cards;
 
-public class MergeGroups
+public abstract class AppendCards
 {
     internal class CommandHandler : RequestHandlerBase<Command, Unit>
     {
@@ -25,10 +22,10 @@ public class MergeGroups
         public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var ownerId = OwnerId.Restore(request.UserId);
-            var owner = await _repository.Get(ownerId, cancellationToken);
+            var groupId = GroupId.Restore(request.GroupId);
 
-            var groupIds = request.GroupIds.Select(x => GroupId.Restore(x));
-            owner.MergeGroups(groupIds);
+            var owner = await _repository.Get(ownerId, cancellationToken);
+            owner.IncludeToLesson(groupId, request.Count, request.Language);
 
             await _repository.Update(owner, cancellationToken);
 
@@ -36,9 +33,5 @@ public class MergeGroups
         }
     }
 
-    public class Command : RequestBase<Unit>
-    {
-        public Guid UserId { get; set; }
-        public IEnumerable<long> GroupIds { get; set; }
-    }
+    public record Command(Guid UserId, long GroupId, int Count, int Language) : IRequest<ResponseBase<Unit>>;
 }

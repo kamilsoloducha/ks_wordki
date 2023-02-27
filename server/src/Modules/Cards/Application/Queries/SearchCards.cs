@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Services;
 using Cards.Application.Services;
-using Cards.Domain;
 using Cards.Domain.Enums;
 using Cards.Domain.ValueObjects;
 using MediatR;

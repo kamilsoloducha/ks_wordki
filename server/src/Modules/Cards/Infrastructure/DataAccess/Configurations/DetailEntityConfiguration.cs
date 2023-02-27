@@ -1,4 +1,3 @@
-using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;

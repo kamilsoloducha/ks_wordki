@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Infrastructure.Services.ConnectionStringProvider;
 using Lessons.Application;
-using Lessons.Domain;
 using Lessons.Domain.Performance;
 using Lessons.Infrastructure.DataAccess;
 using Lessons.Infrastructure.Repositories;

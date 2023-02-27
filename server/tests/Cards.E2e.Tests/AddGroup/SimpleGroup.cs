@@ -5,7 +5,7 @@ namespace Cards.E2e.Tests.AddGroup;
 
 public class SimpleGroup : AddGroupSuccessContext
 {
-    public override Application.Commands.AddGroup.Command GivenRequest { get; } = new()
+    public override Application.Features.Groups.AddGroup.Command GivenRequest { get; } = new()
     {
         UserId = CardsTestBase.UserId,
         GroupName = "groupName",

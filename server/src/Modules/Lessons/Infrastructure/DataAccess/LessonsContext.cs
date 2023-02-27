@@ -1,5 +1,4 @@
 using Infrastructure.Services.ConnectionStringProvider;
-using Lessons.Domain;
 using Lessons.Domain.Lesson;
 using Lessons.Domain.Performance;
 using Lessons.Infrastructure.DataAccess.EntityConfiguration;

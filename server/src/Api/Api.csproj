@@ -21,6 +21,7 @@
 		<ProjectReference Include="../Modules/Users/Infrastructure/Users.Infrastructure.csproj" />
 		<ProjectReference Include="../Modules/Cards/Infrastructure/Cards.Infrastructure.csproj" />
 		<ProjectReference Include="../Modules/Lessons/Infrastructure/Lessons.Infrastructure.csproj" />
+		<ProjectReference Include="..\Api.Model\Api.Model.csproj" />
 	</ItemGroup>
 	
 </Project>

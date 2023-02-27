@@ -2,27 +2,21 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
-using Application.Services;
-using Cards.Domain;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
-using FluentValidation;
 using MediatR;
 
-namespace Cards.Application.Commands;
+namespace Cards.Application.Features.Groups;
 
-public class DeleteGroup
+public abstract class DeleteGroup
 {
-
     internal class CommandHandler : RequestHandlerBase<Command, Unit>
     {
         private readonly IOwnerRepository _repository;
-        private readonly IHashIdsService _hash;
 
-        public CommandHandler(IOwnerRepository repository, IHashIdsService hash)
+        public CommandHandler(IOwnerRepository repository)
         {
             _repository = repository;
-            _hash = hash;
         }
 
         public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
@@ -30,7 +24,7 @@ public class DeleteGroup
             var ownerId = OwnerId.Restore(request.UserId);
             var owner = await _repository.Get(ownerId, cancellationToken);
 
-            var groupId = GroupId.Restore(_hash.GetLongId(request.GroupId));
+            var groupId = GroupId.Restore(request.GroupId);
 
             owner.RemoveGroup(groupId);
 
@@ -40,18 +34,5 @@ public class DeleteGroup
         }
     }
 
-    public class Command : RequestBase<Unit>
-    {
-        public Guid UserId { get; set; }
-        public string GroupId { get; set; }
-    }
-
-    internal class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
-        {
-            RuleFor(x => x.GroupId).NotEmpty();
-            RuleFor(x => x.UserId).Must(x => x != Guid.Empty);
-        }
-    }
+    public record Command(Guid UserId, long GroupId) : IRequest<ResponseBase<Unit>>;
 }

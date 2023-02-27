@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Users.Application.Services;
-using Users.Domain.User;
 
 namespace E2e.Tests;
 

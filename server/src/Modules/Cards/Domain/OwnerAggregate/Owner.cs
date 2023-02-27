@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Cards.Domain.Commands;
 using Cards.Domain.Services;
@@ -14,8 +13,8 @@ public class Owner
     private readonly List<Group> _groups;
     private readonly List<Detail> _details;
     public OwnerId Id { get; private set; }
-    public IReadOnlyCollection<Group> Groups => _groups;
-    public IReadOnlyCollection<Detail> Details => _details;
+    public IReadOnlyList<Group> Groups => _groups.AsReadOnly();
+    public IReadOnlyList<Detail> Details => _details.AsReadOnly();
 
     private Owner()
     {
@@ -51,11 +50,6 @@ public class Owner
         }
 
         return newGroup.Id;
-    }
-
-    public void MergeGroups(IEnumerable<GroupId> groupIds)
-    {
-        throw new NotImplementedException();
     }
 
     public void IncludeToLesson(GroupId groupId, int count, int langauges)

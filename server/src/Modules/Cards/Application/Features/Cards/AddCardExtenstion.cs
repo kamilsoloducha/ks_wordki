@@ -1,9 +1,8 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
-using Application.Services;
-using Cards.Domain;
 using Cards.Domain.Commands;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
@@ -12,28 +11,24 @@ using MediatR;
 
 namespace Cards.Application.Commands;
 
-public class AddCardChromeExtenstion
+public abstract class AddCardExtenstion
 {
     internal class CommandHandler : RequestHandlerBase<Command, Unit>
     {
         private readonly IOwnerRepository _repository;
         private readonly ISequenceGenerator _sequenceGenerator;
-        private readonly IUserDataProvider _userDataProvider;
 
         public CommandHandler(
             IOwnerRepository repository,
-            ISequenceGenerator sequenceGenerator,
-            IUserDataProvider userDataProvider)
+            ISequenceGenerator sequenceGenerator)
         {
             _repository = repository;
             _sequenceGenerator = sequenceGenerator;
-            _userDataProvider = userDataProvider;
         }
 
         public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var userGuid = _userDataProvider.GetUserId();
-            var ownerId = OwnerId.Restore(userGuid);
+            var ownerId = OwnerId.Restore(request.UserId);
             var owner = await _repository.Get(ownerId, cancellationToken);
             var chromeExtensionGroup = owner.Groups.FirstOrDefault(x => x.Name == GroupName.ChromeExtenstionGroupName);
 
@@ -58,8 +53,5 @@ public class AddCardChromeExtenstion
         }
     }
 
-    public class Command : RequestBase<Unit>
-    {
-        public string Value { get; set; }
-    }
+    public record Command(Guid UserId, string Value) : IRequest<ResponseBase<Unit>>;
 }

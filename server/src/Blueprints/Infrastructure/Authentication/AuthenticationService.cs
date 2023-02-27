@@ -52,7 +52,7 @@ public class AuthenticationService : IAuthenticationService
 
     private IEnumerable<Claim> CreateClaim(Guid userId, IEnumerable<string> roles)
     {
-        yield return new Claim("Id", userId.ToString());
+        yield return new Claim(ClaimTypes.NameIdentifier, userId.ToString());
         foreach (var role in roles)
         {
             yield return new Claim(ClaimTypes.Role, role);
