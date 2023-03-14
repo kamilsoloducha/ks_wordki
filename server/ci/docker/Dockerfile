@@ -57,5 +57,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS release
 WORKDIR /app
 
 COPY --from=pre-release /app .
-ENV ASPNETCORE_ENVIRONMENT=Production
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet Api.dll
+ENTRYPOINT dotnet Api.dll
