@@ -5,27 +5,28 @@ using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Cards.Application;
-
-public static class Module
+namespace Cards.Application
 {
-    public static IServiceCollection AddCardsApplicationModule(this IServiceCollection services)
+    public static class Module
     {
-        services.AddCardDomainModule();
-        services.AddMediatR(typeof(Module).Assembly);
-
-        return services;
-    }
-
-    public static void AddCardsConsumers(this ServiceCollectionBusConfigurator configurator)
-    {
-        configurator.AddConsumer<AnswerRegisterdConsumer>(typeof(AnswerRegisteredDefinition)).Endpoint(e =>
+        public static IServiceCollection AddCardsApplicationModule(this IServiceCollection services)
         {
-            e.Name = $"cards-{nameof(AnswerRegistered)}";
-        });
-        configurator.AddConsumer<UserCreatedConsumer>(typeof(UserCreatedDefinition)).Endpoint(e =>
+            services.AddCardDomainModule();
+            services.AddMediatR(typeof(Module).Assembly);
+
+            return services;
+        }
+
+        public static void AddCardsConsumers(this ServiceCollectionBusConfigurator configurator)
         {
-            e.Name = $"cards-{nameof(UserCreated)}";
-        });
+            configurator.AddConsumer<AnswerRegisteredConsumer>(typeof(AnswerRegisteredDefinition)).Endpoint(e =>
+            {
+                e.Name = $"cards-{nameof(AnswerRegistered)}";
+            });
+            configurator.AddConsumer<UserCreatedConsumer>(typeof(UserCreatedDefinition)).Endpoint(e =>
+            {
+                e.Name = $"cards-{nameof(UserCreated)}";
+            });
+        }
     }
 }

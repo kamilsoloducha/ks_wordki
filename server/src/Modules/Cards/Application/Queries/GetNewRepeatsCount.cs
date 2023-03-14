@@ -23,10 +23,10 @@ public class GetNewRepeatsCount
 
         public async Task<int> Handle(Query request, CancellationToken cancellationToken)
         {
-            var ownerId = OwnerId.Restore(request.UserId);
+            var ownerId = UserId.Restore(request.UserId);
             long? groupId = string.IsNullOrEmpty(request.GroupId) ? null : _hash.GetLongId(request.GroupId);
 
-            var repeats = await _queryRepository.GetNewRepeatsCount(ownerId, request.QuestionLanguage ?? 0, groupId, cancellationToken);
+            var repeats = await _queryRepository.GetNewRepeatsCount(ownerId, request.QuestionLanguage ?? string.Empty, groupId, cancellationToken);
 
             return repeats;
         }
@@ -36,7 +36,7 @@ public class GetNewRepeatsCount
     {
         public Guid UserId { get; set; }
         public string GroupId { get; set; }
-        public int? QuestionLanguage { get; set; }
+        public string QuestionLanguage { get; set; } = string.Empty;
     }
 
 }

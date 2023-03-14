@@ -4,29 +4,30 @@ using System.Threading;
 using System.Threading.Tasks;
 using Domain.Rules;
 
-namespace Domain;
-
-public abstract class Entity
+namespace Domain
 {
-    protected List<object> _events;
-    public IEnumerable<object> Events => _events.AsEnumerable();
-    public bool IsNew { get; protected set; }
-    public bool IsDirty { get; protected set; }
-
-    protected Entity()
+    public abstract class Entity
     {
-        _events = new List<object>();
-    }
+        protected List<object> _events;
+        public IEnumerable<object> Events => _events.AsEnumerable();
+        public bool IsNew { get; protected set; }
+        public bool IsDirty { get; protected set; }
 
-    protected static async Task CheckRule(IBuissnessRule rule, CancellationToken cancellationToken)
-    {
-        if (await rule.IsCorrect(cancellationToken)) return;
-        throw new BuissnessRuleFailedException(rule);
-    }
+        protected Entity()
+        {
+            _events = new List<object>();
+        }
 
-    protected static void CheckRule(IBuissnessRule rule)
-    {
-        if (rule.IsCorrect(CancellationToken.None).Result) return;
-        throw new BuissnessRuleFailedException(rule);
+        protected static async Task CheckRule(IBuissnessRule rule, CancellationToken cancellationToken)
+        {
+            if (await rule.IsCorrect(cancellationToken)) return;
+            throw new BuissnessRuleFailedException(rule);
+        }
+
+        protected static void CheckRule(IBuissnessRule rule)
+        {
+            if (rule.IsCorrect(CancellationToken.None).Result) return;
+            throw new BuissnessRuleFailedException(rule);
+        }
     }
 }

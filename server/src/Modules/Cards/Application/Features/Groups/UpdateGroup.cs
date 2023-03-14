@@ -6,35 +6,39 @@ using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using MediatR;
 
-namespace Cards.Application.Features.Groups;
-
-public abstract class UpdateGroup
+namespace Cards.Application.Features.Groups
 {
-    internal class CommandHandler : RequestHandlerBase<Command, Unit>
+    public abstract class UpdateGroup
     {
-        private readonly IOwnerRepository _repository;
-
-        public CommandHandler(IOwnerRepository repository)
+        internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
-            _repository = repository;
+            private readonly IOwnerRepository _repository;
+
+            public CommandHandler(IOwnerRepository repository)
+            {
+                _repository = repository;
+            }
+
+            public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var ownerId = UserId.Restore(request.UserId);
+                var group = await _repository.GetGroup(ownerId, request.GroupId, cancellationToken);
+
+                if (group is null)
+                {
+                    return ResponseBase<Unit>.CreateError("Group is not found");
+                }
+
+                group.Name = new GroupName(request.Name);
+                group.Front = request.Front;
+                group.Back = request.Back;
+
+                await _repository.Update(cancellationToken);
+                return ResponseBase<Unit>.Create(Unit.Value);
+            }
         }
 
-        public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
-        {
-            var ownerId = OwnerId.Restore(request.UserId);
-            var owner = await _repository.Get(ownerId, cancellationToken);
-
-            var groupId = GroupId.Restore(request.GroupId);
-            var groupName = GroupName.Create(request.Name);
-            var front = Language.Create(request.Front);
-            var back = Language.Create(request.Back);
-
-            owner.UpdateGroup(groupId, groupName, front, back);
-
-            await _repository.Update(owner, cancellationToken);
-            return ResponseBase<Unit>.Create(Unit.Value);
-        }
+        public record Command
+            (Guid UserId, long GroupId, string Name, string Front, string Back) : IRequest<ResponseBase<Unit>>;
     }
-
-    public record Command(Guid UserId, long GroupId, string Name, int Front, int Back) : IRequest<ResponseBase<Unit>>;
 }

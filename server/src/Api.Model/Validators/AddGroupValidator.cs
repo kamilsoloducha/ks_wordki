@@ -1,14 +1,15 @@
 using Api.Model.Requests;
 using FluentValidation;
 
-namespace Api.Model.Validators;
-
-public sealed class AddGroupValidator : AbstractValidator<AddGroup>
+namespace Api.Model.Validators
 {
-    public AddGroupValidator()
+    public sealed class AddGroupValidator : AbstractValidator<AddGroup>
     {
-        RuleFor(x => x.Name).NotEmpty();
-        RuleFor(x => x.Front).GreaterThan(0);
-        RuleFor(x => x.Back).GreaterThan(0);
+        public AddGroupValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Front).NotEmpty();
+            RuleFor(x => x.Back).NotEmpty();
+        }
     }
 }

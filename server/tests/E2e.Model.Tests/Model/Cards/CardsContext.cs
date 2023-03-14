@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace E2e.Model.Tests.Model.Cards
 {
@@ -15,15 +14,9 @@ namespace E2e.Model.Tests.Model.Cards
         }
 
         public virtual DbSet<Card> Cards { get; set; }
-        public virtual DbSet<Cardsummary> Cardsummaries { get; set; }
         public virtual DbSet<Detail> Details { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<Groupssummary> Groupssummaries { get; set; }
-        public virtual DbSet<Grouptolesson> Grouptolessons { get; set; }
-        public virtual DbSet<Overview> Overviews { get; set; }
         public virtual DbSet<Owner> Owners { get; set; }
-        public virtual DbSet<Repeat> Repeats { get; set; }
-        public virtual DbSet<Repeatscountsummary> Repeatscountsummaries { get; set; }
         public virtual DbSet<Side> Sides { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,7 +24,7 @@ namespace E2e.Model.Tests.Model.Cards
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Wordki;User Id=root;Password=changeme;");
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Wordki-Test;User Id=root;Password=changeme;");
             }
         }
 
@@ -39,13 +32,15 @@ namespace E2e.Model.Tests.Model.Cards
         {
             modelBuilder.Entity<Card>(entity =>
             {
-                entity.ToTable("cards", "cards");
+                entity.ToTable("Cards", "cards");
 
-                entity.HasIndex(e => e.BackId, "IX_cards_BackId");
+                entity.HasIndex(e => e.BackId, "IX_Cards_BackId");
 
-                entity.HasIndex(e => e.FrontId, "IX_cards_FrontId");
+                entity.HasIndex(e => e.FrontId, "IX_Cards_FrontId");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasIndex(e => e.GroupId, "IX_Cards_GroupId");
+
+                entity.HasIndex(e => e.Id, "IX_Cards_Id");
 
                 entity.HasOne(d => d.Back)
                     .WithMany(p => p.CardBacks)
@@ -55,53 +50,37 @@ namespace E2e.Model.Tests.Model.Cards
                     .WithMany(p => p.CardFronts)
                     .HasForeignKey(d => d.FrontId);
 
-                entity.HasMany(d => d.Groups)
+                entity.HasOne(d => d.Group)
                     .WithMany(p => p.Cards)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "GroupsCard",
-                        l => l.HasOne<Group>().WithMany().HasForeignKey("GroupsId"),
-                        r => r.HasOne<Card>().WithMany().HasForeignKey("CardsId"),
-                        j =>
-                        {
-                            j.HasKey("CardsId", "GroupsId");
-
-                            j.ToTable("groups_cards", "cards");
-
-                            j.HasIndex(new[] { "GroupsId" }, "IX_groups_cards_GroupsId");
-                        });
-            });
-
-            modelBuilder.Entity<Cardsummary>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("cardsummary", "cards");
+                    .HasForeignKey(d => d.GroupId);
             });
 
             modelBuilder.Entity<Detail>(entity =>
             {
-                entity.ToTable("details", "cards");
+                entity.HasKey(e => new { e.CardId, e.SideType });
 
-                entity.HasIndex(e => e.OwnerId, "IX_details_OwnerId");
+                entity.ToTable("Details", "cards");
 
-                entity.HasIndex(e => e.SideId, "IX_details_SideId");
-
-                entity.Property(e => e.Comment).IsRequired();
+                entity.HasIndex(e => new { e.CardId, e.SideType }, "IX_Details_CardId_SideType");
 
                 entity.Property(e => e.NextRepeat).HasColumnType("timestamp without time zone");
 
-                entity.HasOne(d => d.Owner)
+                entity.HasOne(d => d.Card)
                     .WithMany(p => p.Details)
-                    .HasForeignKey(d => d.OwnerId);
+                    .HasForeignKey(d => d.CardId);
             });
 
             modelBuilder.Entity<Group>(entity =>
             {
-                entity.ToTable("groups", "cards");
+                entity.ToTable("Groups", "cards");
 
-                entity.HasIndex(e => e.OwnerId, "IX_groups_OwnerId");
+                entity.HasIndex(e => e.Id, "IX_Groups_Id");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasIndex(e => e.OwnerId, "IX_Groups_OwnerId");
+
+                entity.Property(e => e.Back).IsRequired();
+
+                entity.Property(e => e.Front).IsRequired();
 
                 entity.Property(e => e.Name).IsRequired();
 
@@ -110,66 +89,19 @@ namespace E2e.Model.Tests.Model.Cards
                     .HasForeignKey(d => d.OwnerId);
             });
 
-            modelBuilder.Entity<Groupssummary>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("groupssummary", "cards");
-            });
-
-            modelBuilder.Entity<Grouptolesson>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("grouptolesson", "cards");
-            });
-
-            modelBuilder.Entity<Overview>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("overview", "cards");
-            });
-
             modelBuilder.Entity<Owner>(entity =>
             {
-                entity.ToTable("owners", "cards");
+                entity.ToTable("Owners", "cards");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<Repeat>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("repeats", "cards");
-
-                entity.Property(e => e.NextRepeat).HasColumnType("timestamp without time zone");
-            });
-
-            modelBuilder.Entity<Repeatscountsummary>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("repeatscountsummary", "cards");
-
-                entity.Property(e => e.Date).HasColumnType("timestamp without time zone");
+                entity.HasIndex(e => e.Id, "IX_Owners_Id");
             });
 
             modelBuilder.Entity<Side>(entity =>
             {
-                entity.ToTable("sides", "cards");
+                entity.ToTable("Sides", "cards");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsRequired();
+                entity.HasIndex(e => e.Id, "IX_Sides_Id");
             });
-
-            modelBuilder.HasSequence("cardidsequence", "cards");
-
-            modelBuilder.HasSequence("groupidsequence", "cards");
-
-            modelBuilder.HasSequence("sideidsequence", "cards");
 
             OnModelCreatingPartial(modelBuilder);
         }

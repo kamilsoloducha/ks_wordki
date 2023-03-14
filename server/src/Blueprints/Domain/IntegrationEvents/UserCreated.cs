@@ -1,10 +1,11 @@
 using System;
 
-namespace Domain.IntegrationEvents;
-
-public class UserCreated
+namespace Domain.IntegrationEvents
 {
-    public Guid Id { get; set; }
+    public class UserCreated
+    {
+        public Guid Id { get; set; }
 
-    public UserCreated() { }
+        public UserCreated() { }
+    }
 }

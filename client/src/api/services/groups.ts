@@ -4,20 +4,21 @@ import * as commands from "../commands";
 import * as responses from "../responses";
 import * as queries from "../queries";
 import http, { createErrorResponse, createResponse } from "./httpBase";
+import { Group } from "pages/lessonSettings/models/group";
 
 export async function groupDetails(
   groupId: string
 ): Promise<responses.GroupDetailsResponse | boolean> {
   try {
-    const response = await http.get<responses.GroupDetailsResponse>(`/groups/details/${groupId}`);
+    const response = await http.get<responses.GroupDetailsResponse>(`/groups/summary/${groupId}`);
     return response.data;
   } catch (error: any) {
     return false;
   }
 }
 
-export async function groups(userId: string) {
-  const response = await http.get<responses.GroupsSummaryResponse>(`/groups/${userId}`);
+export async function summaries() {
+  const response = await http.get<GroupSummary[]>(`/groups/summaries`);
   return { data: response.data };
 }
 
@@ -26,8 +27,8 @@ export async function addGroup(request: commands.AddGroupRequest) {
   return { data: response.data };
 }
 
-export async function updateGroup(request: commands.UpdateGroupRequest) {
-  const response = await http.put<ApiResponse<any>>("groups/update", request);
+export async function updateGroup(groupId: string, request: commands.UpdateGroupRequest) {
+  const response = await http.put<ApiResponse<any>>(`groups/update/${groupId}`, request);
   return { data: response.data };
 }
 
@@ -63,15 +64,7 @@ export async function saveGroup(request: commands.SaveGroupRequest): Promise<num
   }
 }
 
-export async function getGroups(
-  request: queries.GetGroupsToLessonQuery
-): Promise<ApiResponse<responses.GetGroupToLessonResponse>> {
-  try {
-    const response = await http.get<responses.GetGroupToLessonResponse>(
-      `/groups/lesson/${request.ownerId}`
-    );
-    return createResponse(response.data);
-  } catch (e: any) {
-    return createErrorResponse("");
-  }
+export async function getGroups(): Promise<Group[]> {
+  const response = await http.get<Group[]>(`/groups/forlesson`);
+  return response.data;
 }

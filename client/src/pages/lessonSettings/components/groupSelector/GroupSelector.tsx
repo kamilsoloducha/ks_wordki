@@ -45,19 +45,10 @@ const dropdownItemLayout = (option: Group, props: any = null) => {
   );
 };
 
-const flagLayout = (lang: number, count: number) => {
+const flagLayout = (lang: string, count: number) => {
   return (
     <>
-      <img className="item-icon" alt="" src={`/flags/${getIconFromLang(lang)}`} />
-      <strong>({count})</strong>
+      ({lang})<strong>({count})</strong>
     </>
   );
 };
-
-function getIconFromLang(lang: number): string {
-  if (lang === 1) {
-    return "polish.svg";
-  } else {
-    return "english.svg";
-  }
-}

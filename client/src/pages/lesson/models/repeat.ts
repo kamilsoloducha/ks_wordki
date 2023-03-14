@@ -1,15 +1,11 @@
 export interface Repeat {
-  sideId: string;
+  sideType: number;
   cardId: string;
-  questionSide: number;
   question: string;
   questionExample: string;
   questionDrawer: number;
+  questionLanguage: string;
   answer: string;
   answerExample: string;
-  answerSide: number;
-  frontLanguage: number;
-  backLanguage: number;
-  comment: string;
-  groupId: string;
+  answerLanguage: string;
 }

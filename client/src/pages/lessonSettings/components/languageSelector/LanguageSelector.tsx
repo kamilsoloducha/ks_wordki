@@ -1,9 +1,11 @@
+import { Language } from "pages/lessonSettings/models/languages";
+import React from "react";
 import { ReactElement } from "react";
 import "./LanguageSelector.scss";
 
-export function LanguageSelector({ selected, onSelectedChanged }: Model): ReactElement {
+export function LanguageSelector({ languages, selected, onSelectedChanged }: Model): ReactElement {
   const onLanguageChanged = ($event: any) => {
-    const value = parseInt($event.target.value);
+    const value = $event.target.value;
     if (selected.includes(value)) {
       const index = selected.indexOf(value);
       const newSelected = [...selected];
@@ -19,38 +21,29 @@ export function LanguageSelector({ selected, onSelectedChanged }: Model): ReactE
     <div className="language-container">
       <p>Question language:</p>
       <div className="language-items-container">
-        <input
-          className="input-fiszki"
-          type="checkbox"
-          name="language"
-          id="polish"
-          value={1}
-          onChange={onLanguageChanged}
-          checked={selected.includes(1)}
-        />
-        <label htmlFor="polish" className="item-container">
-          <img alt="polish" className="setting-icon" src="/flags/polish.svg" />
-          <p>Polish</p>
-        </label>
-        <input
-          className="input-fiszki"
-          type="checkbox"
-          name="language"
-          id="english"
-          value={2}
-          onChange={onLanguageChanged}
-          checked={selected.includes(2)}
-        />
-        <label htmlFor="english" className="item-container">
-          <img alt="english" className="setting-icon" src="/flags/english.svg" />
-          <p>English</p>
-        </label>
+        {languages.map((item, index) => (
+          <React.Fragment key={index}>
+            <input
+              className="input-fiszki"
+              type="checkbox"
+              name="language"
+              id={item.language}
+              value={item.language}
+              onChange={onLanguageChanged}
+              checked={selected.includes(item.language)}
+            />
+            <label htmlFor={item.language} className="item-container">
+              <p>{item.language}</p>
+            </label>
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );
 }
 
 interface Model {
-  selected: number[];
-  onSelectedChanged: (value: number[]) => void;
+  languages: Language[];
+  selected: string[];
+  onSelectedChanged: (value: string[]) => void;
 }

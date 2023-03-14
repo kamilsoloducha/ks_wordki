@@ -1,13 +1,14 @@
 import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
 import { Repeat } from "pages/lesson/models/repeat";
 import { Group } from "pages/lessonSettings/models/group";
+import { Language } from "pages/lessonSettings/models/languages";
 
 export interface SetSettingCount {
   count: number;
 }
 
 export interface SetSettingLanguage {
-  languages: number[];
+  languages: string[];
 }
 
 export interface SetSettingType {
@@ -20,6 +21,10 @@ export interface SetSettingMode {
 
 export interface SetSettingGroup {
   groupId: string;
+}
+
+export interface GetLanguagesSuccess {
+  languages: Language[];
 }
 
 export interface GetCardsSuccess {

@@ -2,33 +2,32 @@ using System;
 using System.Net.Http;
 using Api;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace E2e.Tests;
-
-public class E2EWebApplicationFactory : WebApplicationFactory<Program>
+namespace E2e.Tests
 {
-    private readonly Action<IServiceCollection> _serviceConfig;
-    public Lazy<HttpClient> HttpClient { get; }
-
-    public E2EWebApplicationFactory(Action<IServiceCollection> serviceConfig)
+    public class E2EWebApplicationFactory : WebApplicationFactory<Program>
     {
-        _serviceConfig = serviceConfig;
-        HttpClient = new Lazy<HttpClient>(CreateClient());
-    }
+        private readonly Action<IServiceCollection> _serviceConfig;
+        public Lazy<HttpClient> HttpClient { get; }
 
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        builder.UseEnvironment("Development");
-        builder.ConfigureServices(services =>
+        public E2EWebApplicationFactory(Action<IServiceCollection> serviceConfig)
         {
-            _serviceConfig?.Invoke(services);
-            services.AddMvc(options =>
+            _serviceConfig = serviceConfig;
+            HttpClient = new Lazy<HttpClient>(CreateClient());
+        }
+
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.UseEnvironment("Test");
+            builder.ConfigureServices(services =>
             {
-                options.Filters.Add(new AllowAnonymousFilter());
+                _serviceConfig?.Invoke(services);
+                services.AddMvc(options =>
+                {
+                });
             });
-        });
+        }
     }
 }

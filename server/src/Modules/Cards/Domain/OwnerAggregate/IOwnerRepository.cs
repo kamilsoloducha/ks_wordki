@@ -2,16 +2,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cards.Domain.ValueObjects;
 
-namespace Cards.Domain.OwnerAggregate;
-
-public interface IOwnerRepository
+namespace Cards.Domain.OwnerAggregate
 {
-    Task<Owner> Get(OwnerId id, CancellationToken cancellationToken);
-    Task Update(Owner owner, CancellationToken cancellationToken);
-    Task Add(Owner owner, CancellationToken cancellationToken);
-
-    Task<Group> GetGroup(GroupId id, CancellationToken cancellationToken);
-
-    Task<Detail> Get(OwnerId ownerId, SideId sideId, CancellationToken cancellationToken);
-    Task Update(CancellationToken cancellationToken);
+    public interface IOwnerRepository
+    {
+        Task<Owner> Get(UserId id, CancellationToken cancellationToken);
+    
+        Task<Group> GetGroup(UserId userId, long id, CancellationToken cancellationToken);
+        Task<Group> GetGroup(long id, CancellationToken cancellationToken);
+    
+        Task<Card> GetCard(UserId userId, long id, CancellationToken cancellationToken);
+    
+    
+        Task Update(CancellationToken cancellationToken);
+        Task Add(Owner owner, CancellationToken cancellationToken);
+    }
 }

@@ -19,8 +19,7 @@ CREATE TABLE users."Roles" (
     "Type" integer NOT NULL,
     "UserId" uuid NULL,
     CONSTRAINT "PK_Roles" PRIMARY KEY ("Id"),
-    CONSTRAINT "FK_Roles_Users_UserId" FOREIGN KEY ("UserId") REFERENCES users."Users" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "FK_Roles_Users_UserId" FOREIGN KEY ("UserId") REFERENCES users."Users" ("Id")
 );
 
 CREATE INDEX "IX_Roles_UserId" ON users."Roles" ("UserId");
-

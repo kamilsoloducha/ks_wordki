@@ -1,7 +1,7 @@
 version: "3.5"
 services:
-  wordki-server.ci:
-    container_name: wordki-server.ci
+  wordki-server:
+    container_name: wordki-server
     image: kamilsoloducha/wordki-server:latest
     build:
       context: ../../
@@ -9,5 +9,8 @@ services:
       target: local
     ports:
       - 5000:5000
+      - 5001:5001
+    volumes:
+      - ./cert:/app/cert
     env_file:
-      - secrects.Development.env
+      - secrets.Development.env

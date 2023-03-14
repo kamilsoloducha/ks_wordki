@@ -1,7 +1,5 @@
 export interface UpdateGroupRequest {
-  userId: string;
-  groupId: string;
-  groupName: string;
+  name: string;
   front: number;
   back: number;
 }

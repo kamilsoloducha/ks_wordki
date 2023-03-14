@@ -6,48 +6,49 @@ using MassTransit;
 using MediatR;
 using Users.Domain.User;
 
-namespace Users.Application.Commands;
-
-public class DeleteUser
+namespace Users.Application.Commands
 {
-    internal class CommandHandler : IRequestHandler<Command, ResponseCode>
+    public class DeleteUser
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IPublishEndpoint _publishEndpoint;
-
-        public CommandHandler(IUserRepository userRepository,
-            IPublishEndpoint publishEndpoint)
+        internal class CommandHandler : IRequestHandler<Command, ResponseCode>
         {
-            _userRepository = userRepository;
-            _publishEndpoint = publishEndpoint;
-        }
+            private readonly IUserRepository _userRepository;
+            private readonly IPublishEndpoint _publishEndpoint;
 
-        public async Task<ResponseCode> Handle(Command request, CancellationToken cancellationToken)
-        {
-            var user = await _userRepository.GetUser(request.Id, cancellationToken);
-            if (user is null) return ResponseCode.UserNotFound;
+            public CommandHandler(IUserRepository userRepository,
+                IPublishEndpoint publishEndpoint)
+            {
+                _userRepository = userRepository;
+                _publishEndpoint = publishEndpoint;
+            }
+
+            public async Task<ResponseCode> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var user = await _userRepository.GetUser(request.Id, cancellationToken);
+                if (user is null) return ResponseCode.UserNotFound;
             
-            user.Remove();
-            await _userRepository.Update(user, cancellationToken);
-            await _publishEndpoint.PublishBatch(user.Events, cancellationToken);
+                user.Remove();
+                await _userRepository.Update(user, cancellationToken);
+                await _publishEndpoint.PublishBatch(user.Events, cancellationToken);
             
-            return ResponseCode.Ok;
+                return ResponseCode.Ok;
+            }
         }
-    }
     
-    public record Command(Guid Id) : IRequest<ResponseCode>;
+        public record Command(Guid Id) : IRequest<ResponseCode>;
 
-    internal class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
+        internal class CommandValidator : AbstractValidator<Command>
         {
-            RuleFor(x => x.Id).NotEqual(Guid.Empty);
+            public CommandValidator()
+            {
+                RuleFor(x => x.Id).NotEqual(Guid.Empty);
+            }
         }
-    }
     
-    internal enum ResponseCode
-    {
-        Ok,
-        UserNotFound
+        internal enum ResponseCode
+        {
+            Ok,
+            UserNotFound
+        }
     }
 }

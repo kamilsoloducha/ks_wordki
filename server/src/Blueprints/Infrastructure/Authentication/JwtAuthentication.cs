@@ -4,32 +4,31 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure.Authentication;
-
-public static class JwtAuthentication
+namespace Infrastructure.Authentication
 {
-    public static IServiceCollection JwtConfig(this IServiceCollection services, IConfiguration config)
+    public static class JwtAuthentication
     {
-        var test = config.GetSection(nameof(JwtConfiguration));
-        services.Configure<JwtConfiguration>(options => config.GetSection(nameof(JwtConfiguration)).Bind(options));
-        var jwtSettings = config.GetSection(nameof(JwtConfiguration)).Get<JwtConfiguration>();
-        services.AddAuthentication(x =>
+        public static IServiceCollection JwtConfig(this IServiceCollection services, IConfiguration config)
         {
-            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(x =>
-        {
-            x.RequireHttpsMetadata = false;
-            x.SaveToken = true;
-            x.TokenValidationParameters = new TokenValidationParameters
+            services.BindConfiguration<JwtConfiguration>(config);
+            var jwtSettings = config.GetSection(nameof(JwtConfiguration)).Get<JwtConfiguration>();
+            services.AddAuthentication(x =>
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-        });
-        return services;
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            return services;
+        }
     }
-
 }

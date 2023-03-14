@@ -1,4 +1,4 @@
-@host = http://localhost:5000
+@host = https://localhost:5001
 
 ### logining user
 
@@ -13,6 +13,13 @@ Content-Type: application/json
 
 @authToken = Bearer {{login.response.body.$.token}}
 
+###
+# @name getSummaryies
+GET {{host}}/groups/summaries HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+
 ### add group
 
 # @name addGroup
@@ -21,9 +28,9 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-    "name":"",
-    "front":1,
-    "back":2,
+    "name":"test",
+    "front":"12",
+    "back":"32",
 }
 
 @groupId = {{addGroup.response.body.*}}
@@ -43,3 +50,10 @@ Authorization: {{authToken}}
 DELETE {{host}}/groups/{{groupId}} HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
+
+
+### Get languages
+GET {{host}}/groups/languages HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+

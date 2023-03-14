@@ -1,9 +1,10 @@
 using System;
 
-namespace Application.Services;
-
-public interface IUserDataProvider
+namespace Application.Services
 {
-    Guid GetUserId();
-    bool IsAdmin();
+    public interface IUserDataProvider
+    {
+        Guid GetUserId();
+        bool IsAdmin();
+    }
 }

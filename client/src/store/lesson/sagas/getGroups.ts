@@ -1,18 +1,14 @@
-import { call, put, select } from "@redux-saga/core/effects";
+import { call, put, takeEvery } from "@redux-saga/core/effects";
 import * as api from "api";
-import { selectUserId } from "store/user/selectors";
-import { ApiResponse } from "common/models/response";
+import { Group } from "pages/lessonSettings/models/group";
 import { SagaIterator } from "redux-saga";
-import { take } from "redux-saga/effects";
 import { getGroupsSuccess } from "../reducer";
 
 export function* getGroupsEffect(): SagaIterator {
-  while (true) {
-    yield take("lesson/getGroups");
-    const ownerId: string = yield select(selectUserId);
-    const request = { ownerId } as api.GetGroupsToLessonQuery;
+  yield takeEvery("lesson/getGroups", getGroup);
+}
 
-    const apiResponse: ApiResponse<api.GetGroupToLessonResponse> = yield call(api.getGroups, request);
-    yield put(getGroupsSuccess({ groups: apiResponse.response.groups }));
-  }
+export function* getGroup(): SagaIterator {
+  const groups: Group[] = yield call(api.getGroups);
+  yield put(getGroupsSuccess({ groups }));
 }

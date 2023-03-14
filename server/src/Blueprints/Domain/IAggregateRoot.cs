@@ -1,3 +1,4 @@
-namespace Domain;
-
-public interface IAggregateRoot { }
+namespace Domain
+{
+    public interface IAggregateRoot { }
+}

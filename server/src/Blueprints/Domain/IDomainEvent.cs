@@ -1,5 +1,6 @@
-namespace Domain;
-
-public interface IDomainEvent
+namespace Domain
 {
+    public interface IDomainEvent
+    {
+    }
 }

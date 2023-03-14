@@ -1,22 +1,15 @@
-using Domain;
+using System;
 
-namespace Cards.Domain.ValueObjects;
-
-public readonly struct Label
+namespace Cards.Domain.ValueObjects
 {
-    public string Text { get; }
-
-    public Label(string text)
+    public class Label
     {
-        Text = text;
-    }
+        public string Text { get; }
 
-    public static Label Create(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text)) throw new BuissnessArgumentException(nameof(text), text);
-
-        var trimmedText = text.Trim();
-
-        return new Label(trimmedText);
+        public Label(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) throw new Exception();
+            Text = text.Trim();
+        }
     }
 }

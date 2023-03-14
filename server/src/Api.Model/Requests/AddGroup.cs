@@ -1,3 +1,3 @@
 namespace Api.Model.Requests;
 
-public record AddGroup(string Name, int Front, int Back);
+public record AddGroup(string Name, string Front, string Back);

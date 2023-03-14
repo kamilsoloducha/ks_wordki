@@ -2,6 +2,7 @@ import { LessonStatus, SetLesson } from "pages/lesson/models/lessonState";
 import { Repeat } from "pages/lesson/models/repeat";
 import Results from "pages/lesson/models/results";
 import UserRepeat from "pages/lesson/models/userRepeat";
+import { Language } from "pages/lessonSettings/models/languages";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 
 export default interface LessonState {
@@ -18,6 +19,8 @@ export default interface LessonState {
   results: Results;
   settings: LessonSettings;
   lessonHistory: UserRepeat[];
+
+  languages: Language[];
 }
 
 export const initialState: LessonState = {
@@ -41,4 +44,5 @@ export const initialState: LessonState = {
     wrongLimit: 15,
   } as LessonSettings,
   lessonHistory: [],
+  languages: [],
 };

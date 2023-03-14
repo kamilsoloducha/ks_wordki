@@ -1,22 +1,23 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Rabbit;
-
-public static class RabbitMqExtensions
+namespace Infrastructure.Rabbit
 {
-    public static IServiceCollection ConfigureMassTransit(this IServiceCollection services)
+    public static class RabbitMqExtensions
     {
-        services.AddHostedService<BusService>();
-        services.AddMassTransit(x =>
+        public static IServiceCollection ConfigureMassTransit(this IServiceCollection services)
         {
-            x.UsingInMemory((context, config) =>
+            services.AddHostedService<BusService>();
+            services.AddMassTransit(x =>
             {
-                config.TransportConcurrencyLimit = 10;
-                config.ConfigureEndpoints(context);
+                x.UsingInMemory((context, config) =>
+                {
+                    config.TransportConcurrencyLimit = 10;
+                    config.ConfigureEndpoints(context);
+                });
             });
-        });
 
-        return services;
+            return services;
+        }
     }
 }

@@ -1,87 +1,85 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cards.Domain.Services;
+using Cards.Domain.Commands;
+using Cards.Domain.Enums;
 using Cards.Domain.ValueObjects;
-using Domain;
 
-namespace Cards.Domain.OwnerAggregate;
-
-public class Group
+namespace Cards.Domain.OwnerAggregate
 {
-    private readonly List<Card> _cards;
-    public GroupId Id { get; private set; }
-    public GroupName Name { get; private set; }
-    public Language Front { get; private set; }
-    public Language Back { get; private set; }
-
-    public IReadOnlyCollection<Card> Cards => _cards;
-    public OwnerId OwnerId { get; private set; }
-    public Owner Owner { get; private set; }
-
-    private Group()
+    public class Group : Entity, IAggregateRoot
     {
-        _cards = new();
-    }
+        private readonly List<Card> _cards = new();
 
-    internal static Group New(GroupName name, Language front, Language back, ISequenceGenerator sequenceGenerator)
-        => new Group()
+        public GroupName Name { get; set; }
+        public long? ParentId { get; }
+        public string Front { get; set; }
+        public string Back { get; set; }
+
+        public virtual Owner Owner { get; private set; }
+        public virtual IReadOnlyList<Card> Cards => _cards.AsReadOnly();
+
+        protected Group()
         {
-            Id = GroupId.New(sequenceGenerator),
-            Name = name,
-            Front = front,
-            Back = back
-        };
+        }
 
-    internal void Update(GroupName name, Language front, Language back)
-    {
-        Name = name;
-        Front = front;
-        Back = back;
-    }
+        public Group(GroupName name, string front, string back, Owner owner) : this()
+        {
+            Name = name;
+            Front = front;
+            Back = back;
+            Owner = owner;
+        }
 
-    internal void RemoveCard(CardId cardId)
-    {
-        var card = Cards.FirstOrDefault(x => x.Id == cardId);
-        if (card is null) return;
-        _cards.Remove(card);
-    }
+        public Group(Group group, Owner owner)
+        {
+            Name = group.Name;
+            Front = group.Front;
+            Back = group.Back;
+            Owner = owner;
+            ParentId = group.ParentId ?? group.Id;
+        }
 
-    internal void RemoveCard(Card card)
-    {
-        var result = _cards.Remove(card);
-        if (!result) throw new BuissnessArgumentException(nameof(card), card.Id);
-    }
+        public Card AddCard(AddCardCommand command)
+        {
+            var newCard = new Card(command, this);
+            _cards.Add(newCard);
+            return newCard;
+        }
 
-    internal Card AddCard(
-        Label frontValue,
-        Label backValue,
-        Example frontExample,
-        Example backExample,
-        ISequenceGenerator sequenceGenerator)
-    {
-        var card = Card.New(
-            frontValue,
-            backValue,
-            frontExample,
-            backExample,
-            sequenceGenerator);
+        public Card UseCard(Card card)
+        {
+            var newCard = new Card(card.Front, card.Back, this);
+            _cards.Add(newCard);
+            return newCard;
+        }
 
-        _cards.Add(card);
+        public void Remove()
+        {
+            _cards.ForEach(x => x.Remove());
 
-        return card;
-    }
+            Owner = null;
+        }
 
-    internal Card AddCard(Card card)
-    {
-        _cards.Add(card);
-        return card;
-    }
+        public void IncludeToLesson(int count, string language)
+        {
+            var searchingSide = GetSideType(language);
 
-    internal Card GetCard(CardId cardId)
-    {
-        var card = Cards.FirstOrDefault(x => x.Id == cardId);
-        if (card is null) throw new BuissnessObjectNotFoundException(nameof(card), cardId);
+            var details = Cards
+                .SelectMany(x => x.Details.Where(d => d.SideType == searchingSide && !d.NextRepeat.HasValue))
+                .OrderBy(x => x.Card.Id)
+                .Take(count);
 
-        return card;
+            foreach (var detail in details)
+            {
+                detail.SetQuestionable(true);
+            }
+        }
+
+        private SideType GetSideType(string language)
+        {
+            if (language == Front) return SideType.Front;
+            if (language == Back) return SideType.Back;
+            return SideType.None;
+        }
     }
 }

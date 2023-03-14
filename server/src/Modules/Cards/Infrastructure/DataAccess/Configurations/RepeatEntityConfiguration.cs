@@ -2,13 +2,14 @@ using Cards.Application.Queries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cards.Infrastructure.DataAccess.Configurations;
-
-class RepeatEntityConfiguration : IEntityTypeConfiguration<Repeat>
+namespace Cards.Infrastructure.DataAccess.Configurations
 {
-    public void Configure(EntityTypeBuilder<Repeat> builder)
+    class RepeatEntityConfiguration : IEntityTypeConfiguration<Repeat>
     {
-        builder.ToView("repeats");
-        builder.HasNoKey();
+        public void Configure(EntityTypeBuilder<Repeat> builder)
+        {
+            builder.ToView("repeats");
+            builder.HasNoKey();
+        }
     }
 }

@@ -3,48 +3,29 @@ using Cards.E2e.Tests.Utils;
 using E2e.Model.Tests.Model.Cards;
 using FizzWare.NBuilder;
 
-namespace Cards.E2e.Tests.GetDashboardSummary;
-
-public class DetailsNotIncluded : GetDashboardSummaryContext
+namespace Cards.E2e.Tests.GetDashboardSummary
 {
-    public override IEnumerable<Owner> GivenOwners { get; }
-    public override Application.Queries.GetDashboardSummary.Response ExpectedResponse { get; }
-
-    public DetailsNotIncluded()
+    public class DetailsNotIncluded : GetDashboardSummaryContext
     {
-        var owner = DataBuilder.EmptyOwner().Build();
-        var group = DataBuilder.EmptyGroup().Build();
-        owner.Groups.Add(group);
+        public override IEnumerable<Owner> GivenOwners { get; }
+        public override Application.Queries.GetDashboardSummary.Response ExpectedResponse { get; }
 
-        var card = new Card
+        public DetailsNotIncluded()
         {
-            Front = DataBuilder.FrontSide().With(x => x.Id = 1).Build(),
-            Back = DataBuilder.BackSide().With(x => x.Id = 2).Build(),
-            Id = 1,
-            FrontId = 1,
-            BackId = 2,
-            IsPrivate = true
-        };
-        group.Cards.Add(card);
+            var owner = DataBuilder.SampleUser().Build();
+            var group = DataBuilder.SampleGroup().Build();
+            owner.Groups.Add(group);
+            group.Cards.Add(
+                DataBuilder.SampleCard().With(x => x.Details = new List<Detail>
+                {
+                    DataBuilder.FrontDetails().With(d => d.IsQuestion = false).With(d => d.NextRepeat = null).Build(),
+                    DataBuilder.BackDetails().With(d => d.IsQuestion = false).With(d => d.NextRepeat = null).Build()
+                }).Build()
+            );
 
-        owner.Details.Add(
-            DataBuilder.Detail().With(x => x.Id = 1).With(x => x.SideId = 1).With(x => x.OwnerId = owner.Id)
-                .With(x => x.LessonIncluded = false)
-                .Build());
+            GivenOwners = new[] { owner };
 
-        owner.Details.Add(
-            DataBuilder.Detail().With(x => x.Id = 2).With(x => x.SideId = 2).With(x => x.OwnerId = owner.Id)
-                .With(x => x.LessonIncluded = false)
-                .Build());
-
-        GivenOwners = new[] { owner };
-
-        ExpectedResponse = new Application.Queries.GetDashboardSummary.Response
-        {
-            CardsCount = 2,
-            DailyRepeats = 0,
-            GroupsCount = 1,
-            RepeatsCounts = null
-        };
+            ExpectedResponse = new(1, 2, 0);
+        }
     }
 }

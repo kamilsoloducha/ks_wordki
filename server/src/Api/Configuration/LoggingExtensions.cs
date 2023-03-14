@@ -2,16 +2,17 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace Api.Configuration;
-
-public static class LoggingExtensions
+namespace Api.Configuration
 {
-    public static void AddCustomLogging(this WebApplicationBuilder builder)
+    public static class LoggingExtensions
     {
-        builder.Logging.ClearProviders();
-        var logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration)
-            .CreateLogger();
-        builder.Host.UseSerilog(logger);
+        public static void AddCustomLogging(this WebApplicationBuilder builder)
+        {
+            builder.Logging.ClearProviders();
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Configuration)
+                .CreateLogger();
+            builder.Host.UseSerilog(logger);
+        }
     }
 }

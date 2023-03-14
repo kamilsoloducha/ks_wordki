@@ -3,9 +3,9 @@ import * as api from "api";
 import * as groups from "api/services/groups";
 import { call, put, select, take } from "redux-saga/effects";
 import { selectUserId } from "store/user/selectors";
-import { ApiResponse } from "common";
 import { getGroupsEffect } from "../getGroups";
 import { getGroupsSuccess } from "store/lesson/reducer";
+import { Group } from "pages/lessonSettings/models/group";
 
 describe("getGroupsEffect", () => {
   let saga: any;
@@ -24,13 +24,7 @@ describe("getGroupsEffect", () => {
     const request: api.GetGroupsToLessonQuery = {
       ownerId: "ownerId",
     };
-    const response: ApiResponse<api.GetGroupToLessonResponse> = {
-      response: {
-        groups: [],
-      },
-      error: "",
-      isCorrect: false,
-    };
+    const response = [] as Group[];
 
     expect(saga.next().value).toStrictEqual(take("lesson/getGroups"));
     expect(saga.next().value).toStrictEqual(select(selectUserId));

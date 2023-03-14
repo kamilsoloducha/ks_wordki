@@ -39,32 +39,32 @@ public class SearchCards
             return cards.Select(ToDto);
         }
 
-        private SearchCards.CardSummary ToDto(Models.CardSummary card)
+        private CardSummary ToDto(Models.CardSummary card)
         {
-            return new SearchCards.CardSummary
+            return new CardSummary
             {
                 Id = _hash.GetHash(card.CardId),
                 GroupId = _hash.GetHash(card.GroupId),
                 GroupName = card.GroupName,
-                Front = new SearchCards.SideSummary
+                Front = new SideSummary
                 {
                     Type = (int)SideType.Front,
                     Lang = card.FrontLanguage,
                     Value = card.FrontValue,
                     Example = card.FrontExample,
                     Comment = card.FrontDetailsComment,
-                    Drawer = Drawer.Create(card.FrontDrawer).Value,
+                    Drawer = new Drawer(card.FrontDrawer).Value,
                     IsUsed = card.FrontLessonIncluded,
                     IsTicked = card.FrontIsTicked,
                 },
-                Back = new SearchCards.SideSummary
+                Back = new SideSummary
                 {
                     Type = (int)SideType.Back,
                     Lang = card.BackLanguage,
                     Value = card.BackValue,
                     Example = card.BackExample,
                     Comment = card.BackDetailsComment,
-                    Drawer = Drawer.Create(card.BackDrawer).Value,
+                    Drawer = new Drawer(card.BackDrawer).Value,
                     IsUsed = card.BackLessonIncluded,
                     IsTicked = card.BackIsTicked,
                 },

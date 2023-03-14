@@ -7,37 +7,39 @@ using E2e.Model.Tests.Model.Cards;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cards.E2e.Tests.GetDashboardSummary;
-
-[TestFixture(typeof(NewUser))]
-[TestFixture(typeof(DetailsNotIncluded))]
-[TestFixture(typeof(CardsToRepeat))]
-public class GetDashboardSummaryTests<TContext> : CardsTestBase where TContext : GetDashboardSummaryContext, new()
+namespace Cards.E2e.Tests.GetDashboardSummary
 {
-    private readonly TContext _context = new();
-
-    [SetUp]
-    public async Task Setup()
+    [TestFixture(typeof(NewUser))]
+    [TestFixture(typeof(DetailsNotIncluded))]
+    [TestFixture(typeof(CardsToRepeat))]
+    [TestFixture(typeof(DetailsIncludedNextRepeatExceeded))]
+    public class GetDashboardSummaryTests<TContext> : CardsTestBase where TContext : GetDashboardSummaryContext, new()
     {
-        SystemClock.Override(new DateTime(2022, 2, 2));
-        await ClearCardsSchema();
+        private readonly TContext _context = new();
 
-        await using var dbContext = new CardsContext();
-        await dbContext.Owners.AddRangeAsync(_context.GivenOwners);
-        await dbContext.SaveChangesAsync();
-    }
+        [SetUp]
+        public async Task Setup()
+        {
+            SystemClock.Override(new DateTime(2022, 2, 2));
+            await ClearCardsSchema();
 
-    [Test]
-    public async Task Test()
-    {
-        Request = new HttpRequestMessage(HttpMethod.Get, $"dashboard/summary/{UserId}");
+            await using var dbContext = new CardsContext();
+            await dbContext.Owners.AddRangeAsync(_context.GivenOwners);
+            await dbContext.SaveChangesAsync();
+        }
 
-        await SendRequest();
+        [Test]
+        public async Task Test()
+        {
+            Request = new HttpRequestMessage(HttpMethod.Get, $"dashboard/summary");
 
-        Response.Should().BeSuccessful(Response.StatusCode.ToString());
+            await SendRequest();
 
-        var response = await Response.Content.ReadFromJsonAsync<Application.Queries.GetDashboardSummary.Response>();
+            Response.Should().BeSuccessful(Response.StatusCode.ToString());
 
-        response.Should().BeEquivalentTo(_context.ExpectedResponse);
+            var response = await Response.Content.ReadFromJsonAsync<Application.Queries.GetDashboardSummary.Response>();
+
+            response.Should().BeEquivalentTo(_context.ExpectedResponse);
+        }
     }
 }

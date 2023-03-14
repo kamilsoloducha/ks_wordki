@@ -1,21 +1,12 @@
-namespace Cards.Domain.ValueObjects;
-
-public readonly struct Comment
+namespace Cards.Domain.ValueObjects
 {
-    public string Text { get; }
-
-    private Comment(string text)
+    public class Comment
     {
-        Text = text;
-    }
+        public string Text { get; }
 
-    public static Comment Create(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return new Comment(string.Empty);
-
-        var trimmedText = text.Trim();
-
-        return new Comment(trimmedText);
+        public Comment(string text)
+        {
+            Text = text.Trim();
+        }
     }
 }

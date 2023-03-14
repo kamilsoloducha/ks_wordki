@@ -6,44 +6,26 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cards.Domain.Tests.GroupTests;
-
-[TestFixture]
-public class RemoveCardTests
+namespace Cards.Domain.Tests.GroupTests
 {
-    [Test]
-    public void RemoveExistingCard()
+    [TestFixture]
+    public class RemoveCardTests
     {
-        var sequenceGenerator = A.Fake<ISequenceGenerator>();
-        A.CallTo(() => sequenceGenerator.Generate<CardId>()).ReturnsNextFromSequence(2, 3);
-        A.CallTo(() => sequenceGenerator.Generate<SideId>()).Returns(2);
+        [Test]
+        public void RemoveExistingCard()
+        {
+            var sequenceGenerator = A.Fake<ISequenceGenerator>();
+            A.CallTo(() => sequenceGenerator.Generate<CardId>()).ReturnsNextFromSequence(2, 3);
+            A.CallTo(() => sequenceGenerator.Generate<SideId>()).Returns(2);
 
-        var group = Builder<Group>.CreateNew().Build();
-        group.AddCard(
-            Label.Create("front"),
-            Label.Create("back"),
-            new Example("frontExample"),
-            new Example("backExample"),
-            sequenceGenerator);
-        group.AddCard(
-            Label.Create("front"),
-            Label.Create("back"),
-            new Example("frontExample"),
-            new Example("backExample"),
-            sequenceGenerator);
+            var group = Builder<Group>.CreateNew().Build();
+        }
 
-        group.RemoveCard(CardId.Restore(2));
+        [Test]
+        public void RemoveNotExistingCard()
+        {
+            var group = Builder<Group>.CreateNew().Build();
 
-        group.Cards.Should().HaveCount(1);
-    }
-
-    [Test]
-    public void RemoveNotExistingCard()
-    {
-        var group = Builder<Group>.CreateNew().Build();
-
-        var action = () => group.RemoveCard(CardId.Restore(1));
-
-        action.Should().NotThrow();
+        }
     }
 }

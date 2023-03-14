@@ -3,11 +3,8 @@ using Newtonsoft.Json;
 
 namespace Cards.Application.Queries.Models;
 
-public class RepeatCount
+public record RepeatCount(int Count, DateTime Date)
 {
-    public int Count { get; set; }
-    public DateTime Date { get; set; }
-
     [JsonIgnore]
-    public Guid OwnerId { get; set; }
+    public Guid OwnerId { get; private set; }
 }

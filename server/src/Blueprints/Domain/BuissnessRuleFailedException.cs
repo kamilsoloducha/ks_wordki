@@ -1,39 +1,40 @@
 ﻿using System;
 using Domain.Rules;
 
-namespace Domain;
-
-public class BuissnessRuleFailedException : Exception
+namespace Domain
 {
-    public IBuissnessRule Rule { get; }
-    public BuissnessRuleFailedException(IBuissnessRule rule) : base(rule.Message)
+    public class BuissnessRuleFailedException : Exception
     {
-        Rule = rule;
+        public IBuissnessRule Rule { get; }
+        public BuissnessRuleFailedException(IBuissnessRule rule) : base(rule.Message)
+        {
+            Rule = rule;
+        }
     }
-}
 
-public class BuissnessArgumentException : Exception
-{
-    public string ArgumentName { get; }
-    public object Value { get; }
-
-    public BuissnessArgumentException(string argumentName, object value)
+    public class BuissnessArgumentException : Exception
     {
-        ArgumentName = argumentName;
-        Value = value;
+        public string ArgumentName { get; }
+        public object Value { get; }
+
+        public BuissnessArgumentException(string argumentName, object value)
+        {
+            ArgumentName = argumentName;
+            Value = value;
+        }
     }
-}
 
 
-public class BuissnessObjectNotFoundException : Exception
-{
-
-    public string Name { get; }
-    public object Id { get; }
-
-    public BuissnessObjectNotFoundException(string name, object id)
+    public class BuissnessObjectNotFoundException : Exception
     {
-        Name = name;
-        Id = id;
+
+        public string Name { get; }
+        public object Id { get; }
+
+        public BuissnessObjectNotFoundException(string name, object id)
+        {
+            Name = name;
+            Id = id;
+        }
     }
 }

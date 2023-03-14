@@ -5,40 +5,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Api.Configuration;
-
-internal static class FluentValidationExtension
+namespace Api.Configuration
 {
-    public static IServiceCollection AddCustomFluentValidation(this IServiceCollection services)
+    internal static class FluentValidationExtension
     {
-        services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
-        services.AddFluentValidationAutoValidation();
-        return services;
-    }
+        public static IServiceCollection AddCustomFluentValidation(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true, lifetime: ServiceLifetime.Singleton);
+            services.AddValidatorsFromAssembly(typeof(Infrastructure.FluentValidationOptions<>).Assembly, includeInternalTypes: true, lifetime: ServiceLifetime.Singleton);
+            services.AddFluentValidationAutoValidation();
+            return services;
+        }
 
-    public static IMvcCoreBuilder AddCustomFluentValidationResponse(this IMvcCoreBuilder builder)
-    {
-        builder.ConfigureApiBehaviorOptions(x =>
+        public static IMvcCoreBuilder AddCustomFluentValidationResponse(this IMvcCoreBuilder builder)
         {
-            x.InvalidModelStateResponseFactory = context =>
+            builder.ConfigureApiBehaviorOptions(x =>
             {
-                var errors = GetErrors(context.ModelState.Values);
-                return new BadRequestObjectResult(errors);
-            };
-        });
-        return builder;
-    }
+                x.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = GetErrors(context.ModelState.Values);
+                    return new BadRequestObjectResult(errors);
+                };
+            });
+            return builder;
+        }
     
-    private static IEnumerable<string> GetErrors(ModelStateDictionary.ValueEnumerable values)
-    {
-        foreach (var value in values)
+        private static IEnumerable<string> GetErrors(ModelStateDictionary.ValueEnumerable values)
         {
-            var enumerator = value.Errors.GetEnumerator();
-            while (enumerator.MoveNext() && enumerator.Current is not null)
+            foreach (var value in values)
             {
-                yield return enumerator.Current.ErrorMessage;
+                var enumerator = value.Errors.GetEnumerator();
+                while (enumerator.MoveNext() && enumerator.Current is not null)
+                {
+                    yield return enumerator.Current.ErrorMessage;
+                }
+                enumerator.Dispose();
             }
-            enumerator.Dispose();
         }
     }
 }

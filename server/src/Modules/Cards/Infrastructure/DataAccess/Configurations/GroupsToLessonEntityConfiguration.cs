@@ -2,13 +2,14 @@ using Cards.Application.Queries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cards.Infrastructure.DataAccess.Configurations;
-
-class GroupsToLessonEntityConfiguration : IEntityTypeConfiguration<GroupToLesson>
+namespace Cards.Infrastructure.DataAccess.Configurations
 {
-    public void Configure(EntityTypeBuilder<GroupToLesson> builder)
+    class GroupsToLessonEntityConfiguration : IEntityTypeConfiguration<GroupToLesson>
     {
-        builder.ToView("grouptolesson");
-        builder.HasNoKey();
+        public void Configure(EntityTypeBuilder<GroupToLesson> builder)
+        {
+            builder.ToView("grouptolesson");
+            builder.HasNoKey();
+        }
     }
 }

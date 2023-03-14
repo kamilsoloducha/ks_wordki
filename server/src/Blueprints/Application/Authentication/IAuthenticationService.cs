@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Application.Authentication;
-
-public interface IAuthenticationService
+namespace Application.Authentication
 {
-    string Authenticate(Guid userId, IEnumerable<string> roles);
-    string Refresh(string token);
+    public interface IAuthenticationService
+    {
+        string Authenticate(Guid userId, IEnumerable<string> roles);
+        string Refresh(string token);
+    }
 }

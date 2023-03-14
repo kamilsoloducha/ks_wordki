@@ -1,9 +1,5 @@
 import { Repeat } from "pages/lesson/models/repeat";
 
-export interface GetRepeatsResponse {
-  repeats: Repeat[];
-}
-
 export interface RepeatDto {
   sideId: number;
   cardId: number;

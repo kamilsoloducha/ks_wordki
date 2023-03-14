@@ -9,13 +9,7 @@ import { GetCard } from "../action-payload";
 import { CardSummary } from "pages/cards/models";
 
 export function* getCardWorker(action: PayloadAction<GetCard>): any {
-  const userId: string = yield select(selectUserId);
-  const card: CardSummary = yield call(
-    api.getCard,
-    userId,
-    action.payload.groupId,
-    action.payload.cardId
-  );
+  const card: CardSummary = yield call(api.getCard, action.payload.cardId);
 
   yield put(getCardSuccess(card));
   yield put(applyFilters());

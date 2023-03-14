@@ -9,46 +9,47 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Users.Application.Commands;
 
-namespace Users.E2e.Tests.Login;
-
-[TestFixture(typeof(SimpleLogin))]
-public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginSuccessContext, new()
+namespace Users.E2e.Tests.Login
 {
-    private readonly TContext _context = new();
-
-    [SetUp]
-    public async Task Setup()
+    [TestFixture(typeof(SimpleLogin))]
+    public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginSuccessContext, new()
     {
-        await ClearUsersSchema();
-        await using var dbContext = new UsersContext();
-        await dbContext.Users.AddAsync(_context.GivenUser);
-        await dbContext.SaveChangesAsync();
-    }
+        private readonly TContext _context = new();
 
-    [Test]
-    public async Task Test()
-    {
-        var request = JsonConvert.SerializeObject(_context.GivenRequest);
-
-        Request = new HttpRequestMessage(HttpMethod.Put, "users/login")
+        [SetUp]
+        public async Task Setup()
         {
-            Content = new StringContent(request, Encoding.UTF8, "application/json")
-        };
+            await ClearUsersSchema();
+            await using var dbContext = new UsersContext();
+            await dbContext.Users.AddAsync(_context.GivenUser);
+            await dbContext.SaveChangesAsync();
+        }
 
-        await SendRequest();
+        [Test]
+        public async Task Test()
+        {
+            var request = JsonConvert.SerializeObject(_context.GivenRequest);
 
-        var responseContent = await Response.Content.ReadAsStringAsync();
-        var response = JsonConvert.DeserializeObject<LoginUser.Response>(responseContent);
+            Request = new HttpRequestMessage(HttpMethod.Put, "users/login")
+            {
+                Content = new StringContent(request, Encoding.UTF8, "application/json")
+            };
+
+            await SendRequest();
+
+            var responseContent = await Response.Content.ReadAsStringAsync();
+            var response = JsonConvert.DeserializeObject<LoginUser.Response>(responseContent);
         
-        response.Should().NotBeNull(responseContent);
-        response.ResponseCode.Should().Be(LoginUser.ResponseCode.Successful, responseContent);
-        response.Token.Should().Be(TestServerMock.MockToken, responseContent);
-        response.Id.Should().Be(_context.GivenUser.Id, responseContent);
+            response.Should().NotBeNull(responseContent);
+            response.ResponseCode.Should().Be(LoginUser.ResponseCode.Successful, responseContent);
+            response.Token.Should().Be(TestServerMock.MockToken, responseContent);
+            response.Id.Should().Be(_context.GivenUser.Id, responseContent);
 
-        await using var dbContext = new UsersContext();
-        var users = dbContext.Users.ToList();
-        users.Should().HaveCount(1);
-        var user = users[0];
-        user.LoginDate.Should().Be(TestServerMock.MockDate);
+            await using var dbContext = new UsersContext();
+            var users = dbContext.Users.ToList();
+            users.Should().HaveCount(1);
+            var user = users[0];
+            user.LoginDate.Should().Be(TestServerMock.MockDate);
+        }
     }
 }

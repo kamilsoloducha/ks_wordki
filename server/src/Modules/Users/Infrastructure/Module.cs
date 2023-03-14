@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Application.Authentication;
+﻿using Application.Authentication;
+using Infrastructure;
 using Infrastructure.Authentication;
 using Infrastructure.Services.ConnectionStringProvider;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Application;
@@ -13,34 +13,32 @@ using Users.Infrastructure.Repositories;
 using Users.Infrastructure.Services;
 using Users.Infrastructure.Services.AdminUserCreator;
 
-namespace Users.Infrastructure;
-
-public static class Module
+namespace Users.Infrastructure
 {
-    public static IServiceCollection AddUsersInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
+    public static class Module
     {
-        services.AddUsersApplicationModule();
-        services.JwtConfig(configuration);
-        services.Configure<DatabaseConfiguration>(options => configuration.GetSection(nameof(DatabaseConfiguration)).Bind(options));
-        services.Configure<AdminAccountConfiguration>(options => configuration.GetSection(nameof(AdminAccountConfiguration)).Bind(options));
+        public static IServiceCollection AddUsersInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddUsersApplicationModule();
+            services.JwtConfig(configuration);
+            services.BindConfiguration<DatabaseConfiguration>(configuration);
+            services.Configure<AdminAccountConfiguration>(options => configuration.GetSection(nameof(AdminAccountConfiguration)).Bind(options));
 
-        services.AddDbContext<UsersContext>();
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IPasswordManager, PasswordManager>();
-        // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
-        services.AddScoped<AdminAccountCreator>();
-        return services;
-    }
+            services.AddDbContext<UsersContext>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPasswordManager, PasswordManager>();
+            // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<AdminAccountCreator>();
+            return services;
+        }
 
-    public static async Task CreateUsersDb(this IServiceProvider services)
-    {
-
-        var usersContext = services.GetService<UsersContext>();
-        var creator = usersContext.Creator;
-        await creator.CreateTablesAsync();
-
-        var adminUserCreator = services.GetService<AdminAccountCreator>();
-        await adminUserCreator.CreateAdminUser();
+        public static WebApplication CreateUserScheme(this WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<UsersContext>();
+            dbContext.Creator.EnsureCreated();
+            return app;
+        }
     }
 }

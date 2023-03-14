@@ -3,12 +3,8 @@ import * as queries from "../queries";
 import * as responses from "../responses";
 import http from "./httpBase";
 
-export async function getDashboardSummaryApi(
-  userId: string
-): Promise<responses.DashboardSummaryResponse> {
-  const response = await http.get<responses.DashboardSummaryResponse>(
-    `dashboard/summary/${userId}`
-  );
+export async function getDashboardSummaryApi(): Promise<responses.DashboardSummaryResponse> {
+  const response = await http.get<responses.DashboardSummaryResponse>(`dashboard/summary`);
   return response as any;
 }
 

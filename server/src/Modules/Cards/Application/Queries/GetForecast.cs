@@ -5,13 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
+using Domain.Utils;
 using MediatR;
 
 namespace Cards.Application.Queries;
 
-public class GetForecast
+public abstract class GetForecast
 {
-    internal class QueryHandler : IRequestHandler<Query, IEnumerable<RepeatCount>>
+    internal sealed class QueryHandler : IRequestHandler<Query, IEnumerable<RepeatCount>>
     {
         private readonly IQueryRepository _queryRepository;
 
@@ -22,28 +23,30 @@ public class GetForecast
 
         public async Task<IEnumerable<RepeatCount>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var stop = request.StartDate.AddDays(request.Count);
-            var result = new List<RepeatCount>();
-            for (int i = 0; i < request.Count; i++)
-            {
-                result.Add(new RepeatCount { Count = 0, Date = request.StartDate.AddDays(i).Date });
-            }
+            var (startDate, stopDate) = GetPeriod(request.Count);
 
-            var data = await _queryRepository.GetRepeatsPerDay(request.OwnerId, request.StartDate, stop, cancellationToken);
-            for (int i = 0; i < request.Count; i++)
+            var data = await _queryRepository.GetRepeatsPerDay(request.OwnerId, startDate, stopDate, cancellationToken);
+
+            return FillGaps(data.ToList(), startDate, request.Count);
+        }
+
+        private static (DateTime, DateTime) GetPeriod(int count)
+        {
+            var startDate = SystemClock.Now.Date.AddDays(1);
+            var stopDate = startDate.AddDays(count);
+            return (startDate, stopDate);
+        }
+
+        private static IEnumerable<RepeatCount> FillGaps(IList<RepeatCount> dbDate, DateTime startDate, int count)
+        {
+            for (var i = 0; i < count; i++)
             {
-                var item = data.FirstOrDefault(x => x.Date == result[i].Date);
-                if (item == null) continue;
-                result[i].Count = item.Count;
+                var consideringDate = startDate.AddDays(i);
+                yield return dbDate.FirstOrDefault(x => x.Date == consideringDate) ??
+                             new RepeatCount(0, consideringDate);
             }
-            return result;
         }
     }
 
-    public class Query : IRequest<IEnumerable<RepeatCount>>
-    {
-        public Guid OwnerId { get; set; }
-        public DateTime StartDate { get; set; }
-        public int Count { get; set; }
-    }
+    public record Query(Guid OwnerId, int Count) : IRequest<IEnumerable<RepeatCount>>;
 }

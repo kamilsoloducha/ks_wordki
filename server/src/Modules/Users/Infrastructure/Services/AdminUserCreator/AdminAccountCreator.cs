@@ -5,40 +5,41 @@ using Users.Application.Services;
 using Users.Domain.User;
 using Users.Domain.User.Services;
 
-namespace Users.Infrastructure.Services.AdminUserCreator;
-
-public class AdminAccountCreator
+namespace Users.Infrastructure.Services.AdminUserCreator
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IDataChecker _dataChecker;
-    private readonly IPasswordManager _passwordManager;
-    private readonly AdminAccountConfiguration _adminAccountSettings;
-
-    public AdminAccountCreator(IUserRepository userRepository,
-        IDataChecker dataChecker,
-        IOptions<AdminAccountConfiguration> options,
-        IPasswordManager passwordManager)
+    public class AdminAccountCreator
     {
-        _userRepository = userRepository;
-        _dataChecker = dataChecker;
-        _passwordManager = passwordManager;
-        _adminAccountSettings = options.Value;
-    }
+        private readonly IUserRepository _userRepository;
+        private readonly IDataChecker _dataChecker;
+        private readonly IPasswordManager _passwordManager;
+        private readonly AdminAccountConfiguration _adminAccountSettings;
 
-    public async Task CreateAdminUser()
-    {
-        var isAdminAccountExists = await _userRepository.Any(x => x.Name == _adminAccountSettings.UserName, CancellationToken.None);
-        if (isAdminAccountExists) return;
+        public AdminAccountCreator(IUserRepository userRepository,
+            IDataChecker dataChecker,
+            IOptions<AdminAccountConfiguration> options,
+            IPasswordManager passwordManager)
+        {
+            _userRepository = userRepository;
+            _dataChecker = dataChecker;
+            _passwordManager = passwordManager;
+            _adminAccountSettings = options.Value;
+        }
 
-        var adminUser = User.RegisterAdmin(
-            _adminAccountSettings.UserName,
-            _passwordManager.CreateHashedPassword(_adminAccountSettings.Password),
-            _adminAccountSettings.Email,
-            null,
-            null);
+        public async Task CreateAdminUser()
+        {
+            var isAdminAccountExists = await _userRepository.Any(x => x.Name == _adminAccountSettings.UserName, CancellationToken.None);
+            if (isAdminAccountExists) return;
 
-        adminUser.Confirm();
+            var adminUser = User.RegisterAdmin(
+                _adminAccountSettings.UserName,
+                _passwordManager.CreateHashedPassword(_adminAccountSettings.Password),
+                _adminAccountSettings.Email,
+                null,
+                null);
 
-        await _userRepository.Add(adminUser, CancellationToken.None);
+            adminUser.Confirm();
+
+            await _userRepository.Add(adminUser, CancellationToken.None);
+        }
     }
 }

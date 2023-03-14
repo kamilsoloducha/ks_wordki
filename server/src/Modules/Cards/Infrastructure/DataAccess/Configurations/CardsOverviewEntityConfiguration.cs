@@ -2,13 +2,14 @@ using Cards.Application.Queries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cards.Infrastructure.DataAccess.Configurations;
-
-class CardsOverviewEntityConfiguration : IEntityTypeConfiguration<CardsOverview>
+namespace Cards.Infrastructure.DataAccess.Configurations
 {
-    public void Configure(EntityTypeBuilder<CardsOverview> builder)
+    class CardsOverviewEntityConfiguration : IEntityTypeConfiguration<CardsOverview>
     {
-        builder.ToView("overview");
-        builder.HasNoKey();
+        public void Configure(EntityTypeBuilder<CardsOverview> builder)
+        {
+            builder.ToView("overview");
+            builder.HasNoKey();
+        }
     }
 }

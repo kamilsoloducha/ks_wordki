@@ -20,21 +20,17 @@ describe("tickCardEffect", () => {
   it("should go through", () => {
     const userId = "userId";
     const repeat: Repeat = {
-      sideId: "sideId",
-      cardId: "",
-      questionSide: 0,
+      sideType: 1,
+      cardId: "cardId",
       question: "",
       questionExample: "",
       questionDrawer: 0,
       answer: "",
       answerExample: "",
-      answerSide: 0,
-      frontLanguage: 0,
-      backLanguage: 0,
-      comment: "",
-      groupId: "",
+      questionLanguage: "",
+      answerLanguage: "",
     };
-    const request: api.TickCardRequest = { userId: "userId", sideId: "sideId" };
+    const request: api.TickCardRequest = { cardId: "cardId" };
     expect(saga.next().value).toStrictEqual(take("lesson/tickCard"));
     expect(saga.next().value).toStrictEqual(select(selectUserId));
     expect(saga.next(userId).value).toStrictEqual(select(selectCurrectRepeat));

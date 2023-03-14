@@ -11,10 +11,9 @@ import { getCard, selectCard } from "../reducer";
 import { CardSummary } from "pages/cards/models";
 
 export function* addCardWorker(action: PayloadAction<UpdateCard>): any {
-  const userId: string = yield select(selectUserId);
   const groupId: string = yield select(selectGroupId);
 
-  const response: string | boolean = yield call(addCard, userId, groupId, action.payload.card);
+  const response: string | boolean = yield call(addCard, groupId, action.payload.card);
   yield put(
     response !== false ? getCard({ groupId, cardId: response as string }) : requestFailed({} as any)
   );

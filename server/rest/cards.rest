@@ -7,13 +7,13 @@ PUT {{host}}/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "user",
+    "userName": "userName",
     "password": "pass"
 }
 
 #
-@authToken = Bearer {{login.response.body.$.response.token}}
-@userId = {{login.response.body.$.response.id}}
+@authToken = Bearer {{login.response.body.$.token}}
+@userId = {{login.response.body.$.id}}
 
 ### get groups by userId
 # @name allGroups
@@ -32,22 +32,22 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 #
-@cardId = {{group.response.body.$.cards[0].id}}
+
 
 
 ### add group
+# @name addGroup
 POST {{host}}/groups/add HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-    "userId": "{{userId}}",
-    "groupName":"Information: Executed action Api.GroupsController.Add (Api) in 390.7392ms",
+    "name":"Information: Executed action Api.GroupsController.Add (Api) in 390.7392ms",
     "front":1,
     "back":2,
-    "cards":[     
-    ]
 }
+
+@groupId = {{addGroup.response.body.*}}
 
 ### update group
 PUT {{host}}/cards/update/group HTTP/1.1
@@ -73,13 +73,11 @@ Authorization: {{authToken}}
 }
 
 ### add card
-POST {{host}}/cards/add HTTP/1.1
+POST {{host}}/cards/add/{{groupId}} HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-    "userId": "{{userId}}",
-    "groupId":"{{groupId}}",
     "front":{
         "value":"frontvalue1",
         "example":"frontExample1",
@@ -99,7 +97,6 @@ Authorization: {{authToken}}
 {
     "userId": "{{userId}}",
     "groupId":"{{groupId}}",
-    "cardId":"{{cardId}}",
     "front":{
         "value":"asdf",
         "example":"asdf",
@@ -119,7 +116,6 @@ Authorization: {{authToken}}
 {
     "userId": "{{userId}}",
     "groupId":"{{groupId}}",
-    "cardId":"{{cardId}}"
 }
 
 
@@ -131,7 +127,6 @@ Authorization: {{authToken}}
 {
     "userId": "{{userId}}",
     "cardSideIds":[
-        { "cardId":"{{cardId}}", "side":1 }
     ]
 }
 

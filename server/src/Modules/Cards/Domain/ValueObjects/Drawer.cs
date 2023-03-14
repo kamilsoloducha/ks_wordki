@@ -1,29 +1,23 @@
-using Domain;
-
-namespace Cards.Domain.ValueObjects;
-
-public readonly struct Drawer
+namespace Cards.Domain.ValueObjects
 {
-    private const int MinValue = 0;
-    public const int MaxValue = 5;
-    public int Value { get; }
-    public int CorrectRepeat { get; }
-
-    private Drawer(int correctRepeat)
+    public class Drawer
     {
-        CorrectRepeat = correctRepeat;
-        Value = correctRepeat + 1 >= MaxValue ? MaxValue : correctRepeat + 1;
+        private const int MinValue = 1;
+        public const int MaxValue = 5;
+    
+        public int Correct { get; }
+    
+        public Drawer() : this(MinValue)
+        {
+        }
+
+        public Drawer(int correct)
+        {
+            Correct = correct;
+        }
+    
+        public int Value => Correct > MaxValue ? MaxValue : Correct;
+    
+        public Drawer Increase(int step = 1) => new (Correct + step);
     }
-
-    public static Drawer New() => Create(MinValue);
-
-    public static Drawer Create(int correctRepeat)
-    {
-        if (correctRepeat < 0) throw new BuissnessArgumentException(nameof(correctRepeat), correctRepeat);
-
-        return new Drawer(correctRepeat);
-    }
-
-    public Drawer Increase(int step = 1)
-        => Create(CorrectRepeat + step);
 }

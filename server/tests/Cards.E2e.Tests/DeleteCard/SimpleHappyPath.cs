@@ -1,5 +1,6 @@
-namespace Cards.E2e.Tests.DeleteCard;
-
-public class SimpleHappyPath : DeleteCardContext
+namespace Cards.E2e.Tests.DeleteCard
 {
+    public class SimpleHappyPath : DeleteCardContext
+    {
+    }
 }

@@ -13,6 +13,8 @@ export const selectIsCorrect = (state: MainState) => state.lessonReducer.isCorre
 
 export const selectCardsCount = (state: MainState) => state.lessonReducer.cardsCount;
 
+export const selectLanguages = (state: MainState) => state.lessonReducer.languages;
+
 export const selectShouldSendAnswer = (state: MainState) =>
   state.lessonReducer.lessonCount >= state.lessonReducer.results.answers;
 

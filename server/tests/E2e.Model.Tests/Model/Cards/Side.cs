@@ -11,8 +11,7 @@ namespace E2e.Model.Tests.Model.Cards
         }
 
         public long Id { get; set; }
-        public int Type { get; set; }
-        public string Value { get; set; }
+        public string Label { get; set; }
         public string Example { get; set; }
 
         public virtual ICollection<Card> CardBacks { get; set; }

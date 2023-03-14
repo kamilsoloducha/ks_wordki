@@ -14,7 +14,7 @@ CREATE TABLE lessons."Lessons" (
     "TimeCounter" integer NOT NULL,
     "PerformenceId" uuid NULL,
     CONSTRAINT "PK_Lessons" PRIMARY KEY ("UserId", "StartDate"),
-    CONSTRAINT "FK_Lessons_Performances_PerformenceId" FOREIGN KEY ("PerformenceId") REFERENCES lessons."Performances" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "FK_Lessons_Performances_PerformenceId" FOREIGN KEY ("PerformenceId") REFERENCES lessons."Performances" ("Id")
 );
 
 CREATE INDEX "IX_Lessons_PerformenceId" ON lessons."Lessons" ("PerformenceId");

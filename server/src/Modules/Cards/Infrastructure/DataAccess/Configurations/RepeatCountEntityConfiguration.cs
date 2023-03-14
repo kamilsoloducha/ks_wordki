@@ -2,13 +2,14 @@ using Cards.Application.Queries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cards.Infrastructure.DataAccess.Configurations;
-
-class RepeatCountEntityConfiguration : IEntityTypeConfiguration<RepeatCount>
+namespace Cards.Infrastructure.DataAccess.Configurations
 {
-    public void Configure(EntityTypeBuilder<RepeatCount> builder)
+    class RepeatCountEntityConfiguration : IEntityTypeConfiguration<RepeatCount>
     {
-        builder.ToView("repeatscountsummary");
-        builder.HasNoKey();
+        public void Configure(EntityTypeBuilder<RepeatCount> builder)
+        {
+            builder.ToView("repeatscountsummary");
+            builder.HasNoKey();
+        }
     }
 }

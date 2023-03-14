@@ -1,4 +1,3 @@
-using System.Threading;
 using System.Threading.Tasks;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
@@ -7,29 +6,30 @@ using MassTransit;
 using MassTransit.Definition;
 using Microsoft.Extensions.Logging;
 
-namespace Cards.Application.Consumers;
-
-internal class UserCreatedDefinition : ConsumerDefinition<UserCreatedConsumer>
+namespace Cards.Application.Consumers
 {
-    public UserCreatedDefinition() { }
-}
-
-internal class UserCreatedConsumer : IConsumer<UserCreated>
-{
-    private readonly ILogger<UserCreatedConsumer> _logger;
-    private readonly IOwnerRepository _repository;
-
-    public UserCreatedConsumer(ILogger<UserCreatedConsumer> logger,
-        IOwnerRepository repository)
+    internal class UserCreatedDefinition : ConsumerDefinition<UserCreatedConsumer>
     {
-        _logger = logger;
-        _repository = repository;
+        public UserCreatedDefinition() { }
     }
 
-    public async Task Consume(ConsumeContext<UserCreated> context)
+    internal class UserCreatedConsumer : IConsumer<UserCreated>
     {
-        var ownerId = OwnerId.Restore(context.Message.Id);
-        var owner = Owner.Restore(ownerId);
-        await _repository.Add(owner, CancellationToken.None);
+        private readonly ILogger<UserCreatedConsumer> _logger;
+        private readonly IOwnerRepository _repository;
+
+        public UserCreatedConsumer(ILogger<UserCreatedConsumer> logger,
+            IOwnerRepository repository)
+        {
+            _logger = logger;
+            _repository = repository;
+        }
+
+        public async Task Consume(ConsumeContext<UserCreated> context)
+        {
+            var ownerId = UserId.Restore(context.Message.Id);
+            var owner = new Owner(ownerId);
+            await _repository.Add(owner, context.CancellationToken);
+        }
     }
 }

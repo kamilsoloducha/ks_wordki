@@ -6,14 +6,10 @@ import { takeEvery } from "redux-saga/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { applyFilters, getCardsSuccess } from "../reducer";
 import { GetCards } from "../action-payload";
+import { CardSummary } from "pages/cards/models";
 
-export function* getCardsWorker(action: PayloadAction<GetCards>):any{
-  const userId: string = yield select(selectUserId);
-  const cardsSummaryResponse: api.CardsSummaryResponse = yield call(
-    api.cardsSummary,
-    userId,
-    action.payload.groupId
-  );
+export function* getCardsWorker(action: PayloadAction<GetCards>): any {
+  const cards: CardSummary[] = yield call(api.cardsSummary, action.payload.groupId);
 
   const groupDetailsResponse: api.GroupDetailsResponse = yield call(
     api.groupDetails,
@@ -26,7 +22,7 @@ export function* getCardsWorker(action: PayloadAction<GetCards>):any{
       name: groupDetailsResponse.name,
       language1: groupDetailsResponse.front,
       language2: groupDetailsResponse.back,
-      cards: cardsSummaryResponse.cards,
+      cards: cards,
     })
   );
   yield put(applyFilters());

@@ -1,11 +1,16 @@
-namespace Cards.Domain.ValueObjects;
-
-public class Example
+namespace Cards.Domain.ValueObjects
 {
-    public string Value { get; private init; }
-
-    public Example(string value)
+    public class Example
     {
-        Value = value.Trim();
+        public string Text { get; }
+
+        public Example()
+        {
+        }
+
+        public Example(string value) : this()
+        {
+            Text = value.Trim();
+        }
     }
 }

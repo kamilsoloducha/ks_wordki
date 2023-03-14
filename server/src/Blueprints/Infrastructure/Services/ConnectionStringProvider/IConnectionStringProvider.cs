@@ -1,6 +1,7 @@
-namespace Infrastructure.Services.ConnectionStringProvider;
-
-public interface IConnectionStringProvider
+namespace Infrastructure.Services.ConnectionStringProvider
 {
-    string ConnectionString { get; }
+    public interface IConnectionStringProvider
+    {
+        string ConnectionString { get; }
+    }
 }

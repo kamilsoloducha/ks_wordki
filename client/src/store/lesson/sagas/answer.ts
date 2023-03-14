@@ -10,16 +10,15 @@ export function* answer(action: PayloadAction<Correct> | PayloadAction<Wrong>) {
   const shouldUpdate: boolean = yield select(selectShouldSendAnswer);
   if (!shouldUpdate) return;
 
-  const userId: string = yield select(selectUserId);
   const userRepeats: UserRepeat[] = yield select(selectLessonHistory);
   const previousRepeat = userRepeats[userRepeats.length - 1];
-  yield call(() =>
-    api.registerAnswer({
-      userId,
-      sideId: previousRepeat.repeat.sideId,
-      result: action.payload.result,
-    } as api.RegisterAnswerRequest)
-  );
+
+  const request: api.RegisterAnswerRequest = {
+    cardId: previousRepeat.repeat.cardId,
+    sideType: previousRepeat.repeat.sideType,
+    result: action.payload.result,
+  };
+  yield call(api.registerAnswer, request);
 }
 
 export function* correctEffect() {

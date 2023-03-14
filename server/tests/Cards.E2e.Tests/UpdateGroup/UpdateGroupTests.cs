@@ -7,47 +7,43 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Cards.E2e.Tests.UpdateGroup;
-
-[TestFixture(typeof(UpdateGroupHappyPath))]
-public class UpdateGroupTests<TContext> : CardsTestBase where TContext : UpdateGroupContext, new()
+namespace Cards.E2e.Tests.UpdateGroup
 {
-    private readonly TContext _context = new();
-
-    [SetUp]
-    public async Task Setup()
+    [TestFixture(typeof(UpdateGroupHappyPath))]
+    public class UpdateGroupTests<TContext> : CardsTestBase where TContext : UpdateGroupContext, new()
     {
-        await ClearCardsSchema();
+        private readonly TContext _context = new();
 
-        await using var dbContext = new CardsContext();
-
-        await dbContext.Owners.AddAsync(_context.GivenOwner);
-        await dbContext.SaveChangesAsync();
-    }
-
-    [Test]
-    public async Task Test()
-    {
-        var request = JsonConvert.SerializeObject(_context.GivenCommand);
-
-        Request = new HttpRequestMessage(HttpMethod.Put, "groups/update")
+        [SetUp]
+        public async Task Setup()
         {
-            Content = new StringContent(request, Encoding.UTF8, "application/json")
-        };
+            await ClearCardsSchema();
 
-        await SendRequest();
+            await using var dbContext = new CardsContext();
 
-        var content = await Response.Content.ReadAsStringAsync();
-        Response.Should().BeSuccessful(Response.StatusCode.ToString());
+            await dbContext.Owners.AddAsync(_context.GivenOwner);
+            await dbContext.SaveChangesAsync();
+        }
 
-        await using var dbContext = new CardsContext();
-        var group =  await dbContext.Groups.SingleOrDefaultAsync(x => x.Id == UpdateGroupContext.GroupId);
+        [Test]
+        public async Task Test()
+        {
+            var request = JsonConvert.SerializeObject(_context.GivenCommand);
 
-        group.Should().BeEquivalentTo(_context.ExpectedGroup, option =>
-            option.Excluding(x => x.Cards)
-                .Excluding(x => x.Owner)
-                .Excluding(x => x.OwnerId)
-        );
+            Request = new HttpRequestMessage(HttpMethod.Put, $"groups/update/{_context.GivenGroup.Id}")
+            {
+                Content = new StringContent(request, Encoding.UTF8, "application/json")
+            };
+
+            await SendRequest();
+
+            Response.Should().BeSuccessful(Response.StatusCode.ToString());
+
+            await using var dbContext = new CardsContext();
+            var group =  await dbContext.Groups.SingleOrDefaultAsync(x => x.Id == _context.GivenGroup.Id);
+
+            group.Should().BeEquivalentTo(_context.ExpectedGroup, GroupAssertion);
+        }
+
     }
-
 }

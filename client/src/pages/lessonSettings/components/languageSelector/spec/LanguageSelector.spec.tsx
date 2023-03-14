@@ -6,10 +6,9 @@ import { CardSummaryBuilder } from "test/builders";
 import { LanguageSelector } from "../LanguageSelector";
 
 describe("LanguageSelector", () => {
-  const onSelectedChangedMock = jest.fn((_: number[]) => {});
+  const onSelectedChangedMock = jest.fn((_: string[]) => {});
 
-  beforeEach(() => {
-  });
+  beforeEach(() => {});
 
   afterEach(() => {
     onSelectedChangedMock.mockClear();
@@ -19,7 +18,7 @@ describe("LanguageSelector", () => {
     let container = {} as HTMLElement;
     act(() => {
       container = render(
-        <LanguageSelector selected={[]} onSelectedChanged={onSelectedChangedMock} />,
+        <LanguageSelector selected={[]} onSelectedChanged={onSelectedChangedMock} languages={[]} />
       ).container;
     });
 

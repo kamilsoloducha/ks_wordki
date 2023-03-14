@@ -3,18 +3,19 @@ using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.Extensions.Hosting;
 
-namespace Infrastructure.Rabbit;
-
-public class BusService : IHostedService
+namespace Infrastructure.Rabbit
 {
-    private readonly IBusControl busControl;
-
-    public BusService(IBusControl busControl)
+    public class BusService : IHostedService
     {
-        this.busControl = busControl;
+        private readonly IBusControl busControl;
+
+        public BusService(IBusControl busControl)
+        {
+            this.busControl = busControl;
+        }
+
+        public async Task StartAsync(CancellationToken cancellationToken) => await busControl.StartAsync(cancellationToken);
+
+        public async Task StopAsync(CancellationToken cancellationToken) => await busControl.StopAsync(cancellationToken);
     }
-
-    public async Task StartAsync(CancellationToken cancellationToken) => await busControl.StartAsync(cancellationToken);
-
-    public async Task StopAsync(CancellationToken cancellationToken) => await busControl.StopAsync(cancellationToken);
 }

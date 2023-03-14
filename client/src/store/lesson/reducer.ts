@@ -48,6 +48,13 @@ export const lessonSlice = createSlice({
     setSettingsGroup: (state: LessonState, action: PayloadAction<p.SetSettingGroup>): void => {
       state.settings.selectedGroupId = action.payload.groupId;
     },
+    getLanguages: (state: LessonState): void => {},
+    getLanguagesSuccess: (
+      state: LessonState,
+      action: PayloadAction<p.GetLanguagesSuccess>
+    ): void => {
+      state.languages = action.payload.languages;
+    },
     getCardsCount: (state: LessonState): void => {},
     getCardsCountSuccess: (
       state: LessonState,
@@ -148,22 +155,22 @@ export const lessonSlice = createSlice({
     updateCardSuccess: (state: LessonState, action: PayloadAction<p.UpdateCardSuccess>): void => {
       const lessonHistory = state.lessonHistory.map((x) => {
         if (x.repeat.cardId !== action.payload.form.cardId) return x;
-        x.repeat.question =
-          x.repeat.questionSide === Side.Front
-            ? action.payload.form.frontValue
-            : action.payload.form.backValue;
-        x.repeat.questionExample =
-          x.repeat.questionSide === Side.Front
-            ? action.payload.form.frontExample
-            : action.payload.form.backExample;
-        x.repeat.answer =
-          x.repeat.questionSide === Side.Front
-            ? action.payload.form.backValue
-            : action.payload.form.frontValue;
-        x.repeat.answerExample =
-          x.repeat.questionSide === Side.Front
-            ? action.payload.form.backExample
-            : action.payload.form.backExample;
+        // x.repeat.question =
+        //   x.repeat.questionSide === Side.Front
+        //     ? action.payload.form.frontValue
+        //     : action.payload.form.backValue;
+        // x.repeat.questionExample =
+        //   x.repeat.questionSide === Side.Front
+        //     ? action.payload.form.frontExample
+        //     : action.payload.form.backExample;
+        // x.repeat.answer =
+        //   x.repeat.questionSide === Side.Front
+        //     ? action.payload.form.backValue
+        //     : action.payload.form.frontValue;
+        // x.repeat.answerExample =
+        //   x.repeat.questionSide === Side.Front
+        //     ? action.payload.form.backExample
+        //     : action.payload.form.backExample;
         return x;
       });
 
@@ -178,6 +185,8 @@ export const {
   check,
   correct,
   finishLesson,
+  getLanguages,
+  getLanguagesSuccess,
   getCards,
   getCardsCount,
   getCardsCountSuccess,

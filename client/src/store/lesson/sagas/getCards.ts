@@ -2,13 +2,13 @@ import * as api from "api";
 import { call, put, select } from "@redux-saga/core/effects";
 import { selectUserId } from "store/user/selectors";
 import { selectLessonType, selectSettings } from "../selectors";
-import { ApiResponse } from "common/models/response";
 import { LessonSettings } from "pages/lessonSettings/models/lessonSettings";
 import history from "common/services/history";
 import { LessonMode } from "pages/lessonSettings/models/lesson-mode";
 import { SagaIterator } from "redux-saga";
 import { take } from "redux-saga/effects";
 import { getCardsSuccess } from "../reducer";
+import { Repeat } from "pages/lesson/models/repeat";
 
 export function* getCardsEffect(): SagaIterator {
   while (true) {
@@ -18,14 +18,13 @@ export function* getCardsEffect(): SagaIterator {
 
     const getRepeatsRequest = prepareRequest(settings, userId);
 
-    const apiResponse: ApiResponse<api.GetRepeatsResponse> = yield call(
-      async () => await api.repeats(getRepeatsRequest)
-    );
+    const repeats: Repeat[] = yield call(api.repeats, getRepeatsRequest);
+
     const lessonType: number = yield select(selectLessonType);
     const startLessonRequest = { userId, lessonType } as api.StartLessonRequest;
 
-    yield call(async () => await api.startLesson(startLessonRequest));
-    yield put(getCardsSuccess({ repeats: apiResponse.response.repeats }));
+    yield call(api.startLesson, startLessonRequest);
+    yield put(getCardsSuccess({ repeats }));
     yield call(forwardTo, "/lesson");
   }
 }

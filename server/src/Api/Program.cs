@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Api.Configuration;
 using Api.Configuration.Exceptions;
 using Api.Model;
@@ -13,6 +14,7 @@ using Lessons.Application;
 using Lessons.Infrastructure;
 using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Users.Infrastructure;
@@ -41,14 +43,21 @@ builder.Services.AddCustomAuthorization();
 builder.Services.AddCustomSwagger();
 builder.Services.AddCustomFluentValidation();
 builder.Services.AddControllers()
-    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddMvcCore().AddCustomFluentValidationResponse();
+builder.Services.AddHttpsRedirection(o =>
+{
+    o.HttpsPort = 5001;
+    o.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+});
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
+app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
@@ -59,9 +68,15 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints => endpoints.MapControllers());
 
+// app.CreateCardsScheme()
+//     .CreateUserScheme()
+//     .CreateLessonScheme();
+
 app.Run();
 
 namespace Api
 {
-    public partial class Program { }
+    public partial class Program
+    {
+    }
 }

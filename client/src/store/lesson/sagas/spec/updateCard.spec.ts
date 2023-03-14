@@ -8,7 +8,6 @@ import { updateCard } from "store/lesson/reducer";
 
 describe("updateCardEffect", () => {
   it("should go through", () => {
-    const userId = "userId";
     const form: FormModel = {
       cardId: "cardId",
       frontValue: "frontValue",
@@ -23,9 +22,6 @@ describe("updateCardEffect", () => {
     const updateCardAction = updateCard({ form: form, groupId: "groupId" });
     const saga = updateCardEffect();
     const request: api.UpdateCardRequest = {
-      userId: "userId",
-      groupId: "groupId",
-      cardId: "cardId",
       front: {
         value: "frontValue",
         example: "frontExample",
@@ -38,6 +34,7 @@ describe("updateCardEffect", () => {
         isUsed: true,
         isTicked: true,
       },
+      comment: "",
     };
     expect(saga.next().value).toStrictEqual(take("lesson/updateCard"));
     expect(saga.next(updateCardAction).value).toStrictEqual(select(selectUserId));

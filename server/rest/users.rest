@@ -17,7 +17,7 @@ Content-Type: application/json
     "surname": null
 }
 
-@id = {{register.response.body.$.response.userId}}
+@id = {{register.response.body.$.userId}}
 
 ### confirming user
 PUT {{host}}/confirm HTTP/1.1
@@ -39,7 +39,7 @@ Content-Type: application/json
 
 ###
 
-@authToken = Bearer {{login.response.body.$.response.token}}
+@authToken = Bearer {{login.response.body.$.token}}
 
 ### logining user
 DELETE {{host}}/delete HTTP/1.1

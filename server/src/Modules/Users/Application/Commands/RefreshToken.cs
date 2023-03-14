@@ -7,59 +7,60 @@ using FluentValidation;
 using MediatR;
 using Users.Domain.User;
 
-namespace Users.Application.Commands;
-
-public class RefreshToken
+namespace Users.Application.Commands
 {
-    internal class CommandHandler : IRequestHandler<Command, Response>
+    public class RefreshToken
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IAuthenticationService _authenticationService;
-
-        public CommandHandler(IUserRepository userRepository,
-            IAuthenticationService authenticationService)
+        internal class CommandHandler : IRequestHandler<Command, Response>
         {
-            _userRepository = userRepository;
-            _authenticationService = authenticationService;
+            private readonly IUserRepository _userRepository;
+            private readonly IAuthenticationService _authenticationService;
+
+            public CommandHandler(IUserRepository userRepository,
+                IAuthenticationService authenticationService)
+            {
+                _userRepository = userRepository;
+                _authenticationService = authenticationService;
+            }
+
+            public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var user = await _userRepository.GetUser(request.Id, cancellationToken);
+                if (user is null)
+                    return new Response(ResponseCode.UserNotFound);
+
+                user.Login();
+                await _userRepository.Update(user, cancellationToken);
+
+                var creatingDate = SystemClock.Now;
+                var newToken = _authenticationService.Refresh(request.Token);
+
+                return new Response(ResponseCode.Success, newToken, request.Id, creatingDate, creatingDate.AddDays(7));
+            }
         }
 
-        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+        public record Command(Guid Id, string Token) : IRequest<Response>;
+
+        public record Response(
+            ResponseCode ResponseCode,
+            string Token = null,
+            Guid? Id = null,
+            DateTime? CreatingDateTime = null,
+            DateTime? ExpirationDateTime = null);
+
+        public enum ResponseCode
         {
-            var user = await _userRepository.GetUser(request.Id, cancellationToken);
-            if (user is null)
-                return new Response(ResponseCode.UserNotFound);
-
-            user.Login();
-            await _userRepository.Update(user, cancellationToken);
-
-            var creatingDate = SystemClock.Now;
-            var newToken = _authenticationService.Refresh(request.Token);
-
-            return new Response(ResponseCode.Success, newToken, request.Id, creatingDate, creatingDate.AddDays(7));
+            Success,
+            UserNotFound
         }
-    }
 
-    public record Command(Guid Id, string Token) : IRequest<Response>;
-
-    public record Response(
-        ResponseCode ResponseCode,
-        string Token = null,
-        Guid? Id = null,
-        DateTime? CreatingDateTime = null,
-        DateTime? ExpirationDateTime = null);
-
-    public enum ResponseCode
-    {
-        Success,
-        UserNotFound
-    }
-
-    internal class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
+        internal class CommandValidator : AbstractValidator<Command>
         {
-            RuleFor(x => x.Id).Must(x => x != Guid.Empty);
-            RuleFor(x => x.Token).NotEmpty();
+            public CommandValidator()
+            {
+                RuleFor(x => x.Id).Must(x => x != Guid.Empty);
+                RuleFor(x => x.Token).NotEmpty();
+            }
         }
     }
 }

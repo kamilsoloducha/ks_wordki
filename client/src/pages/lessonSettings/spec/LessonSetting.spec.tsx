@@ -1,6 +1,6 @@
 import * as redux from "react-redux";
 import { ReactElement } from "react";
-import configureMockStore from 'redux-mock-store';
+import configureMockStore from "redux-mock-store";
 import { LessonStatus } from "pages/lesson/models/lessonState";
 import Results from "pages/lesson/models/results";
 import LessonSettingsPage from "../LessonSetting";
@@ -10,8 +10,8 @@ import LessonState from "store/lesson/state";
 
 const mockedUsedNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
   useNavigate: () => mockedUsedNavigate,
 }));
 
@@ -30,10 +30,11 @@ describe("GroupsPage", () => {
     lessonType: 0,
     results: {} as Results,
     settings: {} as LessonSettings,
-    lessonHistory: []
+    lessonHistory: [],
+    languages: [],
   };
 
-  const mockStore = configureMockStore([])({ lessonReducer: mockState });;
+  const mockStore = configureMockStore([])({ lessonReducer: mockState });
 
   beforeEach(() => {
     component = (

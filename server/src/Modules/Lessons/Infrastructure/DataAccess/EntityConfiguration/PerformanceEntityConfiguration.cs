@@ -2,26 +2,27 @@ using Lessons.Domain.Performance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Lessons.Infrastructure.DataAccess.EntityConfiguration;
-
-internal class PerformanceEntityConfiguration : IEntityTypeConfiguration<Performance>
+namespace Lessons.Infrastructure.DataAccess.EntityConfiguration
 {
-    public void Configure(EntityTypeBuilder<Performance> builder)
+    internal class PerformanceEntityConfiguration : IEntityTypeConfiguration<Performance>
     {
-        builder.ToTable("Performances");
+        public void Configure(EntityTypeBuilder<Performance> builder)
+        {
+            builder.ToTable("Performances");
 
-        builder.HasKey(x => x.Id);
-        builder
-            .Property(x => x.Id)
-            .HasColumnName(nameof(Performance.Id))
-            .HasConversion(
-                x => x.Value,
-                x => PerformanceId.Restore(x));
+            builder.HasKey(x => x.Id);
+            builder
+                .Property(x => x.Id)
+                .HasColumnName(nameof(Performance.Id))
+                .HasConversion(
+                    x => x.Value,
+                    x => PerformanceId.Restore(x));
 
-        builder.Property(x => x.UserId).HasColumnName(nameof(Performance.UserId));
-        builder.HasMany(x => x.Lessons).WithOne(x => x.Performence);
+            builder.Property(x => x.UserId).HasColumnName(nameof(Performance.UserId));
+            builder.HasMany(x => x.Lessons).WithOne(x => x.Performence);
 
-        builder.Ignore(x => x.IsDirty);
-        builder.Ignore(x => x.IsNew);
+            builder.Ignore(x => x.IsDirty);
+            builder.Ignore(x => x.IsNew);
+        }
     }
 }

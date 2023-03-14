@@ -1,25 +1,26 @@
 using System;
 
-namespace Lessons.Domain.Lesson;
-
-public enum LessonTypeEnum
+namespace Lessons.Domain.Lesson
 {
-    Undefined = 0,
-    Fiszki,
-    Typing
-}
-
-public readonly struct LessonType
-{
-    public LessonTypeEnum Type { get; }
-    private LessonType(LessonTypeEnum type)
+    public enum LessonTypeEnum
     {
-        Type = type;
+        Undefined = 0,
+        Fiszki,
+        Typing
     }
 
-    public static LessonType Create(int type)
+    public readonly struct LessonType
     {
-        if (type <= 0) throw new Exception($"{nameof(Type)} must be defined");
-        return new LessonType((LessonTypeEnum)type);
+        public LessonTypeEnum Type { get; }
+        private LessonType(LessonTypeEnum type)
+        {
+            Type = type;
+        }
+
+        public static LessonType Create(int type)
+        {
+            if (type <= 0) throw new Exception($"{nameof(Type)} must be defined");
+            return new LessonType((LessonTypeEnum)type);
+        }
     }
 }

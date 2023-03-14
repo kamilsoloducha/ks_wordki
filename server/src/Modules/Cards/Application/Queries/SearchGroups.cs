@@ -11,7 +11,7 @@ using MediatR;
 
 namespace Cards.Application.Queries;
 
-public class SearchGroups
+public abstract class SearchGroups
 {
     internal class QueryHandler : IRequestHandler<Query, IEnumerable<GroupSummaryDto>>
     {
@@ -52,8 +52,8 @@ public class SearchGroups
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public int Front { get; set; }
-        public int Back { get; set; }
+        public string Front { get; set; }
+        public string Back { get; set; }
         public int CardsCount { get; set; }
     }
 }

@@ -11,8 +11,8 @@ import { render } from "@testing-library/react";
 
 const mockedUsedNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
   useNavigate: () => mockedUsedNavigate,
 }));
 
@@ -44,6 +44,7 @@ describe("GroupsPage", () => {
         wrongLimit: 15,
       } as LessonSettings,
       lessonHistory: [],
+      languages: [],
     };
 
     mockStore = configureMockStore([])({ lessonReducer: mockState });
@@ -53,7 +54,6 @@ describe("GroupsPage", () => {
         <LessonResult />
       </redux.Provider>
     );
-
   });
 
   afterEach(() => {
@@ -61,10 +61,10 @@ describe("GroupsPage", () => {
     jest.clearAllMocks();
   });
 
-  it("should be rendered", () =>{
-    act(() =>{
+  it("should be rendered", () => {
+    act(() => {
       container = render(component).container;
-    })
+    });
     expect(container).toBeTruthy();
     expect(container.querySelector(".lesson-results-container")).toBeTruthy();
   });

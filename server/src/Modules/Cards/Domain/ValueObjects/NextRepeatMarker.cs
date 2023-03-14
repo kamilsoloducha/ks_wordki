@@ -1,20 +1,14 @@
 using System;
 
-namespace Cards.Domain.ValueObjects;
-
-public readonly struct NextRepeatMarker
+namespace Cards.Domain.ValueObjects
 {
-    public DateTime Date { get; }
-
-    private NextRepeatMarker(DateTime date)
+    public class NextRepeatMarker
     {
-        Date = date;
-    }
+        public DateTime Date { get; }
 
-    public static NextRepeatMarker New() => Restore(DateTime.MinValue);
-
-    public static NextRepeatMarker Restore(DateTime date)
-    {
-        return new NextRepeatMarker(date.Date);
+        public NextRepeatMarker(DateTime date)
+        {
+            Date = date.ToUniversalTime();
+        }
     }
 }

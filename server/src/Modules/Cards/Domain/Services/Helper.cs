@@ -1,11 +1,12 @@
-namespace Cards.Domain.Services;
-
-public static class Helpers
+namespace Cards.Domain.Services
 {
-    public static int GetFibbonacciNumber(int index)
+    public static class Helpers
     {
-        if (index == 0) return 0;
-        if (index == 1) return 1;
-        return GetFibbonacciNumber(index - 1) + GetFibbonacciNumber(index - 2);
+        public static int GetFibbonacciNumber(int index)
+        {
+            if (index == 0) return 0;
+            if (index == 1) return 1;
+            return GetFibbonacciNumber(index - 1) + GetFibbonacciNumber(index - 2);
+        }
     }
 }

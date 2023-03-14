@@ -5,12 +5,12 @@ export function CountSelector({ selected, all, onSelectedChanged }: Model): Reac
   const onChanged = useCallback(
     (event$: any) => {
       let newValue = parseInt(event$.target.value);
-      if (newValue > all) {
-        newValue = all;
-      }
-      if (newValue < 0) {
-        newValue = 0;
-      }
+      // if (newValue > all) {
+      //   newValue = all;
+      // }
+      // if (newValue < 0) {
+      //   newValue = 0;
+      // }
       onSelectedChanged(newValue);
     },
     [onSelectedChanged, all]

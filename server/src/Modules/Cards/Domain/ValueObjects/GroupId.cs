@@ -1,36 +1,37 @@
 using Cards.Domain.Services;
 using Domain;
 
-namespace Cards.Domain.ValueObjects;
-
-public readonly struct GroupId
+namespace Cards.Domain.ValueObjects
 {
-    public long Value { get; }
-
-    private GroupId(long id)
+    public readonly struct GroupId
     {
-        Value = id;
+        public long Value { get; }
+
+        private GroupId(long id)
+        {
+            Value = id;
+        }
+
+        private static GroupId New() => new GroupId(0);
+        internal static GroupId New(ISequenceGenerator sequenceGenerator)
+        {
+            var value = sequenceGenerator.Generate<GroupId>();
+            return Restore(value);
+        }
+        public static GroupId Restore(long id)
+        {
+            if (id <= 0) throw new BuissnessArgumentException(nameof(id), id);
+
+            return new GroupId(id);
+        }
+
+        public static bool operator ==(GroupId id1, GroupId id2) => id1.Value == id2.Value;
+        public static bool operator !=(GroupId id1, GroupId id2) => id1.Value != id2.Value;
+
+        public override bool Equals(object obj)
+            => obj is GroupId id ? id == this : false;
+
+        public override int GetHashCode()
+            => Value.GetHashCode();
     }
-
-    private static GroupId New() => new GroupId(0);
-    internal static GroupId New(ISequenceGenerator sequenceGenerator)
-    {
-        var value = sequenceGenerator.Generate<GroupId>();
-        return Restore(value);
-    }
-    public static GroupId Restore(long id)
-    {
-        if (id <= 0) throw new BuissnessArgumentException(nameof(id), id);
-
-        return new GroupId(id);
-    }
-
-    public static bool operator ==(GroupId id1, GroupId id2) => id1.Value == id2.Value;
-    public static bool operator !=(GroupId id1, GroupId id2) => id1.Value != id2.Value;
-
-    public override bool Equals(object obj)
-        => obj is GroupId id ? id == this : false;
-
-    public override int GetHashCode()
-        => Value.GetHashCode();
 }

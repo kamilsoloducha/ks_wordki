@@ -1,9 +1,10 @@
-namespace Application.Services;
-
-public interface IHashIdsService
+namespace Application.Services
 {
-    long GetLongId(string hash);
-    bool TryGetLongId(string hash, out long value);
-    string GetHash(long id);
+    public interface IHashIdsService
+    {
+        long GetLongId(string hash);
+        bool TryGetLongId(string hash, out long value);
+        string GetHash(long id);
 
+    }
 }

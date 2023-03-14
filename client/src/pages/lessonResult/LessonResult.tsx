@@ -60,12 +60,11 @@ export default function LessonResult(): ReactElement {
     if (!selectedItem) return;
     form.backEnabled = null;
     form.frontEnabled = null;
-    dispatch(actions.updateCard({ form, groupId: selectedItem.repeat.groupId }));
+    dispatch(actions.updateCard({ form, groupId:"" }));
     setSelectedItem(null);
   };
 
-  const onDelete = (form: FormModel) => {
-  };
+  const onDelete = (form: FormModel) => {};
 
   return (
     <>
@@ -115,26 +114,14 @@ export function getFormModelFromUserRepeat(userRepeat: UserRepeat | null): FormM
 
   const form: FormModel = {
     cardId: userRepeat.repeat.cardId,
-    frontValue:
-      userRepeat.repeat.questionSide === Side.Front
-        ? userRepeat.repeat.question
-        : userRepeat.repeat.answer,
-    frontExample:
-      userRepeat.repeat.questionSide === Side.Front
-        ? userRepeat.repeat.questionExample
-        : userRepeat.repeat.answerExample,
-    frontEnabled: true,
-    backValue:
-      userRepeat.repeat.questionSide === Side.Front
-        ? userRepeat.repeat.answer
-        : userRepeat.repeat.question,
-    backExample:
-      userRepeat.repeat.questionSide === Side.Front
-        ? userRepeat.repeat.answerExample
-        : userRepeat.repeat.questionExample,
     backEnabled: false,
     comment: "",
     isTicked: false,
+    frontValue: "",
+    frontExample: "",
+    frontEnabled: undefined,
+    backValue: "",
+    backExample: "",
   };
 
   return form;

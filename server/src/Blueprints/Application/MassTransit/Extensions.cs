@@ -3,14 +3,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using MassTransit;
 
-namespace Application.MassTransit;
-
-public static class Extensions
+namespace Application.MassTransit
 {
-    public static async Task PublishMany<T>(this IPublishEndpoint endpoint, IEnumerable<T> events,
-        CancellationToken cancellationToken)
-        where T : class
+    public static class Extensions
     {
-        foreach (var @event in events) await endpoint.Publish(@event, cancellationToken);
+        public static async Task PublishMany<T>(this IPublishEndpoint endpoint, IEnumerable<T> events,
+            CancellationToken cancellationToken)
+            where T : class
+        {
+            foreach (var @event in events) await endpoint.Publish(@event, cancellationToken);
+        }
     }
 }

@@ -20,6 +20,7 @@ export default function LessonSettingsPage(): ReactElement {
   useEffect(() => {
     dispatch(act.resetResults());
     dispatch(act.getCardsCount());
+    dispatch(act.getLanguages());
   }, [dispatch]);
 
   const items: TabViewItemModel[] = [

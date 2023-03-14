@@ -1,13 +1,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Users.Domain.User.Services;
 
-namespace Users.Domain;
-
-public static class Module
+namespace Users.Domain
 {
-    public static IServiceCollection AddUsersDomainModule(this IServiceCollection services)
+    public static class Module
     {
-        services.AddScoped<IDataChecker, DataChecker>();
-        return services;
+        public static IServiceCollection AddUsersDomainModule(this IServiceCollection services)
+        {
+            services.AddScoped<IDataChecker, DataChecker>();
+            return services;
+        }
     }
 }

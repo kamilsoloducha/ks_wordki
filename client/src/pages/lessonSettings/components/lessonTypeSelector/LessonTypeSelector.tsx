@@ -15,12 +15,12 @@ export function LessonTypeSelector({ selected, onSelectedChanged }: Model): Reac
           className="input-fiszki"
           type="radio"
           name="lessonType"
-          id="1"
+          id="type1"
           value={1}
           onChange={onTypeChanged}
           checked={selected === 1}
         />
-        <label htmlFor="1" className="item-container">
+        <label htmlFor="type1" className="item-container">
           <img alt="cards" className="setting-icon" src="/svgs/cards.svg" />
           <p>Fiszki</p>
         </label>
@@ -28,12 +28,12 @@ export function LessonTypeSelector({ selected, onSelectedChanged }: Model): Reac
           className="input-fiszki"
           type="radio"
           name="lessonType"
-          id="2"
+          id="type2"
           value={2}
           onChange={onTypeChanged}
           checked={selected === 2}
         />
-        <label htmlFor="2" className="item-container">
+        <label htmlFor="type2" className="item-container">
           <img alt="typing" className="setting-icon" src="/svgs/keyboard.svg" />
           <p>Typing</p>
         </label>

@@ -1,6 +1,5 @@
 export interface AddGroupRequest {
-  userId: string;
-  groupName: string;
-  front: number;
-  back: number;
+  name: string;
+  front: string;
+  back: string;
 }

@@ -3,73 +3,57 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
 using Cards.Domain.OwnerAggregate;
-using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
 using MediatR;
 
-namespace Cards.Application.Features.Cards;
-
-public abstract class UpdateCard
+namespace Cards.Application.Features.Cards
 {
-    internal class CommandHandler : RequestHandlerBase<Command, long>
+    public abstract class UpdateCard
     {
-        private readonly IOwnerRepository _repository;
-        private readonly ISequenceGenerator _sequenceGenerator;
-
-        public CommandHandler(IOwnerRepository repository, ISequenceGenerator sequenceGenerator)
+        internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
-            _repository = repository;
-            _sequenceGenerator = sequenceGenerator;
-        }
+            private readonly IOwnerRepository _repository;
 
-        public override async Task<ResponseBase<long>> Handle(Command request, CancellationToken cancellationToken)
-        {
-            var ownerId = OwnerId.Restore(request.UserId);
-            var owner = await _repository.Get(ownerId, cancellationToken);
-
-            var groupId = GroupId.Restore(request.GroupId);
-            var cardId = CardId.Restore(request.CardId);
-            var frontValue = Label.Create(request.Front.Value);
-            var backValue = Label.Create(request.Back.Value);
-
-            var frontComment = Comment.Create(request.Comment);
-            var backComment = Comment.Create(request.Comment);
-
-            var command = new UpdateCardCommand
+            public CommandHandler(IOwnerRepository repository)
             {
-                Front = new UpdateCardCommand.Side
-                {
-                    Value = frontValue,
-                    Example = new Example(request.Front.Example),
-                    Comment = frontComment,
-                    IncludeLesson = request.Front.IsUsed,
-                    IsTicked = request.Front.IsTicked
-                },
-                Back = new UpdateCardCommand.Side
-                {
-                    Value = backValue,
-                    Example = new Example(request.Back.Example),
-                    Comment = backComment,
-                    IncludeLesson = request.Back.IsUsed,
-                    IsTicked = request.Back.IsTicked
-                }
-            };
+                _repository = repository;
+            }
 
-            var result = owner.UpdateCard(groupId, cardId, command, _sequenceGenerator);
+            public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var ownerId = UserId.Restore(request.UserId);
+                var card = await _repository.GetCard(ownerId, request.CardId, cancellationToken);
 
-            await _repository.Update(owner, cancellationToken);
-            return ResponseBase<long>.Create(result.Value);
+
+                var command = new Domain.Commands.UpdateCard(
+                    new Domain.Commands.Side(
+                        new Label(request.Front.Value),
+                        new Example(request.Front.Example),
+                        request.Comment,
+                        request.Front.IsUsed),
+                    new Domain.Commands.Side(
+                        new Label(request.Back.Value),
+                        new Example(request.Back.Example),
+                        request.Comment,
+                        request.Back.IsUsed),
+                    request.Front.IsTicked
+                );
+
+                card.Update(command);
+
+                await _repository.Update(cancellationToken);
+                return ResponseBase<Unit>.Create(Unit.Value);
+            }
         }
+
+        public record Command(
+                Guid UserId,
+                long CardId,
+                CardSide Front,
+                CardSide Back,
+                string Comment)
+            : IRequest<ResponseBase<Unit>>;
+
+        public record CardSide(string Value, string Example, bool IsUsed, bool IsTicked);
     }
-
-    public record Command(
-            Guid UserId,
-            long GroupId,
-            long CardId,
-            CardSide Front,
-            CardSide Back,
-            string Comment)
-        : IRequest<ResponseBase<long>>;
-
-    public record CardSide(string Value, string Example, bool? IsUsed, bool IsTicked);
 }

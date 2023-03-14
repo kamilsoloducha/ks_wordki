@@ -4,33 +4,34 @@ using System.Threading.Tasks;
 using Application.Requests;
 using Users.Domain.User;
 
-namespace Users.Application.Queries;
-
-public class GetUsers
+namespace Users.Application.Queries
 {
-    public class QueryHandler : RequestHandlerBase<Query, Response>
+    public class GetUsers
     {
-        private readonly IUserRepository _userRepository;
-
-        public QueryHandler(IUserRepository userRepository)
+        public class QueryHandler : RequestHandlerBase<Query, Response>
         {
-            _userRepository = userRepository;
-        }
+            private readonly IUserRepository _userRepository;
 
-        public override async Task<ResponseBase<Response>> Handle(Query request, CancellationToken cancellationToken)
-        {
-            var users = await _userRepository.GetUsers(cancellationToken);
-            return ResponseBase<Response>.Create(new Response
+            public QueryHandler(IUserRepository userRepository)
             {
-                Users = users
-            });
+                _userRepository = userRepository;
+            }
+
+            public override async Task<ResponseBase<Response>> Handle(Query request, CancellationToken cancellationToken)
+            {
+                var users = await _userRepository.GetUsers(cancellationToken);
+                return ResponseBase<Response>.Create(new Response
+                {
+                    Users = users
+                });
+            }
         }
-    }
 
-    public class Query : RequestBase<Response> { }
-    public class Response
-    {
-        public IEnumerable<User> Users { get; set; }
-    }
+        public class Query : RequestBase<Response> { }
+        public class Response
+        {
+            public IEnumerable<User> Users { get; set; }
+        }
 
+    }
 }

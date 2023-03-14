@@ -6,48 +6,49 @@ using Users.Application.Services;
 using Users.Domain.Role;
 using Users.Domain.User;
 
-namespace Users.Application.Commands;
-
-public class LoginChromeExtension
+namespace Users.Application.Commands
 {
-    internal class CommandHandler : IRequestHandler<Command, Response>
+    public class LoginChromeExtension
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IPasswordManager _passwordManager;
-        private readonly IAuthenticationService _authenticationService;
-
-        public CommandHandler(IUserRepository userRepository,
-            IPasswordManager passwordManager,
-            IAuthenticationService authenticationService)
+        internal class CommandHandler : IRequestHandler<Command, Response>
         {
-            _userRepository = userRepository;
-            _passwordManager = passwordManager;
-            _authenticationService = authenticationService;
+            private readonly IUserRepository _userRepository;
+            private readonly IPasswordManager _passwordManager;
+            private readonly IAuthenticationService _authenticationService;
+
+            public CommandHandler(IUserRepository userRepository,
+                IPasswordManager passwordManager,
+                IAuthenticationService authenticationService)
+            {
+                _userRepository = userRepository;
+                _passwordManager = passwordManager;
+                _authenticationService = authenticationService;
+            }
+
+            public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var hashedPassword = _passwordManager.CreateHashedPassword(request.Password);
+                var user = await _userRepository.GetUser(request.UserName, hashedPassword, cancellationToken);
+                if (user is null)
+                    return new Response(ResponseCode.UserNotFound, string.Empty);
+
+                var token = _authenticationService.Authenticate(user.Id, new[] { RoleType.ChromeExtension.ToString() });
+
+                user.Login();
+                await _userRepository.Update(user, cancellationToken);
+
+                return new Response(ResponseCode.Success, token);
+            }
         }
 
-        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+        public record Command(string UserName, string Password) : IRequest<Response>;
+
+        public record Response(ResponseCode ResponseCode, string Token);
+
+        public enum ResponseCode
         {
-            var hashedPassword = _passwordManager.CreateHashedPassword(request.Password);
-            var user = await _userRepository.GetUser(request.UserName, hashedPassword, cancellationToken);
-            if (user is null)
-                return new Response(ResponseCode.UserNotFound, string.Empty);
-
-            var token = _authenticationService.Authenticate(user.Id, new[] { RoleType.ChromeExtension.ToString() });
-
-            user.Login();
-            await _userRepository.Update(user, cancellationToken);
-
-            return new Response(ResponseCode.Success, token);
+            Success,
+            UserNotFound
         }
-    }
-
-    public record Command(string UserName, string Password) : IRequest<Response>;
-
-    public record Response(ResponseCode ResponseCode, string Token);
-
-    public enum ResponseCode
-    {
-        Success,
-        UserNotFound
     }
 }

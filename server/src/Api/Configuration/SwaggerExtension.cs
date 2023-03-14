@@ -1,17 +1,18 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Api.Configuration;
-
-public static class SwaggerExtension
+namespace Api.Configuration
 {
-    public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
+    public static class SwaggerExtension
     {
-        services.AddSwaggerGen(c =>
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
-            c.CustomSchemaIds(type => type.ToString().Replace("+","."));
-        });
-        return services;
-    }    
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
+                c.CustomSchemaIds(type => type.ToString().Replace("+","."));
+            });
+            return services;
+        }    
+    }
 }

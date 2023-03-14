@@ -1,10 +1,11 @@
-namespace Cards.Domain.Tests;
-
-public static class TestExtenstions
+namespace Cards.Domain.Tests
 {
-    public static TSut SetProperty<TSut, TProperty>(this TSut sut, string propertyName, TProperty value)
+    public static class TestExtenstions
     {
-        sut.GetType().GetProperty(propertyName).SetValue(sut, value, null);
-        return sut;
+        public static TSut SetProperty<TSut, TProperty>(this TSut sut, string propertyName, TProperty value)
+        {
+            sut.GetType().GetProperty(propertyName).SetValue(sut, value, null);
+            return sut;
+        }
     }
 }

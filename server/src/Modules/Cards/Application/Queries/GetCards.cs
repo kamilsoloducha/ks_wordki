@@ -2,29 +2,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Services;
 using Cards.Application.Services;
 using MediatR;
 
 namespace Cards.Application.Queries;
 
-public class GetCards
+public abstract class GetCards
 {
     internal class QueryHandler : IRequestHandler<Query, IEnumerable<CardSummary>>
     {
         private readonly IQueryRepository _queryRepository;
-        private readonly IHashIdsService _hash;
 
-        public QueryHandler(IQueryRepository queryRepository, IHashIdsService hash)
+        public QueryHandler(IQueryRepository queryRepository)
         {
             _queryRepository = queryRepository;
-            _hash = hash;
         }
 
         public async Task<IEnumerable<CardSummary>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var groupId = _hash.GetLongId(request.GroupId);
-            var cards = await _queryRepository.GetCardSummaries(groupId, cancellationToken);
+            var cards = await _queryRepository.GetCardSummaries(request.GroupId, cancellationToken);
 
             return cards.Select(x => new CardSummary
             {
@@ -34,10 +30,7 @@ public class GetCards
         }
     }
 
-    public class Query : IRequest<IEnumerable<CardSummary>>
-    {
-        public string GroupId { get; set; }
-    }
+    public record Query(long GroupId) : IRequest<IEnumerable<CardSummary>>;
 
     public class CardSummary
     {

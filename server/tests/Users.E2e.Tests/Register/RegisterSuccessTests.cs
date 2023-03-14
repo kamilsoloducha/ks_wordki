@@ -10,50 +10,51 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Users.Application.Commands;
 
-namespace Users.E2e.Tests.Register;
-
-[TestFixture(typeof(SimpleRegistration))]
-public class RegisterSuccessTests<TContext> : UsersTestBase where TContext : RegisterUserContext, new()
+namespace Users.E2e.Tests.Register
 {
-    private readonly TContext _context = new();
-
-    [SetUp]
-    public async Task Setup()
+    [TestFixture(typeof(SimpleRegistration))]
+    public class RegisterSuccessTests<TContext> : UsersTestBase where TContext : RegisterUserContext, new()
     {
-        await ClearUsersSchema();
-    }
+        private readonly TContext _context = new();
 
-    [Test]
-    public async Task Test()
-    {
-        var request = JsonConvert.SerializeObject(_context.GivenRequest);
-
-        Request = new HttpRequestMessage(HttpMethod.Post, "users/register")
+        [SetUp]
+        public async Task Setup()
         {
-            Content = new StringContent(request, Encoding.UTF8, "application/json")
-        };
+            await ClearUsersSchema();
+        }
 
-        await SendRequest();
+        [Test]
+        public async Task Test()
+        {
+            var request = JsonConvert.SerializeObject(_context.GivenRequest);
 
-        var responseContent = await Response.Content.ReadAsStringAsync();
-        var response = JsonConvert.DeserializeObject<RegisterUser.Response>(responseContent);
+            Request = new HttpRequestMessage(HttpMethod.Post, "users/register")
+            {
+                Content = new StringContent(request, Encoding.UTF8, "application/json")
+            };
 
-        response.Should().NotBeNull();
-        response.ResponseCode.Should().Be(RegisterUser.ResponseCode.Successful, responseContent);
-        response.UserId.Should().NotBeNull(responseContent);
+            await SendRequest();
 
-        await using var dbContext = new UsersContext();
-        var users = dbContext.Users.ToList();
-        users.Should().HaveCount(1);
-        var user = users[0];
-        user.Id.Should().Be(response.UserId.Value);
-        user.Name.Should().Be(_context.ExpectedUser.Name);
-        user.Email.Should().Be(_context.ExpectedUser.Email);
-        user.Status.Should().Be(_context.ExpectedUser.Status);
-        user.ConfirmationDate.Should().Be(_context.ExpectedUser.ConfirmationDate);
-        user.CreationDate.Should().Be(_context.ExpectedUser.ConfirmationDate);
-        user.Password.Should().Be(_context.ExpectedUser.Password);
+            var responseContent = await Response.Content.ReadAsStringAsync();
+            var response = JsonConvert.DeserializeObject<RegisterUser.Response>(responseContent);
 
-        PublishEndpointMock.Verify(x => x.Publish(It.IsAny<object>(), It.IsAny<CancellationToken>()), Times.Once);
+            response.Should().NotBeNull();
+            response.ResponseCode.Should().Be(RegisterUser.ResponseCode.Successful, responseContent);
+            response.UserId.Should().NotBeNull(responseContent);
+
+            await using var dbContext = new UsersContext();
+            var users = dbContext.Users.ToList();
+            users.Should().HaveCount(1);
+            var user = users[0];
+            user.Id.Should().Be(response.UserId.Value);
+            user.Name.Should().Be(_context.ExpectedUser.Name);
+            user.Email.Should().Be(_context.ExpectedUser.Email);
+            user.Status.Should().Be(_context.ExpectedUser.Status);
+            user.ConfirmationDate.Should().Be(_context.ExpectedUser.ConfirmationDate);
+            user.CreationDate.Should().Be(_context.ExpectedUser.ConfirmationDate);
+            user.Password.Should().Be(_context.ExpectedUser.Password);
+
+            PublishEndpointMock.Verify(x => x.Publish(It.IsAny<object>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
     }
 }

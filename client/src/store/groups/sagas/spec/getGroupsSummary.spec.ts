@@ -13,7 +13,7 @@ describe("getGroupsSummaryEffect", () => {
   let apiMock: any;
 
   beforeEach(() => {
-    apiMock = jest.spyOn(groups, "groups");
+    apiMock = jest.spyOn(groups, "summaries");
     saga = getGroupsSummaryEffect();
   });
 
@@ -32,6 +32,8 @@ describe("getGroupsSummaryEffect", () => {
   // });
 
   it("should go through", () => {
-    expect(saga.next().value).toStrictEqual(takeEvery("groups/getGroupsSummary", getGroupsSummaryWorker));
+    expect(saga.next().value).toStrictEqual(
+      takeEvery("groups/getGroupsSummary", getGroupsSummaryWorker)
+    );
   });
 });

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace E2e.Model.Tests.Model.Cards
 {
@@ -12,12 +11,12 @@ namespace E2e.Model.Tests.Model.Cards
 
         public long Id { get; set; }
         public string Name { get; set; }
-        public int Front { get; set; }
-        public int Back { get; set; }
-        public Guid OwnerId { get; set; }
+        public long? ParentId { get; set; }
+        public string Front { get; set; }
+        public string Back { get; set; }
+        public long? OwnerId { get; set; }
 
         public virtual Owner Owner { get; set; }
-
         public virtual ICollection<Card> Cards { get; set; }
     }
 }

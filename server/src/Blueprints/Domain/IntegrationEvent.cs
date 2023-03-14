@@ -1,7 +1,8 @@
 ﻿using MediatR;
 
-namespace Domain;
-
-public abstract class IntegrationEvent : INotification
+namespace Domain
 {
+    public abstract class IntegrationEvent : INotification
+    {
+    }
 }

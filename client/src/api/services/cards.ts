@@ -6,40 +6,26 @@ import http from "./httpBase";
 import { CardsOverview } from "pages/cardsSearch/models";
 import { CardSummary } from "pages/cards/models";
 
-export async function cardsSummary(
-  userId: string,
-  groupId: string
-): Promise<responses.CardsSummaryResponse | boolean> {
+export async function cardsSummary(groupId: string): Promise<CardSummary[] | boolean> {
   try {
-    const resposnse = await http.get<responses.CardsSummaryResponse>(`/cards/${userId}/${groupId}`);
+    const resposnse = await http.get<CardSummary[]>(`/cards/summaries/${groupId}`);
     return resposnse.data;
   } catch (error: any) {
     return false;
   }
 }
 
-export async function getCard(
-  userId: string,
-  groupId: string,
-  cardId: string
-): Promise<CardSummary | boolean> {
+export async function getCard(cardId: string): Promise<CardSummary | boolean> {
   try {
-    const resposnse = await http.get<CardSummary>(`/cards/${userId}/${groupId}/${cardId}`);
+    const resposnse = await http.get<CardSummary>(`/cards/summary/${cardId}`);
     return resposnse.data;
   } catch (error: any) {
     return false;
   }
 }
 
-export async function updateCard(
-  userId: string,
-  groupId: string,
-  card: CardSummary
-): Promise<{} | boolean> {
+export async function updateCard(card: CardSummary): Promise<{} | boolean> {
   const request = {
-    userId,
-    groupId,
-    cardId: card.id,
     front: {
       value: card.front.value,
       example: card.front.example,
@@ -52,23 +38,18 @@ export async function updateCard(
       isUsed: card.back.isUsed,
       isTicked: card.back.isTicked,
     },
+    comment: "",
   } as commands.UpdateCardRequest;
   try {
-    const response = await http.put<{}>(`/cards/update`, request);
+    const response = await http.put<{}>(`/cards/update/${card.id}`, request);
     return response.data;
   } catch (error) {
     return false;
   }
 }
 
-export async function addCard(
-  userId: string,
-  groupId: string,
-  card: CardSummary
-): Promise<string | boolean> {
+export async function addCard(groupId: string, card: CardSummary): Promise<string | boolean> {
   const request = {
-    userId,
-    groupId,
     front: {
       value: card.front.value,
       example: card.front.example,
@@ -79,10 +60,11 @@ export async function addCard(
       example: card.back.example,
       isUsed: card.back.isUsed,
     },
+    comment: "",
   } as commands.AddCardRequest;
   try {
-    const response = await http.post<string>(`/cards/add`, request);
-    return (response.data as any).response;
+    const response = await http.post<string>(`/cards/add/${groupId}`, request);
+    return response.data;
   } catch (error) {
     return false;
   }

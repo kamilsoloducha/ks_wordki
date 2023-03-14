@@ -1,3 +1,3 @@
 namespace Api.Model.Requests;
 
-public record UpdateGroup(string Name, int Front, int Back);
+public record UpdateGroup(string Name, string Front, string Back);

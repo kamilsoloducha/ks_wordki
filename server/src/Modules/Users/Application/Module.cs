@@ -2,15 +2,16 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Domain;
 
-namespace Users.Application;
-
-public static class Module
+namespace Users.Application
 {
-    public static IServiceCollection AddUsersApplicationModule(this IServiceCollection services)
+    public static class Module
     {
-        services.AddUsersDomainModule();
-        services.AddMediatR(typeof(Module).Assembly);
+        public static IServiceCollection AddUsersApplicationModule(this IServiceCollection services)
+        {
+            services.AddUsersDomainModule();
+            services.AddMediatR(typeof(Module).Assembly);
 
-        return services;
+            return services;
+        }
     }
 }

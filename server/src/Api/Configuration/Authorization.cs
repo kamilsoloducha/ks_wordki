@@ -1,21 +1,22 @@
 using Microsoft.Extensions.DependencyInjection;
 using Users.Domain.Role;
 
-namespace Api.Configuration;
-
-public static class AuthorizationExtensions
+namespace Api.Configuration
 {
-    public const string ChromeExtensionPolicy = "ChromeExtension";
-    public const string LoginUserPolicy = "LoginUser";
-    public const string AdminOnlyPolicy = "AdminOnly";
-    public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
+    public static class AuthorizationExtensions
     {
-        services.AddAuthorization(options =>
+        public const string ChromeExtensionPolicy = "ChromeExtension";
+        public const string LoginUserPolicy = "LoginUser";
+        public const string AdminOnlyPolicy = "AdminOnly";
+        public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
         {
-            options.AddPolicy(LoginUserPolicy, policy => policy.RequireRole(Role.Student.Type.ToString()));
-            options.AddPolicy(AdminOnlyPolicy, policy => policy.RequireRole(Role.Admin.Type.ToString()));
-            options.AddPolicy(ChromeExtensionPolicy, policy => policy.RequireRole(Role.ChromeExtension.Type.ToString()));
-        });
-        return services;
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(LoginUserPolicy, policy => policy.RequireRole(Role.Student.Type.ToString()));
+                options.AddPolicy(AdminOnlyPolicy, policy => policy.RequireRole(Role.Admin.Type.ToString()));
+                options.AddPolicy(ChromeExtensionPolicy, policy => policy.RequireRole(Role.ChromeExtension.Type.ToString()));
+            });
+            return services;
+        }
     }
 }

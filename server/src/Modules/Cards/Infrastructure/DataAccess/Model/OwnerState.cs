@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Cards.Infrastructure.DataAccess.Model;
-
-internal class OwnerState
+namespace Cards.Infrastructure.DataAccess.Model
 {
-    public Guid Id { get; set; }
-    public IList<GroupState> Groups { get; set; }
-    public IList<DetailState> Details { get; set; }
+    internal class OwnerState
+    {
+        public Guid Id { get; set; }
+        public IList<GroupState> Groups { get; set; }
+        public IList<DetailState> Details { get; set; }
+    }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Services;
@@ -23,10 +24,10 @@ public class GetRepeatsCount
         public async Task<int> Handle(Query request, CancellationToken cancellationToken)
         {
 
-            var ownerId = OwnerId.Restore(request.UserId);
+            var ownerId = UserId.Restore(request.UserId);
             var now = SystemClock.Now.Date;
 
-            var repeats = await _queryRepository.GetDailyRepeatsCount(ownerId, now, request.QuestionLanguage, cancellationToken);
+            var repeats = await _queryRepository.GetDailyRepeatsCount(ownerId, now, Enumerable.Empty<string>(), cancellationToken);
 
             return repeats;
         }

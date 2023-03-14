@@ -3,47 +3,42 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
-using Application.Services;
 using Lessons.Domain.Performance;
 using MassTransit;
+using MediatR;
 
-namespace Lessons.Application.Commands;
-
-public class RegisterAnswer
+namespace Lessons.Application.Commands
 {
-    internal class CommandHandler : RequestHandlerBase<Command, Resposne>
+    public abstract class RegisterAnswer
     {
-        private readonly IPerformanceRepository _repository;
-        private readonly IPublishEndpoint _publishEndpoint;
-        private readonly IHashIdsService _hash;
-
-
-        public CommandHandler(IPerformanceRepository repository, IPublishEndpoint publishEndpoint, IHashIdsService hash)
+        internal class CommandHandler : RequestHandlerBase<Command, Unit>
         {
-            _repository = repository;
-            _publishEndpoint = publishEndpoint;
-            _hash = hash;
+            private readonly IPerformanceRepository _repository;
+            private readonly IPublishEndpoint _publishEndpoint;
+
+
+            public CommandHandler(IPerformanceRepository repository, IPublishEndpoint publishEndpoint)
+            {
+                _repository = repository;
+                _publishEndpoint = publishEndpoint;
+            }
+
+            public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
+                if (performance is null)
+                {
+                    return ResponseBase<Unit>.CreateError("Performance not found");
+                }
+            
+                performance.RegisterAnswer(request.CardId, request.SideType, request.Result);
+                await _repository.Update(performance);
+                await _publishEndpoint.Publish(performance.Events.First(), cancellationToken);
+
+                return ResponseBase<Unit>.Create(Unit.Value);
+            }
         }
 
-        public override async Task<ResponseBase<Resposne>> Handle(Command request, CancellationToken cancellationToken)
-        {
-            var performance = await _repository.GetByUserId(request.UserId, cancellationToken);
-
-            performance.RegisterAnswer(_hash.GetLongId(request.SideId), request.Result);
-            await _repository.Update(performance);
-            await _publishEndpoint.Publish(performance.Events.First(), cancellationToken);
-
-            return ResponseBase<Resposne>.Create(new Resposne());
-        }
+        public record Command(Guid UserId, long CardId, int SideType, int Result) : IRequest<ResponseBase<Unit>>;
     }
-
-    public class Command : RequestBase<Resposne>
-    {
-        public DateTime StartLessonDate { get; set; } // usually it will be the latest, always??
-        public Guid UserId { get; set; }
-        public string SideId { get; set; }
-        public int Result { get; set; }
-    }
-
-    public class Resposne { }
 }

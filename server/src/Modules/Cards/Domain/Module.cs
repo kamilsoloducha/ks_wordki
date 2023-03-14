@@ -2,13 +2,14 @@ using Cards.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Cards.Domain;
-
-public static class Module
+namespace Cards.Domain
 {
-    public static IServiceCollection AddCardDomainModule(this IServiceCollection services)
+    public static class Module
     {
-        services.AddScoped<INextRepeatCalculator, StandartCalculator>();
-        return services;
+        public static IServiceCollection AddCardDomainModule(this IServiceCollection services)
+        {
+            services.AddScoped<INextRepeatCalculator, StandartCalculator>();
+            return services;
+        }
     }
 }

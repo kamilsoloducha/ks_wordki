@@ -2,7 +2,7 @@ import "./NewCardsSettings.scss";
 import * as act from "store/lesson/reducer";
 import { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSettings } from "store/lesson/selectors";
+import { selectLanguages, selectSettings } from "store/lesson/selectors";
 import { Group } from "pages/lessonSettings/models/group";
 import { LessonTypeSelector } from "../lessonTypeSelector/LessonTypeSelector";
 import { LanguageSelector } from "../languageSelector/LanguageSelector";
@@ -12,6 +12,7 @@ import { GroupSelector } from "../groupSelector/GroupSelector";
 
 export default function NewCardsSettings(): ReactElement {
   const dispatch = useDispatch();
+  const languages = useSelector(selectLanguages);
   const settings = useSelector(selectSettings);
   const groups = filterGroups(settings.groups, settings.languages);
 
@@ -23,6 +24,7 @@ export default function NewCardsSettings(): ReactElement {
     <>
       <div className="setting-item">
         <LanguageSelector
+          languages={languages}
           selected={settings.languages}
           onSelectedChanged={(value) => dispatch(act.setSettingsLanguage({ languages: value }))}
         />
@@ -51,14 +53,10 @@ export default function NewCardsSettings(): ReactElement {
   );
 }
 
-function filterGroups(groups: Group[], languages: number[]): Group[] {
-  if (languages.includes(1)) {
-    return groups.filter((x) => x.backCount > 0);
-  }
-  if (languages.includes(2)) {
-    return groups.filter((x) => x.frontCount > 0);
-  }
-  return groups;
+function filterGroups(groups: Group[], languages: string[]): Group[] {
+  return languages.length > 0
+    ? groups.filter((group) => languages.includes(group.front) || languages.includes(group.back))
+    : groups;
 }
 
 function getAllCount(settings: LessonSettings): number {
@@ -73,14 +71,8 @@ function getAllCount(settings: LessonSettings): number {
   if (settings.languages.length === 0) {
     count += selectedGroup.backCount;
     count += selectedGroup.frontCount;
+    return count;
   }
-  if (settings.languages.includes(1)) {
-    const increase = selectedGroup.front === 1 ? selectedGroup.frontCount : selectedGroup.backCount;
-    count += increase;
-  }
-  if (settings.languages.includes(2)) {
-    const increase = selectedGroup.front === 2 ? selectedGroup.frontCount : selectedGroup.backCount;
-    count += increase;
-  }
+
   return count;
 }

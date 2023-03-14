@@ -1,20 +1,21 @@
 using Domain;
 
-namespace Cards.Domain.ValueObjects;
-
-public readonly struct Language
+namespace Cards.Domain.ValueObjects
 {
-    public int Id { get; }
-
-    private Language(int id)
+    public class Language
     {
-        Id = id;
-    }
+        public int Id { get; }
 
-    public static Language Create(int id)
-    {
-        if (id < 0) throw new BuissnessArgumentException(nameof(id), id);
+        private Language(int id)
+        {
+            Id = id;
+        }
 
-        return new Language(id);
+        public static Language Create(int id)
+        {
+            if (id < 0) throw new BuissnessArgumentException(nameof(id), id);
+
+            return new Language(id);
+        }
     }
 }

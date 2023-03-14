@@ -1,24 +1,28 @@
 using Cards.Domain.OwnerAggregate;
-using Cards.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cards.Infrastructure.DataAccess.Configurations;
-
-class CardEntityConfiguration : IEntityTypeConfiguration<Card>
+namespace Cards.Infrastructure.DataAccess.Configurations
 {
-    public void Configure(EntityTypeBuilder<Card> builder)
+    internal class CardEntityConfiguration : IEntityTypeConfiguration<Card>
     {
-        builder.ToTable("cards");
+        public void Configure(EntityTypeBuilder<Card> builder)
+        {
+            builder.ToTable("Cards");
 
-        builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Id);
+            builder.HasIndex(x => x.Id);
+        
+            builder.HasOne(x => x.Front).WithMany().HasForeignKey("FrontId");
+            builder.Navigation(x => x.Front).AutoInclude();
+        
+            builder.HasOne(x => x.Back).WithMany().HasForeignKey("BackId");
+            builder.Navigation(x => x.Back).AutoInclude();
 
-        builder.Property(x => x.Id).HasConversion(
-            x => x.Value,
-            x => CardId.Restore(x)
-        );
-
-        builder.HasOne(x => x.Front).WithMany().HasForeignKey(x => x.FrontId);
-        builder.HasOne(x => x.Back).WithMany().HasForeignKey(x => x.BackId);
+            builder.Navigation(x => x.Details).AutoInclude();
+        
+            builder.Ignore(x => x.FrontDetails);
+            builder.Ignore(x => x.BackDetails);
+        }
     }
 }

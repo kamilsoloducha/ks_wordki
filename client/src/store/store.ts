@@ -49,6 +49,7 @@ sagaMiddleware.run(groups.getGroupsSummaryEffect);
 sagaMiddleware.run(groups.addGroupEffect);
 sagaMiddleware.run(groups.updateGroupEffect);
 
+sagaMiddleware.run(lesson.getLanguagesEffect);
 sagaMiddleware.run(lesson.getCardsEffect);
 sagaMiddleware.run(lesson.correctEffect);
 sagaMiddleware.run(lesson.wrongEffect);

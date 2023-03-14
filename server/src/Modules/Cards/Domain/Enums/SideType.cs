@@ -1,8 +1,9 @@
-namespace Cards.Domain.Enums;
-
-public enum SideType
+namespace Cards.Domain.Enums
 {
-    None,
-    Front,
-    Back
+    public enum SideType
+    {
+        None,
+        Front,
+        Back
+    }
 }

@@ -3,26 +3,24 @@ using Cards.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cards.Infrastructure.DataAccess.Configurations;
-
-class OwnerEntityConfiguration : IEntityTypeConfiguration<Owner>
+namespace Cards.Infrastructure.DataAccess.Configurations
 {
-    public void Configure(EntityTypeBuilder<Owner> builder)
+    internal class OwnerEntityConfiguration : IEntityTypeConfiguration<Owner>
     {
-        builder.ToTable("owners");
+        public void Configure(EntityTypeBuilder<Owner> builder)
+        {
+            builder.ToTable("Owners");
 
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasConversion(
-            x => x.Value,
-            x => OwnerId.Restore(x)
-        );
+            builder.HasKey(x => x.Id);
+            builder.HasIndex(x => x.Id);
 
-        builder.HasMany(x => x.Groups).WithOne(x => x.Owner).HasForeignKey(x => x.OwnerId);
-        builder.Navigation(x => x.Groups).Metadata.SetField("_groups");
-        builder.Navigation(x => x.Groups).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(x => x.UserId)
+                .HasConversion(
+                    x => x.Value,
+                    x => new UserId(x)
+                );
 
-        builder.HasMany(x => x.Details).WithOne(x => x.Owner).HasForeignKey(x => x.OwnerId);
-        builder.Navigation(x => x.Details).Metadata.SetField("_details");
-        builder.Navigation(x => x.Details).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.HasMany(x => x.Groups).WithOne(x => x.Owner);
+        }
     }
 }

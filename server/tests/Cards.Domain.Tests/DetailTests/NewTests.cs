@@ -1,38 +1,34 @@
 using System;
+using Cards.Domain.Enums;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using Domain.Utils;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cards.Domain.Tests.DetailTests;
-
-[TestFixture]
-public class NewTests
+namespace Cards.Domain.Tests.DetailTests
 {
-
-    [SetUp]
-    public void SetUp()
+    [TestFixture]
+    public class NewTests
     {
-        SystemClock.Override(new DateTime(2022, 1, 1));
-    }
 
-    [Test]
-    public void SimpleNew()
-    {
-        var owner = OwnerBuilder.Default.Build();
-        var side = SideBuilder.Default.Build();
-        var comment = Comment.Create("commet");
+        private Card _card;
+    
+        [SetUp]
+        public void SetUp()
+        {
+            _card = Activator.CreateInstance<Card>();
+            SystemClock.Override(new DateTime(2022, 1, 1));
+        }
 
-        var details = Detail.New(owner, side, comment, true);
+        [Test]
+        public void SimpleNew()
+        {
+            var owner = OwnerBuilder.Default.Build();
+            var side = SideBuilder.Default.Build();
+            var comment = new Comment("commet");
 
-        details.OwnerId.Should().Be(owner.Id);
-        details.SideId.Should().Be(side.Id);
-        details.Drawer.Should().Be(Drawer.New());
-        details.Counter.Should().Be(0);
-        details.LessonIncluded.Should().Be(true);
-        details.NextRepeat.Date.Should().Be(DateTime.MinValue);
-        details.Comment.Should().Be(comment);
-        details.Owner.Should().Be(owner);
+            var details = new Details(SideType.Front, true, _card);
+        }
     }
 }

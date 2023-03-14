@@ -21,3 +21,12 @@ export async function registerAnswer(
     return e;
   }
 }
+
+export async function getLanguages(): Promise<string[]> {
+  try {
+    var response = await http.get<string[]>("/groups/languages");
+    return response.data;
+  } catch (e: any) {
+    return e;
+  }
+}

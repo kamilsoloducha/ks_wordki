@@ -3,39 +3,38 @@ using Cards.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cards.Infrastructure.DataAccess.Configurations;
-
-class DetailEntityConfiguration : IEntityTypeConfiguration<Detail>
+namespace Cards.Infrastructure.DataAccess.Configurations
 {
-    public void Configure(EntityTypeBuilder<Detail> builder)
+    internal class DetailsEntityConfiguration : IEntityTypeConfiguration<Details>
     {
-        builder.ToTable("details");
+        public void Configure(EntityTypeBuilder<Details> builder)
+        {
+            builder.ToTable("Details");
 
-        builder.HasKey(x => x.Id);
+            builder.HasKey("CardId", "SideType");
+            builder.HasIndex("CardId", "SideType");
+        
+            builder.Property(x => x.SideType);
+        
+            builder.Property(x => x.Drawer)
+                .HasColumnType("SMALLINT")
+                .HasConversion(
+                    x => x.Correct,
+                    x => new Drawer(x))
+                .IsRequired();
 
-        builder.Property(x => x.SideId).HasConversion(
-            x => x.Value,
-            x => SideId.Restore(x)
-        );
+            builder.Property(x => x.Counter)
+                .HasColumnType("SMALLINT")
+                .HasConversion(
+                    x => x.Value,
+                    x => new Counter(x))
+                .IsRequired();
 
-        builder.Property(x => x.OwnerId).HasConversion(
-            x => x.Value,
-            x => OwnerId.Restore(x)
-        );
+            builder.Property(x => x.IsQuestion);
+            builder.Property(x => x.NextRepeat);
 
-        builder.Property(x => x.Drawer).HasConversion(
-            x => x.CorrectRepeat,
-            x => Drawer.Create(x)
-        );
-
-        builder.Property(x => x.NextRepeat).HasConversion(
-            x => x.Date,
-            x => NextRepeatMarker.Restore(x)
-        );
-
-        builder.Property(x => x.Comment).HasConversion(
-            x => x.Text,
-            x => Comment.Create(x)
-        );
+            builder.HasOne(x => x.Card).WithMany(x => x.Details);
+            builder.Navigation(x => x.Card).IsRequired();
+        }
     }
 }

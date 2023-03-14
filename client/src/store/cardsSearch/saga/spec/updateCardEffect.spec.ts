@@ -32,9 +32,6 @@ describe("updateCardEffect", () => {
     });
     const userId = "userId";
     const request: UpdateCardRequest = {
-      userId: userId,
-      groupId: action.payload.card.groupId,
-      cardId: action.payload.card.id,
       front: {
         value: action.payload.card.front.value,
         example: action.payload.card.front.example,
@@ -47,6 +44,7 @@ describe("updateCardEffect", () => {
         isUsed: action.payload.card.back.isUsed,
         isTicked: action.payload.card.back.isTicked,
       },
+      comment: "",
     };
     expect(saga.next().value).toStrictEqual(take("cardsSerach/updateCard"));
     expect(saga.next(action).value).toStrictEqual(select(selectUserId));
