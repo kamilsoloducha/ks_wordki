@@ -1,18 +1,17 @@
 using NUnit.Framework;
 
-namespace Cards.Domain.Tests.DetailTests
+namespace Cards.Domain.Tests.DetailTests;
+
+[TestFixture]
+public class TickTests
 {
-    [TestFixture]
-    public class TickTests
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void Tick(bool initialIsTicked)
     {
+        var details = DetailsBuilder.Default.Build();
+        details.SetProperty(nameof(details.IsTicked), initialIsTicked);
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void Tick(bool initialIsTicked)
-        {
-            var details = DetailsBuilder.Default.Build();
-            details.SetProperty(nameof(details.IsTicked), initialIsTicked);
-
-        }
     }
 }

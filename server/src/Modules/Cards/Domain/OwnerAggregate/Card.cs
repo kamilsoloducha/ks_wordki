@@ -71,8 +71,8 @@ namespace Cards.Domain.OwnerAggregate
                 Back = new Side(command.Back.Label, command.Back.Example);
             }
 
-            UpdateDetails(FrontDetails, command.Front);
-            UpdateDetails(BackDetails, command.Back);
+            UpdateDetails(FrontDetails, command.Front, command.IsTicked);
+            UpdateDetails(BackDetails, command.Back, command.IsTicked);
         }
 
         public void Tick() => _details.ForEach(x => x.IsTicked = true);
@@ -95,12 +95,13 @@ namespace Cards.Domain.OwnerAggregate
             }
         }
 
-        private bool ShouldBeUpdated(Side side, Commands.Side newSide) =>
+        private static bool ShouldBeUpdated(Side side, Commands.Side newSide) =>
             side.Label != newSide.Label || side.Example != newSide.Example;
 
-        private void UpdateDetails(Details details, Commands.Side newSide)
+        private static void UpdateDetails(Details details, Commands.Side newSide, bool isTicked)
         {
             details.SetQuestionable(newSide.UseAsQuestion);
+            details.IsTicked = isTicked;
         }
     }
 }

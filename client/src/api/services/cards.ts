@@ -150,9 +150,9 @@ export async function getCards(groupId: string): Promise<CardSummary[] | any> {
   }
 }
 
-export async function tickCard(request: commands.TickCardRequest): Promise<ApiResponse<any>> {
+export async function tickCard(cardId: string): Promise<ApiResponse<any>> {
   try {
-    await http.put<any>("/cards/tick", request);
+    await http.put<any>(`/cards/tick/${cardId}`);
     return {
       isCorrect: true,
     } as ApiResponse<any>;

@@ -1,7 +1,6 @@
-namespace Cards.Domain.Tests.StandardCalculatorTests.Context
+namespace Cards.Domain.Tests.StandardCalculatorTests.Context;
+
+public abstract class Accepted : CalcuateContext
 {
-    public abstract class Accepted : CalcuateContext
-    {
-        public override int GivenResult => 0;
-    }
+    public override int GivenResult => 0;
 }

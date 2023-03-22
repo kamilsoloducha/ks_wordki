@@ -66,7 +66,6 @@ CREATE INDEX "IX_Owners_Id" ON cards."Owners" ("Id");
 CREATE INDEX "IX_Sides_Id" ON cards."Sides" ("Id");
 
 
-﻿
 CREATE SCHEMA IF NOT EXISTS lessons;
 
 CREATE TABLE lessons."Performances" (
@@ -86,7 +85,7 @@ CREATE TABLE lessons."Lessons" (
 );
 
 CREATE INDEX "IX_Lessons_PerformenceId" ON lessons."Lessons" ("PerformenceId");
-﻿CREATE SCHEMA IF NOT EXISTS users;
+CREATE SCHEMA IF NOT EXISTS users;
 
 CREATE TABLE users."Users" (
     "Id" uuid NOT NULL,
@@ -110,7 +109,9 @@ CREATE TABLE users."Roles" (
     CONSTRAINT "FK_Roles_Users_UserId" FOREIGN KEY ("UserId") REFERENCES users."Users" ("Id")
 );
 
-CREATE INDEX "IX_Roles_UserId" ON users."Roles" ("UserId");CREATE OR REPLACE VIEW cards.Repeats AS
+CREATE INDEX "IX_Roles_UserId" ON users."Roles" ("UserId");
+
+CREATE OR REPLACE VIEW cards.Repeats AS
 SELECT 
 random() AS "Random",
 d."SideType" as "SideType",

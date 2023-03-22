@@ -31,7 +31,7 @@ namespace Cards.Domain.OwnerAggregate
             Card = card;
         }
 
-        public void AnswerCorrect(INextRepeatCalculator nextRepeatCalculator)
+        internal void AnswerCorrect(INextRepeatCalculator nextRepeatCalculator)
         {
             IsQuestion = true;
             var increase = GetIncrease();
@@ -40,7 +40,7 @@ namespace Cards.Domain.OwnerAggregate
             NextRepeat = nextRepeatCalculator.Calculate(this, 1);
         }
 
-        public void AnswerWrong()
+        internal void AnswerWrong()
         {
             IsQuestion = true;
             Counter = Counter.Increase();
@@ -48,7 +48,7 @@ namespace Cards.Domain.OwnerAggregate
             NextRepeat = SystemClock.Now.Date.AddDays(1);
         }
 
-        public void AnswerAccepted()
+        internal void AnswerAccepted()
         {
             IsQuestion = true;
             Counter = Counter.Increase();

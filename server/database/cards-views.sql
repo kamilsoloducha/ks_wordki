@@ -37,3 +37,17 @@ join cards."Cards" c ON c."GroupId" = g."Id"
 join cards."Details" f ON f."CardId" = c."Id" and f."SideType" = 1
 join cards."Details" b ON b."CardId" = c."Id" and b."SideType" = 2
 group by g."Id", o."UserId";
+
+
+
+CREATE OR REPLACE VIEW cards.repeatscountsummary
+ AS
+ SELECT count(0) AS "Count",
+    date_trunc('day'::text, d."NextRepeat") AS "Date",
+    o."UserId" AS "OwnerId"
+   FROM cards."Details" d
+     JOIN cards."Cards" ON "Cards"."Id" = d."CardId"
+     JOIN cards."Groups" ON "Groups"."Id" = "Cards"."GroupId"
+     JOIN cards."Owners" o ON o."Id" = "Groups"."OwnerId"
+  GROUP BY "Date", o."UserId"
+  ORDER BY "Date";

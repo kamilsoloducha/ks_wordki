@@ -4,13 +4,13 @@ import { call, select, take } from "redux-saga/effects";
 import { selectUserId } from "store/user/selectors";
 import { selectCurrectRepeat } from "store/lesson/selectors";
 import { Repeat } from "pages/lesson/models/repeat";
-import { tickCardEffect } from "../tickCard";
+import { tickCardWorker } from "../tickCard";
 
 describe("tickCardEffect", () => {
   let saga: any;
 
   beforeEach(() => {
-    saga = tickCardEffect();
+    saga = tickCardWorker();
   });
 
   afterEach(() => {
@@ -30,10 +30,9 @@ describe("tickCardEffect", () => {
       questionLanguage: "",
       answerLanguage: "",
     };
-    const request: api.TickCardRequest = { cardId: "cardId" };
     expect(saga.next().value).toStrictEqual(take("lesson/tickCard"));
     expect(saga.next().value).toStrictEqual(select(selectUserId));
     expect(saga.next(userId).value).toStrictEqual(select(selectCurrectRepeat));
-    expect(saga.next(repeat).value).toStrictEqual(call(api.tickCard, request));
+    expect(saga.next(repeat).value).toStrictEqual(call(api.tickCard, "cardId"));
   });
 });
