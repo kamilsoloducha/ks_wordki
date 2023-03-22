@@ -5,7 +5,7 @@ export const API_PATH = process.env["REACT_APP_API_HOST"];
 // if (API_PATH === undefined) {
 //   console.error("REACT_APP_API_HOST is not set");
 // }
-
+console.log(API_PATH);
 const instance = axios.create({
   baseURL: API_PATH,
   headers: {
