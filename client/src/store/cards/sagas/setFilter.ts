@@ -5,8 +5,6 @@ import { CardSummary, SideSummary } from "pages/cards/models";
 import { SagaIterator } from "redux-saga";
 import { setFilteredCards } from "../reducer";
 
-
-
 export function* filterCards(): SagaIterator {
   const filterState: FilterModel = yield select(selectFilterState);
   let cards: CardSummary[] = yield select(selectCards);
@@ -29,6 +27,7 @@ export function* filterCards(): SagaIterator {
   if (filterState.text.length > 2) {
     cards = filterByText(String(filterState.text), cards);
   }
+  console.log(cards);
   yield put(setFilteredCards({ cards: cards }));
 }
 

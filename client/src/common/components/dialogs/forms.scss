@@ -33,11 +33,14 @@
         }
 
         input[type="checkbox"] {
-            -ms-transform: scale(1.5);
-            -moz-transform: scale(1.5);
-            -webkit-transform: scale(1.5);
-            -o-transform: scale(1.5);
-            transform: scale(1.5);
+            -ms-transform: scale(2);
+            -moz-transform: scale(2);
+            -webkit-transform: scale(2);
+            -o-transform: scale(2);
+            transform: scale(2);
+            margin-top: 1rem;
+            width: fit-content;
+            align-self: center;
         }
 
         .dialog-input-icon {

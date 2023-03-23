@@ -1,17 +1,20 @@
-import { call, put, select } from "@redux-saga/core/effects";
+import { call, put } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
 import { takeEvery } from "redux-saga/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { UpdateCard } from "../action-payload";
-import { updateCardSuccess } from "../reducer";
+import { applyFilters, updateCardSuccess } from "../reducer";
 
 export function* updateCardWorker(action: PayloadAction<UpdateCard>): any {
   const response: {} | boolean = yield call(api.updateCard, action.payload.card);
-  yield put(
-    response !== false ? updateCardSuccess({ card: action.payload.card }) : requestFailed({} as any)
-  );
+  if (response !== false) {
+    yield put(updateCardSuccess({ card: action.payload.card }));
+    yield put(applyFilters());
+  } else {
+    yield put(requestFailed({} as any));
+  }
 }
 
 export function* updateCardEffect(): SagaIterator {

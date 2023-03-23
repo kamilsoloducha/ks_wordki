@@ -37,8 +37,8 @@ export default function GroupDetailsPage(): ReactElement {
   const [page, setPage] = useState(1);
   const [actionsVisible, setActionsVisible] = useState(false);
   const [editedGroup, setEditedGroup] = useState<any>(null);
-  const { groupId }  = useParams<{ groupId: string }>();
-  
+  const { groupId } = useParams<{ groupId: string }>();
+
   useTitle(`Wordki - ${groupDetails.name}`);
 
   useEffectOnce(() => {
@@ -82,7 +82,7 @@ export default function GroupDetailsPage(): ReactElement {
   };
 
   const onDelete = (item: FormModel) => {
-    dispatch(actions.deleteCard({cardId:item.cardId}));
+    dispatch(actions.deleteCard({ cardId: item.cardId }));
     setFormItem(null);
   };
 
@@ -93,7 +93,7 @@ export default function GroupDetailsPage(): ReactElement {
 
   const onClickSetFilter = (filter: CardsFilter) => {
     if (filter === 1) {
-      dispatch(actions.resetFilter());
+      dispatch(actions.resetFilters());
     } else if (filter === 2) {
       dispatch(actions.setFilterLearning({ isLearning: true }));
     } else if (filter === 3) {
@@ -145,7 +145,7 @@ export default function GroupDetailsPage(): ReactElement {
   };
 
   const onSubmitGroupDialog = (group: any) => {
-    if(group === null){
+    if (group === null) {
       return;
     }
     dispatch(groupActions.updateGroup({ group }));
@@ -254,5 +254,3 @@ function getFormModelFromCardSummary(card: CardSummary): FormModel {
 }
 
 const drawers = [1, 2, 3, 4, 5];
-
-

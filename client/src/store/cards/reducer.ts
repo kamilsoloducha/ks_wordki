@@ -46,7 +46,17 @@ export const cardsSlice = createSlice({
       action: PayloadAction<payloads.UpdateCardSuccess>
     ): void => {
       const index = state.cards.findIndex((item) => item.id === action.payload.card.id);
-      state.cards[index] = action.payload.card;
+      state.cards[index].front.value = action.payload.card.front.value;
+      state.cards[index].front.example = action.payload.card.front.example;
+      state.cards[index].front.isUsed = action.payload.card.front.isUsed;
+      state.cards[index].front.isTicked = action.payload.card.front.isTicked;
+      state.cards[index].front.comment = action.payload.card.front.comment;
+
+      state.cards[index].back.value = action.payload.card.back.value;
+      state.cards[index].back.example = action.payload.card.back.example;
+      state.cards[index].back.isUsed = action.payload.card.back.isUsed;
+      state.cards[index].back.isTicked = action.payload.card.back.isTicked;
+      state.cards[index].back.comment = action.payload.card.back.comment;
       state.selectedItem = null;
     },
     setFilterDrawer: (state: CardsState, action: PayloadAction<payloads.SetFilterDrawer>): void => {
@@ -73,7 +83,7 @@ export const cardsSlice = createSlice({
     ): void => {
       state.filteredCards = action.payload.cards;
     },
-    resetFilter: (state: CardsState): void => {
+    resetFilters: (state: CardsState): void => {
       state.filter = initialState.filter;
     },
     applyFilters: (): void => {},
@@ -100,6 +110,6 @@ export const {
   setFilterLearning,
   setFilterText,
   setFilteredCards,
-  resetFilter,
+  resetFilters,
   applyFilters,
 } = cardsSlice.actions;
