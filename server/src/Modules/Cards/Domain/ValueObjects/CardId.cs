@@ -1,37 +1,36 @@
 using Cards.Domain.Services;
 using Domain;
 
-namespace Cards.Domain.ValueObjects
+namespace Cards.Domain.ValueObjects;
+
+public readonly struct CardId
 {
-    public readonly struct CardId
+    public long Value { get; }
+
+    private CardId(long id)
     {
-        public long Value { get; }
-
-        private CardId(long id)
-        {
-            Value = id;
-        }
-
-        private static CardId New() => new CardId(0);
-        internal static CardId New(ISequenceGenerator sequenceGenerator)
-        {
-            var value = sequenceGenerator.Generate<CardId>();
-            return Restore(value);
-        }
-        public static CardId Restore(long id)
-        {
-            if (id <= 0) throw new BuissnessArgumentException(nameof(id), id);
-
-            return new CardId(id);
-        }
-
-        public static bool operator ==(CardId id1, CardId id2) => id1.Value == id2.Value;
-        public static bool operator !=(CardId id1, CardId id2) => id1.Value != id2.Value;
-
-        public override bool Equals(object obj)
-            => obj is CardId id ? id == this : false;
-
-        public override int GetHashCode()
-            => Value.GetHashCode();
+        Value = id;
     }
+
+    private static CardId New() => new CardId(0);
+    internal static CardId New(ISequenceGenerator sequenceGenerator)
+    {
+        var value = sequenceGenerator.Generate<CardId>();
+        return Restore(value);
+    }
+    public static CardId Restore(long id)
+    {
+        if (id <= 0) throw new BuissnessArgumentException(nameof(id), id);
+
+        return new CardId(id);
+    }
+
+    public static bool operator ==(CardId id1, CardId id2) => id1.Value == id2.Value;
+    public static bool operator !=(CardId id1, CardId id2) => id1.Value != id2.Value;
+
+    public override bool Equals(object obj)
+        => obj is CardId id ? id == this : false;
+
+    public override int GetHashCode()
+        => Value.GetHashCode();
 }

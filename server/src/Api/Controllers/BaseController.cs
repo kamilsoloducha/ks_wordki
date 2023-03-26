@@ -6,27 +6,26 @@ using Application.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+
+public abstract class BaseController : ControllerBase
 {
-    public abstract class BaseController : ControllerBase
+    protected readonly IMediator Mediator;
+
+    protected BaseController(IMediator mediator)
     {
-        protected readonly IMediator Mediator;
+        Mediator = mediator;
+    }
 
-        protected BaseController(IMediator mediator)
-        {
-            Mediator = mediator;
-        }
+    protected async Task<IActionResult> HandleRequest<TResponse>(RequestBase<TResponse> request, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(request, cancellationToken);
+        return result.IsCorrect ? Ok(result) : BadRequest(result);
+    }
 
-        protected async Task<IActionResult> HandleRequest<TResponse>(RequestBase<TResponse> request, CancellationToken cancellationToken)
-        {
-            var result = await Mediator.Send(request, cancellationToken);
-            return result.IsCorrect ? Ok(result) : BadRequest(result);
-        }
-
-        protected bool TryGetUserIdFromToken(out Guid guid)
-        {
-            var tokenValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Guid.TryParse(tokenValue, out guid);
-        }
+    protected bool TryGetUserIdFromToken(out Guid guid)
+    {
+        var tokenValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return Guid.TryParse(tokenValue, out guid);
     }
 }

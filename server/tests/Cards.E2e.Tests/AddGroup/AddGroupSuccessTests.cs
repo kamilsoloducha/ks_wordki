@@ -8,48 +8,47 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Cards.E2e.Tests.AddGroup
+namespace Cards.E2e.Tests.AddGroup;
+
+[TestFixture(typeof(SimpleGroup))]
+public class AddGroupSuccessTests<TContext> : CardsTestBase where TContext : AddGroupSuccessContext, new()
 {
-    [TestFixture(typeof(SimpleGroup))]
-    public class AddGroupSuccessTests<TContext> : CardsTestBase where TContext : AddGroupSuccessContext, new()
+    private readonly TContext _context = new();
+
+    [SetUp]
+    public async Task Setup()
     {
-        private readonly TContext _context = new();
-
-        [SetUp]
-        public async Task Setup()
-        {
-            await ClearCardsSchema();
+        await ClearCardsSchema();
         
-            await using var dbContext = new CardsContext();
-            await dbContext.Owners.AddAsync(Owner);
-            await dbContext.SaveChangesAsync();
-        }
+        await using var dbContext = new CardsContext();
+        await dbContext.Owners.AddAsync(Owner);
+        await dbContext.SaveChangesAsync();
+    }
 
-        [Test]
-        public async Task Test()
+    [Test]
+    public async Task Test()
+    {
+        var request = JsonConvert.SerializeObject(_context.GivenRequest);
+
+        Request = new HttpRequestMessage(HttpMethod.Post, "groups/add")
         {
-            var request = JsonConvert.SerializeObject(_context.GivenRequest);
+            Content = new StringContent(request, Encoding.UTF8, "application/json"),
+        };
 
-            Request = new HttpRequestMessage(HttpMethod.Post, "groups/add")
-            {
-                Content = new StringContent(request, Encoding.UTF8, "application/json"),
-            };
+        await SendRequest();
 
-            await SendRequest();
+        var content = await Response.Content.ReadAsStringAsync();
+        Response.Should().BeSuccessful(Response.StatusCode.ToString());
+        var response = JsonConvert.DeserializeObject<string>(content);
+        var groupId = new TestHashIdsService().GetLongId(response);
 
-            var content = await Response.Content.ReadAsStringAsync();
-            Response.Should().BeSuccessful(Response.StatusCode.ToString());
-            var response = JsonConvert.DeserializeObject<string>(content);
-            var groupId = new TestHashIdsService().GetLongId(response);
+        groupId.Should().BeGreaterThan(0);
 
-            groupId.Should().BeGreaterThan(0);
-
-            await using var dbContext = new CardsContext();
-            var group = await dbContext.Groups.SingleOrDefaultAsync(x => x.Id == groupId);
-            group.OwnerId.Should().Be(Owner.Id);
-            group.Name.Should().Be(_context.ExpectedGroup.Name);
-            group.Front.Should().Be(_context.ExpectedGroup.Front);
-            group.Back.Should().Be(_context.ExpectedGroup.Back);
-        }
+        await using var dbContext = new CardsContext();
+        var group = await dbContext.Groups.SingleOrDefaultAsync(x => x.Id == groupId);
+        group.OwnerId.Should().Be(Owner.Id);
+        group.Name.Should().Be(_context.ExpectedGroup.Name);
+        group.Front.Should().Be(_context.ExpectedGroup.Front);
+        group.Back.Should().Be(_context.ExpectedGroup.Back);
     }
 }

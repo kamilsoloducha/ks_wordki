@@ -1,7 +1,6 @@
-namespace Infrastructure.Authentication
+namespace Infrastructure.Authentication;
+
+public class JwtConfiguration
 {
-    public class JwtConfiguration
-    {
-        public string Secret { get; set; }
-    }
+    public string Secret { get; set; }
 }

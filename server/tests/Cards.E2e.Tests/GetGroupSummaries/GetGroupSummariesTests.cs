@@ -10,42 +10,41 @@ using FluentAssertions;
 using FluentAssertions.Equivalency;
 using NUnit.Framework;
 
-namespace Cards.E2e.Tests.GetGroupSummaries
+namespace Cards.E2e.Tests.GetGroupSummaries;
+
+[TestFixture(typeof(NewUser))]
+[TestFixture(typeof(SingleEmptyGroup))]
+[TestFixture(typeof(SingleGroup))]
+[TestFixture(typeof(MultipleGroups))]
+internal class GetGroupSummariesTests<TContext> : CardsTestBase where TContext : GetGroupsSummariesContext, new()
 {
-    [TestFixture(typeof(NewUser))]
-    [TestFixture(typeof(SingleEmptyGroup))]
-    [TestFixture(typeof(SingleGroup))]
-    [TestFixture(typeof(MultipleGroups))]
-    internal class GetGroupSummariesTests<TContext> : CardsTestBase where TContext : GetGroupsSummariesContext, new()
+
+    private readonly TContext _context = new();
+
+    [SetUp]
+    public async Task Setup()
     {
+        await ClearCardsSchema();
 
-        private readonly TContext _context = new();
+        await using var dbContext = new CardsContext();
 
-        [SetUp]
-        public async Task Setup()
-        {
-            await ClearCardsSchema();
-
-            await using var dbContext = new CardsContext();
-
-            await dbContext.Owners.AddAsync(_context.GivenOwner);
-            await dbContext.SaveChangesAsync();
-        }
-
-        [Test]
-        public async Task Test()
-        {
-            Request = new HttpRequestMessage(HttpMethod.Get, "groups/summaries");
-
-            await SendRequest();
-
-            Response.Should().BeSuccessful(Response.StatusCode.ToString());
-
-            var response = await Response.Content.ReadFromJsonAsync<IEnumerable<GroupSummaryDto>>();
-
-            response.Should().BeEquivalentTo(_context.ExpectedResponse, GroupSummaryDtoAssertion);
-        }
-    
-    
+        await dbContext.Owners.AddAsync(_context.GivenOwner);
+        await dbContext.SaveChangesAsync();
     }
+
+    [Test]
+    public async Task Test()
+    {
+        Request = new HttpRequestMessage(HttpMethod.Get, "groups/summaries");
+
+        await SendRequest();
+
+        Response.Should().BeSuccessful(Response.StatusCode.ToString());
+
+        var response = await Response.Content.ReadFromJsonAsync<IEnumerable<GroupSummaryDto>>();
+
+        response.Should().BeEquivalentTo(_context.ExpectedResponse, GroupSummaryDtoAssertion);
+    }
+    
+    
 }

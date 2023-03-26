@@ -1,6 +1,5 @@
-namespace Cards.E2e.Tests.UpdateGroup
+namespace Cards.E2e.Tests.UpdateGroup;
+
+public class UpdateGroupHappyPath : UpdateGroupContext
 {
-    public class UpdateGroupHappyPath : UpdateGroupContext
-    {
-    }
 }

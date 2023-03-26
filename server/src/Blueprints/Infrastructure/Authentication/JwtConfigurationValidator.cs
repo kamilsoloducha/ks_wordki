@@ -1,12 +1,11 @@
 using FluentValidation;
 
-namespace Infrastructure.Authentication
+namespace Infrastructure.Authentication;
+
+internal class JwtConfigurationValidator : AbstractValidator<JwtConfiguration>
 {
-    internal class JwtConfigurationValidator : AbstractValidator<JwtConfiguration>
+    public JwtConfigurationValidator()
     {
-        public JwtConfigurationValidator()
-        {
-            RuleFor(x => x.Secret).NotEmpty();
-        }
+        RuleFor(x => x.Secret).NotEmpty();
     }
 }

@@ -8,5 +8,5 @@
     <ProjectReference Include="../Application/Cards.Application.csproj" />
     <ProjectReference Include="../../../Blueprints/Infrastructure/Infrastructure.csproj" />
   </ItemGroup>
-
+  
 </Project>

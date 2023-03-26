@@ -5,29 +5,28 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace E2e.Tests
+namespace E2e.Tests;
+
+public class E2EWebApplicationFactory : WebApplicationFactory<Program>
 {
-    public class E2EWebApplicationFactory : WebApplicationFactory<Program>
+    private readonly Action<IServiceCollection> _serviceConfig;
+    public Lazy<HttpClient> HttpClient { get; }
+
+    public E2EWebApplicationFactory(Action<IServiceCollection> serviceConfig)
     {
-        private readonly Action<IServiceCollection> _serviceConfig;
-        public Lazy<HttpClient> HttpClient { get; }
+        _serviceConfig = serviceConfig;
+        HttpClient = new Lazy<HttpClient>(CreateClient());
+    }
 
-        public E2EWebApplicationFactory(Action<IServiceCollection> serviceConfig)
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment("Test");
+        builder.ConfigureServices(services =>
         {
-            _serviceConfig = serviceConfig;
-            HttpClient = new Lazy<HttpClient>(CreateClient());
-        }
-
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.UseEnvironment("Test");
-            builder.ConfigureServices(services =>
+            _serviceConfig?.Invoke(services);
+            services.AddMvc(options =>
             {
-                _serviceConfig?.Invoke(services);
-                services.AddMvc(options =>
-                {
-                });
             });
-        }
+        });
     }
 }

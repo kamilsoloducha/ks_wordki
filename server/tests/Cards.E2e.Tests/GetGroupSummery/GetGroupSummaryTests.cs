@@ -7,37 +7,36 @@ using E2e.Model.Tests.Model.Cards;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cards.E2e.Tests.GetGroupSummery
+namespace Cards.E2e.Tests.GetGroupSummery;
+
+[TestFixture(typeof(EmptyGroup))]
+[TestFixture(typeof(SimpleGroup))]
+public class GetGroupSummaryTests<TContext> : CardsTestBase where TContext : GetGroupSummaryContext, new()
 {
-    [TestFixture(typeof(EmptyGroup))]
-    [TestFixture(typeof(SimpleGroup))]
-    public class GetGroupSummaryTests<TContext> : CardsTestBase where TContext : GetGroupSummaryContext, new()
+    private readonly TContext _context = new();
+
+    [SetUp]
+    public async Task Setup()
     {
-        private readonly TContext _context = new();
-
-        [SetUp]
-        public async Task Setup()
-        {
-            await ClearCardsSchema();
+        await ClearCardsSchema();
         
-            await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext();
 
-            await dbContext.Owners.AddAsync(_context.GivenOwner);
-            await dbContext.SaveChangesAsync();
-        }
+        await dbContext.Owners.AddAsync(_context.GivenOwner);
+        await dbContext.SaveChangesAsync();
+    }
 
-        [Test]
-        public async Task Test()
-        {
-            Request = new HttpRequestMessage(HttpMethod.Get, $"groups/summary/{_context.GivenGroup.Id}");
+    [Test]
+    public async Task Test()
+    {
+        Request = new HttpRequestMessage(HttpMethod.Get, $"groups/summary/{_context.GivenGroup.Id}");
 
-            await SendRequest();
+        await SendRequest();
 
-            Response.Should().BeSuccessful(Response.StatusCode.ToString());
+        Response.Should().BeSuccessful(Response.StatusCode.ToString());
 
-            var response = await Response.Content.ReadFromJsonAsync<GroupSummaryDto>();
+        var response = await Response.Content.ReadFromJsonAsync<GroupSummaryDto>();
 
-            response.Should().BeEquivalentTo(_context.ExpectedResponse, GroupSummaryDtoAssertion);
-        }
+        response.Should().BeEquivalentTo(_context.ExpectedResponse, GroupSummaryDtoAssertion);
     }
 }

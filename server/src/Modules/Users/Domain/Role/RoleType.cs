@@ -1,9 +1,8 @@
-namespace Users.Domain.Role
+namespace Users.Domain.Role;
+
+public enum RoleType
 {
-    public enum RoleType
-    {
-        Admin,
-        Student,
-        ChromeExtension,
-    }
+    Admin,
+    Student,
+    ChromeExtension,
 }

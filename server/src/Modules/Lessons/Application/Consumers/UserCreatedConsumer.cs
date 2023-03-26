@@ -4,28 +4,27 @@ using Lessons.Domain.Performance;
 using MassTransit;
 using MassTransit.Definition;
 
-namespace Lessons.Application.Consumers
+namespace Lessons.Application.Consumers;
+
+internal class UserCreatedConsumer : IConsumer<UserCreated>
 {
-    internal class UserCreatedConsumer : IConsumer<UserCreated>
+    private readonly IPerformanceRepository _repository;
+
+    public UserCreatedConsumer(IPerformanceRepository repository)
     {
-        private readonly IPerformanceRepository _repository;
-
-        public UserCreatedConsumer(IPerformanceRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task Consume(ConsumeContext<UserCreated> context)
-        {
-            var userId = context.Message.Id;
-            var newPerformance = Performance.Create(userId);
-
-            await _repository.Add(newPerformance);
-        }
+        _repository = repository;
     }
 
-    internal class UserCreatedConsumerDefinition : ConsumerDefinition<UserCreatedConsumer>
+    public async Task Consume(ConsumeContext<UserCreated> context)
     {
+        var userId = context.Message.Id;
+        var newPerformance = Performance.Create(userId);
 
+        await _repository.Add(newPerformance);
     }
+}
+
+internal class UserCreatedConsumerDefinition : ConsumerDefinition<UserCreatedConsumer>
+{
+
 }

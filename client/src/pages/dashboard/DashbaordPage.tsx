@@ -9,6 +9,7 @@ import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { Forecast } from "./components/forecast/Forecast";
 import { useTitle } from "common";
 import { useEffectOnce } from "common/hooks/useEffectOnce";
+import { getLanguages } from "store/lesson/reducer";
 
 export default function DashboardPage(): ReactElement {
   useTitle("Wordki - Dashboard");
@@ -17,6 +18,7 @@ export default function DashboardPage(): ReactElement {
   const navigate = useNavigate();
   useEffectOnce(() => {
     dispatch(getDashboardSummary());
+    dispatch(getLanguages());
   }, [dispatch]);
 
   if (data.isLoading) {

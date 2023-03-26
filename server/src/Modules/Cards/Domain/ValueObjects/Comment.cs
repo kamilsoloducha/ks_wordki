@@ -1,12 +1,11 @@
-namespace Cards.Domain.ValueObjects
-{
-    public class Comment
-    {
-        public string Text { get; }
+namespace Cards.Domain.ValueObjects;
 
-        public Comment(string text)
-        {
-            Text = text.Trim();
-        }
+public class Comment
+{
+    public string Text { get; }
+
+    public Comment(string text)
+    {
+        Text = text.Trim();
     }
 }

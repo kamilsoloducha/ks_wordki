@@ -22,6 +22,7 @@ import { CardSummary } from "./models";
 import { useTitle } from "common";
 import { GroupDetails } from "./components/groupDetails/GroupDetails";
 import { useEffectOnce } from "common/hooks/useEffectOnce";
+import { selectLanguages } from "store/lesson/selectors";
 
 const pageSize = 30;
 
@@ -32,6 +33,7 @@ export default function GroupDetailsPage(): ReactElement {
   const filterState = useSelector(selectors.selectFilterState);
   const isLoading = useSelector(selectors.selectIsLoading);
   const groupDetails = useSelector(selectors.selectGroupDetails);
+  const cardSides = useSelector(selectLanguages);
   const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([]);
   const [formItem, setFormItem] = useState<FormModel | null>(null);
   const [page, setPage] = useState(1);
@@ -234,7 +236,12 @@ export default function GroupDetailsPage(): ReactElement {
         frontLanguage={Languages[groupDetails.language1]}
         backLanguage={Languages[groupDetails.language2]}
       />
-      <GroupDialog group={editedGroup} onHide={onHideGroupDialog} onSubmit={onSubmitGroupDialog} />
+      <GroupDialog
+        cardSides={cardSides}
+        group={editedGroup}
+        onHide={onHideGroupDialog}
+        onSubmit={onSubmitGroupDialog}
+      />
       <ActionsDialog isVisible={actionsVisible} onHide={onActionsVisible} actions={acts} />
     </div>
   );

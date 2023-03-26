@@ -18,6 +18,8 @@ import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/
 import GroupRow from "./components/groupRow/GroupRow";
 import { GroupSummary } from "./models/groupSummary";
 import { useTitle } from "common";
+import { getLanguages } from "store/lesson/reducer";
+import { selectLanguages } from "store/lesson/selectors";
 
 const pageSize = 30;
 
@@ -30,12 +32,14 @@ export default function GroupsPage(): ReactElement {
   const isLoading = useSelector(selectIsLoading);
   const groups = useSelector(selectGroups);
   const selectedItem = useSelector(selectSelectedItem);
+  const cardSides = useSelector(selectLanguages);
   const dialogItem = !selectedItem
     ? (null as any)
     : ({ id: selectedItem.id, name: selectedItem.name } as GroupDetails);
 
   useEffect(() => {
     dispatch(getGroupsSummary());
+    dispatch(getLanguages());
   }, [dispatch]);
 
   useEffect(() => {
@@ -96,7 +100,7 @@ export default function GroupsPage(): ReactElement {
         </Fragment>
       ))}
       <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
-      <GroupDialog group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
+      <GroupDialog cardSides={cardSides} group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
       {isLoading && <LoadingSpinner />}
     </>
   );

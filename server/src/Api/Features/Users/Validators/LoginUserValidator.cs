@@ -1,15 +1,14 @@
 using FluentValidation;
 using Users.Application.Commands;
 
-namespace Api.Features.Users.Validators
-{
-    internal class LoginUserValidator : AbstractValidator<LoginUser.Command>
-    {
-        public LoginUserValidator()
-        {
-            RuleFor(x => x.UserName).NotEmpty();
+namespace Api.Features.Users.Validators;
 
-            RuleFor(x => x.Password).NotEmpty();
-        }
+internal class LoginUserValidator : AbstractValidator<LoginUser.Command>
+{
+    public LoginUserValidator()
+    {
+        RuleFor(x => x.UserName).NotEmpty();
+
+        RuleFor(x => x.Password).NotEmpty();
     }
 }

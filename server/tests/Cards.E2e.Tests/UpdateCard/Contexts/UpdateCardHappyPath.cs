@@ -1,6 +1,5 @@
-namespace Cards.E2e.Tests.UpdateCard.Contexts
+namespace Cards.E2e.Tests.UpdateCard.Contexts;
+
+public class UpdateCardHappyPath : UpdateCardContext
 {
-    public class UpdateCardHappyPath : UpdateCardContext
-    {
-    }
 }

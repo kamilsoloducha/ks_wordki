@@ -1,7 +1,6 @@
-namespace Users.Application.Services
+namespace Users.Application.Services;
+
+public interface IPasswordManager
 {
-    public interface IPasswordManager
-    {
-        string CreateHashedPassword(string password);
-    }
+    string CreateHashedPassword(string password);
 }

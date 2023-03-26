@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace Api.Configuration
+namespace Api.Configuration;
+
+public static class CorsExtensions
 {
-    public static class CorsExtensions
+    public static void UseCustomCors(this WebApplication app)
     {
-        public static void UseCustomCors(this WebApplication app)
-        {
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-        }
+        app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
     }
 }

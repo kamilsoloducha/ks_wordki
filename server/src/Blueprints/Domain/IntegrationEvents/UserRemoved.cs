@@ -1,9 +1,8 @@
 using System;
 
-namespace Domain.IntegrationEvents
+namespace Domain.IntegrationEvents;
+
+public class UserRemoved
 {
-    public class UserRemoved
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }

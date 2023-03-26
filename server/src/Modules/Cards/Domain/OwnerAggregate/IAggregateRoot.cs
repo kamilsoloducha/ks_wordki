@@ -1,6 +1,5 @@
-namespace Cards.Domain.OwnerAggregate
+namespace Cards.Domain.OwnerAggregate;
+
+public interface IAggregateRoot
 {
-    public interface IAggregateRoot
-    {
-    }
 }

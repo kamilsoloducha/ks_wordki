@@ -1,12 +1,11 @@
 import "./GroupForm.scss";
 import "../forms.scss";
-import Language, { Languages } from "common/models/languages";
 import { useFormik } from "formik";
 import { Dropdown } from "primereact/dropdown";
 import { ReactElement } from "react";
 import GroupDetails from "./groupDetails";
 
-export default function GroupForm({ group, onSubmit }: Model): ReactElement {
+export default function GroupForm({ group, options, onSubmit }: Model): ReactElement {
   const onsubmit = (values: FormModel) => {
     const updated = group ? { ...group } : ({} as GroupDetails);
     updated.name = values.name;
@@ -18,8 +17,8 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
   const formik = useFormik({
     initialValues: {
       name: group?.name ?? "",
-      front: group?.front ?? 0,
-      back: group?.back ?? 0,
+      front: group?.front ?? "",
+      back: group?.back ?? "",
     },
     onSubmit: onsubmit,
   });
@@ -47,10 +46,9 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
         <label className="input-label">Front Language</label>
         <Dropdown
           value={formik.values.front}
-          options={Languages}
+          options={options}
+          editable={true}
           onChange={(e) => formik.setFieldValue("front", e.value)}
-          optionLabel="label"
-          optionValue="type"
           itemTemplate={dropdownItemLayout}
           valueTemplate={dropdownItemLayout}
           placeholder="Select language..."
@@ -60,10 +58,9 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
         <label className="input-label">Back Language</label>
         <Dropdown
           value={formik.values.back}
-          options={Languages}
+          options={options}
+          editable={true}
           onChange={(e) => formik.setFieldValue("back", e.value)}
-          optionLabel="label"
-          optionValue="type"
           itemTemplate={dropdownItemLayout}
           valueTemplate={dropdownItemLayout}
           placeholder="Select language..."
@@ -75,21 +72,19 @@ export default function GroupForm({ group, onSubmit }: Model): ReactElement {
 
 interface FormModel {
   name: string;
-  front: number;
-  back: number;
+  front: string;
+  back: string;
 }
 
 interface Model {
   group: GroupDetails;
+  options: string[];
   onSubmit: (group: GroupDetails) => void;
 }
 
-const dropdownItemLayout = (option: Language, props: any = null) => {
+const dropdownItemLayout = (option: string, props: any = null) => {
   return option ? (
-    <div className="language-options-item">
-      <img className="flag" src={option.icon} width="24px" alt={option.label} />
-      {option.label}
-    </div>
+    <div className="language-options-item">{option}</div>
   ) : (
     <span>{props.placeholder}</span>
   );

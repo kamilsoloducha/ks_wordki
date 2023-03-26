@@ -1,25 +1,24 @@
 using System;
 
-namespace Domain.Utils
+namespace Domain.Utils;
+
+public static class SystemClock
 {
-    public static class SystemClock
+
+    private static bool _isOverriden = false;
+    private static DateTime _overridenValue;
+
+    public static DateTime Now
     {
-
-        private static bool _isOverriden = false;
-        private static DateTime _overridenValue;
-
-        public static DateTime Now
+        get
         {
-            get
-            {
-                return _isOverriden ? _overridenValue : DateTime.UtcNow;
-            }
+            return _isOverriden ? _overridenValue : DateTime.UtcNow;
         }
+    }
 
-        public static void Override(DateTime value)
-        {
-            _isOverriden = true;
-            _overridenValue = value;
-        }
+    public static void Override(DateTime value)
+    {
+        _isOverriden = true;
+        _overridenValue = value;
     }
 }

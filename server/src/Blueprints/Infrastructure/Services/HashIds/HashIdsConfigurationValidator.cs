@@ -1,13 +1,12 @@
 using FluentValidation;
 
-namespace Infrastructure.Services.HashIds
+namespace Infrastructure.Services.HashIds;
+
+internal class HashIdConfigurationValidator : AbstractValidator<HashIdsConfiguration>
 {
-    internal class HashIdConfigurationValidator : AbstractValidator<HashIdsConfiguration>
+    public HashIdConfigurationValidator()
     {
-        public HashIdConfigurationValidator()
-        {
-            RuleFor(x => x.Salt).NotEmpty();
-            RuleFor(x => x.MinLength).GreaterThan(0);
-        }
+        RuleFor(x => x.Salt).NotEmpty();
+        RuleFor(x => x.MinLength).GreaterThan(0);
     }
 }

@@ -1,9 +1,8 @@
-namespace Cards.Domain.OwnerAggregate
+namespace Cards.Domain.OwnerAggregate;
+
+public abstract class Entity
 {
-    public abstract class Entity
-    {
     
-        public long Id { get; }
+    public long Id { get; }
     
-    }
 }

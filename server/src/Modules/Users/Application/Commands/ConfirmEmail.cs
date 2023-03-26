@@ -8,46 +8,45 @@ using MassTransit;
 using MediatR;
 using Users.Domain.User;
 
-namespace Users.Application.Commands
+namespace Users.Application.Commands;
+
+public class ConfirmEmail
 {
-    public class ConfirmEmail
+    internal class CommandHandler : RequestHandlerBase<Command, Unit>
     {
-        internal class CommandHandler : RequestHandlerBase<Command, Unit>
+        private readonly IUserRepository _userRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
+
+        public CommandHandler(IUserRepository userRepository,
+            IPublishEndpoint publishEndpoint)
         {
-            private readonly IUserRepository _userRepository;
-            private readonly IPublishEndpoint _publishEndpoint;
-
-            public CommandHandler(IUserRepository userRepository,
-                IPublishEndpoint publishEndpoint)
-            {
-                _userRepository = userRepository;
-                _publishEndpoint = publishEndpoint;
-            }
-
-            public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var user = await _userRepository.GetUser(request.Id, cancellationToken);
-
-                user.Confirm();
-
-                await _userRepository.Update(user, cancellationToken);
-                await _publishEndpoint.Publish(user.Events.First(), cancellationToken);
-
-                return ResponseBase<Unit>.Create(Unit.Value);
-            }
+            _userRepository = userRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
-        public class Command : RequestBase<Unit>
+        public override async Task<ResponseBase<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            public Guid Id { get; set; }
-        }
+            var user = await _userRepository.GetUser(request.Id, cancellationToken);
 
-        internal class CommandValidator : AbstractValidator<Command>
+            user.Confirm();
+
+            await _userRepository.Update(user, cancellationToken);
+            await _publishEndpoint.Publish(user.Events.First(), cancellationToken);
+
+            return ResponseBase<Unit>.Create(Unit.Value);
+        }
+    }
+
+    public class Command : RequestBase<Unit>
+    {
+        public Guid Id { get; set; }
+    }
+
+    internal class CommandValidator : AbstractValidator<Command>
+    {
+        public CommandValidator()
         {
-            public CommandValidator()
-            {
-                RuleFor(x => x.Id).NotEmpty();
-            }
+            RuleFor(x => x.Id).NotEmpty();
         }
     }
 }

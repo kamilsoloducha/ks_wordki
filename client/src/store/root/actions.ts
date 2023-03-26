@@ -4,6 +4,9 @@ import { Action } from "@reduxjs/toolkit";
 export enum RootActionEnum {
   REQUEST_FAILED = "[ROOT] REQUEST_FAILED",
   SET_BREADCRUMBS = "[ROOT] SET_BREADCRUMBS",
+
+  GET_CARD_SIDES = "[ROOT] GET_CARD_SIDES",
+  GET_CARD_SIDES_SUCCESS = "[ROOT] GET_CARD_SIDES_SUCCESS",
 }
 
 export interface RequestFailed extends Action {
