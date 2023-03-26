@@ -33,10 +33,10 @@ public static class Module
             client.BaseAddress = new Uri("https://api.dictionaryapi.dev");
         });
 
-        services.AddHttpClient<IDictionary, CambridgeDictionary>(client =>
-        {
-            client.BaseAddress = new Uri("https://dictionary.cambridge.org");
-        });
+        // services.AddHttpClient<IDictionary, CambridgeDictionary>(client =>
+        // {
+        //     client.BaseAddress = new Uri("https://dictionary.cambridge.org");
+        // });
 
         return services;
     }
