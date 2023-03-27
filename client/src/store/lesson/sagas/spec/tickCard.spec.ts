@@ -1,16 +1,15 @@
 import "test/matcher/toDeepEqual";
 import * as api from "api";
-import { call, select, take } from "redux-saga/effects";
-import { selectUserId } from "store/user/selectors";
+import { call, select } from "redux-saga/effects";
 import { selectCurrectRepeat } from "store/lesson/selectors";
 import { Repeat } from "pages/lesson/models/repeat";
-import { tickCardWorker } from "../tickCard";
+import { tickCard } from "../tickCard";
 
 describe("tickCardEffect", () => {
   let saga: any;
 
   beforeEach(() => {
-    saga = tickCardWorker();
+    saga = tickCard();
   });
 
   afterEach(() => {
@@ -30,8 +29,6 @@ describe("tickCardEffect", () => {
       questionLanguage: "",
       answerLanguage: "",
     };
-    expect(saga.next().value).toStrictEqual(take("lesson/tickCard"));
-    expect(saga.next().value).toStrictEqual(select(selectUserId));
     expect(saga.next(userId).value).toStrictEqual(select(selectCurrectRepeat));
     expect(saga.next(repeat).value).toStrictEqual(call(api.tickCard, "cardId"));
   });

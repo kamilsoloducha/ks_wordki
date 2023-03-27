@@ -9,7 +9,7 @@ export function* tickCardWorker(): SagaIterator {
   yield takeEvery("lesson/tickCard", tickCard);
 }
 
-export function* tickCard() {
+export function* tickCard(): SagaIterator {
   const repeat: Repeat = yield select(selectCurrectRepeat);
   const response: ApiResponse<any> = yield call(api.tickCard, repeat.cardId);
   if (!response.isCorrect) {

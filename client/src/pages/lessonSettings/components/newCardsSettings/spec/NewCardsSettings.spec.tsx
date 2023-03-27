@@ -1,5 +1,4 @@
 import * as redux from "react-redux";
-import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import { ReactElement } from "react";
 import configureStore from "redux-mock-store";
@@ -9,6 +8,7 @@ import { SetLesson } from "pages/lesson/models/lessonState";
 import Results from "pages/lesson/models/results";
 import NewCardsSettings from "../NewCardsSettings";
 import { render } from "@testing-library/react";
+import LessonState from "store/lesson/state";
 
 describe("GroupsPage", () => {
   let component: ReactElement;
@@ -39,6 +39,7 @@ describe("GroupsPage", () => {
           wrongLimit: 15,
         } as LessonSettings,
         lessonHistory: [],
+        languages: ["lang1", "lang2"],
       },
     } as any;
 
@@ -53,8 +54,7 @@ describe("GroupsPage", () => {
     );
   });
 
-  afterEach(() => {
-  });
+  afterEach(() => {});
 
   it("should be created", () => {
     let container = {} as HTMLElement;

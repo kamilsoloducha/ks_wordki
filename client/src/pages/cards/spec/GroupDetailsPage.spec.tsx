@@ -2,19 +2,18 @@ import { act } from "react-dom/test-utils";
 import GroupDetailsPage from "../GroupDetailsPage";
 import { Provider } from "react-redux";
 import CardsState, { FilterModel } from "store/cards/state";
-import configureMockStore from 'redux-mock-store';
+import configureMockStore from "redux-mock-store";
 import { render } from "@testing-library/react";
 import { ReactElement } from "react";
 
 const mockedUsedNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
   useNavigate: () => mockedUsedNavigate,
 }));
 
 describe("GroupDetailsPage", () => {
-
   const mockState: CardsState = {
     isLoading: false,
     id: "",
@@ -24,17 +23,21 @@ describe("GroupDetailsPage", () => {
     cards: [],
     filteredCards: [],
     selectedItem: null,
-    filter: {} as FilterModel
-  }
+    filter: {} as FilterModel,
+  };
 
-  const mockStore = configureMockStore([])({ cardsReducer: mockState });
+  const mockStore = configureMockStore([])({
+    cardsReducer: mockState,
+    lessonReducer: { languages: [] },
+  });
   let component: ReactElement;
 
   beforeEach(() => {
-    component =
+    component = (
       <Provider store={mockStore}>
         <GroupDetailsPage />
       </Provider>
+    );
   });
 
   afterEach(() => {

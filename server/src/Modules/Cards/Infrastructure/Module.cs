@@ -37,6 +37,11 @@ public static class Module
         // {
         //     client.BaseAddress = new Uri("https://dictionary.cambridge.org");
         // });
+        
+        services.AddHttpClient<IDictionary, MacmillanDictionary>(client =>
+        {
+            client.BaseAddress = new Uri("https://www.macmillandictionary.com");
+        });
 
         return services;
     }

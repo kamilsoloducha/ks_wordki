@@ -1,10 +1,9 @@
 import "test/matcher/toDeepEqual";
 import * as cards from "api/services/cards";
 import { SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
-import { selectUserId } from "store/user/selectors";
+import { call, put } from "redux-saga/effects";
 import { search, updateCard } from "store/cardsSearch/reducer";
-import { updateCardEffect } from "../updateCardEffect";
+import { updateCardWorker } from "../updateCardEffect";
 import { UpdateCardRequest } from "api";
 
 describe("updateCardEffect", () => {
@@ -13,7 +12,6 @@ describe("updateCardEffect", () => {
 
   beforeEach(() => {
     mock = jest.spyOn(cards, "updateCard2");
-    saga = updateCardEffect();
   });
 
   afterEach(() => {
@@ -46,8 +44,9 @@ describe("updateCardEffect", () => {
       },
       comment: "",
     };
-    expect(saga.next().value).toStrictEqual(take("cardsSerach/updateCard"));
-    expect(saga.next(action).value).toStrictEqual(select(selectUserId));
+
+    saga = updateCardWorker(action);
+
     expect(saga.next(userId).value).toStrictEqual(call(mock, request));
     expect(saga.next().value).toDeepEqual(put(search()));
   });

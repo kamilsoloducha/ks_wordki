@@ -45,4 +45,15 @@ public class DictionaryController : BaseController
 
         return Ok(response);
     }
+    
+    [HttpGet("mac")]
+    public async Task<IActionResult> GetTranslationMac([FromQuery] Model.Requests.Translate query,
+        CancellationToken cancellationToken)
+    {
+        var request = new DictionaryRequest(query.Phrase);
+
+        var response = await _dictionary.Translate(request, cancellationToken);
+
+        return Ok(response);
+    }
 }

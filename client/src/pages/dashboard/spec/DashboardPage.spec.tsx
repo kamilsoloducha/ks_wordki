@@ -1,28 +1,27 @@
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import DashboardPage from "../DashbaordPage";
-import configureMockStore from 'redux-mock-store'
+import configureMockStore from "redux-mock-store";
 import { getDashboardSummary } from "store/dashboard/reducer";
 import DashboardState from "store/dashboard/state";
+import { getLanguages } from "store/lesson/reducer";
 
 const mockedUsedNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
   useNavigate: () => mockedUsedNavigate,
 }));
 
-
 describe("DashboardPage", () => {
-
   const mockState: DashboardState = {
     isLoading: false,
     dailyRepeats: 0,
     groupsCount: 0,
     cardsCount: 0,
     forecast: [],
-    isForecastLoading: false
-  }
+    isForecastLoading: false,
+  };
 
   const mockStore = configureMockStore([])({ dashboardReducer: mockState });
 
@@ -67,14 +66,14 @@ describe("DashboardPage", () => {
   });
 
   it("should dispatch action", () => {
-
     render(
       <Provider store={mockStore}>
         <DashboardPage />
       </Provider>
     );
-    expect(mockStore.getActions().length).toBe(1)
+    expect(mockStore.getActions().length).toBe(2);
     expect(mockStore.getActions()[0]).toStrictEqual(getDashboardSummary());
+    expect(mockStore.getActions()[1]).toStrictEqual(getLanguages());
   });
 
   it("should display spinner if is loading", () => {
@@ -87,5 +86,4 @@ describe("DashboardPage", () => {
     );
     expect(container.getElementsByClassName("loader").length).toBe(1);
   });
-
 });

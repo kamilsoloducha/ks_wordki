@@ -1,30 +1,30 @@
 import { render } from "@testing-library/react";
 import GroupsState from "store/groups/state";
-import configureMockStore from 'redux-mock-store';
+import configureMockStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import GroupsPage from "../GroupsPage";
 
-
 const mockedUsedNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
   useNavigate: () => mockedUsedNavigate,
 }));
 
 describe("GroupsPage", () => {
-
   const mockState: GroupsState = {
     isLoading: false,
     groups: [],
     selectedItem: null,
     selectedItems: [],
-    searchingGroups: []
-  }
+    searchingGroups: [],
+  };
 
-  const mockStore = configureMockStore([])({ groupsReducer: mockState });
-  beforeEach(() => {
+  const mockStore = configureMockStore([])({
+    groupsReducer: mockState,
+    lessonReducer: { languages: [] },
   });
+  beforeEach(() => {});
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -54,5 +54,4 @@ describe("GroupsPage", () => {
 
     expect(container.getElementsByClassName("loader").length).toBe(1);
   });
-
 });
