@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Services;
+using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
 using Domain.Utils;
 using MediatR;
@@ -24,9 +25,8 @@ public abstract class GetDashboardSummary
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
             var ownerId = UserId.Restore(request.UserId);
-            var dateTime = SystemClock.Now.Date;
 
-            var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, dateTime, Enumerable.Empty<string>(), cancellationToken);
+            var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, RepeatPeriod.To, Enumerable.Empty<string>(), cancellationToken);
             var groupsCount = await _queryRepository.GetGroupsCount(ownerId, cancellationToken);
             var cardsCount = await _queryRepository.GetCardsCount(ownerId, cancellationToken);
 

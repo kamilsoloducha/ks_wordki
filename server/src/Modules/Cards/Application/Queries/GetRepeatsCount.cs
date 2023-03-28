@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Services;
+using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
 using Domain.Utils;
 using MediatR;
@@ -23,11 +24,9 @@ public class GetRepeatsCount
 
         public async Task<int> Handle(Query request, CancellationToken cancellationToken)
         {
-
             var ownerId = UserId.Restore(request.UserId);
-            var now = SystemClock.Now.Date;
 
-            var repeats = await _queryRepository.GetDailyRepeatsCount(ownerId, now, Enumerable.Empty<string>(), cancellationToken);
+            var repeats = await _queryRepository.GetDailyRepeatsCount(ownerId, RepeatPeriod.To, Enumerable.Empty<string>(), cancellationToken);
 
             return repeats;
         }

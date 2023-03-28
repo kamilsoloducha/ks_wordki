@@ -7,9 +7,7 @@ import { getDashboardSummarySuccess, getForecastSuccess } from "../reducer";
 import { takeEvery } from "redux-saga/effects";
 
 export function* getDashbaordSummaryWorker(): any {
-  const response: { data: api.DashboardSummaryResponse; error: any } = yield call(
-    api.getDashboardSummaryApi
-  );
+  const response: api.DashboardSummaryResponse = yield call(api.getDashboardSummaryApi);
 
   const getForecastRequest: api.ForecastQuery = {
     count: 7,
@@ -17,13 +15,13 @@ export function* getDashbaordSummaryWorker(): any {
 
   const result: ForecastModel[] = yield call(api.getForecast, getForecastRequest);
   yield put(
-    response.data
+    response
       ? getDashboardSummarySuccess({
-          dailyRepeats: response.data.dailyRepeats,
-          groupsCount: response.data.groupsCount,
-          cardsCount: response.data.cardsCount,
+          dailyRepeats: response.dailyRepeats,
+          groupsCount: response.groupsCount,
+          cardsCount: response.cardsCount,
         })
-      : requestFailed(response.error)
+      : requestFailed(response)
   );
   yield put(getForecastSuccess({ forecast: result }));
 }

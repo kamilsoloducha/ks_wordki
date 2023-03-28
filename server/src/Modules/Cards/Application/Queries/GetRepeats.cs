@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Services;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
+using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
 using Domain.Utils;
 using MediatR;
@@ -28,11 +29,10 @@ public abstract class GetRepeats
         public async Task<IEnumerable<RepeatDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var ownerId = UserId.Restore(request.OwnerId);
-            var now = SystemClock.Now;
 
             var repeats = await _queryRepository.GetRepeats(
                 ownerId,
-                now,
+                RepeatPeriod.To,
                 request.Count,
                 request.Languages,
                 request.GroupId,
