@@ -4,10 +4,10 @@ namespace Cards.Domain.Tests.StandardCalculatorTests.Context;
 
 public abstract class CalcuateContext
 {
-    public virtual DateTime GivenNow { get; } = new DateTime(2022, 1, 1);
-    public virtual int GivenResult { get; }
-    public virtual int GivenCorrectRepeat { get; }
-    public virtual int GivenCounter { get; }
+    public DateTime GivenNow { get; } = new (2022, 1, 1);
+    public abstract int GivenResult { get; }
+    public abstract int GivenCorrectRepeat { get; }
+    public abstract int GivenCounter { get; }
 
-    public virtual DateTime ExpectedNextRepeat { get; }
+    public abstract DateTime ExpectedNextRepeat { get; }
 }

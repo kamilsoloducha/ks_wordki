@@ -19,7 +19,6 @@ export function* filterCards(): SagaIterator {
 
   if (filterState.isTicked) {
     cards = cards.filter((item) => {
-      console.log(item.front.isTicked, item.back.isTicked);
       return item.front.isTicked || item.back.isTicked;
     });
   }
@@ -27,7 +26,6 @@ export function* filterCards(): SagaIterator {
   if (filterState.text.length > 2) {
     cards = filterByText(String(filterState.text), cards);
   }
-  console.log(cards);
   yield put(setFilteredCards({ cards: cards }));
 }
 

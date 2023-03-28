@@ -1,7 +1,9 @@
+using System;
 using Cards.Domain.Enums;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Domain.Tests.StandardCalculatorTests.Context;
+using Cards.Domain.ValueObjects;
 using Domain.Utils;
 using FluentAssertions;
 using NUnit.Framework;
@@ -31,6 +33,10 @@ public class CalculateTests<TContext> where TContext : CalcuateContext, new()
     public void Test()
     {
         var givenDetail = new Details(SideType.Back, true, null);
+        givenDetail.SetProperty(nameof(givenDetail.Drawer), new Drawer(_context.GivenCorrectRepeat));
+        givenDetail.SetProperty(nameof(givenDetail.Counter), new Counter(_context.GivenCounter));
+        givenDetail.SetProperty(nameof(givenDetail.NextRepeat), new DateTime());
+        
         var result = _sut.Calculate(givenDetail, _context.GivenResult);
 
         result.Should().Be(_context.ExpectedNextRepeat);

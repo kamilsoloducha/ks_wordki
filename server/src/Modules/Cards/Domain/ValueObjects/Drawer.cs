@@ -1,22 +1,24 @@
+using System;
+
 namespace Cards.Domain.ValueObjects;
 
 public class Drawer
 {
-    private const int MinValue = 1;
     public const int MaxValue = 5;
-    
+
     public int Correct { get; }
-    
-    public Drawer() : this(MinValue)
+
+    public Drawer() : this(0)
     {
     }
 
     public Drawer(int correct)
     {
+        if (correct < 0) throw new Exception();
         Correct = correct;
     }
-    
-    public int Value => Correct > MaxValue ? MaxValue : Correct;
-    
-    public Drawer Increase(int step = 1) => new (Correct + step);
+
+    public int Value => Correct + 1 > MaxValue ? MaxValue : Correct + 1;
+
+    public Drawer Increase(int step = 1) => new(Correct + step);
 }

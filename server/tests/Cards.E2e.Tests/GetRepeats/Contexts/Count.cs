@@ -15,7 +15,7 @@ internal abstract class Count : GetRepeatsContext
     protected override string GivenLanguages => "1";
     public override Owner GivenOwner { get; }
     
-    public Count()
+    protected Count()
     {
         SystemClock.Override(new DateTime(2022, 2, 20, 12, 0, 0));
         var owner = DataBuilder.SampleUser().Build();

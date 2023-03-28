@@ -23,7 +23,12 @@ public abstract class DeleteCard
         {
             var ownerId = UserId.Restore(request.UserId);
             var card = await _repository.GetCard(ownerId, request.CardId, cancellationToken);
-
+            
+            if (card is null)
+            {
+                return ResponseBase<Unit>.Create(Unit.Value);
+            } 
+            
             card.Remove();
 
             await _repository.Update(cancellationToken);

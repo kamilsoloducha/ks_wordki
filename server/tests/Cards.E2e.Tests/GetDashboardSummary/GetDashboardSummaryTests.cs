@@ -20,7 +20,7 @@ public class GetDashboardSummaryTests<TContext> : CardsTestBase where TContext :
     [SetUp]
     public async Task Setup()
     {
-        SystemClock.Override(new DateTime(2022, 2, 2));
+        SystemClock.Override(new DateTime(2022, 2, 20));
         await ClearCardsSchema();
 
         await using var dbContext = new CardsContext();

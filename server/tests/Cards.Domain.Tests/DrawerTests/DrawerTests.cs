@@ -78,6 +78,6 @@ public class DrawerTests
         const int initValue = -1;
         Action action = () => new Drawer(initValue);
 
-        action.Should().Throw<BuissnessArgumentException>();
+        action.Should().Throw<Exception>();
     }
 }

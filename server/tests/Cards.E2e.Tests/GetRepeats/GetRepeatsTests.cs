@@ -45,6 +45,4 @@ public class GetRepeatsTests<TContext> : CardsTestBase where TContext : GetRepea
 
         response.Should().BeEquivalentTo(_context.ExpectedResponse, RepeatAssertion);
     }
-
-    
 }

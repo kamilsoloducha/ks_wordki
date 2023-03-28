@@ -6,10 +6,9 @@ import { takeEvery } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
 import { getOverviewSuccess } from "../reducer";
 
-export function* getOverviewWorker():SagaIterator{
-  console.log('test');
+export function* getOverviewWorker(): SagaIterator {
   const userId: string = yield select(selectUserId);
-  
+
   const overview: CardsOverview = yield call(api.cardsOverview, userId);
 
   yield put(getOverviewSuccess({ overview }));

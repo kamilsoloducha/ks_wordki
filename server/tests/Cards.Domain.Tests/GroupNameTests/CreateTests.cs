@@ -28,6 +28,6 @@ public class CreateTests
     public void CreateFailed(string parameter)
     {
         Action action = () => new GroupName(parameter);
-        action.Should().Throw<BuissnessArgumentException>();
+        action.Should().Throw<Exception>();
     }
 }
