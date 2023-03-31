@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   wordki-client.ci.test:
-    container_name: wordki-client.ci.test
+    container_name: wordki-client.ci.test.${BUILD_BUILDID}
     image: wordki-client/ci/build:${BUILD_BUILDID}
     build:
       context: ../../
