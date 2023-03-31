@@ -28,8 +28,8 @@ jobs:
   - job: build
     displayName: Build wordki client
 
-    pool: 
-        name: ${{ parameters.AgentSelect }}
+    pool:
+      name: ${{ parameters.AgentSelect }}
 
     steps:
       - task: DockerCompose@0
@@ -39,9 +39,9 @@ jobs:
           dockerRegistryEndpoint: "docker-hub"
           dockerComposeFile: "client/ci/docker/docker-compose.build.yml"
           action: "Run a Docker Compose command"
-          dockerComposeCommand: up
+          dockerComposeCommand: build
       - task: CmdLine@2
-        displayName: Run tests 
+        displayName: Run tests
         enabled: ${{ parameters.UnitTests }}
         inputs:
           script: docker-compose -f ./client/ci/docker/docker-compose.test.yml up --abort-on-container-exit
@@ -103,7 +103,7 @@ jobs:
           dockerComposeFile: "client/ci/docker/docker-compose.release.yml"
           action: "Run a Docker Compose command"
           dockerComposeCommand: build
-      - task: Docker@2 
+      - task: Docker@2
         enabled: ${{ parameters.PublishImage }}
         displayName: Login to Docker Hub
         condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
@@ -114,7 +114,7 @@ jobs:
         enabled: ${{ parameters.PublishImage }}
         displayName: Tag Docker Image
         inputs:
-          script: 'docker tag kamilsoloducha/wordki-client:$(Build.BuildId) kamilsoloducha/wordki-client:latest'
+          script: "docker tag kamilsoloducha/wordki-client:$(Build.BuildId) kamilsoloducha/wordki-client:latest"
       - task: Docker@2
         enabled: ${{ parameters.PublishImage }}
         displayName: Push
@@ -125,4 +125,3 @@ jobs:
           command: "push"
           tags: |
             $(Build.BuildId)
-            latest
