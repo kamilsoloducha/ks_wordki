@@ -1,5 +1,9 @@
 FROM node:latest as build
 
+RUN mkdir -p /usr/src/app && chown node:node /usr/src/app
+
+WORKDIR /usr/src/app
+
 COPY package.json yarn.lock ./
 
 RUN yarn install
