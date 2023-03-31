@@ -1,7 +1,6 @@
 version: "3.5"
 services:
   wordki-server.ci:
-    container_name: wordki-server.ci
     image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
     build:
       context: ../../

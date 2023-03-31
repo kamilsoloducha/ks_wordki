@@ -28,10 +28,16 @@ jobs:
   - job: build
     displayName: Build wordki server
 
-    pool: 
-        name: ${{ parameters.AgentSelect }}
+    pool:
+      name: ${{ parameters.AgentSelect }}
 
     steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: "docker-hub"
+          command: "build"
+          Dockerfile: "./server/ci/docker/Dockerfile"
+          buildContext: "./server/"
       - task: DockerCompose@0
         displayName: Build
         inputs:
@@ -39,7 +45,8 @@ jobs:
           dockerRegistryEndpoint: "docker-hub"
           dockerComposeFile: "server/ci/docker/docker-compose.build.yml"
           action: "Run a Docker Compose command"
-          dockerComposeCommand: up
+          projectName: "ks_wordki"
+          dockerComposeCommand: build
       - task: DockerCompose@0
         enabled: ${{ parameters.UnitTests }}
         displayName: Run Tests
@@ -47,6 +54,7 @@ jobs:
           containerregistrytype: "Container Registry"
           dockerRegistryEndpoint: "docker-hub"
           dockerComposeFile: "server/ci/docker/docker-compose.unittests.yml"
+          projectName: "ks_wordki"
           action: "Run a Docker Compose command"
           dockerComposeCommand: up --build --abort-on-container-exit
       - task: CmdLine@2
@@ -71,6 +79,7 @@ jobs:
           containerregistrytype: "Container Registry"
           dockerRegistryEndpoint: "docker-hub"
           dockerComposeFile: "server/ci/docker/docker-compose.release.yml"
+          projectName: "ks_wordki"
           action: "Run a Docker Compose command"
           dockerComposeCommand: build
       - task: Docker@2
@@ -84,7 +93,7 @@ jobs:
         enabled: ${{ parameters.PublishImage }}
         displayName: Tag Docker Image
         inputs:
-          script: 'docker tag kamilsoloducha/wordki-server:$(Build.BuildId) kamilsoloducha/wordki-server:latest'
+          script: "docker tag kamilsoloducha/wordki-server:$(Build.BuildId) kamilsoloducha/wordki-server:latest"
       - task: Docker@2
         enabled: ${{ parameters.PublishImage }}
         displayName: Push
@@ -95,4 +104,3 @@ jobs:
           command: "push"
           tags: |
             $(Build.BuildId)
-            latest

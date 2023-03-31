@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   wordki-server.ci.unittests:
-    container_name: wordki-server.ci.unittests
+    container_name: wordki-server.ci.unittests.${BUILD_BUILDID}
     image: kamilsoloducha/wordki-server:${BUILD_BUILDID}
     build:
       context: ../../
