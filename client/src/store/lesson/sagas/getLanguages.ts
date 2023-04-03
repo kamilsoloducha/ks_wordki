@@ -8,7 +8,7 @@ export function* getLanguagesEffect() {
 }
 
 export function* getLanguages() {
-  var languages: Language[] = yield call(api.getLanguages);
+  const languages: Language[] = yield call(api.getLanguages);
 
-  yield put(getLanguagesSuccess({ languages: languages }));
+  yield put(getLanguagesSuccess({ languages }));
 }

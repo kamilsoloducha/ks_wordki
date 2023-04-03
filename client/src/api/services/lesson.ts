@@ -24,7 +24,7 @@ export async function registerAnswer(
 
 export async function getLanguages(): Promise<string[]> {
   try {
-    var response = await http.get<string[]>("/groups/languages");
+    const response = await http.get<string[]>("/groups/languages");
     return response.data;
   } catch (e: any) {
     return e;

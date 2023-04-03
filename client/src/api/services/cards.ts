@@ -114,7 +114,7 @@ export async function cardsOverview(ownerId: string): Promise<CardsOverview | an
 
 export async function searchCards(request: queries.CardsSearchQuery): Promise<CardSummary[] | any> {
   try {
-    const response = await http.put<CardSummary[]>(`/cards/search`, request);
+    const response = await http.get<CardSummary[]>(`/cards/search`, { params: request });
     return response.data;
   } catch (error) {
     return { error };
@@ -123,7 +123,7 @@ export async function searchCards(request: queries.CardsSearchQuery): Promise<Ca
 
 export async function searchCardsCount(request: queries.CardsSearchQuery): Promise<number | any> {
   try {
-    const response = await http.put<number>(`/cards/search/count`, request);
+    const response = await http.get<number>(`/cards/search/count`, { params: request });
     return response.data;
   } catch (error) {
     return { error };

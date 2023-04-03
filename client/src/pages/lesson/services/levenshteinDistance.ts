@@ -104,7 +104,7 @@ type LevenpathResult = { char: string; type: number };
 export function levenshtein(str1: string, str2: string): LevenpathResult[] {
   str1 = str1.toLowerCase();
   str2 = str2.toLowerCase();
-  let m: number[][] = [],
+  const m: number[][] = [],
     paths: [number, number][][] = [],
     l1 = str1.length,
     l2 = str2.length;
@@ -122,7 +122,7 @@ export function levenshtein(str1: string, str2: string): LevenpathResult[] {
         m[i][j] = m[i - 1][j - 1];
         paths[i][j] = [i - 1, j - 1];
       } else {
-        let min = Math.min(m[i - 1][j], m[i][j - 1], m[i - 1][j - 1]);
+        const min = Math.min(m[i - 1][j], m[i][j - 1], m[i - 1][j - 1]);
         m[i][j] = min + 1;
         if (m[i - 1][j] === min) paths[i][j] = [i - 1, j];
         else if (m[i][j - 1] === min) paths[i][j] = [i, j - 1];
@@ -135,7 +135,7 @@ export function levenshtein(str1: string, str2: string): LevenpathResult[] {
   for (let i = l1; i >= 0 && j >= 0; )
     for (j = l2; i >= 0 && j >= 0; ) {
       levenpath.push({ i, j, type: Equal });
-      let t = i;
+      const t = i;
       i = paths[i][j][0];
       j = paths[t][j][1];
     }
@@ -146,10 +146,10 @@ export function levenshtein(str1: string, str2: string): LevenpathResult[] {
     if (i !== 0) {
       if (cur.i === last.i + 1 && cur.j === last.j + 1 && m[cur.i][cur.j] !== m[last.i][last.j])
         cur.type = Replace;
-      //"replace";
+      // "replace";
       else if (cur.i === last.i && cur.j === last.j + 1) cur.type = Insert;
-      //"insert";
-      else if (cur.i === last.i + 1 && cur.j === last.j) cur.type = Delete; //"delete";
+      // "insert";
+      else if (cur.i === last.i + 1 && cur.j === last.j) cur.type = Delete; // "delete";
     } else {
       cur.type = 0;
     }

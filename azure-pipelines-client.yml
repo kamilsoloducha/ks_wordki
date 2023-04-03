@@ -53,8 +53,8 @@ jobs:
         inputs:
           script: |
             docker ps -a
-            docker cp wordki-client.ci.test:/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/junit.xml
-            docker cp wordki-client.ci.test:/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
+            docker cp wordki-client.ci.test.$(Build.BuildId):/usr/src/app/junit.xml $(System.DefaultWorkingDirectory)/junit.xml
+            docker cp wordki-client.ci.test.$(Build.BuildId):/usr/src/app/coverage $(System.DefaultWorkingDirectory)/coverage
       - task: DockerCompose@0
         enabled: ${{ parameters.UiTests }}
         displayName: Run UI Tests
@@ -73,7 +73,7 @@ jobs:
         inputs:
           script: |
             docker ps -a
-            docker cp wordki.ci.e2e.tests:/src/TestResults/TestResults.xml $(System.DefaultWorkingDirectory)/TESTS-ui-e2e.xml
+            docker cp wordki.ci.e2e.tests.$(Build.BuildId):/src/TestResults/TestResults.xml $(System.DefaultWorkingDirectory)/TESTS-ui-e2e.xml
       - task: PublishTestResults@2
         enabled: ${{ parameters.UnitTests }}
         continueOnError: true

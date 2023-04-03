@@ -8,7 +8,7 @@ class CardDetailsEntityConfiguration : IEntityTypeConfiguration<CardSummary>
 {
     public void Configure(EntityTypeBuilder<CardSummary> builder)
     {
-        builder.ToView("cardsummary");
+        builder.ToView("cardsindex");
         builder.HasNoKey();
     }
 }

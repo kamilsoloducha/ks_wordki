@@ -54,7 +54,7 @@ export default function GroupDetailsPage(): ReactElement {
   }, [page, filteredCardsFromStore]);
 
   const onItemSelected = (item: CardSummary) => {
-    dispatch(actions.selectCard({ item: item }));
+    dispatch(actions.selectCard({ item }));
     setFormItem(getFormModelFromCardSummary(item));
   };
 
@@ -123,7 +123,7 @@ export default function GroupDetailsPage(): ReactElement {
 
   const onSearchChanged = useCallback(
     (text: string) => {
-      dispatch(actions.setFilterText({ text: text }));
+      dispatch(actions.setFilterText({ text }));
     },
     [dispatch]
   );

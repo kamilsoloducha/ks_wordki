@@ -1,15 +1,19 @@
 import { SagaIterator } from "redux-saga";
-import { put, take } from "redux-saga/effects";
+import { put, takeLatest } from "redux-saga/effects";
 import { search } from "../reducer";
 
-export function* setPaginationEffect(): SagaIterator {
-  while (true) {
-    yield take([
-      "cardsSerach/filterReset",
-      "cardsSerach/filterSetPagination",
-      "cardsSerach/filterSetLessonIncluded",
-      "cardsSerach/filterSetTickedOnly",
-    ]);
-    yield put(search());
-  }
+export function* filterEffect(): SagaIterator {
+  yield takeLatest(
+    [
+      "cardsSearch/filterReset",
+      "cardsSearch/filterSetPagination",
+      "cardsSearch/filterSetLessonIncluded",
+      "cardsSearch/filterSetTickedOnly",
+    ],
+    filterWorker
+  );
+}
+
+export function* filterWorker(): SagaIterator {
+  yield put(search());
 }

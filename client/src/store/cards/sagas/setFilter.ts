@@ -26,7 +26,7 @@ export function* filterCards(): SagaIterator {
   if (filterState.text.length > 2) {
     cards = filterByText(String(filterState.text), cards);
   }
-  yield put(setFilteredCards({ cards: cards }));
+  yield put(setFilteredCards({ cards }));
 }
 
 function isCardFromDrawer(card: CardSummary, drawer: number): boolean {

@@ -16,7 +16,7 @@ export function* getCardsCountEffect(): SagaIterator {
       api.repeatsCount,
       {
         questionLanguage: settings.languages ?? [],
-        userId: userId,
+        userId,
       }
     );
     yield put(getCardsCountSuccess({ count: apiResposne.response }));

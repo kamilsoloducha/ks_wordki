@@ -9,7 +9,7 @@ describe("getLearningCardCount", () => {
     new mocks.MultipeItemsDoubleSideList(),
   ].forEach((item) => {
     it("should return proper value ::" + item.constructor.name, () => {
-      var result = getLearningCardCount(item.cards);
+      const result = getLearningCardCount(item.cards);
       expect(result).toBe(item.result);
     });
   });

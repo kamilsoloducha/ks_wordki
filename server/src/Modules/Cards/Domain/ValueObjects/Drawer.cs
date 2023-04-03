@@ -18,7 +18,9 @@ public class Drawer
         Correct = correct;
     }
 
-    public int Value => Correct + 1 > MaxValue ? MaxValue : Correct + 1;
+    public int Value => ToValue(Correct);
 
     public Drawer Increase(int step = 1) => new(Correct + step);
+    
+    public static int ToValue(int correct) => correct + 1 > MaxValue ? MaxValue : correct + 1;
 }

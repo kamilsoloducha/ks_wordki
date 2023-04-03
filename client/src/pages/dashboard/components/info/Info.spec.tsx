@@ -10,7 +10,7 @@ describe("Info", () => {
     const { container } = render(<Info title="InfoTitle" value={20} onClick={onClick} />);
     expect(container.innerHTML).toContain("InfoTitle");
     expect(container.innerHTML).toContain("20");
-    var onClickContainer = container.getElementsByClassName("info-container")[0] as HTMLElement;
+    const onClickContainer = container.getElementsByClassName("info-container")[0] as HTMLElement;
     act(() => {
       onClickContainer.click();
     });
@@ -19,7 +19,7 @@ describe("Info", () => {
   it("should react on click", () => {
     const onClick = jest.fn();
     const { container } = render(<Info title="InfoTitle" value={20} onClick={onClick} />);
-    var onClickContainer = container.getElementsByClassName("info-container")[0] as HTMLElement;
+    const onClickContainer = container.getElementsByClassName("info-container")[0] as HTMLElement;
     onClickContainer.click();
     expect(onClick).toHaveBeenCalledTimes(1);
   });

@@ -4,7 +4,7 @@ import "./CountSelector.scss";
 export function CountSelector({ selected, all, onSelectedChanged }: Model): ReactElement {
   const onChanged = useCallback(
     (event$: any) => {
-      let newValue = parseInt(event$.target.value);
+      const newValue = parseInt(event$.target.value);
       // if (newValue > all) {
       //   newValue = all;
       // }

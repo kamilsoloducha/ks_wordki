@@ -51,3 +51,31 @@ CREATE OR REPLACE VIEW cards.repeatscountsummary
      JOIN cards."Owners" o ON o."Id" = "Groups"."OwnerId"
   GROUP BY "Date", o."UserId"
   ORDER BY "Date";
+
+
+CREATE OR REPLACE VIEW cards.cardsIndex
+  AS
+  SELECT
+  o."UserId" AS "UserId",
+  c."Id" as "CardId",
+  g."Id" as "GroupId",
+  g."Name" AS "GroupName",
+  g."Front" AS "Front",
+  g."Back" AS "Back",
+  f."Label" AS "FrontValue",
+  f."Example" AS "FrontExample",
+  b."Label" AS "BackValue",
+  b."Example" AS "BackExample",
+  df."Drawer" AS "FrontDrawer",
+  df."IsQuestion" AS "FrontIsQuestion",
+  df."IsTicked" AS "FrontIsTicked",
+  bd."Drawer" AS "BackDrawer",
+  bd."IsQuestion" AS "BackIsQuestion",
+  bd."IsTicked" AS "BackIsTicked"
+  FROM cards."Cards" c
+  RIGHT JOIN cards."Details" df ON df."CardId" = c."Id" AND df."SideType" = 1
+  RIGHT JOIN cards."Details" bd ON bd."CardId" = c."Id" AND bd."SideType" = 2
+  JOIN cards."Sides" f ON f."Id" = c."FrontId"
+  JOIN cards."Sides" b ON b."Id" = c."BackId"
+  JOIN cards."Groups" g ON g."Id" = c."GroupId"
+  JOIN cards."Owners" o ON o."Id" = g."OwnerId";

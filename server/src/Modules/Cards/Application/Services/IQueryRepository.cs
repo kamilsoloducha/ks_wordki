@@ -34,7 +34,6 @@ public interface IQueryRepository
     Task<IEnumerable<GroupSummary>> GetGroupSummaries(Guid ownerId, CancellationToken cancellationToken);
     Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchGroupsQuery query, CancellationToken cancellationToken);
     Task<int> GetGroupSummariesCount(SearchGroupsQuery query, CancellationToken cancellationToken);
-    Task<CardSummary> GetCardSummary(Guid ownerId, long groupId, long cardId, CancellationToken cancellationToken);
     Task<IEnumerable<Card>> GetCards(UserId ownerId, long groupId, CancellationToken cancellationToken);
     Task<Card> GetCard(UserId userId, long cardId, CancellationToken cancellationToken);
     Task<IEnumerable<CardSummary>> GetCardSummaries(long groupId, CancellationToken cancellationToken);

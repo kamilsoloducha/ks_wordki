@@ -19,7 +19,7 @@ describe("updateCardEffect", () => {
       comment: "comment",
       isTicked: true,
     };
-    const updateCardAction = updateCard({ form: form, groupId: "groupId" });
+    const updateCardAction = updateCard({ form, groupId: "groupId" });
     const saga = updateCardEffect();
     const request: api.UpdateCardRequest = {
       front: {

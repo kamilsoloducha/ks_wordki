@@ -4,7 +4,7 @@ import * as payload from "./action-payload";
 
 export const userSlice = createSlice({
   name: "user",
-  initialState: initialState,
+  initialState,
   reducers: {
     login: (state: UserState, _: PayloadAction<payload.LoginPayload>): void => {
       state.isLoading = true;

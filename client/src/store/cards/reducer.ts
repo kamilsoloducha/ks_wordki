@@ -5,7 +5,7 @@ import CardsState, { initialState } from "./state";
 
 export const cardsSlice = createSlice({
   name: "cards",
-  initialState: initialState,
+  initialState,
   reducers: {
     addCard: (_: CardsState, __: PayloadAction<payloads.AddCard>): void => {},
     addCardSuccess: (state: CardsState, _: PayloadAction<payloads.AddCardSuccess>): void => {

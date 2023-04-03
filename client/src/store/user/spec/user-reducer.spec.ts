@@ -11,7 +11,7 @@ describe("userReducer", () => {
     mocks.setErrorMessageCtx,
   ].forEach((item, index) => {
     it("should reduce action " + index, () => {
-      var result = userReducer(item.initialState, item.action);
+      const result = userReducer(item.initialState, item.action);
       expect(result).toStrictEqual(item.resultState);
     });
   });

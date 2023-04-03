@@ -42,7 +42,7 @@ export default function RegisterPage(): ReactElement {
   if (userId) {
     navigate('/dashboard');
   }
-  
+
   return (
     <div className="register-page-container">
       <form className="register-form" onSubmit={formik.handleSubmit} autoComplete="off">

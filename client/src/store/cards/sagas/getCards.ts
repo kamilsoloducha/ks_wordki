@@ -22,7 +22,7 @@ export function* getCardsWorker(action: PayloadAction<GetCards>): any {
       name: groupDetailsResponse.name,
       language1: groupDetailsResponse.front,
       language2: groupDetailsResponse.back,
-      cards: cards,
+      cards,
     })
   );
   yield put(applyFilters());

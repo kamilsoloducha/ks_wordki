@@ -11,6 +11,7 @@ import { CardsOverview, CardSummary } from "./models";
 import { Row } from "./components/row/Row";
 import { useTitle } from "common";
 import { useEffectOnce } from "common/hooks/useEffectOnce";
+import { TriStateCheckbox } from "primereact/tristatecheckbox";
 
 export default function CardsPage(): ReactElement {
   useTitle("Wordki - Cards");
@@ -44,16 +45,12 @@ export default function CardsPage(): ReactElement {
     dispatch(actions.filterReset());
   };
 
-  const tickedOnly = () => {
-    dispatch(actions.filterSetTickedOnly({ tickedOnly: true }));
+  const tickedOnly = (e: any) => {
+    dispatch(actions.filterSetTickedOnly({ tickedOnly: e.value }));
   };
 
-  const lessonIncludedOnly = () => {
-    dispatch(actions.filterSetLessonIncluded({ lessonIncluded: true }));
-  };
-
-  const waitingOnly = () => {
-    dispatch(actions.filterSetLessonIncluded({ lessonIncluded: false }));
+  const lessonIncludedOnly = (e: any) => {
+    dispatch(actions.filterSetLessonIncluded({ lessonIncluded: e.value }));
   };
 
   const onItemSelected = (card: CardSummary) => {
@@ -105,9 +102,10 @@ export default function CardsPage(): ReactElement {
       <button onClick={() => setPageSize(50)}>50</button>
       <button onClick={() => setPageSize(100)}>100</button>
       <button onClick={clearFilters}>All</button>
-      <button onClick={tickedOnly}>Ticked only</button>
-      <button onClick={lessonIncludedOnly}>Lesson Included</button>
-      <button onClick={waitingOnly}>Lesson Included</button>
+      <TriStateCheckbox value={filter.tickedOnly} onChange={tickedOnly} />
+      <label>Ticked Only</label>
+      <TriStateCheckbox value={filter.lessonIncluded} onChange={lessonIncludedOnly} />
+      <label>Lesson included</label>
       <Pagination
         totalCount={cardsCount}
         pageSize={filter.pageSize}
@@ -133,7 +131,7 @@ export default function CardsPage(): ReactElement {
 function Overview({ overview }: OverviewModel): ReactElement {
   return (
     <div>
-      totalCount: <b>{overview.all / 2}</b>
+      totalCount: <b>{overview.all}</b>
     </div>
   );
 }

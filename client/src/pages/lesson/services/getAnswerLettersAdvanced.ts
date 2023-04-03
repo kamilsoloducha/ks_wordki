@@ -1,6 +1,6 @@
 export interface AnswerLetter2 {
   letter: string;
-  status: number; //0-correct,  1-additional, 2-missing, 3-changed, 4-wrong
+  status: number; // 0-correct,  1-additional, 2-missing, 3-changed, 4-wrong
 }
 
 export function getAnswerLettersAdvanced(
@@ -102,7 +102,7 @@ export function compareWord(correctWord: string, userAnswer: string): AnswerLett
 export function createCorrectWord(word: string): AnswerLetter2[] {
   return word.split("").map((letter) => {
     const mapped: AnswerLetter2 = {
-      letter: letter,
+      letter,
       status: 0,
     };
     return mapped;
@@ -112,7 +112,7 @@ export function createCorrectWord(word: string): AnswerLetter2[] {
 export function createWrongWord(word: string): AnswerLetter2[] {
   return word.split("").map((letter) => {
     const mapped: AnswerLetter2 = {
-      letter: letter,
+      letter,
       status: 4,
     };
     return mapped;

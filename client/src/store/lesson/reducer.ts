@@ -10,7 +10,7 @@ import { Side } from "common";
 
 export const lessonSlice = createSlice({
   name: "lesson",
-  initialState: initialState,
+  initialState,
   reducers: {
     resetAll: (state: LessonState): void => {
       state.answer = initialState.answer;
@@ -55,7 +55,7 @@ export const lessonSlice = createSlice({
     ): void => {
       state.languages = action.payload.languages;
     },
-    getCardsCount: (state: LessonState): void => {},
+    getCardsCount: (_: LessonState): void => {},
     getCardsCountSuccess: (
       state: LessonState,
       action: PayloadAction<p.GetCardsCountSuccess>

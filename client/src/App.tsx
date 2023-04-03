@@ -11,7 +11,7 @@ import { selectBreadcrumbs } from "store/root/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "store/store";
 import { loginSuccess } from "store/user/reducer";
-import {CustomRouter} from "common/components/CustomRouter";
+import { CustomRouter } from "common/components/CustomRouter";
 import history from "common/services/history";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
@@ -37,7 +37,7 @@ export default function App() {
   const token = localStorage.getItem("token");
 
   if (userId && token) {
-    dispatch(loginSuccess({ id: userId, token: token, expirationDate: "2022/12/12" }));
+    dispatch(loginSuccess({ id: userId, token, expirationDate: "2022/12/12" }));
   }
 
   return (
@@ -57,9 +57,9 @@ export default function App() {
                 <Route path="/cards/:groupId" element={<GroupDetails />} />
                 <Route path="/cards" element={<CardsPage />} />
                 <Route path="/error" element={<ErrorPage />} />
-                <Route path="/lesson-settings" element={<LessonSettingsPage />}/>
+                <Route path="/lesson-settings" element={<LessonSettingsPage />} />
                 <Route path="/lesson-result" element={<LessonResultPage />} />
-                <Route path="/lesson" element={<LessonPage/>}/>
+                <Route path="/lesson" element={<LessonPage />} />
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/error" element={<ErrorPage />} />
               </Routes>

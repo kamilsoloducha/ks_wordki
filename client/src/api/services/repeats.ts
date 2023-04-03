@@ -11,7 +11,7 @@ export async function repeats(request: queries.RepeatsQuery): Promise<Repeat[]> 
 }
 
 export async function repeatsCount(
-  request: queries.repeatsCountQuery
+  request: queries.RepeatsCountQuery
 ): Promise<ApiResponse<number>> {
   try {
     const response = await http.post<number>(`/repeats/count`, request);

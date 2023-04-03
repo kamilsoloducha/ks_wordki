@@ -47,7 +47,7 @@ describe("registerUserEffect", () => {
       expect(saga.next().value).toStrictEqual(take("user/register"));
       expect(saga.next(action).value).toStrictEqual(call(mock, request));
       expect(saga.next(response).value).toStrictEqual(put(actions.setErrorMessage(item.message)));
-      //expect(saga.next().done).toBe(true);
+      // expect(saga.next().done).toBe(true);
     });
   });
 
@@ -67,6 +67,6 @@ describe("registerUserEffect", () => {
     expect(saga.next(response).value).toStrictEqual(
       put(actions.login({ userName: "name", password: "password" }))
     );
-    //expect(saga.next().done).toBe(true);
+    // expect(saga.next().done).toBe(true);
   });
 });

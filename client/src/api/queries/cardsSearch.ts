@@ -1,9 +1,8 @@
 export interface CardsSearchQuery {
-  ownerId: string;
   searchingTerm: string;
   searchingDrawers: number[];
   lessonIncluded: boolean | null;
-  onlyTicked: boolean;
+  isTicked: boolean | null;
 
   pageNumber: number;
   pageSize: number;

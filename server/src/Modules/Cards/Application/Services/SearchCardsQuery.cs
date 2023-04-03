@@ -11,14 +11,14 @@ public class SearchCardsQuery
     public int Take { get; }
     public IEnumerable<int> SearchingDrawers { get; }
     public bool? LessonIncluded { get; }
-    public bool OnlyTicked { get; }
+    public bool? OnlyTicked { get; }
 
     private SearchCardsQuery(
         Guid ownerId,
         string searchingTerm,
         IEnumerable<int> drawers,
         bool? lessonIncluded,
-        bool onlyTicked,
+        bool? onlyTicked,
         int skip,
         int take)
     {
@@ -36,9 +36,9 @@ public class SearchCardsQuery
         string searchingTerm,
         IEnumerable<int> drawers,
         bool? lessonIncluded,
-        bool onlyTicked,
-        int pageNumber,
-        int pageCount)
+        bool? onlyTicked,
+        int pageNumber = 1,
+        int pageCount = int.MaxValue)
     {
         var skip = pageNumber < 1 ? 0 : pageCount * (pageNumber - 1);
         return new SearchCardsQuery(

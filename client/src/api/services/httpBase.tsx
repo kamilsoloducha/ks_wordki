@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ApiResponse } from "common/models/response";
 
-export const API_PATH = process.env["REACT_APP_API_HOST"];
+export const API_PATH = process.env.REACT_APP_API_HOST;
 // if (API_PATH === undefined) {
 //   console.error("REACT_APP_API_HOST is not set");
 // }
@@ -24,6 +24,6 @@ export function createErrorResponse<T>(message: string): ApiResponse<T> {
 export function createResponse<T>(response: T): ApiResponse<T> {
   return {
     isCorrect: true,
-    response: response,
+    response,
   } as ApiResponse<T>;
 }

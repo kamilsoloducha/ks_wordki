@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Services;
 using Cards.Application.Services;
 using Cards.Domain.Enums;
+using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using MediatR;
 
@@ -27,11 +28,11 @@ public class SearchCards
         public async Task<IEnumerable<CardSummary>> Handle(Query request, CancellationToken cancellationToken)
         {
             var searchQuery = SearchCardsQuery.Create(
-                request.OwnerId,
+                request.UserId,
                 request.SearchingTerm,
                 request.SearchingDrawers,
                 request.LessonIncluded,
-                request.OnlyTicked,
+                request.Ticked,
                 request.PageNumber,
                 request.PageSize);
 
@@ -49,39 +50,37 @@ public class SearchCards
                 Front = new SideSummary
                 {
                     Type = (int)SideType.Front,
-                    Lang = card.FrontLanguage,
+                    Lang = card.Front,
                     Value = card.FrontValue,
                     Example = card.FrontExample,
-                    Comment = card.FrontDetailsComment,
-                    Drawer = new Drawer(card.FrontDrawer).Value,
-                    IsUsed = card.FrontLessonIncluded,
+                    Comment = string.Empty,
+                    Drawer = Drawer.ToValue(card.FrontDrawer),
+                    IsUsed = card.FrontIsQuestion,
                     IsTicked = card.FrontIsTicked,
                 },
                 Back = new SideSummary
                 {
                     Type = (int)SideType.Back,
-                    Lang = card.BackLanguage,
+                    Lang = card.Back,
                     Value = card.BackValue,
                     Example = card.BackExample,
-                    Comment = card.BackDetailsComment,
-                    Drawer = new Drawer(card.BackDrawer).Value,
-                    IsUsed = card.BackLessonIncluded,
+                    Comment = string.Empty,
+                    Drawer = Drawer.ToValue(card.BackDrawer),
+                    IsUsed = card.BackIsQuestion,
                     IsTicked = card.BackIsTicked,
                 },
             };
         }
     }
 
-    public class Query : IRequest<IEnumerable<CardSummary>>
-    {
-        public Guid OwnerId { get; set; }
-        public string SearchingTerm { get; set; }
-        public IEnumerable<int> SearchingDrawers { get; set; }
-        public bool? LessonIncluded { get; set; }
-        public bool OnlyTicked { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-    }
+    public record Query(
+        Guid UserId,
+        string SearchingTerm,
+        IEnumerable<int> SearchingDrawers,
+        bool? LessonIncluded,
+        bool? Ticked,
+        int PageNumber,
+        int PageSize) : IRequest<IEnumerable<CardSummary>>;
 
     public class CardSummary
     {
@@ -95,7 +94,7 @@ public class SearchCards
     public class SideSummary
     {
         public int Type { get; set; }
-        public int Lang { get; set; }
+        public string Lang { get; set; }
         public string Value { get; set; }
         public string Example { get; set; }
         public string Comment { get; set; }
@@ -103,6 +102,4 @@ public class SearchCards
         public bool IsUsed { get; set; }
         public bool IsTicked { get; set; }
     }
-
-
 }

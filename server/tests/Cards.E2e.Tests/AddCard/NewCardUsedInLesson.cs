@@ -31,8 +31,8 @@ public class NewCardUsedInLesson : AddCardSuccessContext
 
     public override IReadOnlyCollection<Detail> ExpectedDetails { get; } = new[]
     {
-        new Detail { IsQuestion = true, IsTicked = false, Drawer = 1, Counter = 0, NextRepeat = new DateTime() },
-        new Detail { IsQuestion = true, IsTicked = false, Drawer = 1, Counter = 0, NextRepeat = new DateTime() }
+        new Detail { IsQuestion = true, IsTicked = false, Drawer = 0, Counter = 0, NextRepeat = new DateTime() },
+        new Detail { IsQuestion = true, IsTicked = false, Drawer = 0, Counter = 0, NextRepeat = new DateTime() }
     };
 }
 
@@ -62,7 +62,7 @@ public class NewCardNotUsedInLesson : AddCardSuccessContext
 
     public override IReadOnlyCollection<Detail> ExpectedDetails { get; } = new[]
     {
-        new Detail { IsQuestion = false, Drawer = 1, Counter = 0, NextRepeat = null },
-        new Detail { IsQuestion = false, Drawer = 1, Counter = 0, NextRepeat = null }
+        new Detail { IsQuestion = false, Drawer = 0, Counter = 0, NextRepeat = null },
+        new Detail { IsQuestion = false, Drawer = 0, Counter = 0, NextRepeat = null }
     };
 }

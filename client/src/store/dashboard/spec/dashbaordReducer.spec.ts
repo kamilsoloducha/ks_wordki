@@ -9,7 +9,7 @@ describe("dashboardReducer", () => {
     new mocks.GetForecastSuccessCtx(),
   ].forEach((item) => {
     it("should return proper value :: " + item.constructor.name, () => {
-      var result = reducer(item.givenState, item.action);
+      const result = reducer(item.givenState, item.action);
       expect(result).toStrictEqual(item.expectedResult);
     });
   });

@@ -1,5 +1,4 @@
 import { call, select, takeLatest } from "@redux-saga/core/effects";
-import { selectUserId } from "store/user/selectors";
 import * as api from "api";
 import { selectLessonHistory, selectShouldSendAnswer } from "../selectors";
 import UserRepeat from "pages/lesson/models/userRepeat";

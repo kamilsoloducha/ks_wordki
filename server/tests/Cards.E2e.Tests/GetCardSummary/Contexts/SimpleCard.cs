@@ -25,8 +25,8 @@ internal class SimpleCard : GetCardSummaryContext
 
         ExpectedResponse = new CardSummaryDto(
             string.Empty,
-            new SideSummaryDto((int)SideType.Front, "FrontValue", "FrontExample", string.Empty, 2, true, true),
-            new SideSummaryDto((int)SideType.Back, "BackValue", "BackExample", string.Empty, 2, true, true)
+            new SideSummaryDto((int)SideType.Front, "FrontValue", "FrontExample", string.Empty, 3, true, true),
+            new SideSummaryDto((int)SideType.Back, "BackValue", "BackExample", string.Empty, 3, true, true)
         );
     }
 }

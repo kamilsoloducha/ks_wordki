@@ -110,12 +110,7 @@ internal class QueryRepository : IQueryRepository
             .Where(x => x.Owner.UserId == new UserId(ownerId))
             .Select(x => new GroupSummary(x.Id, x.Name.Text, x.Front, x.Back, x.Cards.Count))
             .ToListAsync(cancellationToken);
-
-    public Task<CardSummary> GetCardSummary(Guid ownerId, long groupId, long cardId,
-        CancellationToken cancellationToken)
-        => _cardsContext.CardsDetails.SingleOrDefaultAsync(
-            x => x.OwnerId == ownerId && x.GroupId == groupId && x.CardId == cardId, cancellationToken);
-
+    
     public async Task<IEnumerable<Card>> GetCards(UserId ownerId, long groupId, CancellationToken cancellationToken)
         => await _cardsContext.Cards
             .Where(x => x.Group.Owner.UserId == ownerId && x.Group.Id == groupId)
@@ -165,12 +160,10 @@ internal class QueryRepository : IQueryRepository
             .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) ||
                         x.FrontValue.Contains(query.SearchingTerm) ||
                         x.BackValue.Contains(query.SearchingTerm))
-            .Where(x => !query.SearchingDrawers.Any() || query.SearchingDrawers.Contains(x.FrontDrawer) ||
-                        query.SearchingDrawers.Contains(x.BackDrawer))
-            .Where(x => !query.LessonIncluded.HasValue || x.BackLessonIncluded == query.LessonIncluded ||
-                        x.FrontLessonIncluded == query.LessonIncluded)
-            .Where(x => !query.OnlyTicked || x.BackIsTicked)
-            .Where(x => x.OwnerId == query.OwnerId)
+            .Where(x => !query.LessonIncluded.HasValue || x.FrontIsQuestion == query.LessonIncluded.Value || x.BackIsQuestion == query.LessonIncluded.Value)
+            .Where(x => !query.OnlyTicked.HasValue || x.FrontIsTicked == query.OnlyTicked.Value || x.BackIsTicked == query.OnlyTicked.Value)
+            .Where(x => x.UserId == query.OwnerId)
+            .OrderBy(x => x.CardId)
             .Skip(query.Skip)
             .Take(query.Take)
             .ToListAsync(cancellationToken);
@@ -180,16 +173,29 @@ internal class QueryRepository : IQueryRepository
             .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) ||
                         x.FrontValue.Contains(query.SearchingTerm) ||
                         x.BackValue.Contains(query.SearchingTerm))
-            .Where(x => !query.SearchingDrawers.Any() || query.SearchingDrawers.Contains(x.FrontDrawer) ||
-                        query.SearchingDrawers.Contains(x.BackDrawer))
-            .Where(x => !query.LessonIncluded.HasValue || x.BackLessonIncluded == query.LessonIncluded ||
-                        x.FrontLessonIncluded == query.LessonIncluded)
-            .Where(x => !query.OnlyTicked || x.BackIsTicked)
-            .Where(x => x.OwnerId == query.OwnerId)
+            .Where(x => !query.LessonIncluded.HasValue || x.FrontIsQuestion == query.LessonIncluded.Value || x.BackIsQuestion == query.LessonIncluded.Value)
+            .Where(x => !query.OnlyTicked.HasValue || x.FrontIsTicked == query.OnlyTicked.Value || x.BackIsTicked == query.OnlyTicked.Value)
+            .Where(x => x.UserId == query.OwnerId)
             .CountAsync(cancellationToken);
 
-    public Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
-        => _cardsContext.CardsOverviews.FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken);
+    public async Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
+    {
+        var cards = await _cardsContext.Cards.Where(x => x.Group.Owner.UserId == new UserId(ownerId)).ToListAsync(cancellationToken);
+        var details = cards.SelectMany(x => x.Details).ToList();
+
+        return new CardsOverview
+        {
+            All = cards.Count,
+            Ticked = details.Count(x => x.IsTicked),
+            LessonIncluded = details.Count(x => x.IsQuestion),
+            Drawer1 = details.Count(x => x.Drawer.Value == 1),
+            Drawer2 = details.Count(x => x.Drawer.Value == 2),
+            Drawer3 = details.Count(x => x.Drawer.Value == 3),
+            Drawer4 = details.Count(x => x.Drawer.Value == 4),
+            Drawer5 = details.Count(x => x.Drawer.Value == 5),
+        };
+    }
+
 
     public Task<IEnumerable<LanguageDto>> GetLanguages(UserId userId, CancellationToken cancellationToken)
         => Task.FromResult(_cardsContext.Groups.Where(x => x.Owner.UserId == userId).Select(x => x.Front)

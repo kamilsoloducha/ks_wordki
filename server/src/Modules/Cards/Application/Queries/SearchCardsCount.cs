@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Cards.Application.Queries;
 
-public class SearchCardsCount
+public abstract class SearchCardsCount
 {
     internal class QueryHandler : IRequestHandler<Query, int>
     {
@@ -21,30 +21,21 @@ public class SearchCardsCount
         public async Task<int> Handle(Query request, CancellationToken cancellationToken)
         {
             var searchQuery = SearchCardsQuery.Create(
-                request.OwnerId,
+                request.UserId,
                 request.SearchingTerm,
                 request.SearchingDrawers,
                 request.LessonIncluded,
-                request.OnlyTicked,
-                request.PageNumber,
-                request.PageSize);
+                request.Ticked);
 
             var count = await _queryRepository.SearchCardsCount(searchQuery, cancellationToken);
             return count;
         }
 
     }
-
-    public class Query : IRequest<int>
-    {
-        public Guid OwnerId { get; set; }
-        public string SearchingTerm { get; set; }
-        public IEnumerable<int> SearchingDrawers { get; set; }
-        public bool? LessonIncluded { get; set; }
-        public bool OnlyTicked { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-    }
-
-
+    public record Query(
+        Guid UserId,
+        string SearchingTerm,
+        IEnumerable<int> SearchingDrawers,
+        bool? LessonIncluded,
+        bool? Ticked) : IRequest<int>;
 }

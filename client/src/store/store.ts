@@ -61,7 +61,7 @@ sagaMiddleware.run(lesson.updateCardEffect);
 
 sagaMiddleware.run(cardsSearch.searchEffect);
 sagaMiddleware.run(cardsSearch.getOverviewEffect);
-sagaMiddleware.run(cardsSearch.setPaginationEffect);
+sagaMiddleware.run(cardsSearch.filterEffect);
 sagaMiddleware.run(cardsSearch.setSearchingTermEffect);
 sagaMiddleware.run(cardsSearch.updateCardEffect);
 sagaMiddleware.run(cardsSearch.deleteCardEffect);

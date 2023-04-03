@@ -5,7 +5,7 @@ import { GroupSummary } from "pages/groups/models/groupSummary";
 
 export const groupsSlice = createSlice({
   name: "groups",
-  initialState: initialState,
+  initialState,
   reducers: {
     getGroupsSummary: (state: GroupsState): void => {
       state.isLoading = true;

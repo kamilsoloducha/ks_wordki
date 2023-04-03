@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Api.Configuration;
@@ -181,15 +182,36 @@ public class CardsController : BaseController
     }
 
 
-    [HttpPut("search")]
+    [HttpGet("search")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Get(SearchCards.Query query, CancellationToken cancellationToken)
-        => Ok(await Mediator.Send(query, cancellationToken));
+    public async Task<IActionResult> Get([FromQuery] Model.Requests.SearchCards request, CancellationToken cancellationToken)
+    {
+        if (!TryGetUserIdFromToken(out var userId)) return Unauthorized();
 
-    [HttpPut("search/count")]
+        var query = new SearchCards.Query(userId, request.SearchingTerm,
+            request.SearchingDrawers?.Where(x => x.HasValue).Select(x => x.Value) ?? Enumerable.Empty<int>(),
+            request.LessonIncluded, request.IsTicked, request.PageNumber, request.PageSize);
+
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return Ok(result);
+    }
+        
+
+    [HttpGet("search/count")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> Get(SearchCardsCount.Query query, CancellationToken cancellationToken)
-        => Ok(await Mediator.Send(query, cancellationToken));
+    public async Task<IActionResult> Get([FromQuery] Model.Requests.SearchCardsCount request, CancellationToken cancellationToken)
+    {
+        if (!TryGetUserIdFromToken(out var userId)) return Unauthorized();
+
+        var query = new SearchCardsCount.Query(userId, request.SearchingTerm,
+            request.SearchingDrawers?.Where(x => x.HasValue).Select(x => x.Value) ?? Enumerable.Empty<int>(),
+            request.LessonIncluded, request.IsTicked);
+
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return Ok(result);
+    }
 
     [HttpGet("overview/{ownerId}")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]

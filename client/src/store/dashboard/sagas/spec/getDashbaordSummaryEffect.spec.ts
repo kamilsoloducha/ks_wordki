@@ -18,7 +18,7 @@ describe("getCardsEffect", () => {
     getDashboardMock = jest.spyOn(dashboard, "getDashboardSummaryApi");
     getForecastMock = jest.spyOn(dashboard, "getForecast");
     // jest.useFakeTimers("modern");
-    //jest.setSystemTime(new Date(2022, 1, 2, 3, 4, 5));
+    // jest.setSystemTime(new Date(2022, 1, 2, 3, 4, 5));
     saga = getDashbaordSummaryEffect();
   });
 

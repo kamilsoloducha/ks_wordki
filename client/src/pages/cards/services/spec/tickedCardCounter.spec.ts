@@ -9,7 +9,7 @@ describe("getTickedCardCount", () => {
     new mocks.SingleItemSingleSideList(),
   ].forEach((item) => {
     it("should return proper value ::" + item.constructor.name, () => {
-      var result = getTickedCardCount(item.cards);
+      const result = getTickedCardCount(item.cards);
       expect(result).toBe(item.result);
     });
   });
