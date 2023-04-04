@@ -60,10 +60,8 @@ export const lessonSlice = createSlice({
       state: LessonState,
       action: PayloadAction<p.GetCardsCountSuccess>
     ): void => {
-      const count =
-        state.settings.count < action.payload.count ? action.payload.count : state.settings.count;
-      state.cardsCount = count;
-      state.settings.count = count;
+      state.cardsCount = action.payload.count;
+      state.settings.count = action.payload.count;
     },
     getCards: (state: LessonState): void => {
       state.lessonState = lessonState.Loading;

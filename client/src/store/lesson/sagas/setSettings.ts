@@ -8,7 +8,7 @@ import { getCardsCount } from "../reducer";
 
 export function* setSettingLanguageEffect(): SagaIterator {
   while (true) {
-    yield take("lesson/setSettingLanguage");
+    yield take("lesson/setSettingsLanguage");
     const settings: LessonSettings = yield select(selectSettings);
     if (settings.mode === lessonMode.LessonMode.New) {
       return;

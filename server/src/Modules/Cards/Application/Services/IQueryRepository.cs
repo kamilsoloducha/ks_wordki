@@ -18,7 +18,7 @@ public interface IQueryRepository
         bool lessonIncluded,
         CancellationToken cancellationToken);
 
-    Task<int> GetDailyRepeatsCount(UserId userId, DateTime dateTime, IEnumerable<string> questionLanguage,
+    Task<int> GetDailyRepeatsCount(UserId userId, DateTime dateTime, string[] languages,
         CancellationToken cancellationToken);
 
     Task<int> GetNewRepeatsCount(UserId userId, string questionLanguage, long? groupId,

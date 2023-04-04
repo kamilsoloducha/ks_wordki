@@ -4,9 +4,7 @@ import * as queries from "../queries";
 import http, { createErrorResponse, createResponse } from "./httpBase";
 
 export async function repeats(request: queries.RepeatsQuery): Promise<Repeat[]> {
-  const response = await http.get<Repeat[]>(
-    `/repeats?GroupId=${request.groupId}&Count=${request.count}&Languages=${request.questionLanguage}&LessonIncluded=${request.lessonIncluded}`
-  );
+  const response = await http.get<Repeat[]>(`/repeats${getQuery(request)}`);
   return response.data;
 }
 
@@ -14,9 +12,28 @@ export async function repeatsCount(
   request: queries.RepeatsCountQuery
 ): Promise<ApiResponse<number>> {
   try {
-    const response = await http.post<number>(`/repeats/count`, request);
+    getQuery(request);
+    const response = await http.get<number>(`/repeats/count${getQuery(request)}`);
     return createResponse(response.data);
   } catch (e: any) {
     return createErrorResponse("");
   }
+}
+
+export function getQuery(request: any): string {
+  let query = "?";
+  // tslint:disable-next-line:forin
+  for (const prop in request) {
+    if (request[prop] instanceof Array) {
+      const array = request[prop] as [];
+
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < array.length; i++) {
+        query += `${prop}=${array[i]}&`;
+      }
+      continue;
+    }
+    query += `${prop}=${request[prop]}&`;
+  }
+  return query;
 }

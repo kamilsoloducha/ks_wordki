@@ -26,7 +26,8 @@ public abstract class GetDashboardSummary
         {
             var ownerId = UserId.Restore(request.UserId);
 
-            var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, RepeatPeriod.To, Enumerable.Empty<string>(), cancellationToken);
+            var dailyRepeats = await _queryRepository.GetDailyRepeatsCount(ownerId, RepeatPeriod.To,
+                Array.Empty<string>(), cancellationToken);
             var groupsCount = await _queryRepository.GetGroupsCount(ownerId, cancellationToken);
             var cardsCount = await _queryRepository.GetCardsCount(ownerId, cancellationToken);
 

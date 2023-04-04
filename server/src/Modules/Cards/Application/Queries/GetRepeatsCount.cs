@@ -26,16 +26,12 @@ public class GetRepeatsCount
         {
             var ownerId = UserId.Restore(request.UserId);
 
-            var repeats = await _queryRepository.GetDailyRepeatsCount(ownerId, RepeatPeriod.To, Enumerable.Empty<string>(), cancellationToken);
+            var repeats = await _queryRepository.GetDailyRepeatsCount(ownerId, RepeatPeriod.To,
+                request.QuestionLanguage, cancellationToken);
 
             return repeats;
         }
     }
 
-    public class Query : IRequest<int>
-    {
-        public Guid UserId { get; set; }
-        public IEnumerable<int> QuestionLanguage { get; set; }
-        public bool IsUsed { get; set; }
-    }
+    public record Query(Guid UserId, string[] QuestionLanguage) : IRequest<int>;
 }

@@ -20,6 +20,11 @@ export function* getCardsEffect(): SagaIterator {
 
     const repeats: Repeat[] = yield call(api.repeats, getRepeatsRequest);
 
+    if (repeats.length === 0) {
+      yield call(forwardTo, "/dashboard");
+      continue;
+    }
+
     const lessonType: number = yield select(selectLessonType);
     const startLessonRequest = { userId, lessonType } as api.StartLessonRequest;
 

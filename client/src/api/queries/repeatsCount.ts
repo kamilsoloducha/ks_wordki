@@ -1,4 +1,3 @@
 export interface RepeatsCountQuery {
-  questionLanguage: string[] | null;
-  userId: string;
+  languages: string[] | null;
 }

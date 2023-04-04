@@ -17,6 +17,7 @@ namespace Api.Controllers;
 public class RepeatsController : BaseController
 {
     private readonly IHashIdsService _hashIds;
+
     public RepeatsController(IMediator mediator, IHashIdsService hashIds) : base(mediator)
     {
         _hashIds = hashIds;
@@ -33,23 +34,32 @@ public class RepeatsController : BaseController
         if (!request.LessonIncluded.HasValue) return BadRequest();
 
         long? groupId = default;
-            
+
         if (_hashIds.TryGetLongId(request.GroupId, out var unHashedGroupId))
         {
             groupId = unHashedGroupId;
         }
 
-        var quest = new GetRepeats.Query(userId, groupId, request.Count, request.Languages,
+        var query = new GetRepeats.Query(userId, groupId, request.Count, request.Languages,
             request.LessonIncluded.Value);
 
-        var result = await Mediator.Send(quest, cancellationToken);
+        var result = await Mediator.Send(query, cancellationToken);
 
         return Ok(result);
     }
-            
 
-    [HttpPost("count")]
+
+    [HttpGet("count")]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> GetRepeatsCount([FromBody] GetRepeatsCount.Query query, CancellationToken cancellationToken)
-        => Ok(await Mediator.Send(query, cancellationToken));
+    public async Task<IActionResult> GetRepeatsCount([FromQuery] Api.Model.Requests.GetRepeatsCount request,
+        CancellationToken cancellationToken)
+    {
+        if (!TryGetUserIdFromToken(out var userId)) return Unauthorized();
+
+        var query = new GetRepeatsCount.Query(userId, request.Languages);
+
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return Ok(result);
+    }
 }

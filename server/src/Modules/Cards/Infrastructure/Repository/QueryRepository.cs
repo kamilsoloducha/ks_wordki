@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
+using Cards.Domain.Enums;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using Cards.Infrastructure.DataAccess;
@@ -72,11 +73,14 @@ internal class QueryRepository : IQueryRepository
     //                 (!questionLanguage.Any() || questionLanguage.Contains(x.QuestionLanguage)),
     //             cancellationToken);
 
-    public Task<int> GetDailyRepeatsCount(UserId userId, DateTime dateTime, IEnumerable<string> questionLanguage,
+    public Task<int> GetDailyRepeatsCount(UserId userId, DateTime dateTime, string[] languages,
         CancellationToken cancellationToken)
         => _cardsContext.Details.CountAsync(
             x => x.Card.Group.Owner.UserId == userId &&
                  x.IsQuestion == true &&
+                 (languages.Length == 0 || 
+                  (x.SideType == SideType.Front && languages.Contains(x.Card.Group.Front)) ||
+                  (x.SideType == SideType.Back && languages.Contains(x.Card.Group.Back))) &&
                  x.NextRepeat <= dateTime, cancellationToken
         );
 
@@ -110,7 +114,7 @@ internal class QueryRepository : IQueryRepository
             .Where(x => x.Owner.UserId == new UserId(ownerId))
             .Select(x => new GroupSummary(x.Id, x.Name.Text, x.Front, x.Back, x.Cards.Count))
             .ToListAsync(cancellationToken);
-    
+
     public async Task<IEnumerable<Card>> GetCards(UserId ownerId, long groupId, CancellationToken cancellationToken)
         => await _cardsContext.Cards
             .Where(x => x.Group.Owner.UserId == ownerId && x.Group.Id == groupId)
@@ -160,8 +164,10 @@ internal class QueryRepository : IQueryRepository
             .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) ||
                         x.FrontValue.Contains(query.SearchingTerm) ||
                         x.BackValue.Contains(query.SearchingTerm))
-            .Where(x => !query.LessonIncluded.HasValue || x.FrontIsQuestion == query.LessonIncluded.Value || x.BackIsQuestion == query.LessonIncluded.Value)
-            .Where(x => !query.OnlyTicked.HasValue || x.FrontIsTicked == query.OnlyTicked.Value || x.BackIsTicked == query.OnlyTicked.Value)
+            .Where(x => !query.LessonIncluded.HasValue || x.FrontIsQuestion == query.LessonIncluded.Value ||
+                        x.BackIsQuestion == query.LessonIncluded.Value)
+            .Where(x => !query.OnlyTicked.HasValue || x.FrontIsTicked == query.OnlyTicked.Value ||
+                        x.BackIsTicked == query.OnlyTicked.Value)
             .Where(x => x.UserId == query.OwnerId)
             .OrderBy(x => x.CardId)
             .Skip(query.Skip)
@@ -173,14 +179,17 @@ internal class QueryRepository : IQueryRepository
             .Where(x => string.IsNullOrWhiteSpace(query.SearchingTerm) ||
                         x.FrontValue.Contains(query.SearchingTerm) ||
                         x.BackValue.Contains(query.SearchingTerm))
-            .Where(x => !query.LessonIncluded.HasValue || x.FrontIsQuestion == query.LessonIncluded.Value || x.BackIsQuestion == query.LessonIncluded.Value)
-            .Where(x => !query.OnlyTicked.HasValue || x.FrontIsTicked == query.OnlyTicked.Value || x.BackIsTicked == query.OnlyTicked.Value)
+            .Where(x => !query.LessonIncluded.HasValue || x.FrontIsQuestion == query.LessonIncluded.Value ||
+                        x.BackIsQuestion == query.LessonIncluded.Value)
+            .Where(x => !query.OnlyTicked.HasValue || x.FrontIsTicked == query.OnlyTicked.Value ||
+                        x.BackIsTicked == query.OnlyTicked.Value)
             .Where(x => x.UserId == query.OwnerId)
             .CountAsync(cancellationToken);
 
     public async Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
     {
-        var cards = await _cardsContext.Cards.Where(x => x.Group.Owner.UserId == new UserId(ownerId)).ToListAsync(cancellationToken);
+        var cards = await _cardsContext.Cards.Where(x => x.Group.Owner.UserId == new UserId(ownerId))
+            .ToListAsync(cancellationToken);
         var details = cards.SelectMany(x => x.Details).ToList();
 
         return new CardsOverview
