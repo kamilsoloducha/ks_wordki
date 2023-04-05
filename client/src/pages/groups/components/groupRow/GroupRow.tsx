@@ -13,16 +13,10 @@ export default function GroupRow({ groupSummary, onClick }: Model) {
 
   return (
     <div className="group-row-container" onClick={onClickHandle}>
-      <div className="group-row-flags">
-        <img alt={front.label} src={front.icon} width="24px" />
-        <img alt={back.label} src={back.icon} width="24px" />
-      </div>
       <div className="group-row-name">
         <b>{groupSummary.name}</b>
       </div>
-      <div className="group-row-cards">
-        {groupSummary.cardsCount}/{groupSummary.cardsEnabled}
-      </div>
+      <div className="group-row-cards">{groupSummary.cardsCount}</div>
     </div>
   );
 }

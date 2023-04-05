@@ -12,8 +12,6 @@ export function* updateCardEffect(): SagaIterator {
   while (true) {
     const action: PayloadAction<UpdateCard> = yield take("lesson/updateCard");
 
-    const userId: string = yield select(selectUserId);
-
     const request = {
       front: {
         value: action.payload.form.frontValue,
@@ -29,12 +27,5 @@ export function* updateCardEffect(): SagaIterator {
       },
       comment: "",
     } as api.UpdateCardRequest;
-
-    const response: api.UpdateCardResponse | boolean = yield call(api.updateCard2, request);
-    yield put(
-      response !== false
-        ? updateCardSuccess({ form: action.payload.form })
-        : requestFailed({} as any)
-    );
   }
 }

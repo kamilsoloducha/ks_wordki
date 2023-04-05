@@ -15,10 +15,6 @@ export function Row({ card, onClick }: RowModel): ReactElement {
       </div>
       <div className="row-group-details">
         <p>{card.groupName}</p>
-        <div className="row-group-langauges">
-          <img alt={frontLanguage.label} src={frontLanguage.icon} width="24px" />
-          <img alt={backLanguage.label} src={backLanguage.icon} width="24px" />
-        </div>
       </div>
     </div>
   );

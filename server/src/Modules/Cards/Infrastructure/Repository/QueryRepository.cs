@@ -117,7 +117,10 @@ internal class QueryRepository : IQueryRepository
 
     public async Task<IEnumerable<Card>> GetCards(UserId ownerId, long groupId, CancellationToken cancellationToken)
         => await _cardsContext.Cards
-            .Where(x => x.Group.Owner.UserId == ownerId && x.Group.Id == groupId)
+            .Where(x => 
+                x.Group.Owner.UserId == ownerId &&
+                x.Group.Id == groupId &&
+                x.Details.Any())
             .ToListAsync(cancellationToken);
 
     public Task<Card> GetCard(UserId ownerId, long cardId, CancellationToken cancellationToken)
@@ -188,7 +191,8 @@ internal class QueryRepository : IQueryRepository
 
     public async Task<CardsOverview> GetCardsOverview(Guid ownerId, CancellationToken cancellationToken)
     {
-        var cards = await _cardsContext.Cards.Where(x => x.Group.Owner.UserId == new UserId(ownerId))
+        var cards = await _cardsContext.Cards
+            .Where(x => x.Group.Owner.UserId == new UserId(ownerId) && x.Details.Any())
             .ToListAsync(cancellationToken);
         var details = cards.SelectMany(x => x.Details).ToList();
 

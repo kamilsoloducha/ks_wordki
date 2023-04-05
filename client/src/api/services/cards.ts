@@ -70,13 +70,9 @@ export async function addCard(groupId: string, card: CardSummary): Promise<strin
   }
 }
 
-export async function deleteCard(
-  userId: string,
-  groupId: string,
-  cardId: string
-): Promise<{} | boolean> {
+export async function deleteCard(cardId: string): Promise<{} | boolean> {
   try {
-    await http.delete<{}>(`/cards/delete/${userId}/${groupId}/${cardId}`);
+    await http.delete<{}>(`/cards/${cardId}`);
     return {};
   } catch (error: any) {
     return false;
@@ -127,17 +123,6 @@ export async function searchCardsCount(request: queries.CardsSearchQuery): Promi
     return response.data;
   } catch (error) {
     return { error };
-  }
-}
-
-export async function updateCard2(
-  request: commands.UpdateCardRequest
-): Promise<responses.UpdateCardResponse | boolean> {
-  try {
-    const response = await http.put<responses.UpdateCardResponse>(`/cards/update`, request);
-    return response.data;
-  } catch (error) {
-    return false;
   }
 }
 
