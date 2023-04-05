@@ -16,7 +16,7 @@ export function* getCardsEffect(): SagaIterator {
     const userId: string = yield select(selectUserId);
     const settings: LessonSettings = yield select(selectSettings);
 
-    const getRepeatsRequest = prepareRequest(settings, userId);
+    const getRepeatsRequest = prepareRequest(settings);
 
     const repeats: Repeat[] = yield call(api.repeats, getRepeatsRequest);
 
@@ -34,11 +34,10 @@ export function* getCardsEffect(): SagaIterator {
   }
 }
 
-function prepareRequest(settings: LessonSettings, userId: string): api.RepeatsQuery {
+function prepareRequest(settings: LessonSettings): api.RepeatsQuery {
   const request: api.RepeatsQuery = {
     count: settings.count,
-    questionLanguage: settings.languages,
-    ownerId: userId,
+    languages: settings.languages,
     groupId: settings.mode === LessonMode.Repetition ? null : settings.selectedGroupId,
     lessonIncluded: settings.mode === LessonMode.Repetition,
   };

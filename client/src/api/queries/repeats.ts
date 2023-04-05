@@ -1,7 +1,6 @@
 export interface RepeatsQuery {
-  ownerId: string;
   count: number;
-  questionLanguage: string[] | null;
+  languages: string[] | null;
   groupId: string | null;
   lessonIncluded: boolean;
 }
