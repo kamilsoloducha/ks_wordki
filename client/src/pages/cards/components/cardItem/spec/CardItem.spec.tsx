@@ -5,11 +5,9 @@ import { CardSummaryBuilder } from "test/builders";
 import { CardItem } from "../CardItem";
 
 describe("CardItem", () => {
-
   const mockFunc = jest.fn((item: CardSummary) => {});
 
-  beforeEach(() => {
-  });
+  beforeEach(() => {});
 
   afterEach(() => {
     mockFunc.mockClear();

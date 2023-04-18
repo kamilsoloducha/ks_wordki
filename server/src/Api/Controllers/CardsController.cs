@@ -55,7 +55,6 @@ public class CardsController : BaseController
     }
 
     [HttpPost("add/extension")]
-    [Authorize(Policy = AuthorizationExtensions.ChromeExtensionPolicy)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Add(Model.Requests.AddCardFromExtension request,
         CancellationToken cancellationToken)

@@ -1,11 +1,10 @@
 #info-group {
     margin: 10px 0;
-
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 
     div {
-        flex-grow: 2;
-        flex-basis: 0;
+        flex: 1;
     }
 }

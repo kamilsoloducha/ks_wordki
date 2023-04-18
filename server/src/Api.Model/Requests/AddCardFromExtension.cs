@@ -1,3 +1,6 @@
 namespace Api.Model.Requests;
 
-public record AddCardFromExtension(string Value);
+public class AddCardFromExtension
+{
+    public string Value { get; }
+}

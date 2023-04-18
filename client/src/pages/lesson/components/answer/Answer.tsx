@@ -1,6 +1,7 @@
 import "./Answer.scss";
 import { ReactElement } from "react";
 import * as leven from "pages/lesson/services/levenshteinDistance";
+import { compare } from "pages/lesson/services/compare";
 
 export default function Answer({
   isVisible,
@@ -8,16 +9,17 @@ export default function Answer({
   correctAnswer,
   exampleAnswer,
 }: Model): ReactElement {
+  const isCorrect = compare(correctAnswer, userAnswer);
   const answer = leven.levenshtein(correctAnswer, userAnswer);
   return (
     <div className={`correct-answer `}>
       <div className="correct-answer-value">
-        {answer.map((item: any, i: number) => (
+        {answer.map((item: leven.LevenpathResult, i: number) => (
           <span
             key={i}
-            className={`correct-answer-value ${item.type === leven.Equal ? "correct" : "wrong"} ${
-              item.type === leven.Insert ? "additional" : ""
-            }
+            className={`correct-answer-value ${
+              item.type === leven.Equal || isCorrect ? "correct" : "wrong"
+            } ${item.type === leven.Insert ? "additional" : ""}
             ${isVisible ? "" : "invisible"}`}
           >
             {item.char}

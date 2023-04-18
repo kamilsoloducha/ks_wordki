@@ -25,7 +25,11 @@ $drawer-width: 2px;
             .row-side-value {
                 font-size: 1.75rem;
                 margin-bottom: 5px;
-                color: rgb(168, 168, 168)
+                color: rgb(168, 168, 168);
+
+                .lowlight {
+                    color: rgb(93, 93, 93),
+                }
             }
         }
 

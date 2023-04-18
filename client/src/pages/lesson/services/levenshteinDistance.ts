@@ -100,7 +100,7 @@ export const Delete = 2;
 export const Insert = 3;
 
 type Levenpath = { i: number; j: number; type: number }[];
-type LevenpathResult = { char: string; type: number };
+export type LevenpathResult = { char: string; type: number };
 export function levenshtein(str1: string, str2: string): LevenpathResult[] {
   str1 = str1.toLowerCase();
   str2 = str2.toLowerCase();

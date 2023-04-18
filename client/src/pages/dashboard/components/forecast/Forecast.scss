@@ -19,22 +19,18 @@
     .forecast-items-container {
         width: 100%;
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         gap: 10px
     }
 }
 
-
-
 .forecast-item-container {
-    flex-grow: 1;
+    flex: 1;
     text-align: center;
-    // cursor: pointer;
 
     .forecast-item-date {
         font-size: 15px;
     }
-
 
     .forecast-item-value {
         margin-top: 10px;

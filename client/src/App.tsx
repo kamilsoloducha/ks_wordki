@@ -2,7 +2,7 @@ import "./App.scss";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova/theme.css";
 import "primereact/resources/primereact.min.css";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import { selectIsLogin } from "store/user/selectors";
