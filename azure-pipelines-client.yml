@@ -9,7 +9,7 @@ parameters:
     type: string
     default: Azure Pipelines
     values:
-      - Default
+      - ARM
       - Azure Pipelines
   - name: UnitTests
     displayName: Run unit tests
