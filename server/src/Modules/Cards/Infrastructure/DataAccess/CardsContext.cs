@@ -24,13 +24,6 @@ internal class CardsContext : DbContext
     public DbSet<Card> Cards { get; set; }
     public DbSet<Details> Details { get; set; }
 
-    public DbSet<GroupSummary> GroupSummaries { get; set; }
-    public DbSet<CardSummary> CardsDetails { get; set; }
-    public DbSet<Repeat> Repeats { get; set; }
-    public DbSet<RepeatCount> RepeatCounts { get; set; }
-    public DbSet<GroupToLesson> GroupsToLesson { get; set; }
-    public DbSet<CardsOverview> CardsOverviews { get; set; }
-
     public CardsContext(
         IConnectionStringProvider connectionStringProvider,
         IHostEnvironment hostEnvironment,

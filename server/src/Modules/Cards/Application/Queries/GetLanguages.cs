@@ -25,7 +25,7 @@ public abstract class GetLanguages
         {
             var userId = new UserId(request.UserId);
             
-            return _queryRepository.GetLanguages(userId, cancellationToken);
+            return Task.FromResult(_queryRepository.GetLanguages(userId, cancellationToken));
         }
     }
 

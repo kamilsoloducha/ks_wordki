@@ -10,7 +10,7 @@ namespace Cards.Application.Services;
 
 public interface IQueryRepository
 {
-    Task<IEnumerable<Repeat>> GetRepeats(UserId userId,
+    Task<IReadOnlyList<Repeat>> GetRepeats(UserId userId,
         DateTime dateTime,
         int? count,
         IEnumerable<string> questionLanguage,
@@ -27,25 +27,25 @@ public interface IQueryRepository
     Task<int> GetGroupsCount(UserId userId, CancellationToken cancellationToken);
     Task<int> GetCardsCount(UserId userId, CancellationToken cancellationToken);
 
-    Task<IEnumerable<RepeatCount>> GetRepeatsCountSummary(UserId userId, DateTime dateFrom, DateTime dateTo,
+    Task<IReadOnlyList<RepeatCount>> GetRepeatsCountSummary(UserId userId, DateTime dateFrom, DateTime dateTo,
         CancellationToken cancellationToken);
 
 
-    Task<IEnumerable<GroupSummary>> GetGroupSummaries(Guid ownerId, CancellationToken cancellationToken);
-    Task<IEnumerable<GroupSummary>> GetGroupSummaries(SearchGroupsQuery query, CancellationToken cancellationToken);
+    Task<IReadOnlyList<GroupSummary>> GetGroupSummaries(Guid ownerId, CancellationToken cancellationToken);
+    Task<IReadOnlyList<GroupSummary>> GetGroupSummaries(SearchGroupsQuery query, CancellationToken cancellationToken);
     Task<int> GetGroupSummariesCount(SearchGroupsQuery query, CancellationToken cancellationToken);
-    Task<IEnumerable<Card>> GetCards(UserId ownerId, long groupId, CancellationToken cancellationToken);
+    Task<IReadOnlyList<Card>> GetCards(UserId ownerId, long groupId, CancellationToken cancellationToken);
     Task<Card> GetCard(UserId userId, long cardId, CancellationToken cancellationToken);
-    Task<IEnumerable<CardSummary>> GetCardSummaries(long groupId, CancellationToken cancellationToken);
+    Task<IReadOnlyList<CardSummary>> GetCardSummaries(long groupId, CancellationToken cancellationToken);
     Task<Group> GetGroup(Guid userId, long groupId, CancellationToken cancellationToken);
-    Task<IEnumerable<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken);
+    Task<IReadOnlyList<GroupToLesson>> GetGroups(Guid ownerId, CancellationToken cancellationToken);
 
-    Task<IEnumerable<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop,
+    Task<IReadOnlyList<RepeatCount>> GetRepeatsPerDay(Guid ownerId, DateTime start, DateTime stop,
         CancellationToken cancellationToken);
 
-    Task<IEnumerable<CardSummary>> SearchCards(SearchCardsQuery query, CancellationToken cancellationToken);
+    Task<IReadOnlyList<CardSummary>> SearchCards(SearchCardsQuery query, CancellationToken cancellationToken);
     Task<int> SearchCardsCount(SearchCardsQuery query, CancellationToken cancellationToken);
     Task<CardsOverview> GetCardsOverview(Guid owerId, CancellationToken cancellationToken);
-    Task<IEnumerable<LanguageDto>> GetLanguages(UserId userId, CancellationToken cancellationToken);
+    IEnumerable<LanguageDto> GetLanguages(UserId userId, CancellationToken cancellationToken);
 
 }
