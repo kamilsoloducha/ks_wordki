@@ -17,9 +17,12 @@ export default function GroupDialog({
   };
 
   const footer = <Footer onhide={onHide} ondelete={ondelete} />;
-
+  const dialogContent = (
+    <GroupForm options={cardSides.map((x) => x.language)} group={group} onSubmit={onSubmit} />
+  );
   return (
     <Dialog
+      content={dialogContent}
       style={{ width: "50vw" }}
       footer={footer}
       visible={group !== null}
@@ -27,9 +30,7 @@ export default function GroupDialog({
       header={group?.id ? "Editing Group" : "Creating Group"}
       draggable={false}
       dismissableMask={true}
-    >
-      <GroupForm options={cardSides.map((x) => x.language)} group={group} onSubmit={onSubmit} />
-    </Dialog>
+    ></Dialog>
   );
 }
 

@@ -3,7 +3,9 @@
     "Api": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "5001",
+        "ASPNETCORE_URLS": "http://localhost:5000;https://localhost:5001"
       }
     }
   }

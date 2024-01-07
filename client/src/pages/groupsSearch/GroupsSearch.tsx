@@ -21,7 +21,7 @@ export default function GroupsSearchPage(): ReactElement {
 
   const onGroupNameChanged = (event$: any) => {
     const value = event$.target.value;
-    dispatch(actions.filterSetName({name: value}));
+    dispatch(actions.filterSetName({ name: value }));
   };
 
   const onGroupSelected = (groupId: string) => {
@@ -37,6 +37,19 @@ export default function GroupsSearchPage(): ReactElement {
   const onSave = () => {
     dispatch(actions.saveGroup());
   };
+
+  const dialogContent = (
+    <>
+      {isCardsLoading && <LoadingSpinner />}
+      {cards.map((x: any, index: number) => (
+        <Fragment key={index}>
+          <p>
+            {x.front.value} - {x.back.value}
+          </p>
+        </Fragment>
+      ))}
+    </>
+  );
 
   return (
     <>
@@ -72,20 +85,12 @@ export default function GroupsSearchPage(): ReactElement {
           ))}
         </div>
         <Dialog
+          content={dialogContent}
           onHide={onDialogHide}
           visible={selectedGroup !== null}
           draggable={false}
           footer={Footer({ onDialogHide, onSave })}
-        >
-          {isCardsLoading && <LoadingSpinner />}
-          {cards.map((x: any, index: number) => (
-            <Fragment key={index}>
-              <p>
-                {x.front.value} - {x.back.value}
-              </p>
-            </Fragment>
-          ))}
-        </Dialog>
+        ></Dialog>
       </div>
     </>
   );

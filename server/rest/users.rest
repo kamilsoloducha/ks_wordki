@@ -1,6 +1,6 @@
 @id = 4663083a-ead9-44dd-acf4-11810aaa78da
 
-@host = http://localhost:5000/users
+@host = https://localhost:5001/users
 //@host = http://147.135.208.14:5000/users
 //@host = https://wordki-server.herokuapp.com/users
 

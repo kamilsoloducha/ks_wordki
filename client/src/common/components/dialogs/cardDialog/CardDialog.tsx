@@ -23,23 +23,24 @@ export default function CardDialog({
   };
 
   const footer = <Footer onhide={onHide} ondelete={isEditing ? ondelete : undefined} />;
-
+  const content = (
+    <CardForm
+      card={card}
+      onSubmit={onSubmit}
+      frontLanguage={frontLanguage}
+      backLanguage={backLanguage}
+    />
+  );
   return (
     <Dialog
+      content={content}
       footer={footer}
       visible={visible}
       onHide={onHide}
       header={header}
       draggable={false}
       dismissableMask={false}
-    >
-      <CardForm
-        card={card}
-        onSubmit={onSubmit}
-        frontLanguage={frontLanguage}
-        backLanguage={backLanguage}
-      />
-    </Dialog>
+    ></Dialog>
   );
 }
 
