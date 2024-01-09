@@ -1,4 +1,4 @@
-import { call, put, select } from "@redux-saga/core/effects";
+import { call, put } from "@redux-saga/core/effects";
 import { ForecastModel } from "pages/dashboard/models/forecastModel";
 import { requestFailed } from "store/root/actions";
 import * as api from "api";

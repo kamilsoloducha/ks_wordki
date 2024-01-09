@@ -1,5 +1,4 @@
-import { call, put, select } from "@redux-saga/core/effects";
-import { selectUserId } from "store/user/selectors";
+import { call, put } from "@redux-saga/core/effects";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
 import { takeEvery } from "redux-saga/effects";

@@ -1,10 +1,6 @@
-import { getLanguageByType } from "common/models/languages";
 import "./GroupRow.scss";
 
 export default function GroupRow({ groupSummary, onClick }: Model) {
-  const front = getLanguageByType(groupSummary.front);
-  const back = getLanguageByType(groupSummary.back);
-
   const onClickHandle = () => {
     if (onClick) {
       onClick(groupSummary.id);

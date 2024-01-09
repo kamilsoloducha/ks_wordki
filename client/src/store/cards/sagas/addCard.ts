@@ -1,6 +1,5 @@
 import { call, put, select } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
-import { selectUserId } from "store/user/selectors";
 import { selectGroupId } from "../selectors";
 import { addCard } from "api";
 import { SagaIterator } from "redux-saga";

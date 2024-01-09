@@ -1,6 +1,4 @@
-import { Repeat } from "pages/lesson/models/repeat";
-
-export interface RepeatDto {
+export type RepeatDto = {
   sideId: number;
   cardId: number;
   questionSide: number;
@@ -14,4 +12,4 @@ export interface RepeatDto {
   backLanguage: number;
   comment: string;
   groupId: string;
-}
+};

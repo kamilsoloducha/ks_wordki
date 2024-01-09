@@ -38,19 +38,6 @@ export default function GroupsSearchPage(): ReactElement {
     dispatch(actions.saveGroup());
   };
 
-  const dialogContent = (
-    <>
-      {isCardsLoading && <LoadingSpinner />}
-      {cards.map((x: any, index: number) => (
-        <Fragment key={index}>
-          <p>
-            {x.front.value} - {x.back.value}
-          </p>
-        </Fragment>
-      ))}
-    </>
-  );
-
   return (
     <>
       {isSearching && <LoadingSpinner />}
@@ -85,12 +72,20 @@ export default function GroupsSearchPage(): ReactElement {
           ))}
         </div>
         <Dialog
-          content={dialogContent}
           onHide={onDialogHide}
           visible={selectedGroup !== null}
           draggable={false}
           footer={Footer({ onDialogHide, onSave })}
-        ></Dialog>
+        >
+          {isCardsLoading && <LoadingSpinner />}
+          {cards.map((x: any, index: number) => (
+            <Fragment key={index}>
+              <p>
+                {x.front.value} - {x.back.value}
+              </p>
+            </Fragment>
+          ))}
+        </Dialog>
       </div>
     </>
   );

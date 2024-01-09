@@ -1,12 +1,8 @@
 import "test/matcher/toDeepEqual";
 import * as cards from "api/services/cards";
 import { SagaIterator } from "redux-saga";
-import { call, put, select, take, takeEvery } from "redux-saga/effects";
-import { selectUserId } from "store/user/selectors";
-import { selectGroupId } from "store/cards/selectors";
-import { CardSummary } from "pages/cards/models";
+import { takeEvery } from "redux-saga/effects";
 import { updateCardEffect, updateCardWorker } from "../updateCard";
-import { updateCard, updateCardSuccess } from "store/cards/reducer";
 
 describe("updateCardEffect", () => {
   let saga: SagaIterator;

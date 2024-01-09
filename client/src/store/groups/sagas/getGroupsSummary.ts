@@ -1,4 +1,4 @@
-import { call, put, select } from "@redux-saga/core/effects";
+import { call, put } from "@redux-saga/core/effects";
 import { requestFailed } from "store/root/actions";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
