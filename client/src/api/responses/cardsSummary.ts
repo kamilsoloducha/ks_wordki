@@ -1,5 +1,5 @@
 import { CardSummary } from "pages/cards/models";
 
-export interface CardsSummaryResponse {
+export type CardsSummaryResponse = {
   cards: CardSummary[];
-}
+};

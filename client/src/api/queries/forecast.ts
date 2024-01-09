@@ -1,3 +1,3 @@
-export interface ForecastQuery {
+export type ForecastQuery = {
   count: number;
-}
+};

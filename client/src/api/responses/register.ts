@@ -1,6 +1,6 @@
 import { RegisterResponseCode } from "./registerResponseCode";
 
-export interface RegisterResponse {
+export type RegisterResponse = {
   responseCode: RegisterResponseCode;
   id: string;
-}
+};

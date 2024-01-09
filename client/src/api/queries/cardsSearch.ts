@@ -1,4 +1,4 @@
-export interface CardsSearchQuery {
+export type CardsSearchQuery = {
   searchingTerm: string;
   searchingDrawers: number[];
   lessonIncluded: boolean | null;
@@ -6,4 +6,4 @@ export interface CardsSearchQuery {
 
   pageNumber: number;
   pageSize: number;
-}
+};

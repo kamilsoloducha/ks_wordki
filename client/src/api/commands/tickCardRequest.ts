@@ -1,3 +1,3 @@
-export interface TickCardRequest {
+export type TickCardRequest = {
   cardId: string;
-}
+};
