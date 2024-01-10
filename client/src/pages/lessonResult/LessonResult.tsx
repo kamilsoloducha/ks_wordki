@@ -8,7 +8,6 @@ import { History } from "pages/lesson/components/history/History";
 import UserRepeat from "pages/lesson/models/userRepeat";
 import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
 import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
-import { Side } from "common/models/side";
 import { useTitle } from "common";
 
 export default function LessonResult(): ReactElement {
@@ -60,11 +59,11 @@ export default function LessonResult(): ReactElement {
     if (!selectedItem) return;
     form.backEnabled = null;
     form.frontEnabled = null;
-    dispatch(actions.updateCard({ form, groupId:"" }));
+    dispatch(actions.updateCard({ form, groupId: "" }));
     setSelectedItem(null);
   };
 
-  const onDelete = (form: FormModel) => {};
+  const onDelete = (form: FormModel) => undefined;
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { ForecastModel } from "pages/dashboard/models/forecastModel";
 import * as queries from "../queries";
 import * as responses from "../responses";

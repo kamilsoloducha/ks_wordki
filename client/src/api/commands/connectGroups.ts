@@ -1,4 +1,4 @@
-export interface ConnectGroupsRequest {
+export type ConnectGroupsRequest = {
   userId: string;
   groupIds: string[];
-}
+};

@@ -21,7 +21,7 @@ export default function GroupsSearchPage(): ReactElement {
 
   const onGroupNameChanged = (event$: any) => {
     const value = event$.target.value;
-    dispatch(actions.filterSetName({name: value}));
+    dispatch(actions.filterSetName({ name: value }));
   };
 
   const onGroupSelected = (groupId: string) => {

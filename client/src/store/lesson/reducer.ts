@@ -6,7 +6,6 @@ import Results from "pages/lesson/models/results";
 import { compare } from "pages/lesson/services/compare";
 import UserRepeat from "pages/lesson/models/userRepeat";
 import { calculateResultsForCorrect, calculateResultsForWrong } from "./helpers/resultsHelpers";
-import { Side } from "common";
 
 export const lessonSlice = createSlice({
   name: "lesson",
@@ -28,7 +27,7 @@ export const lessonSlice = createSlice({
       state.repeats = [];
       state.answer = "";
     },
-    resetSettings: (state: LessonState): void => {},
+    resetSettings: (_: LessonState): void => undefined,
     setSettingsCount: (state: LessonState, action: PayloadAction<p.SetSettingCount>): void => {
       state.settings.count = action.payload.count;
     },
@@ -48,14 +47,14 @@ export const lessonSlice = createSlice({
     setSettingsGroup: (state: LessonState, action: PayloadAction<p.SetSettingGroup>): void => {
       state.settings.selectedGroupId = action.payload.groupId;
     },
-    getLanguages: (state: LessonState): void => {},
+    getLanguages: (_: LessonState): void => undefined,
     getLanguagesSuccess: (
       state: LessonState,
       action: PayloadAction<p.GetLanguagesSuccess>
     ): void => {
       state.languages = action.payload.languages;
     },
-    getCardsCount: (_: LessonState): void => {},
+    getCardsCount: (_: LessonState): void => undefined,
     getCardsCountSuccess: (
       state: LessonState,
       action: PayloadAction<p.GetCardsCountSuccess>
@@ -75,11 +74,11 @@ export const lessonSlice = createSlice({
       state.lessonCount = allRepeats.length;
       state.repeats = allRepeats;
     },
-    getGroups: (state: LessonState): void => {},
+    getGroups: (_: LessonState): void => undefined,
     getGroupsSuccess: (state: LessonState, action: PayloadAction<p.GetGroupsSuccess>): void => {
       state.settings.groups = action.payload.groups;
     },
-    tickCard: (state: LessonState): void => {},
+    tickCard: (_: LessonState): void => undefined,
     startLesson: (state: LessonState): void => {
       const results = {
         answers: 0,
@@ -149,26 +148,10 @@ export const lessonSlice = createSlice({
     resetResults: (state: LessonState): void => {
       state.results = initialState.results;
     },
-    updateCard: (state: LessonState, action: PayloadAction<p.UpdateCard>): void => {},
+    updateCard: (_: LessonState, __: PayloadAction<p.UpdateCard>): void => undefined,
     updateCardSuccess: (state: LessonState, action: PayloadAction<p.UpdateCardSuccess>): void => {
       const lessonHistory = state.lessonHistory.map((x) => {
         if (x.repeat.cardId !== action.payload.form.cardId) return x;
-        // x.repeat.question =
-        //   x.repeat.questionSide === Side.Front
-        //     ? action.payload.form.frontValue
-        //     : action.payload.form.backValue;
-        // x.repeat.questionExample =
-        //   x.repeat.questionSide === Side.Front
-        //     ? action.payload.form.frontExample
-        //     : action.payload.form.backExample;
-        // x.repeat.answer =
-        //   x.repeat.questionSide === Side.Front
-        //     ? action.payload.form.backValue
-        //     : action.payload.form.frontValue;
-        // x.repeat.answerExample =
-        //   x.repeat.questionSide === Side.Front
-        //     ? action.payload.form.backExample
-        //     : action.payload.form.backExample;
         return x;
       });
 

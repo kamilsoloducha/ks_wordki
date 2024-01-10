@@ -3,5 +3,7 @@
         "tslint:recommended"
     ],
     "rulesDirectory": [],
-    "rules": {}
+    "rules": {
+        "no-console": false
+    }
 }

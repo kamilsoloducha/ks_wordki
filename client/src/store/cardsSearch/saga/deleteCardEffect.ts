@@ -1,4 +1,4 @@
-import { call, put, select, take } from "@redux-saga/core/effects";
+import { call, put, take } from "@redux-saga/core/effects";
 import * as api from "api";
 import { SagaIterator } from "redux-saga";
 import { search } from "../reducer";

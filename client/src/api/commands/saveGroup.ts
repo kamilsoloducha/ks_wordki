@@ -1,4 +1,4 @@
-export interface SaveGroupRequest {
+export type SaveGroupRequest = {
   ownerId: string;
   groupId: string;
-}
+};

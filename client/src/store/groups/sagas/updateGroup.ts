@@ -14,7 +14,7 @@ export function* updateGroupWorker(action: PayloadAction<UpdateGroup>): any {
     back: action.payload.group.back,
     front: action.payload.group.front,
   } as api.UpdateGroupRequest;
-  const { data, error }: { data: ApiResponse<string>; error: any } = yield call(
+  const { error }: { data: ApiResponse<string>; error: any } = yield call(
     api.updateGroup,
     action.payload.group.id,
     request

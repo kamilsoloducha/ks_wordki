@@ -1,7 +1,6 @@
 import { ApiResponse } from "common/models/response";
 import * as commands from "../commands";
 import * as queries from "../queries";
-import * as responses from "../responses";
 import http from "./httpBase";
 import { CardsOverview } from "pages/cardsSearch/models";
 import { CardSummary } from "pages/cards/models";

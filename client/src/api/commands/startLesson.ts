@@ -1,4 +1,4 @@
-export interface StartLessonRequest {
+export type StartLessonRequest = {
   userId: string;
   lessonType: number;
-}
+};

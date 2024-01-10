@@ -1,3 +1,3 @@
-export interface UpdateCardResponse {
+export type UpdateCardResponse = {
   cardId: string;
-}
+};

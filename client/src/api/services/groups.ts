@@ -3,7 +3,7 @@ import { GroupSummary } from "pages/groupsSearch/models/groupSummary";
 import * as commands from "../commands";
 import * as responses from "../responses";
 import * as queries from "../queries";
-import http, { createErrorResponse, createResponse } from "./httpBase";
+import http from "./httpBase";
 import { Group } from "pages/lessonSettings/models/group";
 
 export async function groupDetails(

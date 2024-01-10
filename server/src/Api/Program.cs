@@ -14,7 +14,6 @@ using Lessons.Application;
 using Lessons.Infrastructure;
 using MassTransit.ExtensionsDependencyInjectionIntegration.Registration;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Users.Infrastructure;
@@ -76,7 +75,5 @@ app.Run();
 
 namespace Api
 {
-    public partial class Program
-    {
-    }
+    public partial class Program;
 }

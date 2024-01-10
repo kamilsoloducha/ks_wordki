@@ -1,12 +1,8 @@
 import "./Row.scss";
 import { ReactElement } from "react";
 import { CardSummary, Side as SideModel } from "pages/cardsSearch/models";
-import { getLanguageByType } from "common/models/languages";
 
 export function Row({ card, onClick }: RowModel): ReactElement {
-  const frontLanguage = getLanguageByType(card.front.lang);
-  const backLanguage = getLanguageByType(card.back.lang);
-
   return (
     <div className="row-container" onClick={() => onClick && onClick(card)}>
       <div className="row-sides">
