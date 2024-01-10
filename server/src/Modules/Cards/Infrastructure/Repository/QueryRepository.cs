@@ -112,7 +112,7 @@ internal class QueryRepository : IQueryRepository
                                               JOIN cards."Cards" c ON c."GroupId" = g."Id"
                                               JOIN cards."Details" f ON f."CardId" = c."Id" AND f."SideType" = 1
                                               JOIN cards."Details" b ON b."CardId" = c."Id" AND b."SideType" = 2
-                                              GROUP BY g."Id", o."UserId";
+                                              GROUP BY g."Id", o."UserId"
                                               """;
 
     #endregion

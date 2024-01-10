@@ -24,6 +24,7 @@ public class CardsTestBase : TestBase
     protected async Task ClearCardsSchema()
     {
         await using var dbContext = new CardsContext();
+        await dbContext.Database.EnsureCreatedAsync();
         await dbContext.Database.ExecuteSqlRawAsync("DELETE from cards.\"Details\"");
         await dbContext.Database.ExecuteSqlRawAsync("DELETE from cards.\"Cards\"");
         await dbContext.Database.ExecuteSqlRawAsync("DELETE from cards.\"Sides\"");

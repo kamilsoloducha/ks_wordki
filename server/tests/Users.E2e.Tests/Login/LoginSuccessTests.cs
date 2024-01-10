@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -5,6 +6,7 @@ using System.Threading.Tasks;
 using E2e.Model.Tests.Model.Users;
 using E2e.Tests;
 using FluentAssertions;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Users.Application.Commands;
@@ -23,6 +25,13 @@ public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginS
         await using var dbContext = new UsersContext();
         await dbContext.Users.AddAsync(_context.GivenUser);
         await dbContext.SaveChangesAsync();
+
+        AuthenticationServiceMock.Setup(x =>
+            x.Authenticate(
+                _context.GivenUser.Id,
+                It.IsAny<IEnumerable<string>>()
+                )
+            ).Returns(TestServerMock.MockToken);
     }
 
     [Test]

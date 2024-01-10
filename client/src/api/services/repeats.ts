@@ -22,8 +22,7 @@ export async function repeatsCount(
 
 export function getQuery(request: any): string {
   let query = "?";
-  // tslint:disable-next-line:forin
-  for (const prop in request) {
+  for (const prop of Object.keys(request)) {
     if (request[prop] instanceof Array) {
       const array = request[prop] as [];
 
