@@ -4,13 +4,13 @@ RUN mkdir -p /usr/src/app && chown node:node /usr/src/app
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+COPY package.json ./
 
-RUN yarn install
+RUN npm install
 
 COPY . .
 
-RUN yarn build
+RUN npm build
 
 ##############################################
 

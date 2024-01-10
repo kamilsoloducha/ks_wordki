@@ -10,9 +10,4 @@
     <ProjectReference Include="../../../Blueprints/Application/Application.csproj" />
   </ItemGroup>
 
-  
-  <ItemGroup>
-    <Folder Include="Abstractions\" />
-  </ItemGroup>
-
 </Project>
