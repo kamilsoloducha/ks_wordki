@@ -45,6 +45,8 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddMvcCore().AddCustomFluentValidationResponse();
+builder.Services.AddHealthChecks()
+    .AddCheck<PostgresHealthcheck>(nameof(PostgresHealthcheck));
 builder.Services.AddHttpsRedirection(o =>
 {
     o.HttpsPort = 5001;
@@ -64,8 +66,8 @@ app.UseCustomCors();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseEndpoints(endpoints => endpoints.MapControllers());
+app.MapControllers();
+app.MapHealthChecks("/health");
 
 // app.CreateCardsScheme()
 //     .CreateUserScheme()
