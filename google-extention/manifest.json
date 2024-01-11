@@ -13,7 +13,8 @@
         "contextMenus"
     ],
     "host_permissions": [
-        "http://*"
+        "http://*/*",
+        "https://*/*"
     ],
     "icons": {
         "16": "/images/get_started16.png",
