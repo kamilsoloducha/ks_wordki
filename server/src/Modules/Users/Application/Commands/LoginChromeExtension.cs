@@ -32,7 +32,7 @@ public class LoginChromeExtension
             if (user is null)
                 return new Response(ResponseCode.UserNotFound, string.Empty);
 
-            var token = _authenticationService.Authenticate(user.Id, new[] { RoleType.ChromeExtension.ToString(), Role.Student.ToString() });
+            var token = _authenticationService.Authenticate(user.Id, new[] { RoleType.ChromeExtension.ToString(), Role.Student.Type.ToString() });
 
             user.Login();
             await _userRepository.Update(user, cancellationToken);
