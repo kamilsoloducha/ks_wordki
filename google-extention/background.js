@@ -21,26 +21,32 @@ chrome.runtime.onInstalled.addListener(() => {
         contexts: ['selection'],
     });
 
-    chrome.contextMenus.create({ title: "Add word", parentId: "wordki_menu", id: 'wordki_menu_add_word', contexts: ["selection"] });
+    chrome.contextMenus.create({
+        title: "Add word",
+        parentId: "wordki_menu",
+        id: 'wordki_menu_add_word',
+        contexts: ["selection"]
+    });
 });
 
 chrome.contextMenus.onClicked.addListener(async function (info, tab) {
     if (info.menuItemId === "wordki_menu_add_word" && info.selectionText) {
         const selectionText = info.selectionText;
-        const request = { value: selectionText };
+        const request = {
+            value: selectionText
+        };
         const token = await getToken();
-        const host  = await getHost();
-        const url = host + "/cards/add/chrome-extension";
+        const host = await getHost();
+        const url = host + "/cards/add/extension";
         console.log(url);
         await fetch(url, {
-            body: JSON.stringify(request),
-            method: 'POST',
-            headers: new Headers({
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json'
+                body: JSON.stringify(request),
+                method: 'POST',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                })
             })
-        })
             .catch(error => console.error(error));
     }
 });
-
