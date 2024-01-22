@@ -6,3 +6,4 @@
 **/TestResults/
 **/.idea/
 server/Wordki.sln.DotSettings.user
+**/__pycache__/

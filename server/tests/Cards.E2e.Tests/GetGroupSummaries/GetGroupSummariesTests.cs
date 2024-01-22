@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -7,7 +6,6 @@ using Cards.Application.Queries.Models;
 using Cards.E2e.Tests.GetGroupSummaries.Contexts;
 using E2e.Model.Tests.Model.Cards;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
 using NUnit.Framework;
 
 namespace Cards.E2e.Tests.GetGroupSummaries;

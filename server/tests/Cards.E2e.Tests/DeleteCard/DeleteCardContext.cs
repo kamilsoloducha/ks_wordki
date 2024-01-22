@@ -1,7 +1,5 @@
-using System;
 using Cards.E2e.Tests.Utils;
 using E2e.Model.Tests.Model.Cards;
-using FizzWare.NBuilder;
 
 namespace Cards.E2e.Tests.DeleteCard;
 
