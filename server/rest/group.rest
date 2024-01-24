@@ -1,4 +1,4 @@
-@host = http://localhost:5000
+@host = https://localhost:5001
 
 ### logining user
 
@@ -28,7 +28,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 
 {
-    "name":"test",
+    "name":"",
     "front":"12",
     "back":"32",
 }

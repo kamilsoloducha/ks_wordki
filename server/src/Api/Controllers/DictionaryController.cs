@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Api.Configuration;
-using Cards.Application.Queries;
-using Cards.Application.Services;
+using Cards.Application.Features.Dictionaries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,46 +11,30 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("dictionary")]
-public class DictionaryController : BaseController
+[Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
+public class DictionaryController(IMediator mediator) : BaseController(mediator)
 {
-    private readonly IDictionary _dictionary;
-    
-    public DictionaryController(IMediator mediator, IEnumerable<IDictionary> dictionaries) : base(mediator)
+    [HttpGet("diki/{searchTerm}")]
+    public async Task<IActionResult> Diki([FromRoute] string searchTerm, CancellationToken cancellationToken)
     {
-        _dictionary = dictionaries.Last();
+        var query = new DikiTranslation.Query(searchTerm);
+        var result = await Mediator.Send(query, cancellationToken);
+        return result is not null ? Ok(result) : StatusCode((int)HttpStatusCode.InternalServerError);
     }
 
-    [HttpGet("translate")]
-    [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
-    public async Task<IActionResult> GetTranslation([FromQuery] Model.Requests.Translate query,
-        CancellationToken cancellationToken)
+    [HttpGet("cambridge/{searchTerm}")]
+    public async Task<IActionResult> Cambridge([FromRoute] string searchTerm, CancellationToken cancellationToken)
     {
-        var request = new GetTranslation.Query(query.Phrase);
-
-        var response = await Mediator.Send(request, cancellationToken);
-
-        return Ok(response);
+        var query = new CambridgeTranslation.Query(searchTerm);
+        var result = await Mediator.Send(query, cancellationToken);
+        return result is not null ? Ok(result) : StatusCode((int)HttpStatusCode.InternalServerError);
     }
-    
-    [HttpGet("cam")]
-    public async Task<IActionResult> GetTranslationCam([FromQuery] Model.Requests.Translate query,
-        CancellationToken cancellationToken)
+
+    [HttpGet("api/{searchTerm}")]
+    public async Task<IActionResult> ApiDictionary([FromRoute] string searchTerm, CancellationToken cancellationToken)
     {
-        var request = new DictionaryRequest(query.Phrase);
-
-        var response = await _dictionary.Translate(request, cancellationToken);
-
-        return Ok(response);
-    }
-    
-    [HttpGet("mac")]
-    public async Task<IActionResult> GetTranslationMac([FromQuery] Model.Requests.Translate query,
-        CancellationToken cancellationToken)
-    {
-        var request = new DictionaryRequest(query.Phrase);
-
-        var response = await _dictionary.Translate(request, cancellationToken);
-
-        return Ok(response);
+        var query = new ApiDictionaryTranslation.Query(searchTerm);
+        var result = await Mediator.Send(query, cancellationToken);
+        return result is not null ? Ok(result) : StatusCode((int)HttpStatusCode.InternalServerError);
     }
 }

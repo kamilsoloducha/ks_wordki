@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Api.Configuration;
 
@@ -24,6 +25,7 @@ internal static class FluentValidationExtension
             x.InvalidModelStateResponseFactory = context =>
             {
                 var errors = GetErrors(context.ModelState.Values);
+                Log.Error("Invalid model state response: {@Errors}", errors);
                 return new BadRequestObjectResult(errors);
             };
         });

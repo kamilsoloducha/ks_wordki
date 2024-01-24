@@ -20,17 +20,16 @@ using Users.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddCustomLogging();
 builder.AddCustomConfiguration();
 builder.Services.ConfigureMassTransit();
-builder.Services.AddIConnectionStringProvider(builder.Configuration);
-builder.AddCustomLogging();
+builder.Services.AddConnectionStringProvider(builder.Configuration);
 
 var configurator = new ServiceCollectionBusConfigurator(builder.Services);
 configurator.AddCardsConsumers();
 configurator.AddLessonsConsumers();
 
 builder.Services.AddModel();
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserDataProvider, UserDataProvider>();
 builder.Services
