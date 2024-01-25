@@ -69,6 +69,18 @@ export async function addCard(groupId: string, card: CardSummary): Promise<strin
   }
 }
 
+export async function addCardRequest(
+  groupId: string,
+  request: commands.AddCardRequest
+): Promise<string | boolean> {
+  try {
+    const response = await http.post<string>(`/cards/add/${groupId}`, request);
+    return response.data;
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function deleteCard(cardId: string): Promise<{} | boolean> {
   try {
     await http.delete<{}>(`/cards/${cardId}`);

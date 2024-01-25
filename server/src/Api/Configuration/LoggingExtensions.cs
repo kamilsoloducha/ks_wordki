@@ -9,9 +9,9 @@ public static class LoggingExtensions
     public static void AddCustomLogging(this WebApplicationBuilder builder)
     {
         builder.Logging.ClearProviders();
-        var logger = new LoggerConfiguration()
+        Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
             .CreateLogger();
-        builder.Host.UseSerilog(logger);
+        builder.Host.UseSerilog(Log.Logger);
     }
 }

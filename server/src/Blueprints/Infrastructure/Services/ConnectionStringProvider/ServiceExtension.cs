@@ -5,7 +5,7 @@ namespace Infrastructure.Services.ConnectionStringProvider;
 
 public static class ServiceExtension
 {
-    public static IServiceCollection AddIConnectionStringProvider(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddConnectionStringProvider(this IServiceCollection services, IConfiguration configuration)
     {
         // const string envTag = "ASPNETCORE_ENVIRONMENT";
         // var envrionment = configuration.GetValue<string>(envTag);

@@ -12,3 +12,7 @@ def cambridge_seach(searching_term: str):
 @app.get("/diki/{searching_term}")
 def diki_seach(searching_term: str):
     return diki(searching_term)
+
+@app.get('/health')
+def health():
+    return ''

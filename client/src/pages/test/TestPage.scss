@@ -1,0 +1,17 @@
+.translation-item {
+    --webkit-filter: brightness(100%);
+}
+
+.translation-item:hover {
+    cursor: pointer;
+    background-color: rgb(53, 35, 35);
+    --webkit-filter: brightness(60%);
+}
+
+.definition-input {
+    width: 600px;
+}
+
+.definition {
+    font-size: x-large
+}

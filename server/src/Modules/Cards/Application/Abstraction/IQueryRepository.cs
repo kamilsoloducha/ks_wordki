@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Queries.Models;
+using Cards.Application.Services;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 
-namespace Cards.Application.Services;
+namespace Cards.Application.Abstraction;
 
 public interface IQueryRepository
 {
@@ -47,5 +48,4 @@ public interface IQueryRepository
     Task<int> SearchCardsCount(SearchCardsQuery query, CancellationToken cancellationToken);
     Task<CardsOverview> GetCardsOverview(Guid owerId, CancellationToken cancellationToken);
     IEnumerable<LanguageDto> GetLanguages(UserId userId, CancellationToken cancellationToken);
-
 }

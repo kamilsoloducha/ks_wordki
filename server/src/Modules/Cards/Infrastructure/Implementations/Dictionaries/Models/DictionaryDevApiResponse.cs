@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Cards.Infrastructure.Implementations.Dictionary.Models;
+namespace Cards.Infrastructure.Implementations.Dictionaries.Models;
 
 internal class DictionaryDevApiResponse
 {

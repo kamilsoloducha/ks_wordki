@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Services;
+using Cards.Application.Abstraction;
 using Cards.Application.Services;
 using Cards.Domain.Enums;
 using Cards.Domain.OwnerAggregate;

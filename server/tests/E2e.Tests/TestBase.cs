@@ -18,7 +18,7 @@ public abstract class TestBase
     public const string UserPassword = "Password";
     public const string UserHashedPassword = "HashedPassword";
     
-    private E2EWebApplicationFactory AppFactory { get; }
+    protected E2EWebApplicationFactory AppFactory { get; }
         
     protected HttpRequestMessage Request { get; set; }
     protected HttpResponseMessage Response { get; private set; }
@@ -31,7 +31,6 @@ public abstract class TestBase
     protected TestBase()
     {
         AppFactory = new E2EWebApplicationFactory(ServiceConfig);
-        SystemClock.Override(TestServerMock.MockDate);
         
         PasswordManagerMock = new Mock<IPasswordManager>();
         PasswordManagerMock.Setup(x => x.CreateHashedPassword(UserPassword)).Returns(UserHashedPassword);

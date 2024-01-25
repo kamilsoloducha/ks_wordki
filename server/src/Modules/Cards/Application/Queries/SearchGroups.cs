@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Services;
+using Cards.Application.Abstraction;
 using Cards.Application.Queries.Models;
 using Cards.Application.Services;
 using MediatR;

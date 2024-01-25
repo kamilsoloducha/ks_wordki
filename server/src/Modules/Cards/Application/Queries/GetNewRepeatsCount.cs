@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Services;
+using Cards.Application.Abstraction;
 using Cards.Application.Services;
 using Cards.Domain.ValueObjects;
 using MediatR;

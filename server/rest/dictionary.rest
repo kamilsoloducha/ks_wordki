@@ -1,0 +1,36 @@
+@host = https://localhost:5001/dictionary
+
+### logining user
+
+# @name login
+PUT {{host}}/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "userName",
+    "password": "pass"
+}
+
+@authToken = Bearer {{login.response.body.$.token}}
+
+
+@serachingTerm = pass the buck
+###
+# @name diki
+GET {{host}}/diki/{{serachingTerm}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+
+###
+# @name cambridge
+GET {{host}}/cambridge/{{serachingTerm}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
+
+
+###
+# @name api
+GET {{host}}/api/{{serachingTerm}} HTTP/1.1
+Content-Type: application/json
+Authorization: {{authToken}}
