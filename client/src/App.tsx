@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "store/store";
 import { loginSuccess } from "store/user/reducer";
 import { CustomRouter } from "common/components/CustomRouter";
 import history from "common/services/history";
+import TestPage from "pages/test/TestPage";
 
 const LoginPage = lazy(() => import("pages/login/LoginPage"));
 const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
@@ -48,6 +49,7 @@ export default function App() {
           <div className="content">
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
+                <Route path="/test" element={<TestPage />} />
                 <Route path="/logout" element={<LogoutPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
