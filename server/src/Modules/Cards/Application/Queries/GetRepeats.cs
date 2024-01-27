@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Application.Services;
 using Cards.Application.Abstraction;
 using Cards.Application.Queries.Models;
-using Cards.Application.Services;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
-using Domain.Utils;
 using MediatR;
 
 namespace Cards.Application.Queries;

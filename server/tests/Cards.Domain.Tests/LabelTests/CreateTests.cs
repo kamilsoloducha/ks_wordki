@@ -1,6 +1,5 @@
 using System;
 using Cards.Domain.ValueObjects;
-using Domain;
 using FluentAssertions;
 using NUnit.Framework;
 

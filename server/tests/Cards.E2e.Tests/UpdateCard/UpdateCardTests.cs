@@ -21,7 +21,7 @@ public class UpdateCardTests<TContext> : CardsTestBase where TContext : UpdateCa
     {
         await ClearCardsSchema();
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
 
         await dbContext.Owners.AddAsync(_context.GivenOwner);
         await dbContext.SaveChangesAsync();
@@ -41,7 +41,7 @@ public class UpdateCardTests<TContext> : CardsTestBase where TContext : UpdateCa
 
         Response.Should().BeSuccessful(Response.StatusCode.ToString());
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var cards = await dbContext.Cards.Include(x => x.Back).Include(x => x.Front).Include(x => x.Details).ToListAsync();
 
         cards.Should().HaveCount(1);

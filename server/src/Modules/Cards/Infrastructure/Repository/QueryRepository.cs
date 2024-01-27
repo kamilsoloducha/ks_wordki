@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,6 @@ using Cards.Domain.OwnerAggregate;
 using Cards.Domain.ValueObjects;
 using Cards.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace Cards.Infrastructure.Repository;
 

@@ -9,7 +9,7 @@ public class UsersTestBase : TestBase
 {
     protected async Task ClearUsersSchema()
     {
-        await using var dbContext = new UsersContext();
+        await using var dbContext = new UsersContext(GetDbContextOptions<UsersContext>());
         await dbContext.Database.EnsureCreatedAsync();
         await dbContext.Database.ExecuteSqlRawAsync("Delete from users.\"Roles\"");
         await dbContext.Database.ExecuteSqlRawAsync("Delete from users.\"Users\"");

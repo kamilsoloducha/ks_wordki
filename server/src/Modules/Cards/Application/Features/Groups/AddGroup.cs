@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Requests;
 using Cards.Domain.OwnerAggregate;
-using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
 using MediatR;
 

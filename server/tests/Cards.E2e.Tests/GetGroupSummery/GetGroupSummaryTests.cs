@@ -20,7 +20,7 @@ public class GetGroupSummaryTests<TContext> : CardsTestBase where TContext : Get
     {
         await ClearCardsSchema();
         
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
 
         await dbContext.Owners.AddAsync(_context.GivenOwner);
         await dbContext.SaveChangesAsync();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Abstraction;
-using Cards.Application.Services;
 using MediatR;
 
 namespace Cards.Application.Queries;

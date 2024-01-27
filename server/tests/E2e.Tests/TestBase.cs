@@ -3,10 +3,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Application.Authentication;
 using Application.Services;
-using Domain.Utils;
+using Infrastructure.Services.ConnectionStringProvider;
 using Infrastructure.Services.HashIds;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization.Policy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Users.Application.Services;
@@ -55,5 +56,13 @@ public abstract class TestBase
     protected async Task SendRequest()
     {
         Response = await AppFactory.HttpClient.Value.SendAsync(Request);
+    }
+    
+    protected DbContextOptions<TContext> GetDbContextOptions<TContext>() where TContext : DbContext
+    {
+        var connectionStringProvider = AppFactory.Services.GetRequiredService<IConnectionStringProvider>();
+        var optionsBuilder = new DbContextOptionsBuilder<TContext>();
+        optionsBuilder.UseNpgsql(connectionStringProvider.ConnectionString);
+        return optionsBuilder.Options;
     }
 }

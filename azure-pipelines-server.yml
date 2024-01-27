@@ -47,28 +47,28 @@ jobs:
           action: "Run a Docker Compose command"
           projectName: "ks_wordki"
           dockerComposeCommand: build
-      - task: DockerCompose@0
-        enabled: ${{ parameters.UnitTests }}
-        displayName: Run Tests
+      - task: CmdLine@2
+        displayName: "Test - build"
         inputs:
-          containerregistrytype: "Container Registry"
-          dockerRegistryEndpoint: "docker-hub"
-          dockerComposeFile: "server/ci/docker/docker-compose.unittests.yml"
-          projectName: "ks_wordki"
-          action: "Run a Docker Compose command"
-          dockerComposeCommand: up --build --abort-on-container-exit
+          script: "docker build -f ./server/ci/docker/Dockerfile --target tests -t wordki-server-tests:${BUILD_BUILDID} ./server/"
+      - task: CmdLine@2
+        displayName: "Test - run"
+        inputs:
+          script: "docker run -it -v /var/run/docker.sock.raw:/var/run/docker.sock -e ASPNETCORE_ENVIRONMENT=DockerTest --name wordki-server-${BUILD_BUILDID} wordki-server-tests:${BUILD_BUILDID}"
       - task: CmdLine@2
         enabled: ${{ parameters.UnitTests }}
-        displayName: Copy test results
+        displayName: "Test - copy results"
         inputs:
           script: |
             docker ps -a
-            docker cp wordki-server.ci.unittests:/server/tests/Cards.Domain.Tests/TestResults $(System.DefaultWorkingDirectory)/test
-            docker cp wordki-server.ci.unittests:/server/tests/Api.Tests/TestResults $(System.DefaultWorkingDirectory)/test
+            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Cards.Domain.Tests/TestResults $(System.DefaultWorkingDirectory)/test
+            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Cards.E2e.Tests/TestResults $(System.DefaultWorkingDirectory)/test
+            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Users.E2e.Tests/TestResults $(System.DefaultWorkingDirectory)/test
+            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Api.Tests/TestResults $(System.DefaultWorkingDirectory)/test            
             ls $(System.DefaultWorkingDirectory)/test
       - task: PublishTestResults@2
         enabled: ${{ parameters.UnitTests }}
-        displayName: Publish test results
+        displayName: "Test - publishing"
         inputs:
           testResultsFormat: "JUnit"
           searchFolder: $(System.DefaultWorkingDirectory)/test

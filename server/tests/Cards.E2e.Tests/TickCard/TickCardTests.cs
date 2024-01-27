@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,7 +5,6 @@ using Cards.E2e.Tests.TickCard.Contexts;
 using E2e.Model.Tests.Model.Cards;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Cards.E2e.Tests.TickCard;
@@ -21,7 +19,7 @@ public class TickCardTests<TContext> : CardsTestBase where TContext : TickCardCo
     {
         await ClearCardsSchema();
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
 
         await dbContext.Owners.AddAsync(_context.GivenOwner);
         await dbContext.SaveChangesAsync();
@@ -39,7 +37,7 @@ public class TickCardTests<TContext> : CardsTestBase where TContext : TickCardCo
 
         Response.Should().BeSuccessful(Response.StatusCode.ToString());
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var details = await dbContext.Details.ToListAsync();
 
         details.Should().BeEquivalentTo(_context.ExpectedDetails, DetailAssertion);
