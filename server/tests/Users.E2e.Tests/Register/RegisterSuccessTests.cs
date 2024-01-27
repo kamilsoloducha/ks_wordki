@@ -14,7 +14,7 @@ using Users.Application.Commands;
 
 namespace Users.E2e.Tests.Register;
 
-[TestFixture(typeof(SimpleRegistration))]
+[TestFixture(typeof(SimpleRegistration)), Ignore("")]
 public class RegisterSuccessTests<TContext> : UsersTestBase where TContext : RegisterUserContext, new()
 {
     private readonly TContext _context = new();

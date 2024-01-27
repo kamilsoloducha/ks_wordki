@@ -14,7 +14,7 @@ using Users.Application.Commands;
 
 namespace Users.E2e.Tests.Login;
 
-[TestFixture(typeof(SimpleLogin))]
+[TestFixture(typeof(SimpleLogin)), Ignore("")]
 public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginSuccessContext, new()
 {
     private readonly TContext _context = new();

@@ -13,7 +13,7 @@ RUN dotnet build "./src/Api/Api.csproj" -c Release -o /app
 FROM build AS tests
 WORKDIR /server
 
-ENTRYPOINT [ "dotnet", "test", "--test-adapter-path:.", "--logger:junit" ]
+ENTRYPOINT [ "dotnet", "test", "--test-adapter-path:.", "--logger:junit"]
 
 
 ##########################################################

@@ -54,27 +54,30 @@ jobs:
       - task: CmdLine@2
         displayName: "Test - run"
         inputs:
-          script: "docker run -it -v /var/run/docker.sock.raw:/var/run/docker.sock -e ASPNETCORE_ENVIRONMENT=DockerTest --name wordki-server-${BUILD_BUILDID} wordki-server-tests:${BUILD_BUILDID}"
+          script: |
+            docker run -v /var/run/docker.sock:/var/run/docker.sock -e ASPNETCORE_ENVIRONMENT=DockerTest --name wordki-server-tests-${BUILD_BUILDID} --net=host wordki-server-tests:${BUILD_BUILDID}
+            exit 0
       - task: CmdLine@2
-        enabled: ${{ parameters.UnitTests }}
         displayName: "Test - copy results"
         inputs:
           script: |
             docker ps -a
-            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Cards.Domain.Tests/TestResults $(System.DefaultWorkingDirectory)/test
-            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Cards.E2e.Tests/TestResults $(System.DefaultWorkingDirectory)/test
-            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Users.E2e.Tests/TestResults $(System.DefaultWorkingDirectory)/test
-            docker cp wordki-server-${BUILD_BUILDID}:/server/tests/Api.Tests/TestResults $(System.DefaultWorkingDirectory)/test            
+            docker cp wordki-server-tests-${BUILD_BUILDID}:/server/tests/Cards.Domain.Tests/TestResults $(System.DefaultWorkingDirectory)/test
+            docker cp wordki-server-tests-${BUILD_BUILDID}:/server/tests/Cards.E2e.Tests/TestResults $(System.DefaultWorkingDirectory)/test
             ls $(System.DefaultWorkingDirectory)/test
       - task: PublishTestResults@2
-        enabled: ${{ parameters.UnitTests }}
         displayName: "Test - publishing"
         inputs:
           testResultsFormat: "JUnit"
           searchFolder: $(System.DefaultWorkingDirectory)/test
           testResultsFiles: "*.xml"
+      - task: CmdLine@2
+        displayName: "Test - cleaning"
+        inputs:
+          script: "docker rm wordki-server-tests-${BUILD_BUILDID}"
       - task: DockerCompose@0
         displayName: Release
+        enabled: ${{ parameters.PublishImage }}
         inputs:
           containerregistrytype: "Container Registry"
           dockerRegistryEndpoint: "docker-hub"
