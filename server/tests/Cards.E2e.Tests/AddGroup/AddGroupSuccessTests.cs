@@ -20,7 +20,7 @@ public class AddGroupSuccessTests<TContext> : CardsTestBase where TContext : Add
     {
         await ClearCardsSchema();
         
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         await dbContext.Owners.AddAsync(Owner);
         await dbContext.SaveChangesAsync();
     }
@@ -44,7 +44,7 @@ public class AddGroupSuccessTests<TContext> : CardsTestBase where TContext : Add
 
         groupId.Should().BeGreaterThan(0);
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var group = await dbContext.Groups.SingleOrDefaultAsync(x => x.Id == groupId);
         group.OwnerId.Should().Be(Owner.Id);
         group.Name.Should().Be(_context.ExpectedGroup.Name);

@@ -19,7 +19,7 @@ public class GetCardSummaryTests<TContext> : CardsTestBase where TContext : GetC
     {
         await ClearCardsSchema();
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         await dbContext.Owners.AddRangeAsync(_context.GivenOwners);
         await dbContext.SaveChangesAsync();
     }

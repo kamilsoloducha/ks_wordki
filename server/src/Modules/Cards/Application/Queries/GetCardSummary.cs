@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Application.Services;
 using Cards.Application.Abstraction;
 using Cards.Application.Queries.Models;
-using Cards.Application.Services;
-using Cards.Domain.Enums;
 using Cards.Domain.ValueObjects;
 using MediatR;
 

@@ -19,7 +19,7 @@ public class UpdateGroupTests<TContext> : CardsTestBase where TContext : UpdateG
     {
         await ClearCardsSchema();
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
 
         await dbContext.Owners.AddAsync(_context.GivenOwner);
         await dbContext.SaveChangesAsync();
@@ -39,7 +39,7 @@ public class UpdateGroupTests<TContext> : CardsTestBase where TContext : UpdateG
 
         Response.Should().BeSuccessful(Response.StatusCode.ToString());
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var group =  await dbContext.Groups.SingleOrDefaultAsync(x => x.Id == _context.GivenGroup.Id);
 
         group.Should().BeEquivalentTo(_context.ExpectedGroup, GroupAssertion);

@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Abstraction;
-using Cards.Application.Services;
 using Cards.Domain.Services;
 using Cards.Domain.ValueObjects;
-using Domain.Utils;
 using MediatR;
 
 namespace Cards.Application.Queries;

@@ -18,7 +18,7 @@ public class DeleteCardTests<TContext> : CardsTestBase where TContext : DeleteCa
     {
         await ClearCardsSchema();
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         await dbContext.Owners.AddAsync(_context.GivenOwner);
         await dbContext.SaveChangesAsync();
     }
@@ -31,7 +31,7 @@ public class DeleteCardTests<TContext> : CardsTestBase where TContext : DeleteCa
 
         await SendRequest();
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
 
         (await dbContext.Sides.CountAsync()).Should().Be(_context.ExpectedSideCount);
         (await dbContext.Cards.CountAsync()).Should().Be(_context.ExpectedCardsCount);

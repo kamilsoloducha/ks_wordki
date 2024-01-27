@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Threading.Tasks;
-using Cards.Application.Queries.Models;
 using Cards.Domain.OwnerAggregate;
 using Infrastructure.Services.ConnectionStringProvider;
 using Microsoft.EntityFrameworkCore;

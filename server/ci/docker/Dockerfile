@@ -10,22 +10,10 @@ RUN dotnet build "./src/Api/Api.csproj" -c Release -o /app
 ##########################################################
 
 
-# FROM build AS integration-tests
-# WORKDIR /server/tests/Wordki.Tests.E2E
-# COPY ./build/common/wait /wait
-# RUN chmod +x /wait
-
-# RUN dotnet build "Wordki.Tests.E2E.csproj"
-
-##########################################################
-# Build tests project
-##########################################################
-
-
 FROM build AS tests
 WORKDIR /server
 
-RUN dotnet build
+ENTRYPOINT [ "dotnet", "test", "--test-adapter-path:.", "--logger:junit" ]
 
 
 ##########################################################

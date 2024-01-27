@@ -22,7 +22,7 @@ public class AddCardSuccessTests<TContext> : CardsTestBase where TContext : AddC
     {
         await ClearCardsSchema();
         
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         
         var owner = Owner;
         owner.Groups.Add(_context.GivenGroup);
@@ -49,7 +49,7 @@ public class AddCardSuccessTests<TContext> : CardsTestBase where TContext : AddC
 
         cardId.Should().BeGreaterThan(0);
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
 
         var cards = dbContext.Cards.Include(x => x.Back).Include(x => x.Front).ToList();
         cards.Should().BeEquivalentTo(_context.ExpectedCards, opt =>

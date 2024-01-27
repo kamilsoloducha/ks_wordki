@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Utils;
 using E2e.Model.Tests.Model.Users;
 using E2e.Tests;
 using FluentAssertions;
@@ -22,7 +23,7 @@ public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginS
     public async Task Setup()
     {
         await ClearUsersSchema();
-        await using var dbContext = new UsersContext();
+        await using var dbContext = new UsersContext(GetDbContextOptions<UsersContext>());
         await dbContext.Users.AddAsync(_context.GivenUser);
         await dbContext.SaveChangesAsync();
 
@@ -32,6 +33,8 @@ public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginS
                 It.IsAny<IEnumerable<string>>()
                 )
             ).Returns(TestServerMock.MockToken);
+        
+        SystemClock.Override(TestServerMock.MockDate);
     }
 
     [Test]
@@ -54,7 +57,7 @@ public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginS
         response.Token.Should().Be(TestServerMock.MockToken, responseContent);
         response.Id.Should().Be(_context.GivenUser.Id, responseContent);
 
-        await using var dbContext = new UsersContext();
+        await using var dbContext = new UsersContext(GetDbContextOptions<UsersContext>());
         var users = dbContext.Users.ToList();
         users.Should().HaveCount(1);
         var user = users[0];

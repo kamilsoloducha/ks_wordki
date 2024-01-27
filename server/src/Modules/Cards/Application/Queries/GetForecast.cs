@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cards.Application.Abstraction;
 using Cards.Application.Queries.Models;
-using Cards.Application.Services;
 using Domain.Utils;
 using MediatR;
 

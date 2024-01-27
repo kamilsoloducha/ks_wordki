@@ -1,13 +1,10 @@
 using System;
-using System.Reflection;
 using Cards.Application;
 using Cards.Application.Abstraction;
 using Cards.Application.Abstraction.Dictionaries;
-using Cards.Application.Services;
 using Cards.Domain.OwnerAggregate;
 using Cards.Domain.Services;
 using Cards.Infrastructure.DataAccess;
-using Cards.Infrastructure.Implementations;
 using Cards.Infrastructure.Implementations.Dictionaries;
 using Cards.Infrastructure.Implementations.Dictionaries.Configuration;
 using Cards.Infrastructure.Repository;

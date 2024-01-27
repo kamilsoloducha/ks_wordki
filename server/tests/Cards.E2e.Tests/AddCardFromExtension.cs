@@ -21,7 +21,7 @@ public class AddCardFromExtension : CardsTestBase
     {
         await ClearCardsSchema();
         
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var owner = Owner;
         await dbContext.AddAsync(owner);
         await dbContext.SaveChangesAsync();
@@ -46,7 +46,7 @@ public class AddCardFromExtension : CardsTestBase
         // Assert
         Response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var group = await dbContext.Groups
             .Include(x => x.Cards).ThenInclude(card => card.Front)
             .Include(x => x.Cards).ThenInclude(card => card.Back)
@@ -65,7 +65,7 @@ public class AddCardFromExtension : CardsTestBase
     public async Task WhenGroupExists_ShouldUseExistingGroup()
     {
         // Arrange
-        await using (var initDbContext = new CardsContext())
+        await using (var initDbContext = new CardsContext(GetDbContextOptions<CardsContext>()))
         {
             var initGroup = new Group
             {
@@ -92,7 +92,7 @@ public class AddCardFromExtension : CardsTestBase
         // Assert
         Response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var group = await dbContext.Groups
             .Include(x => x.Cards).ThenInclude(card => card.Front)
             .Include(x => x.Cards).ThenInclude(card => card.Back)
@@ -110,7 +110,7 @@ public class AddCardFromExtension : CardsTestBase
     public async Task WhenGroupWithCardExists_ShouldUseExistingGroup()
     {
         // Arrange
-        await using (var initDbContext = new CardsContext())
+        await using (var initDbContext = new CardsContext(GetDbContextOptions<CardsContext>()))
         {
             var initGroup = new Group
             {
@@ -138,7 +138,7 @@ public class AddCardFromExtension : CardsTestBase
         // Assert
         Response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        await using var dbContext = new CardsContext();
+        await using var dbContext = new CardsContext(GetDbContextOptions<CardsContext>());
         var group = await dbContext.Groups
             .Include(x => x.Cards).ThenInclude(card => card.Front)
             .Include(x => x.Cards).ThenInclude(card => card.Back)

@@ -2,7 +2,6 @@ using NUnit.Framework;
 using FluentAssertions;
 using System;
 using Cards.Domain.ValueObjects;
-using Domain;
 
 namespace Cards.Domain.Tests.DrawerTests;
 
