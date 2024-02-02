@@ -1,12 +1,12 @@
-import { ReactElement, ReactFragment } from "react";
-import {  Route, Navigate } from "react-router-dom";
+import { ReactElement } from "react";
+import { Route } from "react-router-dom";
 
-export default function GuardedRoute({ path, component, auth }: Model) {
+export default function GuardedRoute({ path, component, auth }: GuardedRouteParams) {
   return <Route path={path} element={component} />;
 }
 
-interface Model {
+export type GuardedRouteParams = {
   path: string;
-  component: ReactElement
+  component: ReactElement;
   auth: boolean;
-}
+};

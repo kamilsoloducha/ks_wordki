@@ -1,6 +1,11 @@
 import { ReactElement } from "react";
 
-export function TabViewItemHeader({ header, isSelected, value, onClick }: Model): ReactElement {
+export function TabViewItemHeader({
+  header,
+  isSelected,
+  value,
+  onClick,
+}: TabViewItemHeaderProps): ReactElement {
   return (
     <div
       className={`tab-view-header-item + ${isSelected ? "selected" : ""}`}
@@ -11,9 +16,9 @@ export function TabViewItemHeader({ header, isSelected, value, onClick }: Model)
   );
 }
 
-interface Model {
+export type TabViewItemHeaderProps = {
   header: string;
   isSelected: boolean;
   value: number;
   onClick: (value: number) => void;
-}
+};

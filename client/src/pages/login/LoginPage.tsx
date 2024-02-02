@@ -29,7 +29,8 @@ export default function LoginPage(): ReactElement {
   });
 
   if (userId) {
-    navigate('/dashboard');
+    throw new Error("it should not happen!!");
+    navigate("/dashboard");
   }
 
   const onSubmit = (values: LoginFormModel) => {

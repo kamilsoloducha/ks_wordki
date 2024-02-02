@@ -7,7 +7,6 @@ import { Route, Routes } from "react-router-dom";
 import AxiosEx from "common/components/axiosEx/AxiosEx";
 import { selectIsLogin } from "store/user/selectors";
 import TopBar from "common/components/topBar/TopBar";
-import { selectBreadcrumbs } from "store/root/selectors";
 import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "store/store";
 import { loginSuccess } from "store/user/reducer";
@@ -32,7 +31,6 @@ export default function App() {
   const dispatch = useAppDispatch();
 
   const isLogin = useAppSelector(selectIsLogin);
-  const breadCrumbs = useAppSelector(selectBreadcrumbs);
 
   const userId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
@@ -45,7 +43,7 @@ export default function App() {
     <>
       <AxiosEx>
         <CustomRouter history={history}>
-          <TopBar isLogin={isLogin} breadCrumbs={breadCrumbs} />
+          <TopBar isLogin={isLogin} />
           <div className="content">
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>

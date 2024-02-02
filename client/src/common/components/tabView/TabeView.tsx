@@ -2,7 +2,7 @@ import "./TabView.scss";
 import { ReactElement } from "react";
 import { TabViewItemHeader } from "./TabViewItemHeader";
 
-export function TabView({ selectedValue, items, onItemChanged }: Model): ReactElement {
+export function TabView({ selectedValue, items, onItemChanged }: TabViewProps): ReactElement {
   const content = items.find((x) => x.value === selectedValue)?.element;
 
   const onClick = (value: number) => {
@@ -33,8 +33,8 @@ export interface TabViewItemModel {
   value: number;
 }
 
-interface Model {
+export type TabViewProps = {
   selectedValue: number;
   items: TabViewItemModel[];
   onItemChanged?: (value: number) => void;
-}
+};

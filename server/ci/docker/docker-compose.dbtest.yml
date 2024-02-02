@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  wordki-postgres:
+    container_name: wordki-postgres
+    image: postgres:alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: wordki
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
+    external: true

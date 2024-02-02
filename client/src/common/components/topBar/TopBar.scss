@@ -33,12 +33,28 @@
     }
 
     ul {
+        display: flex;
+        align-items: center;
         list-style-type: none;
         margin: 0;
         padding: 0;
 
-        li {
-            float: left;
+
+        li input[type="search"] {
+            background-color: transparent;
+            width: 125px;
+            padding: 10px 10px;
+            font-size: large;
+            border: 2px solid rgba(116, 116, 116, 0.375);
+            border-radius: 30px;
+            color: rgb(210, 210, 210);
+            transition: all .5s;
+
+
+        }
+
+        li input[type="search"]:focus {
+            width: 300px;
         }
 
         li a {
