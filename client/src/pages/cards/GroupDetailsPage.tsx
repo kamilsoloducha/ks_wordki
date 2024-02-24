@@ -1,62 +1,62 @@
-import "./GroupDetailsPage.scss";
-import * as selectors from "store/cards/selectors";
-import * as actions from "store/cards/reducer";
-import * as groupActions from "store/groups/reducer";
-import * as utils from "./services";
-import { ReactElement, useCallback, useEffect, useState } from "react";
-import CardsList from "./components/cardsList/CardsList";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import InfoCard from "./components/infoCard/InfoCard";
-import Expandable from "common/components/expandable/Expandable";
-import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
-import { CardsFilter } from "./models/cardsFilter";
-import { Languages } from "common/models/languages";
-import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
-import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
-import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
-import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
-import ActionsDialog from "common/components/dialogs/actionsDialog/ActionsDialog";
-import { Pagination } from "common/components/pagination/Pagination";
-import { CardSummary } from "./models";
-import { useTitle } from "common";
-import { GroupDetails } from "./components/groupDetails/GroupDetails";
-import { useEffectOnce } from "common/hooks/useEffectOnce";
-import { selectLanguages } from "store/lesson/selectors";
+import './GroupDetailsPage.scss'
+import * as selectors from 'store/cards/selectors'
+import * as actions from 'store/cards/reducer'
+import * as groupActions from 'store/groups/reducer'
+import * as utils from './services'
+import { ReactElement, useCallback, useEffect, useState } from 'react'
+import CardsList from './components/cardsList/CardsList'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router'
+import InfoCard from './components/infoCard/InfoCard'
+import Expandable from 'common/components/expandable/Expandable'
+import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
+import { CardsFilter } from './models/cardsFilter'
+import { Languages } from 'common/models/languages'
+import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import { FormModel } from 'common/components/dialogs/cardDialog/CardForm'
+import CardDialog from 'common/components/dialogs/cardDialog/CardDialog'
+import GroupDialog from 'common/components/dialogs/groupDialog/GroupDialog'
+import ActionsDialog from 'common/components/dialogs/actionsDialog/ActionsDialog'
+import { Pagination } from 'common/components/pagination/Pagination'
+import { CardSummary } from './models'
+import { useTitle } from 'common/index'
+import { GroupDetails } from './components/groupDetails/GroupDetails'
+import { useEffectOnce } from 'common/hooks/useEffectOnce'
+import { selectLanguages } from 'store/lesson/selectors'
 
-const pageSize = 30;
+const pageSize = 30
 
 export default function GroupDetailsPage(): ReactElement {
-  const dispatch = useDispatch();
-  const allCards = useSelector(selectors.selectCards);
-  const filteredCardsFromStore = useSelector(selectors.selectFilteredCards);
-  const filterState = useSelector(selectors.selectFilterState);
-  const isLoading = useSelector(selectors.selectIsLoading);
-  const groupDetails = useSelector(selectors.selectGroupDetails);
-  const cardSides = useSelector(selectLanguages);
-  const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([]);
-  const [formItem, setFormItem] = useState<FormModel | null>(null);
-  const [page, setPage] = useState(1);
-  const [actionsVisible, setActionsVisible] = useState(false);
-  const [editedGroup, setEditedGroup] = useState<any>(null);
-  const { groupId } = useParams<{ groupId: string }>();
+  const dispatch = useDispatch()
+  const allCards = useSelector(selectors.selectCards)
+  const filteredCardsFromStore = useSelector(selectors.selectFilteredCards)
+  const filterState = useSelector(selectors.selectFilterState)
+  const isLoading = useSelector(selectors.selectIsLoading)
+  const groupDetails = useSelector(selectors.selectGroupDetails)
+  const cardSides = useSelector(selectLanguages)
+  const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([])
+  const [formItem, setFormItem] = useState<FormModel | null>(null)
+  const [page, setPage] = useState(1)
+  const [actionsVisible, setActionsVisible] = useState(false)
+  const [editedGroup, setEditedGroup] = useState<any>(null)
+  const { groupId } = useParams<{ groupId: string }>()
 
-  useTitle(`Wordki - ${groupDetails.name}`);
+  useTitle(`Wordki - ${groupDetails.name}`)
 
   useEffectOnce(() => {
-    dispatch(actions.getCards({ groupId: groupId ? groupId : "" }));
-  }, [groupId, dispatch]);
+    dispatch(actions.getCards({ groupId: groupId ? groupId : '' }))
+  }, [groupId, dispatch])
 
   useEffect(() => {
-    const first = (page - 1) * pageSize;
-    const last = first + pageSize;
-    setPaginatedCards(filteredCardsFromStore.slice(first, last));
-  }, [page, filteredCardsFromStore]);
+    const first = (page - 1) * pageSize
+    const last = first + pageSize
+    setPaginatedCards(filteredCardsFromStore.slice(first, last))
+  }, [page, filteredCardsFromStore])
 
   const onItemSelected = (item: CardSummary) => {
-    dispatch(actions.selectCard({ item }));
-    setFormItem(getFormModelFromCardSummary(item));
-  };
+    dispatch(actions.selectCard({ item }))
+    setFormItem(getFormModelFromCardSummary(item))
+  }
 
   const onFormSubmit = (item: FormModel): void => {
     const udpdatedCard = {
@@ -65,103 +65,103 @@ export default function GroupDetailsPage(): ReactElement {
         value: item.frontValue,
         example: item.frontExample,
         isUsed: item.frontEnabled,
-        isTicked: item.isTicked,
+        isTicked: item.isTicked
       },
       back: {
         value: item.backValue,
         example: item.backExample,
         isUsed: item.backEnabled,
-        isTicked: item.isTicked,
-      },
-    } as CardSummary;
-    if (udpdatedCard.id !== "") {
-      dispatch(actions.updateCard({ card: udpdatedCard }));
-      setFormItem(null);
+        isTicked: item.isTicked
+      }
+    } as CardSummary
+    if (udpdatedCard.id !== '') {
+      dispatch(actions.updateCard({ card: udpdatedCard }))
+      setFormItem(null)
     } else {
-      dispatch(actions.addCard({ card: udpdatedCard }));
-      onAddCard();
+      dispatch(actions.addCard({ card: udpdatedCard }))
+      onAddCard()
     }
-  };
+  }
 
   const onDelete = (item: FormModel) => {
-    dispatch(actions.deleteCard({ cardId: item.cardId }));
-    setFormItem(null);
-  };
+    dispatch(actions.deleteCard({ cardId: item.cardId }))
+    setFormItem(null)
+  }
 
   const onCancel = () => {
-    dispatch(actions.resetSelectedCard());
-    setFormItem(null);
-  };
+    dispatch(actions.resetSelectedCard())
+    setFormItem(null)
+  }
 
   const onClickSetFilter = (filter: CardsFilter) => {
     if (filter === 1) {
-      dispatch(actions.resetFilters());
+      dispatch(actions.resetFilters())
     } else if (filter === 2) {
-      dispatch(actions.setFilterLearning({ isLearning: true }));
+      dispatch(actions.setFilterLearning({ isLearning: true }))
     } else if (filter === 3) {
-      dispatch(actions.setFilterLearning({ isLearning: false }));
+      dispatch(actions.setFilterLearning({ isLearning: false }))
     } else if (filter >= 4 && filter <= 8) {
-      dispatch(actions.setFilterDrawer({ drawer: filter - 3 }));
+      dispatch(actions.setFilterDrawer({ drawer: filter - 3 }))
     } else if (filter === 9) {
-      dispatch(actions.setFilterIsTicked({ isTicked: true }));
+      dispatch(actions.setFilterIsTicked({ isTicked: true }))
     }
-  };
+  }
 
   const onAddCard = () => {
     const cardTemplate = {
-      id: "",
-      front: { value: "", example: "", isUsed: false },
-      back: { value: "", example: "", isUsed: false },
-    } as CardSummary;
-    dispatch(actions.selectCard({ item: cardTemplate }));
-    setFormItem(getFormModelFromCardSummary(cardTemplate));
-  };
+      id: '',
+      front: { value: '', example: '', isUsed: false },
+      back: { value: '', example: '', isUsed: false }
+    } as CardSummary
+    dispatch(actions.selectCard({ item: cardTemplate }))
+    setFormItem(getFormModelFromCardSummary(cardTemplate))
+  }
 
   const onPageChagned = (event: PageChangedEvent) => {
-    setPage(event.currectPage);
-  };
+    setPage(event.currectPage)
+  }
 
   const onSearchChanged = useCallback(
     (text: string) => {
-      dispatch(actions.setFilterText({ text }));
+      dispatch(actions.setFilterText({ text }))
     },
     [dispatch]
-  );
+  )
 
   const onActionsVisible = () => {
-    setActionsVisible(false);
-  };
+    setActionsVisible(false)
+  }
 
   const onEditGroup = () => {
     const group = {
       id: groupDetails.id,
       name: groupDetails.name,
       front: groupDetails.language1,
-      back: groupDetails.language2,
-    };
-    setEditedGroup(group);
-  };
+      back: groupDetails.language2
+    }
+    setEditedGroup(group)
+  }
 
   const onHideGroupDialog = () => {
-    setEditedGroup(null);
-  };
+    setEditedGroup(null)
+  }
 
   const onSubmitGroupDialog = (group: any) => {
     if (group === null) {
-      return;
+      return
     }
-    dispatch(groupActions.updateGroup({ group }));
-    onHideGroupDialog();
-  };
+    dispatch(groupActions.updateGroup({ group }))
+    onHideGroupDialog()
+  }
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner />
   }
 
   const acts = [
-    { label: "Add card", action: onAddCard },
-    { label: "Edit group", action: onEditGroup },
-  ];
+    { label: 'Add card', action: onAddCard },
+    { label: 'Edit group', action: onEditGroup }
+  ]
 
   return (
     <div className="group-detail-main-container">
@@ -191,9 +191,9 @@ export default function GroupDetailsPage(): ReactElement {
         {drawers.map((item) => (
           <div className="group-details-info-card" key={item}>
             <InfoCard
-              label={"drawer " + item}
+              label={'drawer ' + item}
               value={utils.getCardsCountFromDrawerCount(allCards, item)}
-              classNameOverriden={"info-card-drawer-" + item}
+              classNameOverriden={'info-card-drawer-' + item}
               onClick={() => onClickSetFilter(3 + item)}
             />
           </div>
@@ -244,7 +244,7 @@ export default function GroupDetailsPage(): ReactElement {
       />
       <ActionsDialog isVisible={actionsVisible} onHide={onActionsVisible} actions={acts} />
     </div>
-  );
+  )
 }
 
 function getFormModelFromCardSummary(card: CardSummary): FormModel {
@@ -256,8 +256,8 @@ function getFormModelFromCardSummary(card: CardSummary): FormModel {
     backValue: card.back.value,
     backExample: card.back.example,
     backEnabled: card.back.isUsed,
-    isTicked: card.front.isTicked,
-  } as FormModel;
+    isTicked: card.front.isTicked
+  } as FormModel
 }
 
-const drawers = [1, 2, 3, 4, 5];
+const drawers = [1, 2, 3, 4, 5]

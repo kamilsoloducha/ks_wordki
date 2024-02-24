@@ -7,4 +7,8 @@ services:
       context: ../../
       dockerfile: ./ci/docker/Dockerfile
       target: tests
+    volumes:
+      - /var/run/docker.sock.raw:/var/run/docker.sock
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerTest
     command: dotnet test --test-adapter-path:. --logger:"junit"

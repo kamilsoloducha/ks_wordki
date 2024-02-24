@@ -1,73 +1,73 @@
-import * as selectors from "store/cardsSearch/selectors";
-import * as actions from "store/cardsSearch/reducer";
-import { Fragment, ReactElement, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Pagination } from "common/components/pagination/Pagination";
-import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
-import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
-import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
-import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
-import { CardsOverview, CardSummary } from "./models";
-import { Row } from "./components/row/Row";
-import { useTitle } from "common";
-import { useEffectOnce } from "common/hooks/useEffectOnce";
-import { TriStateCheckbox } from "primereact/tristatecheckbox";
+import * as selectors from 'store/cardsSearch/selectors'
+import * as actions from 'store/cardsSearch/reducer'
+import { Fragment, ReactElement, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Pagination } from 'common/components/pagination/Pagination'
+import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
+import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import CardDialog from 'common/components/dialogs/cardDialog/CardDialog'
+import { FormModel } from 'common/components/dialogs/cardDialog/CardForm'
+import { CardsOverview, CardSummary } from './models'
+import { Row } from './components/row/Row'
+import { useTitle } from 'common/index'
+import { useEffectOnce } from 'common/hooks/useEffectOnce'
+import { TriStateCheckbox } from 'primereact/tristatecheckbox'
 
 export default function CardsPage(): ReactElement {
-  useTitle("Wordki - Cards");
-  const dispatch = useDispatch();
-  const cards = useSelector(selectors.selectCards);
-  const cardsCount = useSelector(selectors.selectCardsCount);
-  const filter = useSelector(selectors.selectFilter);
-  const isSearching = useSelector(selectors.selectIsSearching);
-  const overview = useSelector(selectors.selectOverview);
+  useTitle('Wordki - Cards')
+  const dispatch = useDispatch()
+  const cards = useSelector(selectors.selectCards)
+  const cardsCount = useSelector(selectors.selectCardsCount)
+  const filter = useSelector(selectors.selectFilter)
+  const isSearching = useSelector(selectors.selectIsSearching)
+  const overview = useSelector(selectors.selectOverview)
 
-  const [selectedItem, setSelectedItem] = useState<CardSummary | null>(null);
+  const [selectedItem, setSelectedItem] = useState<CardSummary | null>(null)
 
   useEffectOnce(() => {
-    dispatch(actions.getOverview());
-    dispatch(actions.search());
-  });
+    dispatch(actions.getOverview())
+    dispatch(actions.search())
+  })
 
   const onPageChagned = (event: PageChangedEvent) => {
-    dispatch(actions.filterSetPagination({ pageNumber: event.currectPage, pageSize: event.count }));
-  };
+    dispatch(actions.filterSetPagination({ pageNumber: event.currectPage, pageSize: event.count }))
+  }
 
   const onSearchChanged = (searchingTerm: string) => {
-    dispatch(actions.filterSetTerm({ searchingTerm }));
-  };
+    dispatch(actions.filterSetTerm({ searchingTerm }))
+  }
 
   const setPageSize = (size: number) => {
-    dispatch(actions.filterSetPagination({ pageNumber: filter.pageNumber, pageSize: size }));
-  };
+    dispatch(actions.filterSetPagination({ pageNumber: filter.pageNumber, pageSize: size }))
+  }
 
   const clearFilters = () => {
-    dispatch(actions.filterReset());
-  };
+    dispatch(actions.filterReset())
+  }
 
   const tickedOnly = (e: any) => {
-    dispatch(actions.filterSetTickedOnly({ tickedOnly: e.value }));
-  };
+    dispatch(actions.filterSetTickedOnly({ tickedOnly: e.value }))
+  }
 
   const lessonIncludedOnly = (e: any) => {
-    dispatch(actions.filterSetLessonIncluded({ lessonIncluded: e.value }));
-  };
+    dispatch(actions.filterSetLessonIncluded({ lessonIncluded: e.value }))
+  }
 
   const onItemSelected = (card: CardSummary) => {
-    setSelectedItem(card);
-  };
+    setSelectedItem(card)
+  }
 
   const onDelete = (model: FormModel | null) => {
     if (!selectedItem || !model) {
-      return;
+      return
     }
-    dispatch(actions.deleteCard({ cardId: selectedItem.id, groupId: selectedItem.groupId }));
-    setSelectedItem(null);
-  };
+    dispatch(actions.deleteCard({ cardId: selectedItem.id, groupId: selectedItem.groupId }))
+    setSelectedItem(null)
+  }
 
   const onSubmit = (model: FormModel | null) => {
     if (!selectedItem || !model) {
-      return;
+      return
     }
     const card: CardSummary = {
       ...selectedItem,
@@ -76,23 +76,23 @@ export default function CardsPage(): ReactElement {
         value: model.frontValue,
         example: model.frontExample,
         isTicked: model.isTicked,
-        isUsed: model.frontEnabled,
+        isUsed: model.frontEnabled
       },
       back: {
         ...selectedItem.back,
         value: model.backValue,
         example: model.backExample,
         isTicked: model.isTicked,
-        isUsed: model.backEnabled,
-      },
-    };
-    dispatch(actions.updateCard({ card }));
-    setSelectedItem(null);
-  };
+        isUsed: model.backEnabled
+      }
+    }
+    dispatch(actions.updateCard({ card }))
+    setSelectedItem(null)
+  }
 
   const onCancel = () => {
-    setSelectedItem(null);
-  };
+    setSelectedItem(null)
+  }
 
   return (
     <div>
@@ -125,7 +125,7 @@ export default function CardsPage(): ReactElement {
         onDelete={onDelete}
       />
     </div>
-  );
+  )
 }
 
 function Overview({ overview }: OverviewModel): ReactElement {
@@ -133,16 +133,16 @@ function Overview({ overview }: OverviewModel): ReactElement {
     <div>
       totalCount: <b>{overview.all}</b>
     </div>
-  );
+  )
 }
 
 interface OverviewModel {
-  overview: CardsOverview;
+  overview: CardsOverview
 }
 
 function getFormModelFromCardSummary(card: CardSummary | null): FormModel | null {
   if (card === null) {
-    return null;
+    return null
   }
   return {
     cardId: card.id,
@@ -152,6 +152,6 @@ function getFormModelFromCardSummary(card: CardSummary | null): FormModel | null
     backValue: card.back.value,
     backExample: card.back.example,
     backEnabled: card.back.isUsed,
-    isTicked: card.front.isTicked,
-  } as FormModel;
+    isTicked: card.front.isTicked
+  } as FormModel
 }

@@ -1,25 +1,37 @@
 import "./TopBar.scss";
-import React, { ReactElement } from "react";
-import { Link } from "react-router-dom";
-import { Breadcrumb } from "store/root/state";
+import { FormEvent, ReactElement, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function TopBar({ isLogin, breadCrumbs }: Model): ReactElement {
+export default function TopBar({ isLogin }: TopBarProps): ReactElement {
+  const navigate = useNavigate();
+  const [searchingTerm, setSearchingTerm] = useState("");
+  const submitSearch = (e: FormEvent<HTMLFormElement>) => {
+    if (searchingTerm.trim().length === 0) {
+      return;
+    }
+    e.preventDefault();
+    navigate(`/test?query=${searchingTerm}&dic=Diki`);
+  };
   return (
     <div className="top-bar">
       <div className="tob-bar-breadcrumbs">
         <Link className="top-bar-logo" to="/dashboard">
           Wordki
         </Link>
-        {breadCrumbs?.map((item, index) => (
-          <React.Fragment key={index}>
-            <li className="tob-bar-separator"></li> {<Link to={item.url ?? ""}>{item.name}</Link>}
-          </React.Fragment>
-        ))}
       </div>
       <ul>
         {isLogin && (
           <>
-            <li></li>
+            <li>
+              <form onSubmit={submitSearch}>
+                <input
+                  type="search"
+                  value={searchingTerm}
+                  onChange={(e) => setSearchingTerm(e.target.value)}
+                  placeholder="Search..."
+                />
+              </form>
+            </li>
             <li>
               <Link to="/logout">Logout</Link>
             </li>
@@ -40,7 +52,6 @@ export default function TopBar({ isLogin, breadCrumbs }: Model): ReactElement {
   );
 }
 
-interface Model {
+type TopBarProps = {
   isLogin: boolean;
-  breadCrumbs?: Breadcrumb[];
-}
+};

@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace Cards.E2e.Tests;
 
 [SetUpFixture]
+[NonParallelizable]
 public class TestSetup
 {
     [OneTimeSetUp]

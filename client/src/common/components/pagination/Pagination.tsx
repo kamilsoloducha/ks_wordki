@@ -8,7 +8,7 @@ export function Pagination({
   search,
   onSearchChanged,
   pageSize = 30,
-}: Model) {
+}: PaginationProps) {
   const [currectPage, setCurrectPage] = useState(1);
   const totalPages = Math.ceil(totalCount / pageSize);
   const buttons = getPagesToDispaly(totalPages, currectPage);
@@ -38,7 +38,7 @@ export function Pagination({
 
   useEffect(() => {
     changePage(1);
-  }, [totalCount, pageSize]); // eslint-disable-line
+  }, [totalCount, pageSize]);
 
   return (
     <div className="pagination-container">
@@ -89,13 +89,13 @@ export function Pagination({
   );
 }
 
-interface Model {
+export type PaginationProps = {
   totalCount: number;
   pageSize?: number;
   onPageChagned: (event: PageChangedEvent) => void;
   search?: string;
   onSearchChanged?: (text: string) => void;
-}
+};
 
 function getPagesToDispaly(totalPages: number, currectPage: number): number[] {
   const result: number[] = [];

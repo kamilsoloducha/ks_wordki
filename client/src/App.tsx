@@ -1,51 +1,49 @@
-import "./App.scss";
-import "primeicons/primeicons.css";
-import "primereact/resources/themes/nova/theme.css";
-import "primereact/resources/primereact.min.css";
-import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
-import AxiosEx from "common/components/axiosEx/AxiosEx";
-import { selectIsLogin } from "store/user/selectors";
-import TopBar from "common/components/topBar/TopBar";
-import { selectBreadcrumbs } from "store/root/selectors";
-import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
-import { useAppDispatch, useAppSelector } from "store/store";
-import { loginSuccess } from "store/user/reducer";
-import { CustomRouter } from "common/components/CustomRouter";
-import history from "common/services/history";
-import TestPage from "pages/test/TestPage";
+import './App.scss'
+import 'primeicons/primeicons.css'
+import 'primereact/resources/themes/nova/theme.css'
+import 'primereact/resources/primereact.min.css'
+import { lazy, Suspense } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import AxiosEx from 'common/components/axiosEx/AxiosEx'
+import { selectIsLogin } from 'store/user/selectors'
+import TopBar from 'common/components/topBar/TopBar'
+import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import { useAppDispatch, useAppSelector } from 'store/store'
+import { loginSuccess } from 'store/user/reducer'
+import { CustomRouter } from 'common/components/CustomRouter'
+import history from 'common/services/history'
+import TestPage from 'pages/test/TestPage'
 
-const LoginPage = lazy(() => import("pages/login/LoginPage"));
-const LogoutPage = lazy(() => import("pages/logout/LogoutPage"));
-const RegisterPage = lazy(() => import("pages/register/RegisterPage"));
-const DashboardPage = lazy(() => import("pages/dashboard/DashbaordPage"));
-const GroupsPage = lazy(() => import("pages/groups/GroupsPage"));
-const GroupsSearchPage = lazy(() => import("pages/groupsSearch/GroupsSearch"));
-const GroupDetails = lazy(() => import("pages/cards/GroupDetailsPage"));
-const CardsPage = lazy(() => import("pages/cardsSearch/CardsPage"));
-const LessonSettingsPage = lazy(() => import("pages/lessonSettings/LessonSetting"));
-const LessonPage = lazy(() => import("pages/lesson/LessonPage"));
-const LessonResultPage = lazy(() => import("pages/lessonResult/LessonResult"));
-const ErrorPage = lazy(() => import("pages/error/ErrorPage"));
+const LoginPage = lazy(() => import('pages/login/LoginPage'))
+const LogoutPage = lazy(() => import('pages/logout/LogoutPage'))
+const RegisterPage = lazy(() => import('pages/register/RegisterPage'))
+const DashboardPage = lazy(() => import('pages/dashboard/DashbaordPage'))
+const GroupsPage = lazy(() => import('pages/groups/GroupsPage'))
+const GroupsSearchPage = lazy(() => import('pages/groupsSearch/GroupsSearch'))
+const GroupDetails = lazy(() => import('pages/cards/GroupDetailsPage'))
+const CardsPage = lazy(() => import('pages/cardsSearch/CardsPage'))
+const LessonSettingsPage = lazy(() => import('pages/lessonSettings/LessonSetting'))
+const LessonPage = lazy(() => import('pages/lesson/LessonPage'))
+const LessonResultPage = lazy(() => import('pages/lessonResult/LessonResult'))
+const ErrorPage = lazy(() => import('pages/error/ErrorPage'))
 
 export default function App() {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const isLogin = useAppSelector(selectIsLogin);
-  const breadCrumbs = useAppSelector(selectBreadcrumbs);
+  const isLogin = useAppSelector(selectIsLogin)
 
-  const userId = localStorage.getItem("id");
-  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem('id')
+  const token = localStorage.getItem('token')
 
   if (userId && token) {
-    dispatch(loginSuccess({ id: userId, token, expirationDate: "2022/12/12" }));
+    dispatch(loginSuccess({ id: userId, token, expirationDate: '2022/12/12' }))
   }
 
   return (
     <>
       <AxiosEx>
         <CustomRouter history={history}>
-          <TopBar isLogin={isLogin} breadCrumbs={breadCrumbs} />
+          <TopBar isLogin={isLogin} />
           <div className="content">
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
@@ -70,5 +68,5 @@ export default function App() {
         </CustomRouter>
       </AxiosEx>
     </>
-  );
+  )
 }
