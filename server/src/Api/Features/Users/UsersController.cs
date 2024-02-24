@@ -44,8 +44,8 @@ public class UsersController : BaseController
         CancellationToken cancellationToken)
     {
         var command = new LoginUser.Command(request.UserName, request.Password);
-                
-        return Ok(await Mediator.Send(command, cancellationToken));
+        var response = await Mediator.Send(command, cancellationToken);
+        return response.ResponseCode == LoginUser.ResponseCode.Successful ? Ok(response) : BadRequest(response);
     }
 
     [HttpPut("login/chrome-extension")]

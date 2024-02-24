@@ -106,6 +106,7 @@ public class GroupsController : BaseController
     }
 
     [HttpGet("summaries")]
+    [ProducesResponseType(typeof(IEnumerable<GroupSummaryDto>), StatusCodes.Status200OK)]
     [Authorize(Policy = AuthorizationExtensions.LoginUserPolicy)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {

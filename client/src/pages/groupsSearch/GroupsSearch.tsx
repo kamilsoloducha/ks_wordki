@@ -1,42 +1,42 @@
-import "./GroupsSearch.scss";
-import { Fragment, ReactElement } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "store/groupsSearch/reducer";
-import * as selectors from "store/groupsSearch/selectors";
-import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
-import GroupRow from "pages/groups/components/groupRow/GroupRow";
-import { Dialog } from "primereact/dialog";
-import { useTitle } from "common";
+import './GroupsSearch.scss'
+import { Fragment, ReactElement } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import * as actions from 'store/groupsSearch/reducer'
+import * as selectors from 'store/groupsSearch/selectors'
+import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import GroupRow from 'pages/groups/components/groupRow/GroupRow'
+import { Dialog } from 'primereact/dialog'
+import { useTitle } from 'common/index'
 
 export default function GroupsSearchPage(): ReactElement {
-  useTitle("Wordki - Groups");
-  const dispatch = useDispatch();
+  useTitle('Wordki - Groups')
+  const dispatch = useDispatch()
 
-  const filter = useSelector(selectors.selectFilter);
-  const isSearching = useSelector(selectors.selectIsSearching);
-  const groups = useSelector(selectors.selectGroups);
-  const selectedGroup = useSelector(selectors.selectSelectedGroup);
-  const isCardsLoading = useSelector(selectors.selectIsCardsLoading);
-  const cards = useSelector(selectors.selectCards);
+  const filter = useSelector(selectors.selectFilter)
+  const isSearching = useSelector(selectors.selectIsSearching)
+  const groups = useSelector(selectors.selectGroups)
+  const selectedGroup = useSelector(selectors.selectSelectedGroup)
+  const isCardsLoading = useSelector(selectors.selectIsCardsLoading)
+  const cards = useSelector(selectors.selectCards)
 
   const onGroupNameChanged = (event$: any) => {
-    const value = event$.target.value;
-    dispatch(actions.filterSetName({ name: value }));
-  };
+    const value = event$.target.value
+    dispatch(actions.filterSetName({ name: value }))
+  }
 
   const onGroupSelected = (groupId: string) => {
-    const selectedGroup = groups.find((x: any) => x.id === groupId);
-    if (!selectedGroup) return;
-    dispatch(actions.setGroup({ group: selectedGroup }));
-  };
+    const selectedGroup = groups.find((x: any) => x.id === groupId)
+    if (!selectedGroup) return
+    dispatch(actions.setGroup({ group: selectedGroup }))
+  }
 
   const onDialogHide = () => {
-    dispatch(actions.resetSelection());
-  };
+    dispatch(actions.resetSelection())
+  }
 
   const onSave = () => {
-    dispatch(actions.saveGroup());
-  };
+    dispatch(actions.saveGroup())
+  }
 
   return (
     <>
@@ -64,7 +64,7 @@ export default function GroupsSearchPage(): ReactElement {
                   name: x.name,
                   front: x.front,
                   back: x.back,
-                  cardsCount: x.cardsCount,
+                  cardsCount: x.cardsCount
                 }}
                 onClick={onGroupSelected}
               />
@@ -88,20 +88,20 @@ export default function GroupsSearchPage(): ReactElement {
         </Dialog>
       </div>
     </>
-  );
+  )
 }
 
 function Footer({
   onDialogHide,
-  onSave,
+  onSave
 }: {
-  onDialogHide: () => void;
-  onSave: () => void;
+  onDialogHide: () => void
+  onSave: () => void
 }): ReactElement {
   return (
     <div className="search-group-dialog-footer">
       <button onClick={onDialogHide}>Cancel</button>
       <button onClick={onSave}>Save</button>
     </div>
-  );
+  )
 }

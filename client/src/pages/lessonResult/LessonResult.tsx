@@ -1,69 +1,69 @@
-import "./LessonResult.scss";
-import * as actions from "store/lesson/reducer";
-import { ReactElement, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { selectLessonHistory, selectResults, selectSettings } from "store/lesson/selectors";
-import { History } from "pages/lesson/components/history/History";
-import UserRepeat from "pages/lesson/models/userRepeat";
-import CardDialog from "common/components/dialogs/cardDialog/CardDialog";
-import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
-import { useTitle } from "common";
+import './LessonResult.scss'
+import * as actions from 'store/lesson/reducer'
+import { ReactElement, useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { selectLessonHistory, selectResults, selectSettings } from 'store/lesson/selectors'
+import { History } from 'pages/lesson/components/history/History'
+import UserRepeat from 'pages/lesson/models/userRepeat'
+import CardDialog from 'common/components/dialogs/cardDialog/CardDialog'
+import { FormModel } from 'common/components/dialogs/cardDialog/CardForm'
+import { useTitle } from 'common/index'
 
 export default function LessonResult(): ReactElement {
-  useTitle("Wordki - Results");
-  const dispatch = useDispatch();
-  const history = useNavigate();
-  const results = useSelector(selectResults);
-  const lessonHistory = useSelector(selectLessonHistory);
-  const lessonSettings = useSelector(selectSettings);
+  useTitle('Wordki - Results')
+  const dispatch = useDispatch()
+  const history = useNavigate()
+  const results = useSelector(selectResults)
+  const lessonHistory = useSelector(selectLessonHistory)
+  const lessonSettings = useSelector(selectSettings)
 
-  const [userRepeats, setUserRepeats] = useState<UserRepeat[]>(lessonHistory);
-  const [selectedItem, setSelectedItem] = useState<UserRepeat | null>(null);
+  const [userRepeats, setUserRepeats] = useState<UserRepeat[]>(lessonHistory)
+  const [selectedItem, setSelectedItem] = useState<UserRepeat | null>(null)
 
-  const userAnswerColumn = userAnswerColumnNecessary(lessonSettings.type);
+  const userAnswerColumn = userAnswerColumnNecessary(lessonSettings.type)
 
   useEffect(() => {
-    dispatch(actions.resetLesson());
-  }, [dispatch]);
+    dispatch(actions.resetLesson())
+  }, [dispatch])
 
   const onContinue = useCallback(() => {
-    dispatch(actions.getCards());
-  }, [dispatch]);
+    dispatch(actions.getCards())
+  }, [dispatch])
 
   const startNew = useCallback(() => {
-    history("/lesson-settings");
-  }, [history]);
+    history('/lesson-settings')
+  }, [history])
 
   const finish = useCallback(() => {
-    history("/dashboard");
-  }, [history]);
+    history('/dashboard')
+  }, [history])
 
   const showCorrect = () => {
-    setUserRepeats(filterLessonHistory(lessonHistory, 1));
-  };
+    setUserRepeats(filterLessonHistory(lessonHistory, 1))
+  }
 
   const showAccepted = () => {
-    setUserRepeats(filterLessonHistory(lessonHistory, 0));
-  };
+    setUserRepeats(filterLessonHistory(lessonHistory, 0))
+  }
 
   const showWrong = () => {
-    setUserRepeats(filterLessonHistory(lessonHistory, -1));
-  };
+    setUserRepeats(filterLessonHistory(lessonHistory, -1))
+  }
 
   const showAll = () => {
-    setUserRepeats(lessonHistory);
-  };
+    setUserRepeats(lessonHistory)
+  }
 
   const onSubmit = (form: FormModel) => {
-    if (!selectedItem) return;
-    form.backEnabled = null;
-    form.frontEnabled = null;
-    dispatch(actions.updateCard({ form, groupId: "" }));
-    setSelectedItem(null);
-  };
+    if (!selectedItem) return
+    form.backEnabled = null
+    form.frontEnabled = null
+    dispatch(actions.updateCard({ form, groupId: '' }))
+    setSelectedItem(null)
+  }
 
-  const onDelete = (form: FormModel) => undefined;
+  const onDelete = (form: FormModel) => undefined
 
   return (
     <>
@@ -97,31 +97,31 @@ export default function LessonResult(): ReactElement {
         onDelete={onDelete}
       />
     </>
-  );
+  )
 }
 
 export function userAnswerColumnNecessary(type: number): boolean {
-  return type === 2;
+  return type === 2
 }
 
 export function filterLessonHistory(items: UserRepeat[], result: number): UserRepeat[] {
-  return items.filter((x) => x.result === result);
+  return items.filter((x) => x.result === result)
 }
 
 export function getFormModelFromUserRepeat(userRepeat: UserRepeat | null): FormModel | null {
-  if (!userRepeat) return null;
+  if (!userRepeat) return null
 
   const form: FormModel = {
     cardId: userRepeat.repeat.cardId,
     backEnabled: false,
-    comment: "",
+    comment: '',
     isTicked: false,
-    frontValue: "",
-    frontExample: "",
+    frontValue: '',
+    frontExample: '',
     frontEnabled: undefined,
-    backValue: "",
-    backExample: "",
-  };
+    backValue: '',
+    backExample: ''
+  }
 
-  return form;
+  return form
 }

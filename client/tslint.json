@@ -1,9 +1,0 @@
-{
-    "extends": [
-        "tslint:recommended"
-    ],
-    "rulesDirectory": [],
-    "rules": {
-        "no-console": false
-    }
-}

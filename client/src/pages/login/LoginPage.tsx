@@ -1,41 +1,41 @@
-import "./LoginPage.scss";
-import { useFormik } from "formik";
-import { ReactElement, useEffect } from "react";
-import * as selectors from "store/user/selectors";
-import { initialValues, LoginFormModel } from "./models";
-import { validate } from "./services/loginFormValidator";
-import { useTitle } from "common";
-import { useAppDispatch, useAppSelector } from "store/store";
-import { login, setErrorMessage } from "store/user/reducer";
-import { useNavigate } from "react-router-dom";
+import './LoginPage.scss'
+import { useFormik } from 'formik'
+import { ReactElement, useEffect } from 'react'
+import * as selectors from 'store/user/selectors'
+import { initialValues, LoginFormModel } from './models'
+import { validate } from './services/loginFormValidator'
+import { useTitle } from 'common/index'
+import { useAppDispatch, useAppSelector } from 'store/store'
+import { login, setErrorMessage } from 'store/user/reducer'
+import { useNavigate } from 'react-router-dom'
 
 export default function LoginPage(): ReactElement {
-  useTitle("Wordki - Login");
-  const userId = useAppSelector(selectors.selectUserId);
-  const isLoading = useAppSelector(selectors.selectIsLoading);
-  const errorMessage = useAppSelector(selectors.selectErrorMessage);
-  const navigate = useNavigate();
+  useTitle('Wordki - Login')
+  const userId = useAppSelector(selectors.selectUserId)
+  const isLoading = useAppSelector(selectors.selectIsLoading)
+  const errorMessage = useAppSelector(selectors.selectErrorMessage)
+  const navigate = useNavigate()
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(setErrorMessage(""));
-  }, [dispatch]);
+    dispatch(setErrorMessage(''))
+  }, [dispatch])
 
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => onSubmit(values),
-    validate,
-  });
+    validate
+  })
 
   if (userId) {
-    throw new Error("it should not happen!!");
-    navigate("/dashboard");
+    throw new Error('it should not happen!!')
+    navigate('/dashboard')
   }
 
   const onSubmit = (values: LoginFormModel) => {
-    dispatch(login({ userName: values.userName, password: values.password }));
-  };
+    dispatch(login({ userName: values.userName, password: values.password }))
+  }
 
   return (
     <div className="login-page-container">
@@ -76,5 +76,5 @@ export default function LoginPage(): ReactElement {
         <input type="submit" value="Login" disabled={isLoading} />
       </form>
     </div>
-  );
+  )
 }

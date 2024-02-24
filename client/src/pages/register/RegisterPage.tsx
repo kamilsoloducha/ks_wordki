@@ -1,32 +1,32 @@
-import "./RegisterPage.scss";
-import { useFormik } from "formik";
-import { ReactElement, useEffect } from "react";
-import * as selectors from "store/user/selectors";
-import { initialValue, RegisterFormModel } from "./models";
-import { validate } from "./services/registerFormValidator";
-import { useTitle } from "common";
-import { useAppDispatch, useAppSelector } from "store/store";
-import { register, setErrorMessage } from "store/user/reducer";
-import { useNavigate } from "react-router-dom";
+import './RegisterPage.scss'
+import { useFormik } from 'formik'
+import { ReactElement, useEffect } from 'react'
+import * as selectors from 'store/user/selectors'
+import { initialValue, RegisterFormModel } from './models'
+import { validate } from './services/registerFormValidator'
+import { useTitle } from 'common/index'
+import { useAppDispatch, useAppSelector } from 'store/store'
+import { register, setErrorMessage } from 'store/user/reducer'
+import { useNavigate } from 'react-router-dom'
 
 export default function RegisterPage(): ReactElement {
-  useTitle("Wordki - Register");
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  useTitle('Wordki - Register')
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const userId = useAppSelector(selectors.selectUserId);
-  const isLoading = useAppSelector(selectors.selectIsLoading);
-  const errorMessage = useAppSelector(selectors.selectErrorMessage);
+  const userId = useAppSelector(selectors.selectUserId)
+  const isLoading = useAppSelector(selectors.selectIsLoading)
+  const errorMessage = useAppSelector(selectors.selectErrorMessage)
 
   useEffect(() => {
-    dispatch(setErrorMessage(""));
-  }, [dispatch]);
+    dispatch(setErrorMessage(''))
+  }, [dispatch])
 
   const formik = useFormik({
     initialValues: initialValue,
     onSubmit: (values) => onSubmit(values),
-    validate,
-  });
+    validate
+  })
 
   const onSubmit = async (model: RegisterFormModel) => {
     dispatch(
@@ -34,13 +34,13 @@ export default function RegisterPage(): ReactElement {
         userName: model.userName,
         email: model.email,
         password: model.password,
-        passwordConfirmation: model.passwordConfirmation,
+        passwordConfirmation: model.passwordConfirmation
       })
-    );
-  };
+    )
+  }
 
   if (userId) {
-    navigate('/dashboard');
+    navigate('/dashboard')
   }
 
   return (
@@ -114,5 +114,5 @@ export default function RegisterPage(): ReactElement {
         <input type="submit" value="Create" disabled={isLoading} />
       </form>
     </div>
-  );
+  )
 }

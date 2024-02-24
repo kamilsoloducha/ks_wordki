@@ -1,56 +1,56 @@
-import "./LessonPage.scss";
-import * as actions from "store/lesson/reducer";
-import * as sel from "store/lesson/selectors";
-import * as type from "./models/resultTypes";
-import { ReactElement, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Fiszka from "./components/fiszka/Fiszka";
-import Inserting from "./components/inserting/Inserting";
-import RepeatsController from "./components/repeatsController/RepeatsController";
-import { FinishPending } from "./models/lessonState";
-import { LessonInformation } from "./components/lessonInformation/LessonInformation";
-import { useTitle } from "common";
-import { useEffectOnce } from "common/hooks/useEffectOnce";
+import './LessonPage.scss'
+import * as actions from 'store/lesson/reducer'
+import * as sel from 'store/lesson/selectors'
+import * as type from './models/resultTypes'
+import { ReactElement, useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import Fiszka from './components/fiszka/Fiszka'
+import Inserting from './components/inserting/Inserting'
+import RepeatsController from './components/repeatsController/RepeatsController'
+import { FinishPending } from './models/lessonState'
+import { LessonInformation } from './components/lessonInformation/LessonInformation'
+import { useTitle } from 'common/index'
+import { useEffectOnce } from 'common/hooks/useEffectOnce'
 
 export default function LessonPage(): ReactElement {
-  useTitle("Wordki - Lesson");
-  const questions = useSelector(sel.selectRepeats);
-  const status = useSelector(sel.selectLessonState);
-  const isCorrect = useSelector(sel.selectIsCorrect);
-  const lessonType = useSelector(sel.selectLessonType);
-  const dispatch = useDispatch();
-  const history = useNavigate();
+  useTitle('Wordki - Lesson')
+  const questions = useSelector(sel.selectRepeats)
+  const status = useSelector(sel.selectLessonState)
+  const isCorrect = useSelector(sel.selectIsCorrect)
+  const lessonType = useSelector(sel.selectLessonType)
+  const dispatch = useDispatch()
+  const history = useNavigate()
 
   useEffect(() => {
     if (status === FinishPending) {
-      history("/lesson-result");
+      history('/lesson-result')
     }
     if (questions.length <= 0 && status.type < FinishPending.type) {
-      history("/dashboard");
+      history('/dashboard')
     }
-  }, [status, questions, history, dispatch]);
+  }, [status, questions, history, dispatch])
 
   useEffectOnce(() => {
-    dispatch(actions.resetResults());
+    dispatch(actions.resetResults())
     return () => {
-      dispatch(actions.resetLesson());
-    };
-  });
+      dispatch(actions.resetLesson())
+    }
+  })
 
   const correct = useCallback(() => {
-    dispatch(actions.correct({ result: isCorrect ? type.Correct : type.Accepted }));
-  }, [dispatch, isCorrect]);
+    dispatch(actions.correct({ result: isCorrect ? type.Correct : type.Accepted }))
+  }, [dispatch, isCorrect])
 
   const wrong = useCallback(() => {
-    dispatch(actions.wrong({ result: -1 }));
-  }, [dispatch]);
+    dispatch(actions.wrong({ result: -1 }))
+  }, [dispatch])
 
   const check = useCallback(() => {
-    dispatch(actions.check());
-  }, [dispatch]);
+    dispatch(actions.check())
+  }, [dispatch])
 
-  const mainComponent = lessonType === 2 ? <Inserting /> : <Fiszka />;
+  const mainComponent = lessonType === 2 ? <Inserting /> : <Fiszka />
 
   return (
     <div className="lesson-page">
@@ -69,5 +69,5 @@ export default function LessonPage(): ReactElement {
         isCorrect={isCorrect}
       />
     </div>
-  );
+  )
 }

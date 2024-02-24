@@ -1,29 +1,29 @@
-import axios from "axios";
-import { ApiResponse } from "common/models/response";
+import axios from 'axios'
+import { ApiResponse } from 'common/models/response'
 
-export const API_PATH = process.env.REACT_APP_API_HOST;
-// if (API_PATH === undefined) {
-//   console.error("REACT_APP_API_HOST is not set");
-// }
+export const API_PATH = import.meta.env.VITE_API_HOST
+if (API_PATH === undefined) {
+  console.error('REACT_APP_API_HOST is not set')
+}
 const instance = axios.create({
   baseURL: API_PATH,
   headers: {
-    "Content-type": "application/json",
-  },
-});
+    'Content-type': 'application/json'
+  }
+})
 
-export default instance;
+export default instance
 
 export function createErrorResponse<T>(message: string): ApiResponse<T> {
   return {
     isCorrect: false,
-    error: message,
-  } as ApiResponse<T>;
+    error: message
+  } as ApiResponse<T>
 }
 
 export function createResponse<T>(response: T): ApiResponse<T> {
   return {
     isCorrect: true,
-    response,
-  } as ApiResponse<T>;
+    response
+  } as ApiResponse<T>
 }

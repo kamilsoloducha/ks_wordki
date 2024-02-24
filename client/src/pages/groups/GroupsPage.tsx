@@ -1,80 +1,80 @@
-import "./GroupsPage.scss";
-import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
-import GroupDialog from "common/components/dialogs/groupDialog/GroupDialog";
-import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
-import { PageChangedEvent } from "common/components/pagination/pageChagnedEvent";
-import { Pagination } from "common/components/pagination/Pagination";
-import { Fragment, ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import './GroupsPage.scss'
+import GroupDetails from 'common/components/dialogs/groupDialog/groupDetails'
+import GroupDialog from 'common/components/dialogs/groupDialog/GroupDialog'
+import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
+import { Pagination } from 'common/components/pagination/Pagination'
+import { Fragment, ReactElement, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import {
   addGroup,
   getGroupsSummary,
   resetSelectedItem,
   selectItem,
-  updateGroup,
-} from "store/groups/reducer";
-import { selectGroups, selectIsLoading, selectSelectedItem } from "store/groups/selectors";
-import GroupRow from "./components/groupRow/GroupRow";
-import { GroupSummary } from "./models/groupSummary";
-import { useTitle } from "common";
-import { getLanguages } from "store/lesson/reducer";
-import { selectLanguages } from "store/lesson/selectors";
+  updateGroup
+} from 'store/groups/reducer'
+import { selectGroups, selectIsLoading, selectSelectedItem } from 'store/groups/selectors'
+import GroupRow from './components/groupRow/GroupRow'
+import { GroupSummary } from './models/groupSummary'
+import { useTitle } from 'common/index'
+import { getLanguages } from 'store/lesson/reducer'
+import { selectLanguages } from 'store/lesson/selectors'
 
-const pageSize = 30;
+const pageSize = 30
 
 export default function GroupsPage(): ReactElement {
-  useTitle("Wordki - Groups");
-  const dispatch = useDispatch();
-  const history = useNavigate();
-  const [page, setPage] = useState(1);
-  const [paginatedItems, setPaginatedItems] = useState<GroupSummary[]>([]);
-  const isLoading = useSelector(selectIsLoading);
-  const groups = useSelector(selectGroups);
-  const selectedItem = useSelector(selectSelectedItem);
-  const cardSides = useSelector(selectLanguages);
+  useTitle('Wordki - Groups')
+  const dispatch = useDispatch()
+  const history = useNavigate()
+  const [page, setPage] = useState(1)
+  const [paginatedItems, setPaginatedItems] = useState<GroupSummary[]>([])
+  const isLoading = useSelector(selectIsLoading)
+  const groups = useSelector(selectGroups)
+  const selectedItem = useSelector(selectSelectedItem)
+  const cardSides = useSelector(selectLanguages)
   const dialogItem = !selectedItem
     ? (null as any)
-    : ({ id: selectedItem.id, name: selectedItem.name } as GroupDetails);
+    : ({ id: selectedItem.id, name: selectedItem.name } as GroupDetails)
 
   useEffect(() => {
-    dispatch(getGroupsSummary());
-    dispatch(getLanguages());
-  }, [dispatch]);
+    dispatch(getGroupsSummary())
+    dispatch(getLanguages())
+  }, [dispatch])
 
   useEffect(() => {
-    const first = (page - 1) * pageSize;
-    const last = first + pageSize;
-    setPaginatedItems(groups.slice(first, last));
-  }, [page, groups]);
+    const first = (page - 1) * pageSize
+    const last = first + pageSize
+    setPaginatedItems(groups.slice(first, last))
+  }, [page, groups])
 
   // if (isLoading) {
   //   return <LoadingSpinner />;
   // }
 
   const onhide = () => {
-    dispatch(resetSelectedItem());
-  };
+    dispatch(resetSelectedItem())
+  }
 
   const onsubmit = (group: GroupDetails) => {
-    dispatch(group.id ? updateGroup({ group }) : addGroup({ group }));
-  };
+    dispatch(group.id ? updateGroup({ group }) : addGroup({ group }))
+  }
 
   const onaddgroup = () => {
-    dispatch(selectItem({ group: {} as GroupSummary }));
-  };
+    dispatch(selectItem({ group: {} as GroupSummary }))
+  }
 
   const selectGroup = (group: GroupSummary) => {
-    history("/cards/" + group.id);
-  };
+    history('/cards/' + group.id)
+  }
 
   const onPageChagned = (event: PageChangedEvent) => {
-    setPage(event.currectPage);
-  };
+    setPage(event.currectPage)
+  }
 
   const onSearchGroup = () => {
-    history("/groups/search");
-  };
+    history('/groups/search')
+  }
 
   return (
     <>
@@ -94,7 +94,7 @@ export default function GroupsPage(): ReactElement {
               front: x.front,
               back: x.back,
               cardsCount: x.cardsCount,
-              cardsEnabled: x.cardsEnabled ?? 0,
+              cardsEnabled: x.cardsEnabled ?? 0
             }}
           />
         </Fragment>
@@ -103,5 +103,5 @@ export default function GroupsPage(): ReactElement {
       <GroupDialog cardSides={cardSides} group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
       {isLoading && <LoadingSpinner />}
     </>
-  );
+  )
 }

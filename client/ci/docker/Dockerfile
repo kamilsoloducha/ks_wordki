@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 COPY . .
 
@@ -18,7 +18,7 @@ FROM nginx:alpine as release
 
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
