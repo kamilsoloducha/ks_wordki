@@ -1,9 +1,6 @@
-import { Dropdown } from 'common/components/Dropdown'
 import { useUserStorage } from 'common/hooks'
 import { FormEvent, ReactElement, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
-const items = ['1', '2', '3']
 
 export default function TopBar(): ReactElement {
   const { get } = useUserStorage()
@@ -15,6 +12,7 @@ export default function TopBar(): ReactElement {
       return
     }
     e.preventDefault()
+    setSearchingTerm('')
     navigate(`/test?query=${searchingTerm}&dic=Diki`)
   }
   return (
