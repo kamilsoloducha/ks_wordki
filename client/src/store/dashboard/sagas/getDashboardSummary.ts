@@ -1,29 +1,55 @@
 import { call, put } from '@redux-saga/core/effects'
 import { ForecastModel } from 'pages/dashboard/models/forecastModel'
-import { requestFailed } from 'store/root/actions'
 import * as api from 'api/index'
 import { SagaIterator } from 'redux-saga'
 import { getDashboardSummarySuccess, getForecastSuccess } from '../reducer'
-import { takeEvery } from 'redux-saga/effects'
+import { all, takeEvery } from 'redux-saga/effects'
+import { AxiosResponse } from 'axios'
+import { requestFailed } from 'store/root/actions'
+import {
+  GetDashboardSummarySuccess,
+  GetForecastSuccess
+} from '@/src/store/dashboard/action-payloads'
 
 export function* getDashbaordSummaryWorker(): any {
-  const response: api.DashboardSummaryResponse = yield call(api.getDashboardSummaryApi)
+  const {
+    summaryResponse,
+    forecastResponse
+  }: {
+    summaryResponse: AxiosResponse<api.DashboardSummary>
+    forecastResponse: AxiosResponse<ForecastModel[]>
+  } = yield all({
+    summaryResponse: call(api.getSummary),
+    forecastResponse: call(api.getForecast, { count: 7 })
+  })
 
-  const getForecastRequest: api.ForecastQuery = {
-    count: 7
+  let summaryPayload: GetDashboardSummarySuccess
+  if (summaryResponse && 'data' in summaryResponse) {
+    summaryPayload = {
+      cardsCount: summaryResponse.data.cardsCount,
+      dailyRepeats: summaryResponse.data.dailyRepeats,
+      groupsCount: summaryResponse.data.groupsCount
+    }
+  } else {
+    summaryPayload = {
+      cardsCount: 0,
+      dailyRepeats: 0,
+      groupsCount: 0
+    }
   }
+  yield put(getDashboardSummarySuccess(summaryPayload))
 
-  const result: ForecastModel[] = yield call(api.getForecast, getForecastRequest)
-  yield put(
-    response
-      ? getDashboardSummarySuccess({
-          dailyRepeats: response.dailyRepeats,
-          groupsCount: response.groupsCount,
-          cardsCount: response.cardsCount
-        })
-      : requestFailed(response)
-  )
-  yield put(getForecastSuccess({ forecast: result }))
+  let forecastPayload: GetForecastSuccess
+  if (forecastResponse && 'data' in forecastResponse) {
+    forecastPayload = {
+      forecast: forecastResponse.data
+    }
+  } else {
+    forecastPayload = {
+      forecast: []
+    }
+  }
+  yield put(getForecastSuccess(forecastPayload))
 }
 
 export function* getDashbaordSummaryEffect(): SagaIterator {

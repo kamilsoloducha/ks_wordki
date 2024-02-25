@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .top-bar-button {
+    @apply block text-center px-5 py-6 no-underline hover:bg-neutral-800 mx-5;
+  }
+
+  .logo {
+    font-weight: 900;
+    font-size: 2rem;
+  }
+}
+
+input:focus {
+  outline: none;
+}

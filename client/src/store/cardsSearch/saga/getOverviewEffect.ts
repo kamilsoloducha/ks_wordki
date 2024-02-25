@@ -1,13 +1,14 @@
-import { call, put, select } from '@redux-saga/core/effects'
+import { call, put } from '@redux-saga/core/effects'
 import * as api from 'api/index'
-import { selectUserId } from 'store/user/selectors'
 import { CardsOverview } from 'pages/cardsSearch/models/cardsOverview'
 import { takeEvery } from 'redux-saga/effects'
 import { SagaIterator } from 'redux-saga'
 import { getOverviewSuccess } from '../reducer'
+import { useUserStorage } from 'common/index'
 
 export function* getOverviewWorker(): SagaIterator {
-  const userId: string = yield select(selectUserId)
+  const { get } = useUserStorage()
+  const userId = get()?.id!
 
   const overview: CardsOverview = yield call(api.cardsOverview, userId)
 

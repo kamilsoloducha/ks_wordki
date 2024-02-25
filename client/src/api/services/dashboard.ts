@@ -1,29 +1,18 @@
-import { AxiosResponse } from "axios";
-import { ForecastModel } from "pages/dashboard/models/forecastModel";
-import * as queries from "../queries";
-import * as responses from "../responses";
-import http from "./httpBase";
+import { AxiosResponse } from 'axios'
+import { ForecastModel } from 'pages/dashboard/models/forecastModel'
+import * as q from '../queries'
+import * as res from '../responses'
+import http from './httpBase'
 
-export async function getDashboardSummaryApi(): Promise<
-  responses.DashboardSummaryResponse | ErrorResponse
-> {
-  const response = await http.get<responses.DashboardSummaryResponse>("dashboard/summary");
-  return response.data;
+const PATH = '/dashboard'
+
+export async function getSummary(): Promise<AxiosResponse<res.DashboardSummary>> {
+  console.log('getSummary')
+  return await http.get<res.DashboardSummary>(`${PATH}/summary`)
 }
 
-export async function getForecast(request: queries.ForecastQuery): Promise<ForecastModel[]> {
-  const response = await http.get<ForecastModel[]>("dashboard/forecast", { params: request });
-  return response.data;
-}
-
-export function handleResponse<T>(axiosResponse: AxiosResponse<T>): T | ErrorResponse {
-  const response = axiosResponse.data as any;
-  return axiosResponse.status >= 200 && axiosResponse.status < 300
-    ? response
-    : ({ message: response.message, error: true } as ErrorResponse);
-}
-
-export interface ErrorResponse {
-  error: boolean;
-  message: string;
+export async function getForecast(
+  request: q.ForecastQuery
+): Promise<AxiosResponse<ForecastModel[]>> {
+  return await http.get<ForecastModel[]>(`${PATH}/forecast`, { params: request })
 }
