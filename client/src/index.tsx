@@ -64,7 +64,7 @@ const routes = createRoutesFromElements(
     {createRoute('/error', true, false, <ErrorPage />)}
     {createRoute('/lesson', true, false, <LessonPage />)}
     {createRoute('/lesson-settings', true, false, <LessonSettingsPage />)}
-    {createRoute('/lesson-results', true, false, <LessonResultPage />)}
+    {createRoute('/lesson-result', true, false, <LessonResultPage />)}
     {createRoute('/groups', true, false, <GroupsPage />)}
     {createRoute('/groups/search', true, false, <GroupsSearchPage />)}
     {createRoute('/cards/:groupId', true, false, <GroupDetails />)}
