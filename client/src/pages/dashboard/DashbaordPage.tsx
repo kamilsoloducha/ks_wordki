@@ -15,7 +15,6 @@ export default function DashboardPage(): ReactElement {
   const data = useSelector(selectData)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   useEffectOnce(() => {
     dispatch(getDashboardSummary())
     dispatch(getLanguages())
