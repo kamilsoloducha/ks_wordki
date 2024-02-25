@@ -10,12 +10,14 @@ import NewCardsSettings from './components/newCardsSettings/NewCardsSettings'
 import { LessonMode as mode } from './models/lesson-mode'
 import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
 import { useTitle } from 'common/index'
+import { useNavigate } from 'react-router-dom'
 
 export default function LessonSettingsPage(): ReactElement {
   useTitle('Wordki - Lesson')
   const settings = useSelector(selectSettings)
   const isProcessing = useSelector(selectIsProcessing)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(act.resetResults())
@@ -42,7 +44,7 @@ export default function LessonSettingsPage(): ReactElement {
 
   const onStartClick = () => {
     dispatch(act.resetResults())
-    dispatch(act.getCards())
+    dispatch(act.getCards({ navigate }))
   }
 
   if (isProcessing) {

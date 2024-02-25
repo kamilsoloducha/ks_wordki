@@ -28,7 +28,7 @@ export default function LessonResult(): ReactElement {
   }, [dispatch])
 
   const onContinue = useCallback(() => {
-    dispatch(actions.getCards())
+    dispatch(actions.getCards({ navigate: history }))
   }, [dispatch])
 
   const startNew = useCallback(() => {

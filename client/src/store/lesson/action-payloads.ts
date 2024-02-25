@@ -1,61 +1,66 @@
-import { FormModel } from "common/components/dialogs/cardDialog/CardForm";
-import { Repeat } from "pages/lesson/models/repeat";
-import { Group } from "pages/lessonSettings/models/group";
-import { Language } from "pages/lessonSettings/models/languages";
+import { FormModel } from 'common/components/dialogs/cardDialog/CardForm'
+import { Repeat } from 'pages/lesson/models/repeat'
+import { Group } from 'pages/lessonSettings/models/group'
+import { Language } from 'pages/lessonSettings/models/languages'
+import { NavigateFunction } from 'react-router-dom'
 
 export interface SetSettingCount {
-  count: number;
+  count: number
 }
 
 export interface SetSettingLanguage {
-  languages: string[];
+  languages: string[]
 }
 
 export interface SetSettingType {
-  type: number;
+  type: number
 }
 
 export interface SetSettingMode {
-  mode: number;
+  mode: number
 }
 
 export interface SetSettingGroup {
-  groupId: string;
+  groupId: string
 }
 
 export interface GetLanguagesSuccess {
-  languages: Language[];
+  languages: Language[]
+}
+
+export interface GetCards {
+  navigate: NavigateFunction
 }
 
 export interface GetCardsSuccess {
-  repeats: Repeat[];
+  repeats: Repeat[]
 }
 
 export interface GetGroupsSuccess {
-  groups: Group[];
+  groups: Group[]
 }
 
 export interface GetCardsCountSuccess {
-  count: number;
+  count: number
 }
 
 export interface Correct {
-  result: number;
+  result: number
 }
 
 export interface Wrong {
-  result: number;
+  result: number
 }
 
 export interface SetAnswer {
-  answer: string;
+  answer: string
 }
 
 export interface UpdateCard {
-  form: FormModel;
-  groupId: string;
+  form: FormModel
+  groupId: string
 }
 
 export interface UpdateCardSuccess {
-  form: FormModel;
+  form: FormModel
 }

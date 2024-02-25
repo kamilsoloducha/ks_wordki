@@ -1,4 +1,4 @@
-version: "3.5"
+version: '3.5'
 services:
   wordki-client.ci.test:
     container_name: wordki-client.ci.test.${BUILD_BUILDID}
@@ -7,4 +7,4 @@ services:
       context: ../../
       dockerfile: ./ci/docker/Dockerfile
       target: build
-    command: sh -c "yarn test:ci"
+    command: sh -c "npm run test"

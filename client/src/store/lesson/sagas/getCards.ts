@@ -9,10 +9,13 @@ import { SagaIterator } from 'redux-saga'
 import { take } from 'redux-saga/effects'
 import { getCardsSuccess } from '../reducer'
 import { Repeat } from 'pages/lesson/models/repeat'
+import { PayloadAction } from '@reduxjs/toolkit'
+import { GetCards } from '@/src/store/lesson/action-payloads'
 
 export function* getCardsEffect(): SagaIterator {
   while (true) {
-    yield take('lesson/getCards')
+    const action: PayloadAction<GetCards> = yield take('lesson/getCards')
+    const navigateFn = (location: string) => action.payload.navigate(location)
     const userId: string = yield select(selectUserId)
     const settings: LessonSettings = yield select(selectSettings)
 
@@ -21,7 +24,7 @@ export function* getCardsEffect(): SagaIterator {
     const repeats: Repeat[] = yield call(api.repeats, getRepeatsRequest)
 
     if (repeats.length === 0) {
-      yield call(forwardTo, '/dashboard')
+      yield call(navigateFn, '/dashboard')
       continue
     }
 
@@ -30,7 +33,7 @@ export function* getCardsEffect(): SagaIterator {
 
     yield call(api.startLesson, startLessonRequest)
     yield put(getCardsSuccess({ repeats }))
-    yield call(forwardTo, '/lesson')
+    yield call(navigateFn, '/lesson')
   }
 }
 

@@ -1,127 +1,127 @@
-import "./TestPage.scss";
-import { useEffectOnce } from "common/hooks/useEffectOnce";
-import { Definition, translateInCambridge } from "common/services/scrappers/cambridgeScrapper";
-import { Translation, translateInDiki } from "common/services/scrappers/dikiScrapper";
-import React from "react";
-import { KeyboardEvent, ReactElement, useEffect, useState } from "react";
-import { NavLink, useSearchParams } from "react-router-dom";
-import LoadingSpinner from "common/components/loadingSpinner/LoadingSpinner";
-import { summaries, addCardRequest } from "api/index";
-import { Dropdown } from "primereact/dropdown";
+import './TestPage.scss'
+import { useEffectOnce } from 'common/hooks/useEffectOnce'
+import { Definition, translateInCambridge } from 'common/services/scrappers/cambridgeScrapper'
+import { Translation, translateInDiki } from 'common/services/scrappers/dikiScrapper'
+import React from 'react'
+import { KeyboardEvent, ReactElement, useEffect, useState } from 'react'
+import { NavLink, useSearchParams } from 'react-router-dom'
+import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import { summaries, addCardRequest } from 'api/index'
+import { Dropdown } from 'primereact/dropdown'
 
 export default function TestPage(): ReactElement {
-  const [searchParams, setSearchParams] = useSearchParams({ query: "", dic: "Diki" });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedDefinitions, setSelectedDefinitions] = useState<Definition[]>([]);
-  const [definition, setDefinition] = useState<string>("");
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
-  const [query, setQuery] = useState(searchParams.get("query") ?? "");
-  const [dictionary, setDictionary] = useState(searchParams.get("dic") ?? "");
+  const [searchParams, setSearchParams] = useSearchParams({ query: '', dic: 'Diki' })
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [selectedDefinitions, setSelectedDefinitions] = useState<Definition[]>([])
+  const [definition, setDefinition] = useState<string>('')
+  const [groups, setGroups] = useState<Group[]>([])
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
+  const [query, setQuery] = useState(searchParams.get('query') ?? '')
+  const [dictionary, setDictionary] = useState(searchParams.get('dic') ?? '')
   const [transaltion, setTranslation] = useState<Translation>({
     definitions: [],
-    dictionaryUrl: "",
-  });
-  let searchingFunction: (term: string) => Promise<Translation>;
+    dictionaryUrl: ''
+  })
+  let searchingFunction: (term: string) => Promise<Translation>
   switch (dictionary) {
-    case "Diki":
-      searchingFunction = translateInDiki;
-      break;
-    case "Cambridge":
-      searchingFunction = translateInCambridge;
-      break;
+    case 'Diki':
+      searchingFunction = translateInDiki
+      break
+    case 'Cambridge':
+      searchingFunction = translateInCambridge
+      break
     default:
-      break;
+      break
   }
 
   useEffect(() => {
     setSearchParams((prev) => {
-      prev.set("dic", dictionary);
-      return prev;
-    });
+      prev.set('dic', dictionary)
+      return prev
+    })
     switch (dictionary) {
-      case "Diki":
-        searchingFunction = translateInDiki;
-        break;
-      case "Cambridge":
-        searchingFunction = translateInCambridge;
-        break;
+      case 'Diki':
+        searchingFunction = translateInDiki
+        break
+      case 'Cambridge':
+        searchingFunction = translateInCambridge
+        break
       default:
-        break;
+        break
     }
     if (query.length > 0) {
-      setIsLoading(true);
+      setIsLoading(true)
       searchingFunction(query)
         .then((answer) => setTranslation(answer))
         .then((_) => setIsLoading(false))
-        .catch((_) => setIsLoading(false));
+        .catch((_) => setIsLoading(false))
     }
-  }, [dictionary]);
+  }, [dictionary])
 
   useEffectOnce(() => {
     if (query.length > 0) {
       searchingFunction(query)
         .then((answer) => setTranslation(answer))
         .then((_) => setIsLoading(false))
-        .catch((_) => setIsLoading(false));
+        .catch((_) => setIsLoading(false))
     }
 
     summaries().then((response) => {
       const groups: Group[] = response.data.map((group) => {
-        return { id: group.id, name: group.name, front: group.front, back: group.back } as Group;
-      });
-      setGroups(groups);
-    });
-  }, [query]);
+        return { id: group.id, name: group.name, front: group.front, back: group.back } as Group
+      })
+      setGroups(groups)
+    })
+  }, [query])
 
   const onClick = async () => {
     setSearchParams((prev) => {
-      prev.set("query", query);
-      return prev;
-    });
+      prev.set('query', query)
+      return prev
+    })
     if (!query) {
       setTranslation({
         definitions: [],
-        dictionaryUrl: "",
-      });
-      return;
+        dictionaryUrl: ''
+      })
+      return
     }
-    setIsLoading(true);
+    setIsLoading(true)
     searchingFunction(query)
       .then((answer) => setTranslation(answer))
       .then((_) => setIsLoading(false))
-      .catch((_) => setIsLoading(false));
-  };
+      .catch((_) => setIsLoading(false))
+  }
 
   const onKeyDown = async (event: KeyboardEvent<Element>) => {
-    if (event.key === "Enter") {
-      await onClick();
+    if (event.key === 'Enter') {
+      await onClick()
     }
-  };
+  }
 
   const translationClicked = (newDefinition: Definition) => {
     if (!selectedDefinitions.includes(newDefinition)) {
-      setSelectedDefinitions([...selectedDefinitions, newDefinition]);
-      setDefinition(definition + " " + newDefinition.definition.replace(/\s{2,}/g, " ").trim());
+      setSelectedDefinitions([...selectedDefinitions, newDefinition])
+      setDefinition(definition + ' ' + newDefinition.definition.replace(/\s{2,}/g, ' ').trim())
     }
-  };
+  }
 
   const addCardClicked = async () => {
     if (!selectedGroup) {
-      return;
+      return
     }
-    const groupId = selectedGroup?.id;
+    const groupId = selectedGroup?.id
 
     const result = await addCardRequest(groupId, {
-      comment: "",
-      front: { value: query, example: "", isUsed: false },
-      back: { value: definition, example: "", isUsed: false },
-    });
+      comment: '',
+      front: { value: query, example: '', isUsed: false },
+      back: { value: definition, example: '', isUsed: false }
+    })
     if (result) {
-      setDefinition("");
-      setSelectedDefinitions([]);
+      setDefinition('')
+      setSelectedDefinitions([])
     }
-  };
+  }
 
   return (
     <>
@@ -131,8 +131,8 @@ export default function TestPage(): ReactElement {
         onKeyDown={onKeyDown}
       />
       <button onClick={onClick}>Check it</button>
-      <button onClick={() => setDictionary("Diki")}>Diki</button>
-      <button onClick={() => setDictionary("Cambridge")}>Cambridge</button>
+      <button onClick={() => setDictionary('Diki')}>Diki</button>
+      <button onClick={() => setDictionary('Cambridge')}>Cambridge</button>
       <Dropdown
         value={selectedGroup}
         options={groups}
@@ -159,7 +159,7 @@ export default function TestPage(): ReactElement {
         <>
           {transaltion.dictionaryUrl.length > 0 ? (
             <p>
-              Dictinary address:{" "}
+              Dictinary address:{' '}
               <NavLink to={transaltion.dictionaryUrl}>{transaltion.dictionaryUrl}</NavLink>
             </p>
           ) : (
@@ -175,11 +175,11 @@ export default function TestPage(): ReactElement {
                     <div className="translation-item" onClick={() => translationClicked(def)}>
                       <b className="definition">{def.definition}</b>
                       {def.examples.map((example, id) => {
-                        return <p key={id}>- {example}</p>;
+                        return <p key={id}>- {example}</p>
                       })}
                     </div>
                   </React.Fragment>
-                );
+                )
               })}
             </>
           ) : (
@@ -188,15 +188,15 @@ export default function TestPage(): ReactElement {
         </>
       )}
     </>
-  );
+  )
 }
 
 type Group = {
-  id: string;
-  name: string;
-  front: string;
-  back: string;
-};
+  id: string
+  name: string
+  front: string
+  back: string
+}
 
 const dropdownItemLayout = (option: Group, props: any = null) => {
   if (option) {
@@ -204,11 +204,11 @@ const dropdownItemLayout = (option: Group, props: any = null) => {
       <div className="group-item">
         <strong>{option.name}</strong>
       </div>
-    );
+    )
   }
   return (
     <>
       <span>{props.placeholder}</span>
     </>
-  );
-};
+  )
+}
