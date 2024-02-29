@@ -1,6 +1,6 @@
 import './GroupsPage.scss'
 import GroupDetails from 'common/components/dialogs/groupDialog/groupDetails'
-import GroupDialog from 'common/components/dialogs/groupDialog/GroupDialog'
+import GroupDialog from 'common/components/GroupDialog'
 import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
 import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
 import { Pagination } from 'common/components/pagination/Pagination'
@@ -20,6 +20,7 @@ import { GroupSummary } from './models/groupSummary'
 import { useTitle } from 'common/index'
 import { getLanguages } from 'store/lesson/reducer'
 import { selectLanguages } from 'store/lesson/selectors'
+import { GroupFormModel } from 'common/components/GroupForm'
 
 const pageSize = 30
 
@@ -56,7 +57,7 @@ export default function GroupsPage(): ReactElement {
     dispatch(resetSelectedItem())
   }
 
-  const onsubmit = (group: GroupDetails) => {
+  const onsubmit = (group: GroupFormModel) => {
     dispatch(group.id ? updateGroup({ group }) : addGroup({ group }))
   }
 

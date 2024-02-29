@@ -10,7 +10,7 @@ import { take } from 'redux-saga/effects'
 import { getCardsSuccess } from '../reducer'
 import { Repeat } from 'pages/lesson/models/repeat'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { GetCards } from '@/src/store/lesson/action-payloads'
+import { GetCards } from 'store/lesson/action-payloads'
 
 export function* getCardsEffect(): SagaIterator {
   while (true) {

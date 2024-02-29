@@ -1,22 +1,22 @@
-import GroupDetails from "common/components/dialogs/groupDialog/groupDetails";
-import { GroupSummary } from "pages/groups/models/groupSummary";
+import { GroupFormModel } from 'common/components/GroupForm'
+import { GroupSummary } from 'pages/groups/models/groupSummary'
 
 export interface GetGroupsSummarySuccess {
-  groups: GroupSummary[];
+  groups: GroupSummary[]
 }
 
 export interface SelectById {
-  groupId: string;
+  groupId: string
 }
 
 export interface Select {
-  group: GroupSummary;
+  group: GroupSummary
 }
 
 export interface AddGroup {
-  group: GroupDetails;
+  group: GroupFormModel
 }
 
 export interface UpdateGroup {
-  group: GroupDetails;
+  group: GroupFormModel
 }

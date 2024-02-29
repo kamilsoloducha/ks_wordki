@@ -6,17 +6,24 @@ export function Dropdown({
   items,
   selectedIndex,
   selectedItem,
-  placeholder
+  placeholder,
+  onChange
 }: DropdownProps): ReactNode {
   items = items ? items : []
   const [isOpen, setIsOpen] = useState(false)
-  const [inputValue, setInputValue] = useState(selectedItem ? selectedItem : '')
+  const [inputValue, setInputValue] = useState(findInitialValue(items, selectedItem, selectedIndex))
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   useOutsideClickDetector(wrapperRef, () => setIsOpen(false))
 
   const itemClick = (item: string) => {
     setInputValue(item)
     setIsOpen(false)
+    onChange && onChange(item)
+  }
+
+  const onInputChange = (value: string) => {
+    setInputValue(value)
+    onChange && onChange(value)
   }
 
   return (
@@ -26,14 +33,14 @@ export function Dropdown({
           className="w-max"
           value={inputValue}
           placeholder={placeholder}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => onInputChange(e.target.value)}
         />
         <button className="w-min" onClick={() => setIsOpen(!isOpen)}>
           open
         </button>
       </div>
       {isOpen && (
-        <div ref={wrapperRef} className="w-full absolute left-0 ">
+        <div data-testid="drop-down-panel" ref={wrapperRef} className="w-full absolute left-0">
           {items.map((value, index) => {
             return (
               <div
@@ -52,8 +59,29 @@ export function Dropdown({
 }
 
 type DropdownProps = {
-  placeholder?: string
   items?: string[]
+  placeholder?: string
   selectedItem?: string
   selectedIndex?: number
+  onChange?: (value: string) => void
+}
+
+const findInitialValue = (
+  items?: string[],
+  selectedItem?: string,
+  selectedIndex?: number
+): string => {
+  if (!items || items.length === 0) {
+    return ''
+  }
+
+  if (selectedItem) {
+    return selectedItem
+  }
+
+  if (selectedIndex && items[selectedIndex]) {
+    return items[selectedIndex]
+  }
+
+  return ''
 }

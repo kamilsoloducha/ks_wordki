@@ -1,7 +1,6 @@
 import { ReactNode, useRef } from 'react'
 import http from 'api/services/httpBase'
 import { useEffectOnce, useUserStorage } from 'common/hooks'
-import { Toast } from 'primereact/toast'
 import { ConfirmationModal, ConfirmationModalRef } from 'common/components/ConfirmationModal'
 
 export default function Axios({ children }: AxiosProps) {
@@ -51,20 +50,4 @@ export default function Axios({ children }: AxiosProps) {
 
 type AxiosProps = {
   children?: ReactNode
-}
-
-type ErrorTypeProps = {
-  toast: Toast | null
-  message: string
-}
-
-function ErrorToast({ toast, message }: ErrorTypeProps): ReactNode {
-  return (
-    <>
-      <div className="bg-red-500">
-        {message}
-        <button onClick={() => toast && toast.clear()}>Close</button>
-      </div>
-    </>
-  )
 }

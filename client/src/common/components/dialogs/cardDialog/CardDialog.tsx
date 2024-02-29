@@ -1,9 +1,9 @@
-import "./CardDialog.scss";
-import { ReactElement } from "react";
-import { Dialog } from "primereact/dialog";
-import Footer from "./Footer";
-import CardForm, { FormModel } from "./CardForm";
-import Language from "common/models/languages";
+import './CardDialog.scss'
+import { ReactElement } from 'react'
+import { Dialog } from 'primereact/dialog'
+import Footer from '../../Footer'
+import CardForm, { FormModel } from './CardForm'
+import Language from 'common/models/languages'
 
 export default function CardDialog({
   card,
@@ -11,18 +11,18 @@ export default function CardDialog({
   onSubmit,
   onDelete,
   frontLanguage,
-  backLanguage,
+  backLanguage
 }: Model): ReactElement {
-  const visible = card !== null;
-  const isEditing = card?.cardId;
-  const header = isEditing ? "Editing Card" : "Creating Card";
+  const visible = card !== null
+  const isEditing = card?.cardId
+  const header = isEditing ? 'Editing Card' : 'Creating Card'
 
   const ondelete: () => void = () => {
-    if (!card) return;
-    if (onDelete) onDelete(card);
-  };
+    if (!card) return
+    if (onDelete) onDelete(card)
+  }
 
-  const footer = <Footer onhide={onHide} ondelete={isEditing ? ondelete : undefined} />;
+  const footer = <Footer onhide={onHide} ondelete={isEditing ? ondelete : undefined} />
 
   return (
     <Dialog
@@ -40,14 +40,14 @@ export default function CardDialog({
         backLanguage={backLanguage}
       />
     </Dialog>
-  );
+  )
 }
 
 interface Model {
-  card: FormModel | null;
-  onHide: () => void;
-  onSubmit: (item: FormModel) => void;
-  onDelete?: (item: FormModel) => void;
-  frontLanguage?: Language;
-  backLanguage?: Language;
+  card: FormModel | null
+  onHide: () => void
+  onSubmit: (item: FormModel) => void
+  onDelete?: (item: FormModel) => void
+  frontLanguage?: Language
+  backLanguage?: Language
 }
