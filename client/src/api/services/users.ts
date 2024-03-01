@@ -1,23 +1,51 @@
-import * as commands from "../commands";
-import * as responses from "../responses";
-import http from "./httpBase";
+import { AxiosError, AxiosResponse } from 'axios'
+import * as commands from '../commands'
+import * as responses from '../responses'
+import http from './httpBase'
 
-export async function login(request: commands.LoginRequest): Promise<responses.LoginResponse> {
-  try {
-    const response = await http.put<responses.LoginResponse>("/users/login", request);
-    return response.data;
-  } catch (e: any) {
-    return e.response.data as responses.LoginResponse;
-  }
+const USERS_PATH = '/users'
+
+// ------------------------
+// LOGIN
+// ------------------------
+export function login(request: LoginRequest): Promise<AxiosResponse<LoginResponse> | AxiosError> {
+  return http.put(`${USERS_PATH}` + '/login', request)
 }
 
-export async function register(
-  request: commands.RegisterRequest
-): Promise<responses.RegisterResponse> {
-  try {
-    const response = await http.post<responses.RegisterResponse>("/users/register", request);
-    return response.data;
-  } catch (e) {
-    return {} as responses.RegisterResponse;
-  }
+export type LoginRequest = {
+  userName: string
+  password: string
+}
+
+export type LoginResponse = {
+  responseCode: number
+  id: string
+  userName: string
+  token: string
+  expirationDateTime: string
+}
+
+// ------------------------
+// REGISTER
+// ------------------------
+
+export function register(
+  request: LoginRequest
+): Promise<AxiosResponse<LoginResponse> | AxiosError> {
+  return http.post(`${USERS_PATH}` + '/register', request)
+}
+
+export type RegisterRequest = {
+  userName: string
+  password: string
+  passwordConfirmation: string
+  email: string
+}
+
+export type RegisterResponse = {
+  responseCode: number
+  id: string
+  userName: string
+  token: string
+  expirationDateTime: string
 }

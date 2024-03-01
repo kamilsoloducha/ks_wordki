@@ -4,21 +4,33 @@ import * as api from 'api/index'
 import { SagaIterator } from 'redux-saga'
 import { RegisterPayload } from '../action-payload'
 import { login, setErrorMessage } from '../reducer'
+import { RegisterRequest, RegisterResponse } from 'api/services/users'
+import { AxiosError, AxiosResponse } from 'axios'
 
 export function* registerUserEffect(): SagaIterator {
   while (true) {
     const action: PayloadAction<RegisterPayload> = yield take('user/register')
 
-    const request = {
+    const request: RegisterRequest = {
       userName: action.payload.userName,
       password: action.payload.password,
       passwordConfirmation: action.payload.passwordConfirmation,
       email: action.payload.email
-    } as api.RegisterRequest
+    }
 
-    const apiResponse: api.RegisterResponse = yield call(api.register, request)
+    const apiResponse: AxiosResponse<RegisterResponse> | AxiosError = yield call(
+      api.register,
+      request
+    )
 
-    switch (apiResponse.responseCode) {
+    let data: RegisterResponse
+    if ('data' in apiResponse) {
+      data = apiResponse.data as RegisterResponse
+    } else {
+      data = apiResponse.response?.data as RegisterResponse
+    }
+
+    switch (data.responseCode) {
       case api.RegisterResponseCode.Successful:
         yield put(login({ userName: action.payload.userName, password: action.payload.password }))
         break

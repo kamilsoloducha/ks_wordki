@@ -2,6 +2,7 @@ import { ReactNode, useRef } from 'react'
 import http from 'api/services/httpBase'
 import { useEffectOnce, useUserStorage } from 'common/hooks'
 import { ConfirmationModal, ConfirmationModalRef } from 'common/components/ConfirmationModal'
+import { AxiosError } from 'axios'
 
 export default function Axios({ children }: AxiosProps) {
   const { get } = useUserStorage()
@@ -22,14 +23,14 @@ export default function Axios({ children }: AxiosProps) {
     )
 
     http.interceptors.response.use(
-      (response) => response,
-      (error) => {
+      (_) => _,
+      (error: AxiosError) => {
         if (error?.response?.status === 401) {
           console.error('Response code: 401')
           window.location.href = '/logout'
           return
         }
-        if (error?.response?.status >= 500) {
+        if (error?.response?.status! >= 500) {
           console.error('Response code: 500', error)
           if (confirmationModel.current) {
             confirmationModel.current.show(error.message, 'Error')

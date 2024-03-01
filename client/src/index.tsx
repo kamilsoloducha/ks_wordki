@@ -12,7 +12,7 @@ import {
   createRoutesFromElements
 } from 'react-router-dom'
 import { Root } from 'pages/Root'
-import LoadingSpinner from 'components/loadingSpinner/LoadingSpinner'
+import LoadingSpinner from 'common/components/LoadingSpinner'
 import ProtectedRoute from 'common/components/ProtectedRoute'
 
 const LoginPage = lazy(() => import('pages/login/LoginPage'))

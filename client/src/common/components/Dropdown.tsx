@@ -1,3 +1,5 @@
+import { selectItem } from '@/src/store/groups/reducer'
+import { val } from 'cheerio/lib/api/attributes'
 import useOutsideClickDetector from 'common/hooks/useOutsideClickDetector'
 import { useRef } from 'react'
 import { ReactNode, useState } from 'react'
@@ -11,32 +13,41 @@ export function Dropdown({
 }: DropdownProps): ReactNode {
   items = items ? items : []
   const [isOpen, setIsOpen] = useState(false)
-  const [inputValue, setInputValue] = useState(findInitialValue(items, selectedItem, selectedIndex))
+  const [inputValue, setInputValue] = useState<string>(
+    findInitialValue(items, selectedItem, selectedIndex)?.label ?? ''
+  )
+
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   useOutsideClickDetector(wrapperRef, () => setIsOpen(false))
 
-  const itemClick = (item: string) => {
-    setInputValue(item)
+  const itemClick = (item: TType) => {
+    setInputValue(item.label)
     setIsOpen(false)
     onChange && onChange(item)
   }
 
   const onInputChange = (value: string) => {
     setInputValue(value)
-    onChange && onChange(value)
+
+    const selectedItem = items?.find((x) => x.label === value) ?? {
+      label: value,
+      value: value
+    }
+
+    onChange && onChange(selectedItem)
   }
 
   return (
-    <div className="w-full relative">
-      <div className="w-full flex">
+    <div className="w-full h-full relative">
+      <div className="w-full h-full relative">
         <input
-          className="w-max"
+          className="w-full right-0 bg-accent-dark text-accent-super-light"
           value={inputValue}
           placeholder={placeholder}
           onChange={(e) => onInputChange(e.target.value)}
         />
-        <button className="w-min" onClick={() => setIsOpen(!isOpen)}>
-          open
+        <button className="w-min absolute right-0" onClick={() => setIsOpen(!isOpen)}>
+          v
         </button>
       </div>
       {isOpen && (
@@ -48,7 +59,7 @@ export function Dropdown({
                 className="w-full bg-slate-900 hover:bg-slate-800 text-white"
                 key={index}
               >
-                {value}
+                {value.label}
               </div>
             )
           })}
@@ -58,30 +69,35 @@ export function Dropdown({
   )
 }
 
-type DropdownProps = {
-  items?: string[]
-  placeholder?: string
-  selectedItem?: string
-  selectedIndex?: number
-  onChange?: (value: string) => void
+export type TType = {
+  label: string
+  value: unknown
 }
 
-const findInitialValue = (
-  items?: string[],
-  selectedItem?: string,
+type DropdownProps = {
+  items?: TType[]
+  placeholder?: string
+  selectedItem?: TType
   selectedIndex?: number
-): string => {
+  onChange?: (value: TType) => void
+}
+
+function findInitialValue(
+  items?: TType[],
+  selectedItem?: TType,
+  selectedIndex?: number
+): TType | undefined {
   if (!items || items.length === 0) {
-    return ''
+    return undefined
   }
 
   if (selectedItem) {
     return selectedItem
   }
 
-  if (selectedIndex && items[selectedIndex]) {
+  if (selectedIndex !== undefined && items[selectedIndex]) {
     return items[selectedIndex]
   }
 
-  return ''
+  return undefined
 }

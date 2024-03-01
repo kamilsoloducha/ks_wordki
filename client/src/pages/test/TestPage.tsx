@@ -5,7 +5,7 @@ import { Translation, translateInDiki } from 'common/services/scrappers/dikiScra
 import React from 'react'
 import { KeyboardEvent, ReactElement, useEffect, useState } from 'react'
 import { NavLink, useSearchParams } from 'react-router-dom'
-import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import LoadingSpinner from 'common/components/LoadingSpinner'
 import { summaries, addCardRequest } from 'api/index'
 import { Dropdown } from 'primereact/dropdown'
 

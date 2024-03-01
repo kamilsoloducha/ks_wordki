@@ -12,9 +12,9 @@ import Expandable from 'common/components/expandable/Expandable'
 import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
 import { CardsFilter } from './models/cardsFilter'
 import { Languages } from 'common/models/languages'
-import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
-import { FormModel } from 'common/components/dialogs/cardDialog/CardForm'
-import CardDialog from 'common/components/dialogs/cardDialog/CardDialog'
+import LoadingSpinner from 'common/components/LoadingSpinner'
+import { CardFormModel } from 'common/components/CardForm'
+import CardDialog from 'common/components/CardDialog'
 import GroupDialog from 'common/components/GroupDialog'
 import ActionsDialog from 'common/components/dialogs/actionsDialog/ActionsDialog'
 import { Pagination } from 'common/components/pagination/Pagination'
@@ -23,8 +23,6 @@ import { useTitle } from 'common/index'
 import { GroupDetails } from './components/groupDetails/GroupDetails'
 import { useEffectOnce } from 'common/hooks/useEffectOnce'
 import { selectLanguages } from 'store/lesson/selectors'
-
-const pageSize = 30
 
 export default function GroupDetailsPage(): ReactElement {
   const dispatch = useDispatch()
@@ -35,8 +33,9 @@ export default function GroupDetailsPage(): ReactElement {
   const groupDetails = useSelector(selectors.selectGroupDetails)
   const cardSides = useSelector(selectLanguages)
   const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([])
-  const [formItem, setFormItem] = useState<FormModel | null>(null)
+  const [formItem, setFormItem] = useState<CardFormModel | null>(null)
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
   const [actionsVisible, setActionsVisible] = useState(false)
   const [editedGroup, setEditedGroup] = useState<any>(null)
   const { groupId } = useParams<{ groupId: string }>()
@@ -48,17 +47,18 @@ export default function GroupDetailsPage(): ReactElement {
   }, [groupId, dispatch])
 
   useEffect(() => {
+    console.log('refilter')
     const first = (page - 1) * pageSize
     const last = first + pageSize
     setPaginatedCards(filteredCardsFromStore.slice(first, last))
-  }, [page, filteredCardsFromStore])
+  }, [page, filteredCardsFromStore, pageSize])
 
   const onItemSelected = (item: CardSummary) => {
     dispatch(actions.selectCard({ item }))
     setFormItem(getFormModelFromCardSummary(item))
   }
 
-  const onFormSubmit = (item: FormModel): void => {
+  const onFormSubmit = (item: CardFormModel): void => {
     const udpdatedCard = {
       id: item.cardId,
       front: {
@@ -83,7 +83,7 @@ export default function GroupDetailsPage(): ReactElement {
     }
   }
 
-  const onDelete = (item: FormModel) => {
+  const onDelete = (item: CardFormModel) => {
     dispatch(actions.deleteCard({ cardId: item.cardId }))
     setFormItem(null)
   }
@@ -219,10 +219,12 @@ export default function GroupDetailsPage(): ReactElement {
       </Expandable>
       <div className="group-details-paginator">
         <Pagination
+          pageSize={pageSize}
           totalCount={filteredCardsFromStore.length}
           onPageChagned={onPageChagned}
           search={filterState.text}
           onSearchChanged={onSearchChanged}
+          onPageSizeChanged={setPageSize}
         />
       </div>
       <div className="group-details-card-list-container">
@@ -247,7 +249,7 @@ export default function GroupDetailsPage(): ReactElement {
   )
 }
 
-function getFormModelFromCardSummary(card: CardSummary): FormModel {
+function getFormModelFromCardSummary(card: CardSummary): CardFormModel {
   return {
     cardId: card.id,
     frontValue: card.front.value,
@@ -257,7 +259,7 @@ function getFormModelFromCardSummary(card: CardSummary): FormModel {
     backExample: card.back.example,
     backEnabled: card.back.isUsed,
     isTicked: card.front.isTicked
-  } as FormModel
+  } as CardFormModel
 }
 
 const drawers = [1, 2, 3, 4, 5]

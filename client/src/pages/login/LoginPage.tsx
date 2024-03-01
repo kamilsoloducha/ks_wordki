@@ -43,7 +43,7 @@ export default function LoginPage(): ReactElement {
 
   return (
     <div className="login-page-container">
-      <form className="login-form" onSubmit={formik.submitForm} autoComplete="off">
+      <form className="login-form" onSubmit={formik.handleSubmit} autoComplete="off">
         <div className="login-form-header">Login</div>
 
         <div className="login-input-item">

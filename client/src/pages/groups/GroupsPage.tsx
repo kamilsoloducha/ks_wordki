@@ -1,7 +1,7 @@
 import './GroupsPage.scss'
 import GroupDetails from 'common/components/dialogs/groupDialog/groupDetails'
 import GroupDialog from 'common/components/GroupDialog'
-import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
+import LoadingSpinner from 'common/components/LoadingSpinner'
 import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
 import { Pagination } from 'common/components/pagination/Pagination'
 import { Fragment, ReactElement, useEffect, useState } from 'react'

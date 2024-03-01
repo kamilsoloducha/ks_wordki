@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { selectLessonHistory, selectResults, selectSettings } from 'store/lesson/selectors'
 import { History } from 'pages/lesson/components/history/History'
 import UserRepeat from 'pages/lesson/models/userRepeat'
-import CardDialog from 'common/components/dialogs/cardDialog/CardDialog'
-import { FormModel } from 'common/components/dialogs/cardDialog/CardForm'
+import CardDialog from 'common/components/CardDialog'
+import { CardFormModel } from 'common/components/CardForm'
 import { useTitle } from 'common/index'
 
 export default function LessonResult(): ReactElement {
@@ -55,7 +55,7 @@ export default function LessonResult(): ReactElement {
     setUserRepeats(lessonHistory)
   }
 
-  const onSubmit = (form: FormModel) => {
+  const onSubmit = (form: CardFormModel) => {
     if (!selectedItem) return
     form.backEnabled = null
     form.frontEnabled = null
@@ -63,7 +63,7 @@ export default function LessonResult(): ReactElement {
     setSelectedItem(null)
   }
 
-  const onDelete = (form: FormModel) => undefined
+  const onDelete = (form: CardFormModel) => undefined
 
   return (
     <>
@@ -108,10 +108,10 @@ export function filterLessonHistory(items: UserRepeat[], result: number): UserRe
   return items.filter((x) => x.result === result)
 }
 
-export function getFormModelFromUserRepeat(userRepeat: UserRepeat | null): FormModel | null {
+export function getFormModelFromUserRepeat(userRepeat: UserRepeat | null): CardFormModel | null {
   if (!userRepeat) return null
 
-  const form: FormModel = {
+  const form: CardFormModel = {
     cardId: userRepeat.repeat.cardId,
     backEnabled: false,
     comment: '',
