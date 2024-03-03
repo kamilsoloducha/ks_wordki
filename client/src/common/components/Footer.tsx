@@ -1,18 +1,23 @@
 import { ReactElement } from 'react'
 
 type FooterProps = {
-  onhide: () => void
-  ondelete?: () => void
+  formId?: string
+  onCancelClicked?: () => void
+  onDeleteClicked?: () => void
 }
 
-export default function Footer({ onhide, ondelete }: FooterProps): ReactElement {
+export default function Footer({
+  formId,
+  onCancelClicked,
+  onDeleteClicked
+}: FooterProps): ReactElement {
   return (
     <div className="bg-main flex place-content-between rounded-b-md">
       <div>
-        {ondelete && (
+        {onDeleteClicked && (
           <button
             className="bg-red-700 hover:bg-red-800 text-stone-200 cursor-pointer py-2 px-10 border-0 rounded-md m-3"
-            onClick={ondelete}
+            onClick={onDeleteClicked}
           >
             Delete
           </button>
@@ -21,13 +26,13 @@ export default function Footer({ onhide, ondelete }: FooterProps): ReactElement 
       <div>
         <button
           className=" bg-zinc-700 hover:bg-zinc-800 text-stone-200 cursor-pointer py-2 px-10 border-0 rounded-md m-3"
-          onClick={onhide}
+          onClick={onCancelClicked}
         >
           Cancel
         </button>
         <button
           type="submit"
-          form="group-dialog-form"
+          form={formId}
           className=" bg-green-700 hover:bg-green-800 text-stone-200 cursor-pointer py-2 px-10 border-0 rounded-md m-3"
         >
           Save

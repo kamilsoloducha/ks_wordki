@@ -14,7 +14,8 @@ export default {
         "accent-super-light": "rgb(150, 150, 150)",
 
 
-        "error": "rgb(255,51,51)"
+        "error": "rgb(255,51,51)",
+        "lighter-a-bit": "#ffffff22",
       }
     },
   },

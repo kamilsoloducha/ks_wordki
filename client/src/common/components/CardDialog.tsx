@@ -12,7 +12,7 @@ export default function CardDialog({
   frontLanguage,
   backLanguage
 }: Model): ReactElement {
-  const ondelete: () => void = () => {
+  const onFooterDeleteClicked: () => void = () => {
     if (!card) return
     if (onDelete) onDelete(card)
   }
@@ -25,10 +25,15 @@ export default function CardDialog({
     </div>
   )
 
-  const footer = <Footer onhide={onHide} ondelete={card && card.cardId ? ondelete : undefined} />
-
+  const footer = (
+    <Footer
+      onCancelClicked={onHide}
+      onDeleteClicked={card && card.cardId ? onFooterDeleteClicked : undefined}
+      formId="card-form"
+    />
+  )
   return (
-    <Modal isOpen={card !== null} onClose={onHide} footer={footer} header={header}>
+    <Modal isOpen={!!card} onClose={onHide} footer={footer} header={header}>
       <div className="lg:w-[50vw] w-[96vw] model">
         <CardForm
           card={card}
@@ -42,7 +47,7 @@ export default function CardDialog({
 }
 
 interface Model {
-  card: CardFormModel | null
+  card?: CardFormModel
   onHide: () => void
   onSubmit: (item: CardFormModel) => void
   onDelete?: (item: CardFormModel) => void

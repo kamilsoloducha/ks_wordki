@@ -15,7 +15,7 @@ export default function GroupDialog({
     if (onDelete && group?.id) onDelete(group.id)
   }
 
-  const footer = <Footer onhide={onHide} ondelete={ondelete} />
+  const footer = <Footer onCancelClicked={onHide} onDeleteClicked={ondelete} />
 
   const header = (
     <div className="bg-main rounded-t-md">
@@ -24,7 +24,7 @@ export default function GroupDialog({
   )
 
   return (
-    <Modal isOpen={group !== null} onClose={onHide} footer={footer} header={header}>
+    <Modal isOpen={!!group} onClose={onHide} footer={footer} header={header}>
       <div className="lg:w-[50vw] w-[96vw] model">
         <GroupForm options={cardSides.map((x) => x.language)} group={group} onSubmit={onSubmit} />
       </div>
@@ -33,7 +33,7 @@ export default function GroupDialog({
 }
 
 type GroupDialogProps = {
-  group: GroupFormModel
+  group?: GroupFormModel
   cardSides: Language[]
   onHide: () => void
   onSubmit: (item: GroupFormModel) => void

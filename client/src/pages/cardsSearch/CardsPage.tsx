@@ -2,8 +2,7 @@ import * as selectors from 'store/cardsSearch/selectors'
 import * as actions from 'store/cardsSearch/reducer'
 import { Fragment, ReactElement, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination } from 'common/components/pagination/Pagination'
-import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
+import { PageChangedEvent, Pagination } from 'common/components/Pagination'
 import LoadingSpinner from 'common/components/LoadingSpinner'
 import CardDialog from 'common/components/CardDialog'
 import { CardFormModel } from 'common/components/CardForm'
@@ -22,7 +21,7 @@ export default function CardsPage(): ReactElement {
   const isSearching = useSelector(selectors.selectIsSearching)
   const overview = useSelector(selectors.selectOverview)
 
-  const [selectedItem, setSelectedItem] = useState<CardSummary | null>(null)
+  const [selectedItem, setSelectedItem] = useState<CardSummary | undefined>(undefined)
 
   useEffectOnce(() => {
     dispatch(actions.getOverview())
@@ -31,6 +30,10 @@ export default function CardsPage(): ReactElement {
 
   const onPageChagned = (event: PageChangedEvent) => {
     dispatch(actions.filterSetPagination({ pageNumber: event.currectPage, pageSize: event.count }))
+  }
+
+  const onPaginationPageSizeChanged = (newSize: number) => {
+    dispatch(actions.filterSetPagination({ pageNumber: filter.pageNumber, pageSize: newSize }))
   }
 
   const onSearchChanged = (searchingTerm: string) => {
@@ -62,7 +65,7 @@ export default function CardsPage(): ReactElement {
       return
     }
     dispatch(actions.deleteCard({ cardId: selectedItem.id, groupId: selectedItem.groupId }))
-    setSelectedItem(null)
+    setSelectedItem(undefined)
   }
 
   const onSubmit = (model: CardFormModel | null) => {
@@ -87,11 +90,11 @@ export default function CardsPage(): ReactElement {
       }
     }
     dispatch(actions.updateCard({ card }))
-    setSelectedItem(null)
+    setSelectedItem(undefined)
   }
 
   const onCancel = () => {
-    setSelectedItem(null)
+    setSelectedItem(undefined)
   }
 
   return (
@@ -112,6 +115,7 @@ export default function CardsPage(): ReactElement {
         onPageChagned={onPageChagned}
         search={filter.searchingTerm}
         onSearchChanged={onSearchChanged}
+        onPageSizeChanged={onPaginationPageSizeChanged}
       />
       {cards.map((item: any, index: number) => (
         <Fragment key={index}>
@@ -140,9 +144,9 @@ interface OverviewModel {
   overview: CardsOverview
 }
 
-function getFormModelFromCardSummary(card: CardSummary | null): CardFormModel | null {
-  if (card === null) {
-    return null
+function getFormModelFromCardSummary(card: CardSummary | undefined): CardFormModel | undefined {
+  if (!card) {
+    return undefined
   }
   return {
     cardId: card.id,

@@ -14,6 +14,7 @@ import {
 import { Root } from 'pages/Root'
 import LoadingSpinner from 'common/components/LoadingSpinner'
 import ProtectedRoute from 'common/components/ProtectedRoute'
+import { useLocalSettingsStorage } from 'common/hooks/useSettingsStorage'
 
 const LoginPage = lazy(() => import('pages/login/LoginPage'))
 const LogoutPage = lazy(() => import('pages/logout/LogoutPage'))
@@ -82,6 +83,8 @@ const routes = createRoutesFromElements(
 )
 
 const router = createBrowserRouter(routes)
+
+useLocalSettingsStorage().init()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

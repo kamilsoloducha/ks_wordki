@@ -1,64 +1,70 @@
-import { CardSummary } from "pages/cards/models";
+import { CardSummary } from 'pages/cards/models'
 
 export interface GetCards {
-  groupId: string;
+  groupId: string
 }
 
 export interface GetCard {
-  groupId: string;
-  cardId: string;
+  groupId: string
+  cardId: string
 }
 
 export interface GetCardsSuccess {
-  id: string;
-  name: string;
-  language1: number;
-  language2: number;
-  cards: CardSummary[];
+  id: string
+  name: string
+  language1: string
+  language2: string
+  cards: CardSummary[]
 }
 
 export interface SelectCard {
-  item: CardSummary;
+  item: CardSummary
 }
 
 export interface UpdateCard {
-  card: CardSummary;
+  card: CardSummary
 }
 
 export interface UpdateCardSuccess {
-  card: CardSummary;
+  card: CardSummary
 }
 
 export interface AddCard {
-  card: CardSummary;
+  card: CardSummary
 }
 
 export interface AddCardSuccess {}
 
 export interface DeleteCard {
-  cardId: string;
+  cardId: string
 }
 
 export interface DeleteCardSuccess {
-  cardId: string;
+  cardId: string
 }
 
 export interface SetFilterDrawer {
-  drawer: number;
+  drawer: number
 }
 
 export interface SetFilterLearning {
-  isLearning: boolean;
+  isLearning: boolean
 }
 
 export interface SetFilterText {
-  text: string;
+  text: string
 }
 
 export interface SetFitlerIsTicked {
-  isTicked: boolean;
+  isTicked: boolean
 }
 
 export interface SetFilteredCards {
-  cards: CardSummary[];
+  cards: CardSummary[]
+}
+
+export type UpdateGroupDetails = {
+  name: string
+  frontLanguage: string
+  backLanguage: string
 }

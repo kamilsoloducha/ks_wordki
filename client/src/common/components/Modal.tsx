@@ -19,7 +19,7 @@ export function Modal({ isOpen, children, header, footer, onClose }: ModalProps)
   }
   return (
     <section
-      className="fixed inset-x-0 inset-y-0 bg-black/50 flex items-center justify-center rounded-xl"
+      className="fixed inset-x-0 inset-y-0 bg-black/50 flex items-center justify-center rounded-xl z-50"
       onClick={outSideClick}
     >
       <article

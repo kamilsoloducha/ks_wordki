@@ -1,28 +1,24 @@
 import './GroupDetailsPage.scss'
 import * as selectors from 'store/cards/selectors'
 import * as actions from 'store/cards/reducer'
-import * as groupActions from 'store/groups/reducer'
 import * as utils from './services'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
-import CardsList from './components/cardsList/CardsList'
-import { useDispatch, useSelector } from 'react-redux'
+import CardsList from './components/CardsList'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import InfoCard from './components/infoCard/InfoCard'
 import Expandable from 'common/components/expandable/Expandable'
-import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
 import { CardsFilter } from './models/cardsFilter'
 import { Languages } from 'common/models/languages'
 import LoadingSpinner from 'common/components/LoadingSpinner'
 import { CardFormModel } from 'common/components/CardForm'
 import CardDialog from 'common/components/CardDialog'
-import GroupDialog from 'common/components/GroupDialog'
-import ActionsDialog from 'common/components/dialogs/actionsDialog/ActionsDialog'
-import { Pagination } from 'common/components/pagination/Pagination'
+import { PageChangedEvent, Pagination } from 'common/components/Pagination'
 import { CardSummary } from './models'
 import { useTitle } from 'common/index'
-import { GroupDetails } from './components/groupDetails/GroupDetails'
+import { GroupDetails } from './components/GroupDetails'
 import { useEffectOnce } from 'common/hooks/useEffectOnce'
-import { selectLanguages } from 'store/lesson/selectors'
+import { useLocalSettingsStorage } from 'common/hooks/useSettingsStorage'
 
 export default function GroupDetailsPage(): ReactElement {
   const dispatch = useDispatch()
@@ -30,14 +26,13 @@ export default function GroupDetailsPage(): ReactElement {
   const filteredCardsFromStore = useSelector(selectors.selectFilteredCards)
   const filterState = useSelector(selectors.selectFilterState)
   const isLoading = useSelector(selectors.selectIsLoading)
-  const groupDetails = useSelector(selectors.selectGroupDetails)
-  const cardSides = useSelector(selectLanguages)
+  const groupDetails = useSelector(selectors.selectGroupDetails, shallowEqual)
   const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([])
-  const [formItem, setFormItem] = useState<CardFormModel | null>(null)
+  const [formItem, setFormItem] = useState<CardFormModel | undefined>(undefined)
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(20)
-  const [actionsVisible, setActionsVisible] = useState(false)
-  const [editedGroup, setEditedGroup] = useState<any>(null)
+  const [pageSize, setPageSize] = useState(
+    useLocalSettingsStorage().get()?.paginationPageSize ?? 20
+  )
   const { groupId } = useParams<{ groupId: string }>()
 
   useTitle(`Wordki - ${groupDetails.name}`)
@@ -47,7 +42,6 @@ export default function GroupDetailsPage(): ReactElement {
   }, [groupId, dispatch])
 
   useEffect(() => {
-    console.log('refilter')
     const first = (page - 1) * pageSize
     const last = first + pageSize
     setPaginatedCards(filteredCardsFromStore.slice(first, last))
@@ -76,7 +70,7 @@ export default function GroupDetailsPage(): ReactElement {
     } as CardSummary
     if (udpdatedCard.id !== '') {
       dispatch(actions.updateCard({ card: udpdatedCard }))
-      setFormItem(null)
+      setFormItem(undefined)
     } else {
       dispatch(actions.addCard({ card: udpdatedCard }))
       onAddCard()
@@ -84,13 +78,16 @@ export default function GroupDetailsPage(): ReactElement {
   }
 
   const onDelete = (item: CardFormModel) => {
+    if (!item.cardId) {
+      return
+    }
     dispatch(actions.deleteCard({ cardId: item.cardId }))
-    setFormItem(null)
+    setFormItem(undefined)
   }
 
   const onCancel = () => {
     dispatch(actions.resetSelectedCard())
-    setFormItem(null)
+    setFormItem(undefined)
   }
 
   const onClickSetFilter = (filter: CardsFilter) => {
@@ -128,49 +125,13 @@ export default function GroupDetailsPage(): ReactElement {
     [dispatch]
   )
 
-  const onActionsVisible = () => {
-    setActionsVisible(false)
-  }
-
-  const onEditGroup = () => {
-    const group = {
-      id: groupDetails.id,
-      name: groupDetails.name,
-      front: groupDetails.language1,
-      back: groupDetails.language2
-    }
-    setEditedGroup(group)
-  }
-
-  const onHideGroupDialog = () => {
-    setEditedGroup(null)
-  }
-
-  const onSubmitGroupDialog = (group: any) => {
-    if (group === null) {
-      return
-    }
-    dispatch(groupActions.updateGroup({ group }))
-    onHideGroupDialog()
-  }
-
   if (isLoading) {
     return <LoadingSpinner />
   }
 
-  const acts = [
-    { label: 'Add card', action: onAddCard },
-    { label: 'Edit group', action: onEditGroup }
-  ]
-
   return (
     <div className="group-detail-main-container">
-      <GroupDetails
-        name={groupDetails.name}
-        front={groupDetails.language1}
-        back={groupDetails.language2}
-        onSettingsClick={() => setActionsVisible(true)}
-      />
+      <GroupDetails />
       <div className="group-details-cards-info-container">
         <div className="group-details-info-card">
           <InfoCard
@@ -219,6 +180,7 @@ export default function GroupDetailsPage(): ReactElement {
       </Expandable>
       <div className="group-details-paginator">
         <Pagination
+          page={page}
           pageSize={pageSize}
           totalCount={filteredCardsFromStore.length}
           onPageChagned={onPageChagned}
@@ -235,16 +197,9 @@ export default function GroupDetailsPage(): ReactElement {
         onHide={onCancel}
         onSubmit={onFormSubmit}
         onDelete={onDelete}
-        frontLanguage={Languages[groupDetails.language1]}
-        backLanguage={Languages[groupDetails.language2]}
+        frontLanguage={Languages[parseInt(groupDetails.language1)]}
+        backLanguage={Languages[parseInt(groupDetails.language2)]}
       />
-      <GroupDialog
-        cardSides={cardSides}
-        group={editedGroup}
-        onHide={onHideGroupDialog}
-        onSubmit={onSubmitGroupDialog}
-      />
-      <ActionsDialog isVisible={actionsVisible} onHide={onActionsVisible} actions={acts} />
     </div>
   )
 }

@@ -1,5 +1,3 @@
-import { selectItem } from '@/src/store/groups/reducer'
-import { val } from 'cheerio/lib/api/attributes'
 import useOutsideClickDetector from 'common/hooks/useOutsideClickDetector'
 import { useRef } from 'react'
 import { ReactNode, useState } from 'react'
@@ -38,25 +36,39 @@ export function Dropdown({
   }
 
   return (
-    <div className="w-full h-full relative">
-      <div className="w-full h-full relative">
+    <div className="w-full relative">
+      <div className="w-full h-max relative items-center flex p-3 text-l rounded-md bg-accent-dark text-accent-super-light border-2 border-zinc-600">
         <input
-          className="w-full right-0 bg-accent-dark text-accent-super-light"
+          className="w-full bg-transparent"
           value={inputValue}
           placeholder={placeholder}
           onChange={(e) => onInputChange(e.target.value)}
         />
-        <button className="w-min absolute right-0" onClick={() => setIsOpen(!isOpen)}>
-          v
+        <button className="hover:bg-lighter-a-bit" onClick={() => setIsOpen(!isOpen)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
         </button>
       </div>
       {isOpen && (
-        <div data-testid="drop-down-panel" ref={wrapperRef} className="w-full absolute left-0">
+        <div
+          data-testid="drop-down-panel"
+          ref={wrapperRef}
+          className="w-full absolute left-0 border-2 border-accent-light  rounded-md"
+        >
           {items.map((value, index) => {
             return (
               <div
                 onClick={() => itemClick(value)}
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white"
+                className="w-full bg-accent-dark text-accent-super-light mt-[2px] text-l border-b border-accent-light cursor-pointer ps-2 hover:bg-lighter-a-bit"
                 key={index}
               >
                 {value.label}

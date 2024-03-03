@@ -28,6 +28,7 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
   return (
     <>
       <form
+        id="card-form"
         className="w-full  border-y-2 border-accent-dark bg-main"
         onSubmit={formik.handleSubmit}
         autoComplete="off"
@@ -184,7 +185,7 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
 }
 
 export type CardFormModel = {
-  cardId: string
+  cardId?: string
   frontValue: string
   frontExample: string
   frontEnabled: any
@@ -196,7 +197,7 @@ export type CardFormModel = {
 }
 
 type CardFormProps = {
-  card: CardFormModel | null
+  card?: CardFormModel
   onSubmit: (item: CardFormModel) => void
   frontLanguage?: Language
   backLanguage?: Language
