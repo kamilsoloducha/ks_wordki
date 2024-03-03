@@ -1,8 +1,8 @@
 import { ReactNode, useRef } from 'react'
 import http from 'api/services/httpBase'
 import { useEffectOnce, useUserStorage } from 'common/hooks'
-import { Toast } from 'primereact/toast'
 import { ConfirmationModal, ConfirmationModalRef } from 'common/components/ConfirmationModal'
+import { AxiosError } from 'axios'
 
 export default function Axios({ children }: AxiosProps) {
   const { get } = useUserStorage()
@@ -23,14 +23,14 @@ export default function Axios({ children }: AxiosProps) {
     )
 
     http.interceptors.response.use(
-      (response) => response,
-      (error) => {
+      (_) => _,
+      (error: AxiosError) => {
         if (error?.response?.status === 401) {
           console.error('Response code: 401')
           window.location.href = '/logout'
           return
         }
-        if (error?.response?.status >= 500) {
+        if (error?.response?.status! >= 500) {
           console.error('Response code: 500', error)
           if (confirmationModel.current) {
             confirmationModel.current.show(error.message, 'Error')
@@ -51,20 +51,4 @@ export default function Axios({ children }: AxiosProps) {
 
 type AxiosProps = {
   children?: ReactNode
-}
-
-type ErrorTypeProps = {
-  toast: Toast | null
-  message: string
-}
-
-function ErrorToast({ toast, message }: ErrorTypeProps): ReactNode {
-  return (
-    <>
-      <div className="bg-red-500">
-        {message}
-        <button onClick={() => toast && toast.clear()}>Close</button>
-      </div>
-    </>
-  )
 }

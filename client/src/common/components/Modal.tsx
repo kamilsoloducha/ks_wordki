@@ -8,13 +8,7 @@ export type ModalProps = {
   footer?: ReactNode
 }
 
-export function Modal({
-  isOpen,
-  children,
-  header,
-  footer,
-  onClose
-}: ModalProps): ReactNode {
+export function Modal({ isOpen, children, header, footer, onClose }: ModalProps): ReactNode {
   if (!isOpen) {
     return null
   }
@@ -25,7 +19,7 @@ export function Modal({
   }
   return (
     <section
-      className="fixed inset-x-0 inset-y-0 bg-black/50 flex items-center justify-center"
+      className="fixed inset-x-0 inset-y-0 bg-black/50 flex items-center justify-center rounded-xl z-50"
       onClick={outSideClick}
     >
       <article
@@ -33,9 +27,9 @@ export function Modal({
           e.stopPropagation()
         }}
       >
-        <div>{header}</div>
+        {header}
         <main>{children}</main>
-        <div>{footer}</div>
+        {footer}
       </article>
     </section>
   )

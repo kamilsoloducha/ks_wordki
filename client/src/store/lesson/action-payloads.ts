@@ -1,4 +1,4 @@
-import { FormModel } from 'common/components/dialogs/cardDialog/CardForm'
+import { CardFormModel } from 'common/components/CardForm'
 import { Repeat } from 'pages/lesson/models/repeat'
 import { Group } from 'pages/lessonSettings/models/group'
 import { Language } from 'pages/lessonSettings/models/languages'
@@ -57,10 +57,10 @@ export interface SetAnswer {
 }
 
 export interface UpdateCard {
-  form: FormModel
+  form: CardFormModel
   groupId: string
 }
 
 export interface UpdateCardSuccess {
-  form: FormModel
+  form: CardFormModel
 }

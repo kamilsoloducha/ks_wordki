@@ -4,7 +4,7 @@ import './index.scss'
 import { Provider } from 'react-redux'
 import { store } from 'store/store'
 import TestPage from 'pages/test/TestPage'
-import Axios from 'common/components/axiosEx/AxiosEx'
+import Axios from 'common/components/AxiosEx'
 import {
   Route,
   RouterProvider,
@@ -12,8 +12,9 @@ import {
   createRoutesFromElements
 } from 'react-router-dom'
 import { Root } from 'pages/Root'
-import LoadingSpinner from 'components/loadingSpinner/LoadingSpinner'
+import LoadingSpinner from 'common/components/LoadingSpinner'
 import ProtectedRoute from 'common/components/ProtectedRoute'
+import { useLocalSettingsStorage } from 'common/hooks/useSettingsStorage'
 
 const LoginPage = lazy(() => import('pages/login/LoginPage'))
 const LogoutPage = lazy(() => import('pages/logout/LogoutPage'))
@@ -28,7 +29,7 @@ const LessonPage = lazy(() => import('pages/lesson/LessonPage'))
 const LessonResultPage = lazy(() => import('pages/lessonResult/LessonResult'))
 const ErrorPage = lazy(() => import('pages/error/ErrorPage'))
 
-const createRoute = (
+const createProtectedRoute = (
   path: string,
   isLoginRequired: boolean,
   isLoginForbiden: boolean,
@@ -57,19 +58,19 @@ const routes = createRoutesFromElements(
       </Axios>
     }
   >
-    {createRoute('/login', false, true, <LoginPage />)}
-    {createRoute('/register', false, true, <RegisterPage />)}
-    {createRoute('/dashboard', true, false, <DashboardPage />)}
-    {createRoute('/', true, false, <DashboardPage />)}
-    {createRoute('/error', true, false, <ErrorPage />)}
-    {createRoute('/lesson', true, false, <LessonPage />)}
-    {createRoute('/lesson-settings', true, false, <LessonSettingsPage />)}
-    {createRoute('/lesson-results', true, false, <LessonResultPage />)}
-    {createRoute('/groups', true, false, <GroupsPage />)}
-    {createRoute('/groups/search', true, false, <GroupsSearchPage />)}
-    {createRoute('/cards/:groupId', true, false, <GroupDetails />)}
-    {createRoute('/cards', true, false, <CardsPage />)}
-    {createRoute('/test', true, false, <TestPage />)}
+    {createProtectedRoute('/login', false, true, <LoginPage />)}
+    {createProtectedRoute('/register', false, true, <RegisterPage />)}
+    {createProtectedRoute('/dashboard', true, false, <DashboardPage />)}
+    {createProtectedRoute('/', true, false, <DashboardPage />)}
+    {createProtectedRoute('/error', true, false, <ErrorPage />)}
+    {createProtectedRoute('/lesson', true, false, <LessonPage />)}
+    {createProtectedRoute('/lesson-settings', true, false, <LessonSettingsPage />)}
+    {createProtectedRoute('/lesson-result', true, false, <LessonResultPage />)}
+    {createProtectedRoute('/groups', true, false, <GroupsPage />)}
+    {createProtectedRoute('/groups/search', true, false, <GroupsSearchPage />)}
+    {createProtectedRoute('/cards/:groupId', true, false, <GroupDetails />)}
+    {createProtectedRoute('/cards', true, false, <CardsPage />)}
+    {createProtectedRoute('/test', true, false, <TestPage />)}
     <Route
       path="/logout"
       element={
@@ -82,6 +83,8 @@ const routes = createRoutesFromElements(
 )
 
 const router = createBrowserRouter(routes)
+
+useLocalSettingsStorage().init()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

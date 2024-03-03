@@ -5,11 +5,7 @@ import { SagaIterator } from 'redux-saga'
 import { getDashboardSummarySuccess, getForecastSuccess } from '../reducer'
 import { all, takeEvery } from 'redux-saga/effects'
 import { AxiosResponse } from 'axios'
-import { requestFailed } from 'store/root/actions'
-import {
-  GetDashboardSummarySuccess,
-  GetForecastSuccess
-} from '@/src/store/dashboard/action-payloads'
+import { GetDashboardSummarySuccess, GetForecastSuccess } from 'store/dashboard/action-payloads'
 
 export function* getDashbaordSummaryWorker(): any {
   const {

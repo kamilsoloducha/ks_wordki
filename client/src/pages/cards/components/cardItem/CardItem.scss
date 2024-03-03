@@ -1,70 +1,69 @@
-@import '../../../../index.scss';
-
 $drawer-width: 2px;
 
 .row-container {
-    width: 100%;
+  width: 100%;
+  display: flex;
+  align-content: space-between;
+  border-bottom: 1px solid rgb(66, 66, 66);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(240, 248, 255, 0.027);
+  }
+
+  .row-sides {
+    width: 75%;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .row-side-container {
+      padding: 10px;
+
+      .row-side-value {
+        font-size: 1.75rem;
+        margin-bottom: 5px;
+        color: rgb(168, 168, 168);
+
+        .lowlight {
+          color: rgb(93, 93, 93),
+        }
+      }
+    }
+
+    .drawer1 {
+      border-left: $drawer-width solid rgb(129, 0, 0);
+      ;
+    }
+
+    .drawer2 {
+      border-left: $drawer-width solid rgb(129, 84, 0);
+    }
+
+    .drawer3 {
+      border-left: $drawer-width solid rgb(128, 128, 0);
+    }
+
+    .drawer4 {
+      border-left: $drawer-width solid rgb(40, 105, 5);
+    }
+
+    .drawer5 {
+      border-left: $drawer-width solid rgb(0, 54, 0);
+    }
+  }
+
+  .row-group-details {
+    width: 25%;
     display: flex;
-    align-content: space-between;
-    border-bottom: 1px solid rgb(66, 66, 66);
-    cursor: pointer;
+    align-items: center;
+    justify-content: flex-end;
 
-    &:hover {
-        background-color: rgba(240, 248, 255, 0.027);
+    .row-group-langauges {
+      display: flex;
+      flex-direction: column;
+      align-content: space-between;
+      margin: 5px;
     }
-
-    .row-sides {
-        width: 75%;
-        margin-left: 10px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-
-        .row-side-container {
-            padding: 10px;
-
-            .row-side-value {
-                font-size: 1.75rem;
-                margin-bottom: 5px;
-                color: rgb(168, 168, 168);
-
-                .lowlight {
-                    color: rgb(93, 93, 93),
-                }
-            }
-        }
-
-        .drawer1 {
-            border-left: $drawer-width solid $drawer1-color;
-        }
-
-        .drawer2 {
-            border-left: $drawer-width solid $drawer2-color;
-        }
-
-        .drawer3 {
-            border-left: $drawer-width solid $drawer3-color;
-        }
-
-        .drawer4 {
-            border-left: $drawer-width solid $drawer4-color;
-        }
-
-        .drawer5 {
-            border-left: $drawer-width solid $drawer5-color;
-        }
-    }
-
-    .row-group-details {
-        width: 25%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-
-        .row-group-langauges {
-            display: flex;
-            flex-direction: column;
-            align-content: space-between;
-            margin: 5px;
-        }
-    }
+  }
 }

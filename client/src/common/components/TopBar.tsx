@@ -26,7 +26,7 @@ export default function TopBar(): ReactElement {
             <li>
               <form onSubmit={submitSearch}>
                 <input
-                  className="p-3 text-l rounded-md w-[125px] focus:w-[300px] transition-width text-zinc-400 border-2 border-zinc-400"
+                  className="p-3 text-l rounded-md w-[125px] focus:w-[300px] transition-width bg-neutral-800 focus:bg-neutral-700 text-zinc-400 border-2 border-zinc-600"
                   type="search"
                   value={searchingTerm}
                   onChange={(e) => setSearchingTerm(e.target.value)}

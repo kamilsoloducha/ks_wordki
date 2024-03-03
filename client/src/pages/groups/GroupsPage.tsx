@@ -1,9 +1,7 @@
 import './GroupsPage.scss'
-import GroupDetails from 'common/components/dialogs/groupDialog/groupDetails'
-import GroupDialog from 'common/components/dialogs/groupDialog/GroupDialog'
-import LoadingSpinner from 'common/components/loadingSpinner/LoadingSpinner'
-import { PageChangedEvent } from 'common/components/pagination/pageChagnedEvent'
-import { Pagination } from 'common/components/pagination/Pagination'
+import GroupDialog from 'common/components/GroupDialog'
+import LoadingSpinner from 'common/components/LoadingSpinner'
+import { PageChangedEvent, Pagination } from 'common/components/Pagination'
 import { Fragment, ReactElement, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -20,6 +18,7 @@ import { GroupSummary } from './models/groupSummary'
 import { useTitle } from 'common/index'
 import { getLanguages } from 'store/lesson/reducer'
 import { selectLanguages } from 'store/lesson/selectors'
+import { GroupFormModel } from 'common/components/GroupForm'
 
 const pageSize = 30
 
@@ -35,7 +34,7 @@ export default function GroupsPage(): ReactElement {
   const cardSides = useSelector(selectLanguages)
   const dialogItem = !selectedItem
     ? (null as any)
-    : ({ id: selectedItem.id, name: selectedItem.name } as GroupDetails)
+    : ({ id: selectedItem.id, name: selectedItem.name } as GroupFormModel)
 
   useEffect(() => {
     dispatch(getGroupsSummary())
@@ -48,15 +47,15 @@ export default function GroupsPage(): ReactElement {
     setPaginatedItems(groups.slice(first, last))
   }, [page, groups])
 
-  // if (isLoading) {
-  //   return <LoadingSpinner />;
-  // }
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
 
   const onhide = () => {
     dispatch(resetSelectedItem())
   }
 
-  const onsubmit = (group: GroupDetails) => {
+  const onsubmit = (group: GroupFormModel) => {
     dispatch(group.id ? updateGroup({ group }) : addGroup({ group }))
   }
 
@@ -84,6 +83,9 @@ export default function GroupsPage(): ReactElement {
         </button>
         <button onClick={onSearchGroup}>Search from existing</button>
       </div>
+      <div className="pb-1">
+        <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
+      </div>
       {paginatedItems.map((x) => (
         <Fragment key={x.id}>
           <GroupRow
@@ -99,7 +101,7 @@ export default function GroupsPage(): ReactElement {
           />
         </Fragment>
       ))}
-      <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
+
       <GroupDialog cardSides={cardSides} group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
       {isLoading && <LoadingSpinner />}
     </>

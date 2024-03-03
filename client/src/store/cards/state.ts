@@ -1,37 +1,37 @@
-import { CardSummary } from "pages/cards/models";
+import { CardSummary } from 'pages/cards/models'
 
 export default interface CardsState {
-  isLoading: boolean;
-  id: string;
-  name: string;
-  language1: number;
-  language2: number;
-  cards: CardSummary[];
-  filteredCards: CardSummary[];
-  selectedItem: CardSummary | null;
-  filter: FilterModel;
+  isLoading: boolean
+  id: string
+  name: string
+  language1: string
+  language2: string
+  cards: CardSummary[]
+  filteredCards: CardSummary[]
+  selectedItem: CardSummary | null
+  filter: FilterModel
 }
 
 export const initialState: CardsState = {
   isLoading: false,
-  id: "",
-  name: "",
-  language1: 0,
-  language2: 0,
+  id: '',
+  name: '',
+  language1: '',
+  language2: '',
   cards: [],
   filteredCards: [],
   selectedItem: null,
   filter: {
     drawer: null,
     isLearning: null,
-    text: "",
-    isTicked: false,
-  },
-};
+    text: '',
+    isTicked: false
+  }
+}
 
 export interface FilterModel {
-  drawer: number | null;
-  isLearning: boolean | null;
-  text: string;
-  isTicked: boolean;
+  drawer: number | null
+  isLearning: boolean | null
+  text: string
+  isTicked: boolean
 }

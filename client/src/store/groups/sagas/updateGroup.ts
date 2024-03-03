@@ -16,10 +16,10 @@ export function* updateGroupWorker(action: PayloadAction<UpdateGroup>): any {
   } as api.UpdateGroupRequest
   const { error }: { data: ApiResponse<string>; error: any } = yield call(
     api.updateGroup,
-    action.payload.group.id,
+    action.payload.group.id!,
     request
   )
-  yield put(error ? requestFailed(error) : getCards({ groupId: action.payload.group.id }))
+  yield put(error ? requestFailed(error) : getCards({ groupId: action.payload.group.id! }))
 }
 
 export function* updateGroupEffect(): SagaIterator {

@@ -7,7 +7,7 @@ const useLocalStorage = (key: string) => {
     }
   }
 
-  const getItem = () => {
+  const getItem = (): unknown | undefined => {
     try {
       const storageValue = window.localStorage.getItem(key)
       return storageValue ? JSON.parse(storageValue) : undefined

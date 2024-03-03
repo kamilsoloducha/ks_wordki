@@ -5,6 +5,8 @@ import { SagaIterator } from 'redux-saga'
 import { LoginPayload } from '../action-payload'
 import { loginSuccess, setErrorMessage } from '../reducer'
 import { useUserStorage } from 'common/index'
+import { LoginRequest, LoginResponse } from 'api/services/users'
+import { AxiosError, AxiosResponse } from 'axios'
 
 export function* loginUserEffect(): SagaIterator {
   while (true) {
@@ -12,27 +14,30 @@ export function* loginUserEffect(): SagaIterator {
     const request = {
       userName: action.payload.userName,
       password: action.payload.password
-    } as api.LoginRequest
-    const apiResponse: api.LoginResponse = yield call(api.login, request)
+    } as LoginRequest
+    const apiResponse: AxiosResponse<LoginResponse> | AxiosError = yield call(api.login, request)
 
-    switch (apiResponse.responseCode) {
+    let data: LoginResponse
+    if ('data' in apiResponse) {
+      data = apiResponse.data as LoginResponse
+    } else {
+      data = apiResponse.response?.data as LoginResponse
+    }
+
+    switch (data.responseCode) {
       case api.LoginResponseCode.Successful:
         const { set } = useUserStorage()
         set({
-          id: apiResponse.id,
-          name: apiResponse.id,
-          token: apiResponse.token,
-          expirationDate: new Date(apiResponse.expirationDateTime)
+          id: data.id,
+          name: data.id,
+          token: data.token,
+          expirationDate: new Date(data.expirationDateTime)
         })
-        localStorage.setItem('id', apiResponse.id)
-        localStorage.setItem('token', apiResponse.token)
-        localStorage.setItem('creationDate', apiResponse.creatingDateTime)
-        localStorage.setItem('expirationDate', apiResponse.expirationDateTime)
         yield put(
           loginSuccess({
-            token: apiResponse.token,
-            id: apiResponse.id,
-            expirationDate: apiResponse.expirationDateTime
+            token: data.token,
+            id: data.id,
+            expirationDate: data.expirationDateTime
           })
         )
         break

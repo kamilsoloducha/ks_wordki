@@ -1,17 +1,17 @@
-import "./InfoCard.scss";
-import { ReactElement } from "react";
+import './InfoCard.scss'
+import { ReactElement } from 'react'
 
 export default function InfoCard({
-  value = "test",
-  label = "test",
+  value = 'test',
+  label = 'test',
   classNameOverriden,
   disabled: disable = false,
-  onClick,
-}: Model): ReactElement {
+  onClick
+}: InfoCardProps): ReactElement {
   return (
     <div
-      className={`info-card-container ${classNameOverriden} ${disable ? "info-card-disabled" : ""}
-      ${onClick ? "clickable" : ""}`}
+      className={`info-card-container ${classNameOverriden} ${disable ? 'info-card-disabled' : ''}
+      ${onClick ? 'clickable' : ''}`}
       onClick={onClick}
     >
       <div className="info-card-label">{label}</div>
@@ -25,13 +25,13 @@ export default function InfoCard({
         <circle fill="#ffffff33" cx="3" cy="7" r="6" clipPath="#clip-0" />
       </svg>
     </div>
-  );
+  )
 }
 
-interface Model {
-  value: string | number;
-  label: string | number;
-  classNameOverriden?: string;
-  disabled?: boolean;
-  onClick?: () => void;
+type InfoCardProps = {
+  value: string | number
+  label: string | number
+  classNameOverriden?: string
+  disabled?: boolean
+  onClick?: () => void
 }

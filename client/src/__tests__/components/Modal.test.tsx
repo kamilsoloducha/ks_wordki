@@ -41,7 +41,7 @@ describe('Modal', () => {
         Children
       </Modal>
     )
-    expect(await screen.findByText('Footer')).toBeInTheDocument()
-    expect(await screen.findByText('Header')).toBeInTheDocument()
+    expect(await screen.findByText('Footer', { exact: false })).toBeInTheDocument()
+    expect(await screen.findByText('Header', { exact: false })).toBeInTheDocument()
   })
 })
