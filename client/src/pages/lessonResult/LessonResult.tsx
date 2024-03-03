@@ -19,7 +19,7 @@ export default function LessonResult(): ReactElement {
   const lessonSettings = useSelector(selectSettings)
 
   const [userRepeats, setUserRepeats] = useState<UserRepeat[]>(lessonHistory)
-  const [selectedItem, setSelectedItem] = useState<UserRepeat | null>(null)
+  const [selectedItem, setSelectedItem] = useState<UserRepeat | undefined>(undefined)
 
   const userAnswerColumn = userAnswerColumnNecessary(lessonSettings.type)
 
@@ -60,7 +60,7 @@ export default function LessonResult(): ReactElement {
     form.backEnabled = null
     form.frontEnabled = null
     dispatch(actions.updateCard({ form, groupId: '' }))
-    setSelectedItem(null)
+    setSelectedItem(undefined)
   }
 
   const onDelete = (form: CardFormModel) => undefined
@@ -92,7 +92,7 @@ export default function LessonResult(): ReactElement {
       </div>
       <CardDialog
         card={getFormModelFromUserRepeat(selectedItem)}
-        onHide={() => setSelectedItem(null)}
+        onHide={() => setSelectedItem(undefined)}
         onSubmit={onSubmit}
         onDelete={onDelete}
       />
@@ -108,8 +108,10 @@ export function filterLessonHistory(items: UserRepeat[], result: number): UserRe
   return items.filter((x) => x.result === result)
 }
 
-export function getFormModelFromUserRepeat(userRepeat: UserRepeat | null): CardFormModel | null {
-  if (!userRepeat) return null
+export function getFormModelFromUserRepeat(
+  userRepeat: UserRepeat | undefined
+): CardFormModel | undefined {
+  if (!userRepeat) return undefined
 
   const form: CardFormModel = {
     cardId: userRepeat.repeat.cardId,

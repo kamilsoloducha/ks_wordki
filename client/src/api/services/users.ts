@@ -1,6 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios'
-import * as commands from '../commands'
-import * as responses from '../responses'
 import http from './httpBase'
 
 const USERS_PATH = '/users'
