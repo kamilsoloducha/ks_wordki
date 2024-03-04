@@ -58,6 +58,7 @@
     "postcss": "^8.4.33",
     "prettier": "3.1.1",
     "redux-mock-store": "^1.5.4",
+    "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.71.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",

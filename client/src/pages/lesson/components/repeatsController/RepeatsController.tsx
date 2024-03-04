@@ -1,39 +1,39 @@
-import "./RepeatsController.scss";
-import { LessonStatus } from "pages/lesson/models/lessonState";
-import { ReactElement } from "react";
+import './RepeatsController.scss'
+import { LessonStatus } from 'pages/lesson/models/lessonState'
+import { ReactElement } from 'react'
 
 export default function RepeatsController({
   lessonState,
   isCorrect,
   onCheckClick,
   onCorrectClick,
-  onWrongClick,
+  onWrongClick
 }: Model): ReactElement {
   return (
     <div className="repeats-controller-container">
       {lessonState.btnCheck && (
-        <button className={"check focused"} onClick={onCheckClick}>
+        <button className={'check focused'} onClick={onCheckClick}>
           Check
         </button>
       )}
       {lessonState.btnWrong && (
-        <button className={`wrong ${isCorrect ? "" : "focused"}`} onClick={onWrongClick}>
+        <button className={`wrong ${isCorrect ? '' : 'focused'}`} onClick={onWrongClick}>
           Wrong
         </button>
       )}
       {lessonState.btnCorrect && (
-        <button className={`correct ${isCorrect ? "focused" : ""}`} onClick={onCorrectClick}>
+        <button className={`correct ${isCorrect ? 'focused' : ''}`} onClick={onCorrectClick}>
           Correct
         </button>
       )}
     </div>
-  );
+  )
 }
 
 interface Model {
-  isCorrect: boolean | null;
-  lessonState: LessonStatus;
-  onCheckClick: () => void;
-  onCorrectClick: () => void;
-  onWrongClick: () => void;
+  isCorrect: boolean | null
+  lessonState: LessonStatus
+  onCheckClick: () => void
+  onCorrectClick: () => void
+  onWrongClick: () => void
 }

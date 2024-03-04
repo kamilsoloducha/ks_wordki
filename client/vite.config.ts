@@ -1,13 +1,39 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
+import { defineConfig, type PluginOption } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { configDefaults } from 'vitest/config'
 import path from 'path'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config https://vitest.dev/config
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('prime')) {
+              return 'primereact'
+            }
+
+            return 'vendor' // all other package goes here
+          }
+        }
+      }
+    }
+  },
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    visualizer({
+      template: 'treemap', // or sunburst
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      filename: 'dist/analyse.html' // will be saved in project's root
+    }) as PluginOption
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src/'),

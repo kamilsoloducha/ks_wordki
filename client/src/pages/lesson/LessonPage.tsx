@@ -12,9 +12,11 @@ import { FinishPending } from './models/lessonState'
 import { LessonInformation } from './components/lessonInformation/LessonInformation'
 import { useTitle } from 'common/index'
 import { useEffectOnce } from 'common/hooks/useEffectOnce'
+import { useMobileDetection } from 'common/hooks/useMobileDetection'
 
 export default function LessonPage(): ReactElement {
   useTitle('Wordki - Lesson')
+  const isMobile = useMobileDetection()
   const questions = useSelector(sel.selectRepeats)
   const status = useSelector(sel.selectLessonState)
   const isCorrect = useSelector(sel.selectIsCorrect)
@@ -61,13 +63,15 @@ export default function LessonPage(): ReactElement {
       )}
       <LessonInformation />
       {mainComponent}
-      <RepeatsController
-        onCheckClick={check}
-        onCorrectClick={correct}
-        onWrongClick={wrong}
-        lessonState={status}
-        isCorrect={isCorrect}
-      />
+      {lessonType === 1 && !isMobile && (
+        <RepeatsController
+          onCheckClick={check}
+          onCorrectClick={correct}
+          onWrongClick={wrong}
+          lessonState={status}
+          isCorrect={isCorrect}
+        />
+      )}
     </div>
   )
 }
