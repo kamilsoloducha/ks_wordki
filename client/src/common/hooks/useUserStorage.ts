@@ -10,7 +10,7 @@ export const useUserStorage = () => {
   }
 
   const get = (): UserSession | undefined => {
-    var storageItem = getItem()
+    const storageItem = getItem()
     return storageItem as UserSession
   }
 

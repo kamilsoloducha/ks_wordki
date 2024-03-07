@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { ForecastModel } from 'pages/dashboard/models/forecastModel'
+import { ForecastModel } from 'common/models/forecastModel'
 import * as q from '../queries'
 import * as res from '../responses'
 import http from './httpBase'

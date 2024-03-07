@@ -1,34 +1,34 @@
-import { ReactElement, useCallback } from "react";
-import "./CountSelector.scss";
+import { ReactElement, useCallback } from 'react'
+import './CountSelector.scss'
 
 export function CountSelector({ selected, all, onSelectedChanged }: Model): ReactElement {
   const onChanged = useCallback(
     (event$: any) => {
-      const newValue = parseInt(event$.target.value, undefined);
+      const newValue = parseInt(event$.target.value, undefined)
       // if (newValue > all) {
       //   newValue = all;
       // }
       // if (newValue < 0) {
       //   newValue = 0;
       // }
-      onSelectedChanged(newValue);
+      onSelectedChanged(newValue)
     },
     [onSelectedChanged]
-  );
+  )
 
   const change = useCallback(
     (current: number, difference: number) => {
-      let newValue = current + difference;
+      let newValue = current + difference
       if (newValue > all) {
-        newValue = all;
+        newValue = all
       }
       if (newValue < 0) {
-        newValue = 0;
+        newValue = 0
       }
-      onSelectedChanged(newValue);
+      onSelectedChanged(newValue)
     },
     [onSelectedChanged, all]
-  );
+  )
 
   return (
     <div className="count-container">
@@ -43,11 +43,11 @@ export function CountSelector({ selected, all, onSelectedChanged }: Model): Reac
         <button onClick={() => change(selected, all)}>All</button>
       </div>
     </div>
-  );
+  )
 }
 
 interface Model {
-  selected: number;
-  all: number;
-  onSelectedChanged: (value: number) => void;
+  selected: number
+  all: number
+  onSelectedChanged: (value: number) => void
 }

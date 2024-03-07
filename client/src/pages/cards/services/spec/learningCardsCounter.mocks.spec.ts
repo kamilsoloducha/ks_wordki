@@ -1,14 +1,14 @@
-import { CardSummaryBuilder, SideSummaryBuilder } from "../../../../test/builders";
-import { CardSummary } from "../../models";
+import { CardSummaryBuilder, SideSummaryBuilder } from '../../../../test/builders'
+import { CardSummary } from '../../models'
 
 interface LearningCardsCounter {
-  cards: CardSummary[];
-  result: number;
+  cards: CardSummary[]
+  result: number
 }
 
 export class EmptyList implements LearningCardsCounter {
-  cards = [];
-  result = 0;
+  cards = []
+  result = 0
 }
 
 export class SingleItemSingleSideList implements LearningCardsCounter {
@@ -16,9 +16,9 @@ export class SingleItemSingleSideList implements LearningCardsCounter {
     new CardSummaryBuilder()
       .withFront(new SideSummaryBuilder().withIsUsed(true).build())
       .withBack(new SideSummaryBuilder().withIsUsed(false).build())
-      .build(),
-  ];
-  result = 1;
+      .build()
+  ]
+  result = 1
 }
 
 export class SingleItemDoubleSideList implements LearningCardsCounter {
@@ -26,9 +26,9 @@ export class SingleItemDoubleSideList implements LearningCardsCounter {
     new CardSummaryBuilder()
       .withFront(new SideSummaryBuilder().withIsUsed(true).build())
       .withBack(new SideSummaryBuilder().withIsUsed(true).build())
-      .build(),
-  ];
-  result = 2;
+      .build()
+  ]
+  result = 2
 }
 
 export class MultipeItemsDoubleSideList implements LearningCardsCounter {
@@ -40,7 +40,7 @@ export class MultipeItemsDoubleSideList implements LearningCardsCounter {
     new CardSummaryBuilder()
       .withFront(new SideSummaryBuilder().withIsUsed(true).build())
       .withBack(new SideSummaryBuilder().withIsUsed(true).build())
-      .build(),
-  ];
-  result = 4;
+      .build()
+  ]
+  result = 4
 }

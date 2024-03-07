@@ -1,5 +1,5 @@
 import { call, put } from '@redux-saga/core/effects'
-import { ForecastModel } from 'pages/dashboard/models/forecastModel'
+import { ForecastModel } from 'common/models/forecastModel'
 import * as api from 'api/index'
 import { SagaIterator } from 'redux-saga'
 import { getDashboardSummarySuccess, getForecastSuccess } from '../reducer'

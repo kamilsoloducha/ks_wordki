@@ -33,20 +33,20 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
         onSubmit={formik.handleSubmit}
         autoComplete="off"
       >
-        <div className="flex flex-col py-3 relative">
+        <div className="relative flex flex-col py-3">
           <label htmlFor="frontValue" className="ps-3">
             {frontLanguage?.label}
           </label>
           {frontLanguage && frontLanguage?.icon && (
             <img
-              className="absolute top-8 left-5"
+              className="absolute left-5 top-8"
               src={frontLanguage?.icon}
               width="32px"
               alt={frontLanguage.label}
             />
           )}
           <input
-            className="bg-transparent text-center border-b-2 border-accent-super-light text-accent-super-light font-extrabold text-3xl"
+            className="border-b-2 border-accent-super-light bg-transparent text-center text-3xl font-extrabold text-accent-super-light"
             ref={firstInputRef}
             id="frontValue"
             name="frontValue"
@@ -57,20 +57,20 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
           />
         </div>
 
-        <div className="flex flex-col py-3 relative">
+        <div className="relative flex flex-col py-3">
           <label htmlFor="backValue" className="ps-3">
             {backLanguage?.label}
           </label>
           {backLanguage && (
             <img
-              className="absolute top-8 left-5"
+              className="absolute left-5 top-8"
               src={backLanguage?.icon}
               width="32px"
               alt={backLanguage.label}
             />
           )}
           <input
-            className="bg-transparent text-center border-b-2 border-accent-super-light text-accent-super-light font-extrabold text-3xl"
+            className="border-b-2 border-accent-super-light bg-transparent text-center text-3xl font-extrabold text-accent-super-light"
             id="backValue"
             name="backValue"
             autoComplete="off"
@@ -80,20 +80,20 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
           />
         </div>
 
-        <div className="flex flex-col py-3 relative">
+        <div className="relative flex flex-col py-3">
           <label htmlFor="frontExample" className="ps-3">
             {frontLanguage?.label} example
           </label>
           {frontLanguage && frontLanguage?.icon && (
             <img
-              className="absolute top-8 left-5"
+              className="absolute left-5 top-8"
               src={frontLanguage?.icon}
               width="32px"
               alt={frontLanguage.label}
             />
           )}
           <input
-            className="bg-transparent text-center border-b-2 border-accent-super-light text-accent-super-light font-extrabold text-3xl"
+            className="border-b-2 border-accent-super-light bg-transparent text-center text-3xl font-extrabold text-accent-super-light"
             id="frontExample"
             name="frontExample"
             autoComplete="off"
@@ -103,10 +103,10 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
           />
         </div>
 
-        <div className="flex flex-col py-3 relative">
+        <div className="relative flex flex-col py-3">
           {backLanguage && (
             <img
-              className="absolute top-8 left-5"
+              className="absolute left-5 top-8"
               src={backLanguage?.icon}
               width="32px"
               alt={backLanguage.label}
@@ -116,7 +116,7 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
             {backLanguage?.label} example
           </label>
           <input
-            className="bg-transparent text-center border-b-2 border-accent-super-light text-accent-super-light font-extrabold text-3xl"
+            className="border-b-2 border-accent-super-light bg-transparent text-center text-3xl font-extrabold text-accent-super-light"
             id="backExample"
             name="backExample"
             autoComplete="off"
@@ -157,7 +157,7 @@ export function CardForm({ card, onSubmit, frontLanguage, backLanguage }: CardFo
             Comment
           </label>
           <input
-            className="bg-transparent text-center border-b-2 border-accent-super-light text-accent-super-light font-extrabold text-3xl"
+            className="border-b-2 border-accent-super-light bg-transparent text-center text-3xl font-extrabold text-accent-super-light"
             id="comment"
             name="comment"
             type="text"

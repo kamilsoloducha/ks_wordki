@@ -1,13 +1,13 @@
-import { ForecastModel } from "pages/dashboard/models/forecastModel";
+import { ForecastModel } from 'common/models/forecastModel'
 
 export default interface DashboardState {
-  isLoading: boolean;
-  dailyRepeats: number;
-  groupsCount: number;
-  cardsCount: number;
+  isLoading: boolean
+  dailyRepeats: number
+  groupsCount: number
+  cardsCount: number
 
-  forecast: ForecastModel[];
-  isForecastLoading: boolean;
+  forecast: ForecastModel[]
+  isForecastLoading: boolean
 }
 
 export const initailState: DashboardState = {
@@ -16,5 +16,5 @@ export const initailState: DashboardState = {
   groupsCount: 0,
   cardsCount: 0,
   forecast: [],
-  isForecastLoading: false,
-};
+  isForecastLoading: false
+}

@@ -1,5 +1,5 @@
 export enum RegisterResponseCode {
   Successful = 0,
   UserNameAlreadyOccupied = 1,
-  EmailAlreadyOccupied = 2,
+  EmailAlreadyOccupied = 2
 }

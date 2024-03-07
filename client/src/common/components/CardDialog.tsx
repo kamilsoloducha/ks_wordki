@@ -18,7 +18,7 @@ export default function CardDialog({
   }
 
   const header = (
-    <div className="bg-main rounded-t-md">
+    <div className="rounded-t-md bg-main">
       <p className="p-5 text-xl font-extrabold">
         {card?.cardId ? 'Editing Card' : 'Creating Card'}
       </p>
@@ -34,7 +34,7 @@ export default function CardDialog({
   )
   return (
     <Modal isOpen={!!card} onClose={onHide} footer={footer} header={header}>
-      <div className="lg:w-[50vw] w-[96vw] model">
+      <div className="model w-[96vw] lg:w-[50vw]">
         <CardForm
           card={card}
           onSubmit={onSubmit}

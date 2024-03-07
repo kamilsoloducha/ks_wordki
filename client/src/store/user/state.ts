@@ -1,17 +1,17 @@
 export default interface UserState {
-  isLogin: boolean;
-  isLoading: boolean;
-  token: string;
-  id: string;
-  expirationDate: string;
-  errorMessage: string;
+  isLogin: boolean
+  isLoading: boolean
+  token: string
+  id: string
+  expirationDate: string
+  errorMessage: string
 }
 
 export const initialState: UserState = {
   isLogin: false,
   isLoading: false,
-  token: "",
-  id: "",
-  expirationDate: "",
-  errorMessage: "",
-};
+  token: '',
+  id: '',
+  expirationDate: '',
+  errorMessage: ''
+}

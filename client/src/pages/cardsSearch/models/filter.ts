@@ -1,8 +1,8 @@
 export interface Filter {
-  searchingTerm: string;
-  tickedOnly: boolean | null;
-  lessonIncluded: boolean | null;
+  searchingTerm: string
+  tickedOnly: boolean | null
+  lessonIncluded: boolean | null
 
-  pageNumber: number;
-  pageSize: number;
+  pageNumber: number
+  pageSize: number
 }

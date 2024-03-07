@@ -4,7 +4,7 @@ import * as api from 'api/index'
 import { SagaIterator } from 'redux-saga'
 import { takeEvery } from 'redux-saga/effects'
 import { getGroupsSummarySuccess } from '../reducer'
-import { GroupSummary } from 'pages/groups/models/groupSummary'
+import { GroupSummary } from 'common/models/groupSummary'
 
 export function* getGroupsSummaryWorker(): any {
   const { data, error }: { data: GroupSummary[]; error: any } = yield call(api.summaries)

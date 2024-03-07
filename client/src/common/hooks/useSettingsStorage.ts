@@ -6,7 +6,7 @@ export const useLocalSettingsStorage = () => {
   const { getItem, setItem } = useLocalStorage(LOCAL_SETTIGNS_KEY)
 
   const init = () => {
-    var currentValue = getItem()
+    const currentValue = getItem()
     if (currentValue !== undefined) {
       return
     }
@@ -15,14 +15,14 @@ export const useLocalSettingsStorage = () => {
   }
 
   const get = (): LocalUserSettings | undefined => {
-    var storageItem = getItem() as any
+    const storageItem = getItem() as any
     return {
       paginationPageSize: parseInt(storageItem.paginationPageSize)
     }
   }
 
   const update = (field: UpdateType, value: unknown) => {
-    var currentValue = get() as any
+    const currentValue = get() as any
     if (currentValue === undefined) {
       return
     }

@@ -1,4 +1,4 @@
 export interface SideSummary {
-  value: string;
-  example: string;
+  value: string
+  example: string
 }

@@ -8,7 +8,7 @@ export function TabViewItemHeader({
 }: TabViewItemHeaderProps): ReactElement {
   return (
     <div
-      className={`cursor-pointer font-extrabold p-5 hover:bg-accent-light + ${
+      className={`cursor-pointer p-5 font-extrabold hover:bg-accent-light ${
         isSelected ? 'border-b-2 text-accent-super-light' : ''
       }`}
       onClick={() => onClick(value)}

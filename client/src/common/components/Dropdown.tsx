@@ -36,8 +36,8 @@ export function Dropdown({
   }
 
   return (
-    <div className="w-full relative">
-      <div className="w-full h-max relative items-center flex p-3 text-l rounded-md bg-accent-dark text-accent-super-light border-2 border-zinc-600">
+    <div className="relative w-full">
+      <div className="text-l relative flex h-max w-full items-center rounded-md border-2 border-zinc-600 bg-accent-dark p-3 text-accent-super-light">
         <input
           className="w-full bg-transparent"
           value={inputValue}
@@ -52,7 +52,7 @@ export function Dropdown({
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="size-6"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>
@@ -62,13 +62,13 @@ export function Dropdown({
         <div
           data-testid="drop-down-panel"
           ref={wrapperRef}
-          className="w-full absolute left-0 border-2 border-accent-light  rounded-md"
+          className="absolute left-0 w-full rounded-md border-2  border-accent-light"
         >
           {items.map((value, index) => {
             return (
               <div
                 onClick={() => itemClick(value)}
-                className="w-full bg-accent-dark text-accent-super-light mt-[2px] text-l border-b border-accent-light cursor-pointer ps-2 hover:bg-lighter-a-bit"
+                className="text-l mt-[2px] w-full cursor-pointer border-b border-accent-light bg-accent-dark ps-2 text-accent-super-light hover:bg-lighter-a-bit"
                 key={index}
               >
                 {value.label}

@@ -2,9 +2,9 @@ import * as api from 'api/index'
 import { all, call, put, select, take } from '@redux-saga/core/effects'
 import { selectFilter } from '../selectors'
 import { selectUserId } from 'store/user/selectors'
-import { GroupSummary } from 'pages/groupsSearch/models/groupSummary'
 import { SagaIterator } from 'redux-saga'
 import { searchSuccess } from '../reducer'
+import { GroupSummary } from 'common/models/groupSummary'
 
 export function* searchEffect(): SagaIterator {
   while (true) {

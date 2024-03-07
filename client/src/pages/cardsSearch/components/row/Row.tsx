@@ -1,6 +1,6 @@
-import "./Row.scss";
-import { ReactElement } from "react";
-import { CardSummary, Side as SideModel } from "pages/cardsSearch/models";
+import './Row.scss'
+import { ReactElement } from 'react'
+import { CardSummary, Side as SideModel } from 'pages/cardsSearch/models'
 
 export function Row({ card, onClick }: RowModel): ReactElement {
   return (
@@ -13,12 +13,12 @@ export function Row({ card, onClick }: RowModel): ReactElement {
         <p>{card.groupName}</p>
       </div>
     </div>
-  );
+  )
 }
 
 export interface RowModel {
-  card: CardSummary;
-  onClick?: (card: CardSummary) => void;
+  card: CardSummary
+  onClick?: (card: CardSummary) => void
 }
 
 function Side({ side }: { side: SideModel }): ReactElement {
@@ -29,9 +29,9 @@ function Side({ side }: { side: SideModel }): ReactElement {
       </div>
       <div className="row-side-example">{side.example}</div>
     </div>
-  );
+  )
 }
 
 function drawerClassName(drawer: number): string {
-  return "drawer" + drawer;
+  return 'drawer' + drawer
 }

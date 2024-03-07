@@ -1,11 +1,11 @@
-import * as key from '../../models/keyCodes'
-import * as resultTypes from '../../models/resultTypes'
+import * as key from '../models/keyCodes'
+import * as resultTypes from '../models/resultTypes'
 import * as actions from 'store/lesson/reducer'
 import * as sel from 'store/lesson/selectors'
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Answer from '../answer/Answer'
-import Question from '../question/Question'
+import Answer from './Answer'
+import Question from './Question'
 
 export default function Fiszka(): ReactElement {
   const dispatch = useDispatch()
@@ -90,7 +90,7 @@ export default function Fiszka(): ReactElement {
   }
 
   const onFingerMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    if (!!!clickPosition) {
+    if (!clickPosition) {
       return
     }
 
@@ -117,20 +117,20 @@ export default function Fiszka(): ReactElement {
 
   return (
     <div
-      className="relative"
+      className="relative h-max"
       onTouchStart={onTouch}
       onTouchEnd={onUntouch}
       onTouchMove={onFingerMove}
     >
       {clickAndDragDelata && clickAndDragDelata < 0 && (
         <div
-          className="z-10 absolute w-full h-full bg-gradient-to-r from-red-500"
+          className="absolute z-10 size-full bg-gradient-to-r from-red-500"
           style={{ opacity: percentage }}
         ></div>
       )}
       {clickAndDragDelata && clickAndDragDelata > 0 && (
         <div
-          className="z-10 absolute w-full h-full bg-gradient-to-l from-green-500"
+          className="absolute z-10 size-full bg-gradient-to-l from-green-500"
           style={{ opacity: percentage }}
         ></div>
       )}

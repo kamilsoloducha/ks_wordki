@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as actions from 'store/groupsSearch/reducer'
 import * as selectors from 'store/groupsSearch/selectors'
 import LoadingSpinner from 'common/components/LoadingSpinner'
-import GroupRow from 'pages/groups/components/groupRow/GroupRow'
 import { Dialog } from 'primereact/dialog'
 import { useTitle } from 'common/index'
+import { GroupRow } from 'common/components/GroupRow'
+import { GroupSummary } from 'common/models/groupSummary'
 
 export default function GroupsSearchPage(): ReactElement {
   useTitle('Wordki - Groups')
@@ -24,10 +25,8 @@ export default function GroupsSearchPage(): ReactElement {
     dispatch(actions.filterSetName({ name: value }))
   }
 
-  const onGroupSelected = (groupId: string) => {
-    const selectedGroup = groups.find((x: any) => x.id === groupId)
-    if (!selectedGroup) return
-    dispatch(actions.setGroup({ group: selectedGroup }))
+  const onGroupSelected = (groupSummary: GroupSummary) => {
+    dispatch(actions.setGroup({ group: groupSummary }))
   }
 
   const onDialogHide = () => {
@@ -56,18 +55,9 @@ export default function GroupsSearchPage(): ReactElement {
           </form>
         </div>
         <div className="groups-search-results">
-          {groups.map((x: any) => (
+          {groups.map((x) => (
             <Fragment key={x.id}>
-              <GroupRow
-                groupSummary={{
-                  id: x.id,
-                  name: x.name,
-                  front: x.front,
-                  back: x.back,
-                  cardsCount: x.cardsCount
-                }}
-                onClick={onGroupSelected}
-              />
+              <GroupRow groupSummary={x} onClick={onGroupSelected} />
             </Fragment>
           ))}
         </div>

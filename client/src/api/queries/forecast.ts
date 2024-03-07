@@ -1,3 +1,3 @@
 export type ForecastQuery = {
-  count: number;
-};
+  count: number
+}

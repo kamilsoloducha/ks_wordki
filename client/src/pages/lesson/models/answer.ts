@@ -1,5 +1,5 @@
 export interface AnswerLetter {
-  letter: string;
-  isCorrect: boolean;
-  isAdditional: boolean;
+  letter: string
+  isCorrect: boolean
+  isAdditional: boolean
 }

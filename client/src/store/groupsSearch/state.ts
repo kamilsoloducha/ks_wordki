@@ -1,17 +1,17 @@
-import { CardSummary } from "pages/groupsSearch/models/cardSummary";
-import { GroupSummary } from "pages/groupsSearch/models/groupSummary";
+import { GroupSummary } from 'common/models/groupSummary'
+import { CardSummary } from 'pages/groupsSearch/models/cardSummary'
 
 export interface GroupsSearchState {
-  isSearching: boolean;
+  isSearching: boolean
 
-  groups: GroupSummary[];
-  groupsCount: number;
+  groups: GroupSummary[]
+  groupsCount: number
 
-  selectedGroup: GroupSummary | null;
-  isCardsLoading: boolean;
-  cards: CardSummary[];
+  selectedGroup: GroupSummary | null
+  isCardsLoading: boolean
+  cards: CardSummary[]
 
-  groupName: string;
+  groupName: string
 }
 
 export const initialGroupsSearchState: GroupsSearchState = {
@@ -24,5 +24,5 @@ export const initialGroupsSearchState: GroupsSearchState = {
   isCardsLoading: false,
   cards: [],
 
-  groupName: "",
-};
+  groupName: ''
+}

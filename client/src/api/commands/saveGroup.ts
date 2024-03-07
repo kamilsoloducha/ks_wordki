@@ -1,4 +1,4 @@
 export type SaveGroupRequest = {
-  ownerId: string;
-  groupId: string;
-};
+  ownerId: string
+  groupId: string
+}

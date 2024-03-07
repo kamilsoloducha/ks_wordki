@@ -1,4 +1,4 @@
 export type ConnectGroupsRequest = {
-  userId: string;
-  groupIds: string[];
-};
+  userId: string
+  groupIds: string[]
+}

@@ -1,5 +1,5 @@
-import { CardSummary } from "pages/cards/models";
+import { CardSummary } from 'pages/cards/models'
 
 export type CardsSummaryResponse = {
-  cards: CardSummary[];
-};
+  cards: CardSummary[]
+}

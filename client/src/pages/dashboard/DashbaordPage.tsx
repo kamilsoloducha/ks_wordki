@@ -26,7 +26,7 @@ export default function DashboardPage(): ReactElement {
 
   return (
     <>
-      <div id="info-group" className="my-3 flex gap-10 flex-wrap">
+      <div id="info-group" className="my-3 flex flex-wrap gap-10">
         <div className="flex-1">
           <Info
             title="Repeats"

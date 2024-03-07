@@ -1,14 +1,14 @@
-import { CardSummaryBuilder, SideSummaryBuilder } from "../../../../test/builders";
-import { CardSummary } from "../../models";
+import { CardSummaryBuilder, SideSummaryBuilder } from '../../../../test/builders'
+import { CardSummary } from '../../models'
 
 interface TickedCardsCounter {
-  cards: CardSummary[];
-  result: number;
+  cards: CardSummary[]
+  result: number
 }
 
 export class EmptyList implements TickedCardsCounter {
-  cards = [];
-  result = 0;
+  cards = []
+  result = 0
 }
 
 export class SingleItemSingleSideList implements TickedCardsCounter {
@@ -16,9 +16,9 @@ export class SingleItemSingleSideList implements TickedCardsCounter {
     new CardSummaryBuilder()
       .withFront(new SideSummaryBuilder().withTicked(true).build())
       .withBack(new SideSummaryBuilder().withTicked(false).build())
-      .build(),
-  ];
-  result = 1;
+      .build()
+  ]
+  result = 1
 }
 
 export class SingleItemDoubleSideList implements TickedCardsCounter {
@@ -26,9 +26,9 @@ export class SingleItemDoubleSideList implements TickedCardsCounter {
     new CardSummaryBuilder()
       .withFront(new SideSummaryBuilder().withTicked(true).build())
       .withBack(new SideSummaryBuilder().withTicked(true).build())
-      .build(),
-  ];
-  result = 1;
+      .build()
+  ]
+  result = 1
 }
 
 export class MultipeItemsDoubleSideList implements TickedCardsCounter {
@@ -40,7 +40,7 @@ export class MultipeItemsDoubleSideList implements TickedCardsCounter {
     new CardSummaryBuilder()
       .withFront(new SideSummaryBuilder().withTicked(true).build())
       .withBack(new SideSummaryBuilder().withTicked(true).build())
-      .build(),
-  ];
-  result = 2;
+      .build()
+  ]
+  result = 2
 }

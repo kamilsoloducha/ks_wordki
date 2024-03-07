@@ -1,109 +1,31 @@
-import './GroupsPage.scss'
-import GroupDialog from 'common/components/GroupDialog'
 import LoadingSpinner from 'common/components/LoadingSpinner'
-import { PageChangedEvent, Pagination } from 'common/components/Pagination'
-import { Fragment, ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import {
-  addGroup,
-  getGroupsSummary,
-  resetSelectedItem,
-  selectItem,
-  updateGroup
-} from 'store/groups/reducer'
-import { selectGroups, selectIsLoading, selectSelectedItem } from 'store/groups/selectors'
-import GroupRow from './components/groupRow/GroupRow'
-import { GroupSummary } from './models/groupSummary'
+import { getGroupsSummary } from 'store/groups/reducer'
+import { selectIsLoading } from 'store/groups/selectors'
 import { useTitle } from 'common/index'
 import { getLanguages } from 'store/lesson/reducer'
-import { selectLanguages } from 'store/lesson/selectors'
-import { GroupFormModel } from 'common/components/GroupForm'
-
-const pageSize = 30
+import { UserGroups } from 'pages/groups/components/UserGroups'
+import { GroupTopBar } from 'pages/groups/components/GroupTopBar'
 
 export default function GroupsPage(): ReactElement {
   useTitle('Wordki - Groups')
   const dispatch = useDispatch()
-  const history = useNavigate()
-  const [page, setPage] = useState(1)
-  const [paginatedItems, setPaginatedItems] = useState<GroupSummary[]>([])
   const isLoading = useSelector(selectIsLoading)
-  const groups = useSelector(selectGroups)
-  const selectedItem = useSelector(selectSelectedItem)
-  const cardSides = useSelector(selectLanguages)
-  const dialogItem = !selectedItem
-    ? (null as any)
-    : ({ id: selectedItem.id, name: selectedItem.name } as GroupFormModel)
 
   useEffect(() => {
     dispatch(getGroupsSummary())
     dispatch(getLanguages())
   }, [dispatch])
 
-  useEffect(() => {
-    const first = (page - 1) * pageSize
-    const last = first + pageSize
-    setPaginatedItems(groups.slice(first, last))
-  }, [page, groups])
-
   if (isLoading) {
     return <LoadingSpinner />
   }
 
-  const onhide = () => {
-    dispatch(resetSelectedItem())
-  }
-
-  const onsubmit = (group: GroupFormModel) => {
-    dispatch(group.id ? updateGroup({ group }) : addGroup({ group }))
-  }
-
-  const onaddgroup = () => {
-    dispatch(selectItem({ group: {} as GroupSummary }))
-  }
-
-  const selectGroup = (group: GroupSummary) => {
-    history('/cards/' + group.id)
-  }
-
-  const onPageChagned = (event: PageChangedEvent) => {
-    setPage(event.currectPage)
-  }
-
-  const onSearchGroup = () => {
-    history('/groups/search')
-  }
-
   return (
     <>
-      <div className="groups-action-container">
-        <button data-testid="new-group-button" onClick={onaddgroup}>
-          Create new group
-        </button>
-        <button onClick={onSearchGroup}>Search from existing</button>
-      </div>
-      <div className="pb-1">
-        <Pagination totalCount={groups.length} onPageChagned={onPageChagned} />
-      </div>
-      {paginatedItems.map((x) => (
-        <Fragment key={x.id}>
-          <GroupRow
-            onClick={() => selectGroup(x)}
-            groupSummary={{
-              id: x.id,
-              name: x.name,
-              front: x.front,
-              back: x.back,
-              cardsCount: x.cardsCount,
-              cardsEnabled: x.cardsEnabled ?? 0
-            }}
-          />
-        </Fragment>
-      ))}
-
-      <GroupDialog cardSides={cardSides} group={dialogItem} onHide={onhide} onSubmit={onsubmit} />
-      {isLoading && <LoadingSpinner />}
+      <GroupTopBar />
+      <UserGroups />
     </>
   )
 }

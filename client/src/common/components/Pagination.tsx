@@ -67,11 +67,11 @@ export function Pagination({
   }
 
   return (
-    <div className="flex justify-between relative">
+    <div className="relative flex justify-between">
       <div className="flex w-1/3 items-center">
         {onSearchChanged && (
           <input
-            className="p-3 text-l rounded-md w-[125px] focus:w-[300px] transition-width bg-neutral-800 focus:bg-neutral-700 text-zinc-400 border-2 border-zinc-600"
+            className="text-l w-[125px] rounded-md border-2 border-zinc-600 bg-neutral-800 p-3 text-zinc-400 transition-width focus:w-[300px] focus:bg-neutral-700"
             type="search"
             placeholder="Search"
             value={search}
@@ -79,7 +79,7 @@ export function Pagination({
           />
         )}
       </div>
-      <div className="flex w-1/3 justify-center items-center">
+      <div className="flex w-1/3 items-center justify-center">
         <div
           className={`pagination-button ${currectPage === 1 ? 'disabled' : ''}`}
           onClick={() => changePage(1)}
@@ -90,7 +90,7 @@ export function Pagination({
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="size-6"
           >
             <path
               strokeLinecap="round"
@@ -109,7 +109,7 @@ export function Pagination({
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="size-6"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
           </svg>
@@ -135,7 +135,7 @@ export function Pagination({
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="size-6"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
           </svg>
@@ -150,7 +150,7 @@ export function Pagination({
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="size-6"
           >
             <path
               strokeLinecap="round"
@@ -160,8 +160,8 @@ export function Pagination({
           </svg>
         </div>
       </div>
-      <div className="flex w-1/3 justify-end items-center">
-        <div className="w-20 h-min">
+      <div className="flex w-1/3 items-center justify-end">
+        <div className="h-min w-20">
           <Dropdown
             selectedItem={{ value: pageSize, label: pageSize.toString() }}
             items={[

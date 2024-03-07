@@ -1,21 +1,21 @@
-import { Language } from "pages/lessonSettings/models/languages";
-import React from "react";
-import { ReactElement } from "react";
-import "./LanguageSelector.scss";
+import { Language } from 'pages/lessonSettings/models/languages'
+import React from 'react'
+import { ReactElement } from 'react'
+import './LanguageSelector.scss'
 
 export function LanguageSelector({ languages, selected, onSelectedChanged }: Model): ReactElement {
   const onLanguageChanged = ($event: any) => {
-    const value = $event.target.value;
+    const value = $event.target.value
     if (selected.includes(value)) {
-      const index = selected.indexOf(value);
-      const newSelected = [...selected];
-      newSelected.splice(index, 1);
-      onSelectedChanged(newSelected);
+      const index = selected.indexOf(value)
+      const newSelected = [...selected]
+      newSelected.splice(index, 1)
+      onSelectedChanged(newSelected)
     } else {
-      const newSelected = [...selected, value];
-      onSelectedChanged(newSelected);
+      const newSelected = [...selected, value]
+      onSelectedChanged(newSelected)
     }
-  };
+  }
 
   return (
     <div className="language-container">
@@ -39,11 +39,11 @@ export function LanguageSelector({ languages, selected, onSelectedChanged }: Mod
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 interface Model {
-  languages: Language[];
-  selected: string[];
-  onSelectedChanged: (value: string[]) => void;
+  languages: Language[]
+  selected: string[]
+  onSelectedChanged: (value: string[]) => void
 }

@@ -1,14 +1,14 @@
-import UserRepeat from "pages/lesson/models/userRepeat";
-import { ReactElement } from "react";
-import "./History.scss";
+import UserRepeat from 'pages/lesson/models/userRepeat'
+import { ReactElement } from 'react'
+import './History.scss'
 
 export function History({ history, userAnswer = true, onItemClick }: Model): ReactElement {
-  const isClickable = onItemClick !== undefined && onItemClick !== null;
+  const isClickable = onItemClick !== undefined && onItemClick !== null
   const itemClick = (item: UserRepeat) => {
     if (onItemClick) {
-      onItemClick(item);
+      onItemClick(item)
     }
-  };
+  }
 
   return (
     <table>
@@ -25,7 +25,7 @@ export function History({ history, userAnswer = true, onItemClick }: Model): Rea
           <tr
             key={index}
             onClick={() => itemClick(item)}
-            className={`${isClickable ? "clickable" : ""}`}
+            className={`${isClickable ? 'clickable' : ''}`}
           >
             <td className={getClassByResult(item.result)}>
               <img
@@ -41,31 +41,31 @@ export function History({ history, userAnswer = true, onItemClick }: Model): Rea
         ))}
       </tbody>
     </table>
-  );
+  )
 }
 
 interface Model {
-  history: UserRepeat[];
-  userAnswer?: boolean;
-  onItemClick?: (item: UserRepeat) => void;
+  history: UserRepeat[]
+  userAnswer?: boolean
+  onItemClick?: (item: UserRepeat) => void
 }
 
 function getClassByResult(result: number): string {
   if (result < 0) {
-    return "history-wrong";
+    return 'history-wrong'
   } else if (result > 0) {
-    return "history-correct";
+    return 'history-correct'
   } else {
-    return "history-accepted";
+    return 'history-accepted'
   }
 }
 
 function getIconByResult(result: number): string {
   if (result < 0) {
-    return "wrong.svg";
+    return 'wrong.svg'
   } else if (result > 0) {
-    return "correct.svg";
+    return 'correct.svg'
   } else {
-    return "accepted.svg";
+    return 'accepted.svg'
   }
 }

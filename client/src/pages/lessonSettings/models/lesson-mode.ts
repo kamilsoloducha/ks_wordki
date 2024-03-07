@@ -1,4 +1,4 @@
 export enum LessonMode {
   Repetition = 1,
-  New = 2,
+  New = 2
 }

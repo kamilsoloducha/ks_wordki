@@ -1,3 +1,3 @@
-export * from "./drawerCardsCounter";
-export * from "./learningCardsCounter";
-export * from "./tickedCardCounter";
+export * from './drawerCardsCounter'
+export * from './learningCardsCounter'
+export * from './tickedCardCounter'

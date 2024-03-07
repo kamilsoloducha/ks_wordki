@@ -6,11 +6,11 @@ export function Forecast(): ReactElement {
   const data = useSelector(selectForecast)
 
   return (
-    <div className="w-full bg-white rounded-2xl py-5 px-[10%]">
-      <div className="w-full text-center text-3xl border-b-2 border-b-slate-400 pb-3 ">
+    <div className="w-full rounded-2xl bg-white px-[10%] py-5">
+      <div className="w-full border-b-2 border-b-slate-400 pb-3 text-center text-3xl ">
         Repetitions forecast
       </div>
-      <div className="w-full flex flex-wrap gap-10 pt-5">
+      <div className="flex w-full flex-wrap gap-10 pt-5">
         {data
           ?.map((item: any) => prepareForecasModel(item))
           .map((item: any, index: number) => {

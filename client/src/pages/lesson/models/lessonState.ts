@@ -6,7 +6,7 @@ export enum LessonStateEnum {
   CheckPending,
   AnswerPending,
   Pause,
-  FinishPending,
+  FinishPending
 }
 
 export const SetLesson = {
@@ -18,8 +18,8 @@ export const SetLesson = {
   btnPause: false,
   btnWrong: false,
   card: false,
-  answer: false,
-} as LessonStatus;
+  answer: false
+} as LessonStatus
 
 export const BeforeLoading = {
   type: LessonStateEnum.BeforeLoading,
@@ -30,8 +30,8 @@ export const BeforeLoading = {
   btnPause: false,
   btnWrong: false,
   card: false,
-  answer: false,
-} as LessonStatus;
+  answer: false
+} as LessonStatus
 
 export const Loading = {
   type: LessonStateEnum.Loading,
@@ -42,8 +42,8 @@ export const Loading = {
   btnPause: false,
   btnWrong: false,
   card: false,
-  answer: false,
-} as LessonStatus;
+  answer: false
+} as LessonStatus
 
 export const StartLessonPending = {
   type: LessonStateEnum.StartLessonPending,
@@ -54,8 +54,8 @@ export const StartLessonPending = {
   btnPause: false,
   btnWrong: false,
   card: false,
-  answer: false,
-} as LessonStatus;
+  answer: false
+} as LessonStatus
 
 export const CheckPending = {
   type: LessonStateEnum.CheckPending,
@@ -67,8 +67,8 @@ export const CheckPending = {
   btnWrong: false,
   card: true,
   answer: false,
-  inserting: true,
-} as LessonStatus;
+  inserting: true
+} as LessonStatus
 
 export const AnswerPending = {
   type: LessonStateEnum.AnswerPending,
@@ -79,8 +79,8 @@ export const AnswerPending = {
   btnPause: true,
   btnWrong: true,
   card: true,
-  answer: true,
-} as LessonStatus;
+  answer: true
+} as LessonStatus
 
 export const Pause = {
   type: LessonStateEnum.Pause,
@@ -91,8 +91,8 @@ export const Pause = {
   btnPause: false,
   btnWrong: false,
   card: false,
-  answer: false,
-} as LessonStatus;
+  answer: false
+} as LessonStatus
 
 export const FinishPending = {
   type: LessonStateEnum.FinishPending,
@@ -103,8 +103,8 @@ export const FinishPending = {
   btnPause: false,
   btnWrong: false,
   card: false,
-  answer: false,
-} as LessonStatus;
+  answer: false
+} as LessonStatus
 
 export class LessonStatus {
   private static directory = new Map<LessonStateEnum, LessonStatus>([
@@ -115,8 +115,8 @@ export class LessonStatus {
     [LessonStateEnum.CheckPending, CheckPending],
     [LessonStateEnum.AnswerPending, AnswerPending],
     [LessonStateEnum.Pause, Pause],
-    [LessonStateEnum.FinishPending, FinishPending],
-  ]);
+    [LessonStateEnum.FinishPending, FinishPending]
+  ])
 
   constructor(
     public readonly type: LessonStateEnum,
@@ -132,6 +132,6 @@ export class LessonStatus {
   ) {}
 
   public static getState(state: LessonStateEnum): LessonStatus {
-    return this.directory.get(state) as LessonStatus;
+    return this.directory.get(state) as LessonStatus
   }
 }

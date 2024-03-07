@@ -19,6 +19,10 @@ export function elementClick(container: HTMLElement, selector: string): Promise<
   return act(() => fireEvent.click(element))
 }
 
+export function directElementClick(element: HTMLElement): Promise<boolean> {
+  return act(() => fireEvent.click(element))
+}
+
 export function buttonClick(container: HTMLElement, label: string): Promise<boolean> {
   const buttons = container.querySelectorAll('button')
   const searchingButton = Array.from(buttons).find((button) => button.innerText.includes(label))
