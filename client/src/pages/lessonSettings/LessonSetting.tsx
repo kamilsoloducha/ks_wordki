@@ -4,7 +4,7 @@ import { ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsProcessing, selectSettings } from 'store/lesson/selectors'
 import Settings from './components/repetitionSettings/RepetitionSettings'
-import { TabView, TabViewItemModel } from 'common/components/TabeView'
+import { TabView, TabViewItemModel } from 'common/components/TabView'
 import { LessonSettings as SettingsModel } from 'pages/lessonSettings/models/lessonSettings'
 import NewCardsSettings from './components/newCardsSettings/NewCardsSettings'
 import { LessonMode as mode } from './models/lesson-mode'
@@ -39,7 +39,7 @@ export default function LessonSettingsPage(): ReactElement {
   ]
 
   const onModeChanged = (value: number) => {
-    dispatch(act.setSettingsMode({ mode: value + 1 }))
+    dispatch(act.setSettingsMode({ mode: value }))
   }
 
   const onStartClick = () => {

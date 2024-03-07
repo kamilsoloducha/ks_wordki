@@ -1,4 +1,4 @@
-import { GroupSummary } from '@/src/common/models/groupSummary'
+import { GroupSummary } from 'common/models/groupSummary'
 import { CardSummary } from 'pages/groupsSearch/models/cardSummary'
 
 export interface GroupsSearchState {

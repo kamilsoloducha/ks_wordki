@@ -1,4 +1,4 @@
-import { GroupSummary } from '@/src/common/models/groupSummary'
+import { GroupSummary } from 'common/models/groupSummary'
 
 export default interface GroupsState {
   isLoading: boolean

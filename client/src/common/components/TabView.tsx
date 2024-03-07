@@ -16,7 +16,7 @@ export function TabView({ selectedValue, items, onItemChanged }: TabViewProps): 
             key={index}
             header={item.header}
             isSelected={selectedValue === item.value}
-            value={index}
+            value={item.value}
             onClick={onClick}
           />
         ))}

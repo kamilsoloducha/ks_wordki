@@ -6,7 +6,7 @@ export default function TopBar(): ReactElement {
   const { get } = useUserStorage()
   const navigate = useNavigate()
   const [searchingTerm, setSearchingTerm] = useState('')
-  const isLogin = get()
+  const isLogin = get() !== undefined
   const submitSearch = (e: FormEvent<HTMLFormElement>) => {
     if (searchingTerm.trim().length === 0) {
       return
@@ -24,7 +24,7 @@ export default function TopBar(): ReactElement {
         {isLogin && (
           <>
             <li>
-              <form onSubmit={submitSearch}>
+              <form id="global-search-form" onSubmit={submitSearch}>
                 <input
                   className="text-l w-[125px] rounded-md border-2 border-zinc-600 bg-neutral-800 p-3 text-zinc-400 transition-width focus:w-[300px] focus:bg-neutral-700"
                   type="search"

@@ -1,4 +1,4 @@
-import { ForecastModel } from '@/src/common/models/forecastModel'
+import { ForecastModel } from 'common/models/forecastModel'
 
 export default interface DashboardState {
   isLoading: boolean
