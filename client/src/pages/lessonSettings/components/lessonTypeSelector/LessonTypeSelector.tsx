@@ -1,11 +1,11 @@
-import "./LessonTypeSelector.scss";
-import { ReactElement } from "react";
+import './LessonTypeSelector.scss'
+import { ReactElement } from 'react'
 
 export function LessonTypeSelector({ selected, onSelectedChanged }: Model): ReactElement {
   const onTypeChanged = ($event: any) => {
-    const value = parseInt($event.target.value);
-    onSelectedChanged(value);
-  };
+    const value = parseInt($event.target.value)
+    onSelectedChanged(value)
+  }
 
   return (
     <div className="lesson-type-container">
@@ -39,10 +39,10 @@ export function LessonTypeSelector({ selected, onSelectedChanged }: Model): Reac
         </label>
       </div>
     </div>
-  );
+  )
 }
 
 interface Model {
-  selected: number;
-  onSelectedChanged: (value: number) => void;
+  selected: number
+  onSelectedChanged: (value: number) => void
 }

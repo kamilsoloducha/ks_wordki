@@ -6,7 +6,7 @@ export function Root(): ReactNode {
   return (
     <>
       <TopBar />
-      <div className="px-10 pt-5">
+      <div className="md:px-10 md:pt-5">
         <Outlet />
       </div>
     </>

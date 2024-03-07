@@ -1,5 +1,5 @@
 export type RegisterAnswerRequest = {
-  cardId: string;
-  sideType: number;
-  result: number;
-};
+  cardId: string
+  sideType: number
+  result: number
+}

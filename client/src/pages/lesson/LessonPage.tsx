@@ -5,7 +5,7 @@ import * as type from './models/resultTypes'
 import { ReactElement, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Fiszka from './components/fiszka/Fiszka'
+import Fiszka from './components/Fiszka'
 import Inserting from './components/inserting/Inserting'
 import RepeatsController from './components/repeatsController/RepeatsController'
 import { FinishPending } from './models/lessonState'
@@ -53,6 +53,7 @@ export default function LessonPage(): ReactElement {
   }, [dispatch])
 
   const mainComponent = lessonType === 2 ? <Inserting /> : <Fiszka />
+  const shouldRenderRepeatController = lessonType === 2 || (lessonType === 1 && !isMobile)
 
   return (
     <div className="lesson-page">
@@ -63,7 +64,7 @@ export default function LessonPage(): ReactElement {
       )}
       <LessonInformation />
       {mainComponent}
-      {lessonType === 1 && !isMobile && (
+      {shouldRenderRepeatController && (
         <RepeatsController
           onCheckClick={check}
           onCorrectClick={correct}

@@ -1,9 +1,9 @@
 export type CardsSearchQuery = {
-  searchingTerm: string;
-  searchingDrawers: number[];
-  lessonIncluded: boolean | null;
-  isTicked: boolean | null;
+  searchingTerm: string
+  searchingDrawers: number[]
+  lessonIncluded: boolean | null
+  isTicked: boolean | null
 
-  pageNumber: number;
-  pageSize: number;
-};
+  pageNumber: number
+  pageSize: number
+}

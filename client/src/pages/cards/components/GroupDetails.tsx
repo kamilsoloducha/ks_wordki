@@ -75,8 +75,8 @@ export function GroupDetails() {
 
   return (
     <>
-      <div className="bg-accent-light text-accent-super-light my-3 p-3 w-full flex justify-between items-center rounded-lg group">
-        <div className="m-3 text-4xl flex align-middle items-center font-extrabold">
+      <div className="group my-3 flex w-full items-center justify-between rounded-lg bg-accent-light p-3 text-accent-super-light">
+        <div className="m-3 flex items-center align-middle text-4xl font-extrabold">
           <div className="flex flex-col">
             <img className="" src={getLanguageByType(parseInt(language1)).icon} width="32px" />
             <img className="" src={getLanguageByType(parseInt(language2)).icon} width="32px" />
@@ -88,14 +88,14 @@ export function GroupDetails() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-10 h-10 ms-2 p-2 hidden group-hover:block cursor-pointer hover:bg-lighter-a-bit rounded-md"
+            className="ms-2 hidden size-10 cursor-pointer rounded-md p-2 hover:bg-lighter-a-bit group-hover:block"
             onClick={onEditGroupClicked}
           >
             <path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
           </svg>
         </div>
         <button
-          className="text-accent-super-light hover:bg-lighter-a-bit rounded-md px-2 py-4 font-bold"
+          className="rounded-md px-2 py-4 font-bold text-accent-super-light hover:bg-lighter-a-bit"
           onClick={onAddCardClicked}
         >
           + Add Card

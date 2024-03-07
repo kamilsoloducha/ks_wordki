@@ -1,4 +1,4 @@
 export type StartLessonRequest = {
-  userId: string;
-  lessonType: number;
-};
+  userId: string
+  lessonType: number
+}

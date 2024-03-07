@@ -1,3 +1,3 @@
 export type TickCardRequest = {
-  cardId: string;
-};
+  cardId: string
+}

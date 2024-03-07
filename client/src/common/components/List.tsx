@@ -5,10 +5,7 @@ export type ListProps<TItemProps> = {
   template: (props: TItemProps) => ReactNode
 }
 
-export default function List<TItemProps>({
-  items,
-  template
-}: ListProps<TItemProps>): ReactNode {
+export default function List<TItemProps>({ items, template }: ListProps<TItemProps>): ReactNode {
   return (
     <>
       {items.map((item, index) => {

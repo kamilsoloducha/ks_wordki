@@ -1,6 +1,6 @@
-import { SideSummary } from "./sideSummary";
+import { SideSummary } from './sideSummary'
 
 export interface CardSummary {
-  front: SideSummary;
-  back: SideSummary;
+  front: SideSummary
+  back: SideSummary
 }

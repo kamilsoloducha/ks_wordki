@@ -1,63 +1,63 @@
-import * as select from "store/lesson/selectors";
-import * as act from "store/lesson/reducer";
-import * as rt from "../../models/resultTypes";
-import "./Inserting.scss";
-import { CheckPending, LessonStateEnum } from "pages/lesson/models/lessonState";
-import { ReactElement, useCallback, useEffect, useRef } from "react";
-import Question from "../question/Question";
-import Answer from "../answer/Answer";
-import { useDispatch, useSelector } from "react-redux";
+import * as select from 'store/lesson/selectors'
+import * as act from 'store/lesson/reducer'
+import * as rt from '../../models/resultTypes'
+import './Inserting.scss'
+import { CheckPending, LessonStateEnum } from 'pages/lesson/models/lessonState'
+import { ReactElement, useCallback, useEffect, useRef } from 'react'
+import Question from '../Question'
+import Answer from '../Answer'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function Inserting(): ReactElement {
-  const dispatch = useDispatch();
-  const inputRef = useRef<any>(null);
-  const answer = useSelector(select.selectUserAnswer);
-  const repeat = useSelector(select.selectCurrectRepeat);
-  const status = useSelector(select.selectLessonState);
-  const isCorrect = useSelector(select.selectIsCorrect);
+  const dispatch = useDispatch()
+  const inputRef = useRef<any>(null)
+  const answer = useSelector(select.selectUserAnswer)
+  const repeat = useSelector(select.selectCurrectRepeat)
+  const status = useSelector(select.selectLessonState)
+  const isCorrect = useSelector(select.selectIsCorrect)
 
   const handleEventEvent = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key !== "Enter") return;
+      if (event.key !== 'Enter') return
       switch (status.type) {
         case LessonStateEnum.CheckPending: {
-          dispatch(act.check());
-          return;
+          dispatch(act.check())
+          return
         }
         case LessonStateEnum.AnswerPending: {
-          dispatch(isCorrect ? act.correct({ result: rt.Correct }) : act.wrong({ result: -1 }));
-          return;
+          dispatch(isCorrect ? act.correct({ result: rt.Correct }) : act.wrong({ result: -1 }))
+          return
         }
       }
-      inputRef.current?.focus();
+      inputRef.current?.focus()
     },
     [dispatch, isCorrect, status]
-  );
+  )
 
   useEffect(() => {
-    document.addEventListener("keydown", handleEventEvent);
+    document.addEventListener('keydown', handleEventEvent)
     return () => {
-      document.removeEventListener("keydown", handleEventEvent);
-    };
-  }, [handleEventEvent]);
+      document.removeEventListener('keydown', handleEventEvent)
+    }
+  }, [handleEventEvent])
 
   useEffect(() => {
     if (status === CheckPending) {
-      dispatch(act.setAnswer({ answer: "" }));
-      inputRef.current?.focus();
+      dispatch(act.setAnswer({ answer: '' }))
+      inputRef.current?.focus()
     }
-  }, [status, inputRef, dispatch]);
+  }, [status, inputRef, dispatch])
 
   const onAnswerChanged = useCallback(
     (event: any) => {
-      const answer = event.target.value;
-      dispatch(act.setAnswer({answer}));
+      const answer = event.target.value
+      dispatch(act.setAnswer({ answer }))
     },
     [dispatch]
-  );
+  )
 
   if (!status.card || !repeat) {
-    return <></>;
+    return <></>
   }
 
   return (
@@ -78,5 +78,5 @@ export default function Inserting(): ReactElement {
         exampleAnswer={repeat.answerExample}
       />
     </>
-  );
+  )
 }

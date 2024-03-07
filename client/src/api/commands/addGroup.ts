@@ -1,5 +1,5 @@
 export type AddGroupRequest = {
-  name: string;
-  front: string;
-  back: string;
-};
+  name: string
+  front: string
+  back: string
+}

@@ -1,10 +1,10 @@
-import { Group } from "pages/lessonSettings/models/group";
-import { Dropdown } from "primereact/dropdown";
-import { ReactElement } from "react";
-import "./GroupSelector.scss";
+import { Group } from 'pages/lessonSettings/models/group'
+import { Dropdown } from 'primereact/dropdown'
+import { ReactElement } from 'react'
+import './GroupSelector.scss'
 
 export function GroupSelector({ items, selectedGroupId, onSelectedChanged }: Model): ReactElement {
-  const selectedGroup = items.find((x) => x.id === selectedGroupId);
+  const selectedGroup = items.find((x) => x.id === selectedGroupId)
 
   return (
     <div className="group-selector-container">
@@ -19,13 +19,13 @@ export function GroupSelector({ items, selectedGroupId, onSelectedChanged }: Mod
         placeholder="Select group..."
       />
     </div>
-  );
+  )
 }
 
 interface Model {
-  items: Group[];
-  selectedGroupId: string | null;
-  onSelectedChanged: (groupId: string) => void;
+  items: Group[]
+  selectedGroupId: string | null
+  onSelectedChanged: (groupId: string) => void
 }
 
 const dropdownItemLayout = (option: Group, props: any = null) => {
@@ -36,19 +36,19 @@ const dropdownItemLayout = (option: Group, props: any = null) => {
         {flagLayout(option.front, option.frontCount)}
         {flagLayout(option.back, option.backCount)}
       </div>
-    );
+    )
   }
   return (
     <>
       <span>{props.placeholder}</span>
     </>
-  );
-};
+  )
+}
 
 const flagLayout = (lang: string, count: number) => {
   return (
     <>
       ({lang})<strong>({count})</strong>
     </>
-  );
-};
+  )
+}

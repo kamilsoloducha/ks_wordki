@@ -1,1 +1,1 @@
-export * from "./getDashboardSummary";
+export * from './getDashboardSummary'

@@ -12,11 +12,11 @@ export default function Footer({
   onDeleteClicked
 }: FooterProps): ReactElement {
   return (
-    <div className="bg-main flex place-content-between rounded-b-md">
+    <div className="flex place-content-between rounded-b-md bg-main">
       <div>
         {onDeleteClicked && (
           <button
-            className="bg-red-700 hover:bg-red-800 text-stone-200 cursor-pointer py-2 px-10 border-0 rounded-md m-3"
+            className="m-3 cursor-pointer rounded-md border-0 bg-red-700 px-10 py-2 text-stone-200 hover:bg-red-800"
             onClick={onDeleteClicked}
           >
             Delete
@@ -25,7 +25,7 @@ export default function Footer({
       </div>
       <div>
         <button
-          className=" bg-zinc-700 hover:bg-zinc-800 text-stone-200 cursor-pointer py-2 px-10 border-0 rounded-md m-3"
+          className=" m-3 cursor-pointer rounded-md border-0 bg-zinc-700 px-10 py-2 text-stone-200 hover:bg-zinc-800"
           onClick={onCancelClicked}
         >
           Cancel
@@ -33,7 +33,7 @@ export default function Footer({
         <button
           type="submit"
           form={formId}
-          className=" bg-green-700 hover:bg-green-800 text-stone-200 cursor-pointer py-2 px-10 border-0 rounded-md m-3"
+          className=" m-3 cursor-pointer rounded-md border-0 bg-green-700 px-10 py-2 text-stone-200 hover:bg-green-800"
         >
           Save
         </button>

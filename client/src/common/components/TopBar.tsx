@@ -16,17 +16,17 @@ export default function TopBar(): ReactElement {
     navigate(`/test?query=${searchingTerm}&dic=Diki`)
   }
   return (
-    <div className="w-full flex justify-between items-center">
+    <div className="flex w-full items-center justify-between">
       <Link className="logo ml-5" to="/dashboard">
         Wordki
       </Link>
-      <ul className="flex items-center list-none m-0 p-0">
+      <ul className="m-0 flex list-none items-center p-0">
         {isLogin && (
           <>
             <li>
               <form onSubmit={submitSearch}>
                 <input
-                  className="p-3 text-l rounded-md w-[125px] focus:w-[300px] transition-width bg-neutral-800 focus:bg-neutral-700 text-zinc-400 border-2 border-zinc-600"
+                  className="text-l w-[125px] rounded-md border-2 border-zinc-600 bg-neutral-800 p-3 text-zinc-400 transition-width focus:w-[300px] focus:bg-neutral-700"
                   type="search"
                   value={searchingTerm}
                   onChange={(e) => setSearchingTerm(e.target.value)}

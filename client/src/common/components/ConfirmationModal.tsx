@@ -14,15 +14,15 @@ export const ConfirmationModal = React.forwardRef((_: any, ref: any) => {
   }
 
   const footer = (
-    <div className="bg-red-800 flex justify-end rounded-b-lg p-2 border-t-2 border-red-700">
-      <button className="hover:bg-red-700 text-red-500 rounded p-3" onClick={close}>
+    <div className="flex justify-end rounded-b-lg border-t-2 border-red-700 bg-red-800 p-2">
+      <button className="rounded p-3 text-red-500 hover:bg-red-700" onClick={close}>
         Close
       </button>
     </div>
   )
 
   const header = (
-    <div className="bg-red-800 text-2xl text-red-500 font-bold rounded-t-lg p-5 border-b-2 border-red-700">
+    <div className="rounded-t-lg border-b-2 border-red-700 bg-red-800 p-5 text-2xl font-bold text-red-500">
       {headerMessage}
     </div>
   )
@@ -61,5 +61,5 @@ export type ConfirmationModalRef = {
 }
 
 function ConfirmationModalContent({ message }: { message: string }): ReactNode {
-  return <div className="bg-red-800 text-red-500 p-5 w-[30rem]">{message}</div>
+  return <div className="w-[30rem] bg-red-800 p-5 text-red-500">{message}</div>
 }

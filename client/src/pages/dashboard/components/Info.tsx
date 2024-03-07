@@ -1,7 +1,7 @@
 export function Info({ title, value, onClick }: InfoProps) {
   return (
     <div
-      className="flex bg-white rounded-2xl flex-col cursor-pointer hover:bg-slate-200 p-4"
+      className="flex cursor-pointer flex-col rounded-2xl bg-white p-4 hover:bg-slate-200"
       onClick={onClick}
     >
       <div className="text-center text-5xl">{title}</div>

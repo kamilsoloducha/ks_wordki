@@ -21,6 +21,7 @@ export function GroupForm({ group, options, onSubmit }: GroupFormProps): ReactEl
 
   return (
     <form
+      id="group-form"
       className="w-full  border-y-2 border-accent-dark bg-main"
       onSubmit={formik.submitForm}
       autoComplete="off"
@@ -30,7 +31,7 @@ export function GroupForm({ group, options, onSubmit }: GroupFormProps): ReactEl
           Name
         </label>
         <input
-          className="bg-transparent text-center border-b-2 border-accent-super-light text-accent-super-light font-extrabold text-3xl"
+          className="border-b-2 border-accent-super-light bg-transparent text-center text-3xl font-extrabold text-accent-super-light"
           id="name"
           name="name"
           type="text"
@@ -92,7 +93,7 @@ export type GroupFormModel = {
 
 const dropdownItemLayout = (option: string, props: any = null) => {
   return option ? (
-    <div className="text-center text-accent-super-light font-extrabold text-xl">{option}</div>
+    <div className="text-center text-xl font-extrabold text-accent-super-light">{option}</div>
   ) : (
     <span>{props.placeholder}</span>
   )
@@ -104,7 +105,7 @@ const ValidationError = ({ error }: { error: string | undefined }): ReactNode =>
   }
   console.log(error)
 
-  return <div className="text-error ms-3">{error}</div>
+  return <div className="ms-3 text-error">{error}</div>
 }
 
 export function validate(values: GroupFormModel): GroupFormModel {

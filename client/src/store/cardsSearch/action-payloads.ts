@@ -1,40 +1,40 @@
-import { CardsOverview, CardSummary } from "pages/cardsSearch/models";
+import { CardsOverview, CardSummary } from 'pages/cardsSearch/models'
 
 export interface GetOverviewSuccess {
-  overview: CardsOverview;
+  overview: CardsOverview
 }
 
 export interface SeachSuccess {
-  cards: CardSummary[];
-  cardsCount: number;
+  cards: CardSummary[]
+  cardsCount: number
 }
 
 export interface FilterSetTerm {
-  searchingTerm: string;
+  searchingTerm: string
 }
 
 export interface FilterSetTickedOnly {
-  tickedOnly: boolean | null;
+  tickedOnly: boolean | null
 }
 
 export interface FilterSetLessonIncluded {
-  lessonIncluded: boolean | null;
+  lessonIncluded: boolean | null
 }
 
 export interface FilterSetPagination {
-  pageNumber: number;
-  pageSize: number;
+  pageNumber: number
+  pageSize: number
 }
 
 export interface UpdateCard {
-  card: CardSummary;
+  card: CardSummary
 }
 
 export interface UpdateCardSuccess {
-  card: CardSummary;
+  card: CardSummary
 }
 
 export interface DeleteCard {
-  cardId: string;
-  groupId: string;
+  cardId: string
+  groupId: string
 }

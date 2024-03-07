@@ -1,5 +1,5 @@
+import { GroupSummary } from '@/src/common/models/groupSummary'
 import { GroupFormModel } from 'common/components/GroupForm'
-import { GroupSummary } from 'pages/groups/models/groupSummary'
 
 export interface GetGroupsSummarySuccess {
   groups: GroupSummary[]

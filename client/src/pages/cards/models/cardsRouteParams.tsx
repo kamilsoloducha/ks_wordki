@@ -1,3 +1,3 @@
 export interface CardsRouteParams {
-  groupId: string;
+  groupId: string
 }

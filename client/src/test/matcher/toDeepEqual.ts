@@ -12,7 +12,7 @@ expect.extend({
   /**
    * Notice that this implementation has 2 arguments, but the implementation inside the Matchers only has 1
    */
-  toDeepEqual(received: any, expected: any): any {
+  toDeepEqual(received: unknown, expected: unknown): any {
     const receivedString = JSON.stringify(received)
     const expectedString = JSON.stringify(expected)
     const pass = expectedString === receivedString

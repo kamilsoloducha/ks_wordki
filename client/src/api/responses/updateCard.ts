@@ -1,3 +1,3 @@
 export type UpdateCardResponse = {
-  cardId: string;
-};
+  cardId: string
+}

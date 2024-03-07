@@ -1,10 +1,10 @@
 import * as api from 'api/index'
 import { call, put, select, take } from '@redux-saga/core/effects'
 import { selectSelectedGroup } from '../selectors'
-import { GroupSummary } from 'pages/groupsSearch/models/groupSummary'
 import { selectUserId } from 'store/user/selectors'
 import { SagaIterator } from 'redux-saga'
 import { resetSelection, saveGroupSuccess } from '../reducer'
+import { GroupSummary } from 'common/models/groupSummary'
 
 export function* saveGroupEffect(): SagaIterator {
   while (true) {

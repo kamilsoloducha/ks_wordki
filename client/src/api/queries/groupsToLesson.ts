@@ -1,3 +1,3 @@
 export type GetGroupsToLessonQuery = {
-  ownerId: string;
-};
+  ownerId: string
+}

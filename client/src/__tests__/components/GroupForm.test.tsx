@@ -29,7 +29,7 @@ describe('GroupForm', () => {
       <GroupForm onSubmit={onSubmitFn} group={initailFormModel} options={options} />
     )
 
-    var input = container.querySelector('#name') as HTMLInputElement
+    const input = container.querySelector('#name') as HTMLInputElement
     expect(input.value).toBe('InitialName')
 
     expect(screen.getByText('InitialFront')).toBeInTheDocument()

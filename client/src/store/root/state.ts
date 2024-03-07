@@ -1,14 +1,14 @@
 export default interface RootState {
-  breadcrumbs: Breadcrumb[];
-  cardsSides: string[];
+  breadcrumbs: Breadcrumb[]
+  cardsSides: string[]
 }
 
 export const initialState: RootState = {
   breadcrumbs: [],
-  cardsSides: [],
-};
+  cardsSides: []
+}
 
 export interface Breadcrumb {
-  url?: string;
-  name: string;
+  url?: string
+  name: string
 }

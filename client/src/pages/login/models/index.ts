@@ -1,1 +1,1 @@
-export * from "./loginFormModel";
+export * from './loginFormModel'

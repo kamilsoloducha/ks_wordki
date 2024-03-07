@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { ApiResponse } from 'common/models/response'
 
 export const API_PATH = import.meta.env.VITE_API_HOST
@@ -26,4 +26,8 @@ export function createResponse<T>(response: T): ApiResponse<T> {
     isCorrect: true,
     response
   } as ApiResponse<T>
+}
+
+export function isStatusCorrect<TType>(response: AxiosResponse<TType>): boolean {
+  return response.status >= 200 && response.status < 300
 }
