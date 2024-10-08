@@ -2,7 +2,6 @@
 using Infrastructure;
 using Infrastructure.Authentication;
 using Infrastructure.Services.ConnectionStringProvider;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

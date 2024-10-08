@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using E2e.Tests.Infrastructure.Database;
 using NUnit.Framework;
 
 namespace Users.E2e.Tests;

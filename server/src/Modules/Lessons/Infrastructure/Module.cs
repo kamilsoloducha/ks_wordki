@@ -4,7 +4,6 @@ using Lessons.Application;
 using Lessons.Domain.Performance;
 using Lessons.Infrastructure.DataAccess;
 using Lessons.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

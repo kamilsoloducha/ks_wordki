@@ -11,7 +11,6 @@ using Cards.Infrastructure.Repository;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Services.ConnectionStringProvider;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
