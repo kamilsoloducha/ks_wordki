@@ -80,13 +80,4 @@ public static class Module
 
         return services;
     }
-
-    public static WebApplication CreateCardsScheme(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CardsContext>();
-        dbContext.Creator.EnsureCreated();
-        scope.Dispose();
-        return app;
-    }
 }

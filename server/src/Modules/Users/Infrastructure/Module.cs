@@ -49,12 +49,4 @@ public static class Module
         services.AddScoped<AdminAccountCreator>();
         return services;
     }
-
-    public static WebApplication CreateUserScheme(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<UsersContext>();
-        dbContext.Creator.EnsureCreated();
-        return app;
-    }
 }

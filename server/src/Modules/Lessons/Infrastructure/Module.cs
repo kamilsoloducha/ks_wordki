@@ -22,12 +22,4 @@ public static class LessonsInfrastructureModule
         // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();
         return services;
     }
-
-    public static WebApplication CreateLessonScheme(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<LessonsContext>();
-        dbContext.Creator.EnsureCreated();
-        return app;
-    }
 }
