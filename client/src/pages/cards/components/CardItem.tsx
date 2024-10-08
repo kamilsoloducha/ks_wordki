@@ -1,11 +1,15 @@
-import './CardItem.scss'
 import { ReactElement } from 'react'
 import { CardSummary, SideSummary } from 'pages/cards/models'
+import { drawerMap } from 'src/assets/consts'
 
-export function CardItem({ card, onClick }: RowModel): ReactElement {
+export type CardItemProps = {
+  card: CardSummary
+}
+
+export function CardItem({ card }: CardItemProps): ReactElement {
   return (
-    <div className="row-container" onClick={() => onClick && onClick(card)}>
-      <div className="row-sides">
+    <div className="w-full flex justify-between border-b-accent-dark hover:bg-lighter-a-bit">
+      <div className="w-3/4 ml-2 my-5">
         <Side side={card.front} />
         <Side side={card.back} />
       </div>
@@ -13,31 +17,23 @@ export function CardItem({ card, onClick }: RowModel): ReactElement {
   )
 }
 
-export interface RowModel {
-  card: CardSummary
-  onClick?: (card: CardSummary) => void
-}
-
 function Side({ side }: { side: SideSummary }): ReactElement {
   const extendedText = convertIntoExtendedText(side.value)
+
   return (
-    <div className={`row-side-container ${drawerClassName(side.drawer)}`}>
-      <div className="row-side-value">
+    <div className={`p-2 border-l`} style={{ borderColor: drawerMap.get(side.drawer) }}>
+      <div className="mb-1 text-3xl text-accent-super-light">
         <strong>
           {extendedText.map((x, index) => (
-            <span key={index} className={x.isLowlight ? 'lowlight' : ''}>
+            <span key={index} className={x.isLowlight ? 'text-accent-light' : ''}>
               {x.text}
             </span>
           ))}
         </strong>
       </div>
-      <div className="row-side-example">{side.example}</div>
+      <div>{side.example}</div>
     </div>
   )
-}
-
-function drawerClassName(drawer: number): string {
-  return 'drawer' + drawer
 }
 
 export function convertIntoExtendedText(text: string): { text: string; isLowlight: boolean }[] {

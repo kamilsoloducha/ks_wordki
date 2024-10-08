@@ -1,4 +1,4 @@
-import { CardItem } from './cardItem/CardItem'
+import { CardItem } from './CardItem'
 import { CardSummary } from 'pages/cards/models'
 
 function CardsList({ cards, onItemSelected }: Model) {

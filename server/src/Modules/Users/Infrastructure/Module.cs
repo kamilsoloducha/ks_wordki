@@ -3,8 +3,11 @@ using Infrastructure;
 using Infrastructure.Authentication;
 using Infrastructure.Services.ConnectionStringProvider;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Users.Application;
 using Users.Application.Services;
 using Users.Domain.User;
@@ -24,7 +27,21 @@ public static class Module
         services.BindConfiguration<DatabaseConfiguration>(configuration);
         services.Configure<AdminAccountConfiguration>(options => configuration.GetSection(nameof(AdminAccountConfiguration)).Bind(options));
 
-        services.AddDbContext<UsersContext>();
+        services.AddDbContextPool<UsersContext>((provider, builder) =>
+        {
+            var hostEnvironment = provider.GetRequiredService<IHostEnvironment>();
+            var connectionStringProvider = provider.GetRequiredService<IConnectionStringProvider>();
+            var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+            
+            builder
+                .UseNpgsql(connectionStringProvider.ConnectionString);
+
+            if (hostEnvironment.IsProduction())
+                return;
+
+            builder.UseLoggerFactory(loggerFactory)
+                .EnableSensitiveDataLogging();
+        });
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPasswordManager, PasswordManager>();
         // services.AddScoped<IConnectionStringProvider, ConnectionStringProvider>();

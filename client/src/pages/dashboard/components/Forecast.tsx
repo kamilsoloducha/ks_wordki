@@ -1,3 +1,4 @@
+import { ForecastModel } from 'common/models/forecastModel'
 import { ReactElement } from 'react'
 import { useSelector } from 'react-redux'
 import { selectForecast } from 'store/dashboard/selectors'
@@ -12,8 +13,8 @@ export function Forecast(): ReactElement {
       </div>
       <div className="flex w-full flex-wrap gap-10 pt-5">
         {data
-          ?.map((item: any) => prepareForecasModel(item))
-          .map((item: any, index: number) => {
+          ?.map((item: ForecastModel) => prepareForecasModel(item))
+          .map((item: ForecastItemProps, index: number) => {
             return (
               <ForecaseItem
                 key={index}
@@ -30,7 +31,7 @@ export function Forecast(): ReactElement {
 
 function ForecaseItem({ count, weekDay, date }: ForecastItemProps): ReactElement {
   return (
-    <div className="flex-1 text-center">
+    <div data-testid="forecast-item-test-id" className="flex-1 text-center">
       <div className="text-l">
         {date}
         <br />
@@ -47,8 +48,8 @@ interface ForecastItemProps {
   date: string
 }
 
-function prepareForecasModel(data: any): ForecastItemProps {
-  const date = new Date(data.date)
+function prepareForecasModel(data: ForecastModel): ForecastItemProps {
+  const date = new Date(data.data)
   return {
     count: data.count,
     weekDay: date.toLocaleDateString(undefined, { weekday: 'long' }),

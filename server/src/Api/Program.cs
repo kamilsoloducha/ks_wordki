@@ -46,18 +46,18 @@ builder.Services.AddControllers()
 builder.Services.AddMvcCore().AddCustomFluentValidationResponse();
 builder.Services.AddHealthChecks()
     .AddCheck<PostgresHealthcheck>(nameof(PostgresHealthcheck));
-builder.Services.AddHttpsRedirection(o =>
-{
-    o.HttpsPort = 5001;
-    o.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
-});
+// builder.Services.AddHttpsRedirection(o =>
+// {
+//     o.HttpsPort = 5001;
+//     o.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+// });
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));

@@ -7,27 +7,28 @@ PUT {{host}}/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName": "userName",
-    "password": "pass"
+    "userName": "kamil",
+    "password": "password"
 }
 
 #
 @authToken = Bearer {{login.response.body.$.token}}
 @userId = {{login.response.body.$.id}}
 
-### get groups by userId
-# @name allGroups
-GET {{host}}/groups/{{userId}} HTTP/1.1
+###
+# @name getSummaryies
+GET {{host}}/groups/summaries HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
 
 #
-@groupId = {{allGroups.response.body.$.groups[0].id}}
+@groupId = 5
+# {{allGroups.response.body.$.response[0].id}}
 
 
 ### get group by userId and groupId
 # @name group
-GET {{host}}/cards/{{userId}}/{{groupId}} HTTP/1.1
+GET {{host}}/cards/summaries/5 HTTP/1.1
 Content-Type: application/json
 Authorization: {{authToken}}
 

@@ -6,7 +6,7 @@ import { ReactElement, useCallback, useEffect, useState } from 'react'
 import CardsList from './components/CardsList'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import InfoCard from './components/infoCard/InfoCard'
+import InfoCard from './components/InfoCard'
 import Expandable from 'common/components/expandable/Expandable'
 import { CardsFilter } from './models/cardsFilter'
 import { Languages } from 'common/models/languages'
@@ -30,9 +30,7 @@ export default function GroupDetailsPage(): ReactElement {
   const [paginatedCards, setPaginatedCards] = useState<CardSummary[]>([])
   const [formItem, setFormItem] = useState<CardFormModel | undefined>(undefined)
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(
-    useLocalSettingsStorage().get()?.paginationPageSize ?? 20
-  )
+  const [pageSize, setPageSize] = useState(useLocalSettingsStorage().get()?.paginationPageSize ?? 20)
   const { groupId } = useParams<{ groupId: string }>()
 
   useTitle(`Wordki - ${groupDetails.name}`)
@@ -134,48 +132,23 @@ export default function GroupDetailsPage(): ReactElement {
       <GroupDetails />
       <div className="group-details-cards-info-container">
         <div className="group-details-info-card">
-          <InfoCard
-            label="all cards"
-            value={allCards.length}
-            classNameOverriden="info-card-blue"
-            onClick={() => onClickSetFilter(CardsFilter.All)}
-          />
+          <InfoCard label="all cards" value={allCards.length} classNameOverriden="info-card-blue" onClick={() => onClickSetFilter(CardsFilter.All)} />
         </div>
         <div className="group-details-info-card">
-          <InfoCard
-            label="learning"
-            value={utils.getLearningCardCount(allCards)}
-            classNameOverriden="info-card-green"
-            onClick={() => onClickSetFilter(CardsFilter.Learning)}
-          />
+          <InfoCard label="learning" value={utils.getLearningCardCount(allCards)} classNameOverriden="info-card-green" onClick={() => onClickSetFilter(CardsFilter.Learning)} />
         </div>
         {drawers.map((item) => (
           <div className="group-details-info-card" key={item}>
-            <InfoCard
-              label={'drawer ' + item}
-              value={utils.getCardsCountFromDrawerCount(allCards, item)}
-              classNameOverriden={'info-card-drawer-' + item}
-              onClick={() => onClickSetFilter(3 + item)}
-            />
+            <InfoCard label={'drawer ' + item} value={utils.getCardsCountFromDrawerCount(allCards, item)} classNameOverriden={'info-card-drawer-' + item} onClick={() => onClickSetFilter(3 + item)} />
           </div>
         ))}
       </div>
       <Expandable>
         <div className="group-details-info-card">
-          <InfoCard
-            label="waiting"
-            value={2 * allCards.length - utils.getLearningCardCount(allCards)}
-            classNameOverriden="info-card-gray"
-            onClick={() => onClickSetFilter(CardsFilter.Waiting)}
-          />
+          <InfoCard label="waiting" value={2 * allCards.length - utils.getLearningCardCount(allCards)} classNameOverriden="info-card-gray" onClick={() => onClickSetFilter(CardsFilter.Waiting)} />
         </div>
         <div className="group-details-info-card">
-          <InfoCard
-            label="ticked"
-            value={utils.getTickedCardCount(allCards)}
-            classNameOverriden="info-card-gray"
-            onClick={() => onClickSetFilter(CardsFilter.Ticked)}
-          />
+          <InfoCard label="ticked" value={utils.getTickedCardCount(allCards)} classNameOverriden="info-card-gray" onClick={() => onClickSetFilter(CardsFilter.Ticked)} />
         </div>
       </Expandable>
       <div className="group-details-paginator">

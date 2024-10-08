@@ -27,9 +27,9 @@ public class RegisterUserTests
                 var counter = GetCounter();
                 var body = new
                 {
-                    UserName = $"user{counter}",
+                    UserName = $"1user{counter}",
                     Password = "pass",
-                    Email = $"user{counter}@email.com",
+                    Email = $"1user{counter}@email.com",
                     FirstName = "name",
                     Surname = "surname"
                 };
@@ -52,6 +52,13 @@ public class RegisterUserTests
             .RegisterScenarios(scenario)
             .Run();
     }
+    
+    // name │ Register User                                           │
+    // │      request count │ all = 6889, ok = 6889, RPS = 688.9                      │
+    // │            latency │ min = 6.84, mean = 29.02, max = 102.85, StdDev = 10.4   │
+    // │ latency percentile │ p50 = 26.86, p75 = 34.24, p95 = 48.86, p99 = 63.65      │
+    // │      data transfer │ min = 0.115 KB, mean = 0.115 KB, max = 0.115 KB, all =  │
+    // │                    │ 0.8 MB                                                  │
 
     private static int GetCounter()
     {

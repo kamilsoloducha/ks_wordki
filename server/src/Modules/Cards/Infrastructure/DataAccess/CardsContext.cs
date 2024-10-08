@@ -23,26 +23,31 @@ internal class CardsContext : DbContext
     public DbSet<Card> Cards { get; set; }
     public DbSet<Details> Details { get; set; }
 
-    public CardsContext(
-        IConnectionStringProvider connectionStringProvider,
-        IHostEnvironment hostEnvironment,
-        ILoggerFactory loggerFactory)
+    // public CardsContext(
+    //     IConnectionStringProvider connectionStringProvider,
+    //     IHostEnvironment hostEnvironment,
+    //     ILoggerFactory loggerFactory)
+    // {
+    //     _hostEnvironment = hostEnvironment;
+    //     _loggerFactory = loggerFactory;
+    //     _connectionString = connectionStringProvider.ConnectionString;
+    // }
+
+    public CardsContext(DbContextOptions options) : base(options)
     {
-        _hostEnvironment = hostEnvironment;
-        _loggerFactory = loggerFactory;
-        _connectionString = connectionStringProvider.ConnectionString;
+        
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder
-            .UseNpgsql(_connectionString);
-
-        if (_hostEnvironment.IsProduction())
-            return;
-
-        optionsBuilder.UseLoggerFactory(_loggerFactory)
-            .EnableSensitiveDataLogging();
+        // optionsBuilder
+        //     .UseNpgsql(_connectionString);
+        //
+        // if (_hostEnvironment.IsProduction())
+        //     return;
+        //
+        // optionsBuilder.UseLoggerFactory(_loggerFactory)
+        //     .EnableSensitiveDataLogging();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

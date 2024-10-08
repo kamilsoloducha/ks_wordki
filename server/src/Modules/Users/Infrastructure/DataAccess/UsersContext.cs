@@ -20,17 +20,21 @@ internal class UsersContext : DbContext
 
     public DbSet<User> Users { get; set; }
 
-    public UsersContext(IConnectionStringProvider connectionStringProvider)
+    // public UsersContext(IConnectionStringProvider connectionStringProvider)
+    // {
+    //     _connectionString = connectionStringProvider.ConnectionString;
+    // }
+    
+    public UsersContext(DbContextOptions<UsersContext> builder) : base(builder)
     {
-        _connectionString = connectionStringProvider.ConnectionString;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder
-            // .UseLoggerFactory(loggerFactory)
-            // .EnableSensitiveDataLogging()
-            .UseNpgsql(_connectionString);
+        // optionsBuilder
+        //     // .UseLoggerFactory(loggerFactory)
+        //     // .EnableSensitiveDataLogging()
+        //     .UseNpgsql(_connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

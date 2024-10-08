@@ -12,9 +12,12 @@ using FluentValidation;
 using Infrastructure;
 using Infrastructure.Services.ConnectionStringProvider;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Cards.Infrastructure;
 
@@ -31,7 +34,21 @@ public static class Module
         services.BindConfiguration<WordkiScrapperConfiguration>(configuration);
         services.BindConfiguration<ApiDictionaryConfiguration>(configuration);
 
-        services.AddDbContext<CardsContext>();
+        services.AddDbContextPool<CardsContext>((provider, builder) =>
+        {
+            var hostEnvironment = provider.GetRequiredService<IHostEnvironment>();
+            var connectionStringProvider = provider.GetRequiredService<IConnectionStringProvider>();
+            var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+            
+            builder
+                .UseNpgsql(connectionStringProvider.ConnectionString);
+
+            if (hostEnvironment.IsProduction())
+                return;
+
+            builder.UseLoggerFactory(loggerFactory)
+                .EnableSensitiveDataLogging();
+        });
         services.AddScoped<IOwnerRepository, CardsRepository>();
         services.AddScoped<IQueryRepository, QueryRepository>();
         services.AddScoped<ISequenceGenerator, DbSequenceGenerator>();
