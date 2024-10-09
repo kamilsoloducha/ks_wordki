@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Authentication;
 using Domain.Utils;
 using E2e.Model.Tests.Model.Users;
 using E2e.Tests;
@@ -31,9 +32,9 @@ public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginS
             x.Authenticate(
                 _context.GivenUser.Id,
                 It.IsAny<IEnumerable<string>>()
-                )
-            ).Returns(TestServerMock.MockToken);
-        
+            )
+        ).Returns(new AuthenticationResult(TestServerMock.MockToken, TestServerMock.MockDate, TestServerMock.MockDate));
+
         SystemClock.Override(TestServerMock.MockDate);
     }
 
@@ -51,7 +52,7 @@ public class LoginSuccessTests<TContext> : UsersTestBase where TContext : LoginS
 
         var responseContent = await Response.Content.ReadAsStringAsync();
         var response = JsonConvert.DeserializeObject<LoginUser.Response>(responseContent);
-        
+
         response.Should().NotBeNull(responseContent);
         response.ResponseCode.Should().Be(LoginUser.ResponseCode.Successful, responseContent);
         response.Token.Should().Be(TestServerMock.MockToken, responseContent);

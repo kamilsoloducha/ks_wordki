@@ -13,20 +13,15 @@ namespace Api.Features.Users;
 
 [ApiController]
 [Route("users")]
-public class UsersController : BaseController
+public class UsersController(IMediator mediator) : BaseController(mediator)
 {
-    public UsersController(IMediator mediator) : base(mediator)
-    {
-    }
-
     [HttpPost("register")]
     [ProducesResponseType(typeof(RegisterUser.Response), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(RegisterUser.Response), StatusCodes.Status200OK)]
     public async Task<IActionResult> Register([FromBody] Api.Model.Requests.RegisterUser request,
         CancellationToken cancellationToken)
     {
-        var command = new RegisterUser.Command(request.UserName, request.Password, request.Email, string.Empty,
-            string.Empty);
+        var command = new RegisterUser.Command(request.UserName, request.Password, request.Email);
 
         var result = await Mediator.Send(command, cancellationToken);
 

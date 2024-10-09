@@ -11,31 +11,32 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Authentication;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService(IOptions<JwtConfiguration> jwtSettings) : IAuthenticationService
 {
-    private readonly JwtConfiguration _jwtSettings;
+    private readonly JwtConfiguration _jwtSettings = jwtSettings.Value;
 
-    public AuthenticationService(IOptions<JwtConfiguration> jwtSettings)
-    {
-        _jwtSettings = jwtSettings.Value;
-    }
-
-    public string Authenticate(Guid userId, IEnumerable<string> roles)
+    public AuthenticationResult Authenticate(Guid userId, IEnumerable<string> roles)
     {
         var claims = CreateClaim(userId, roles);
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+
+        var creatingDateTime = SystemClock.Now.ToUniversalTime();
+        var expirationDateTime = creatingDateTime.AddDays(1);
+        
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = SystemClock.Now.AddDays(7),
-            NotBefore = SystemClock.Now,
+            Expires = expirationDateTime,
+            NotBefore = creatingDateTime,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
-        return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+        
+        var token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+        return new AuthenticationResult(token, creatingDateTime, expirationDateTime);
     }
 
-    public string Refresh(string token)
+    public AuthenticationResult Refresh(string token)
     {
         return Authenticate(GetId(token), GetRoles(token));
     }

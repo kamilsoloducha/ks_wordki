@@ -28,6 +28,7 @@ public class DeleteUser
             if (user is null) return ResponseCode.UserNotFound;
             
             user.Remove();
+            
             await _userRepository.Update(user, cancellationToken);
             await _publishEndpoint.PublishBatch(user.Events, cancellationToken);
             

@@ -32,10 +32,9 @@ public class RefreshToken
             user.Login();
             await _userRepository.Update(user, cancellationToken);
 
-            var creatingDate = SystemClock.Now;
-            var newToken = _authenticationService.Refresh(request.Token);
+            var result = _authenticationService.Refresh(request.Token);
 
-            return new Response(ResponseCode.Success, newToken, request.Id, creatingDate, creatingDate.AddDays(7));
+            return new Response(ResponseCode.Success, result.Token, request.Id, result.CreatingDateTime, result.ExpirationDateTime);
         }
     }
 

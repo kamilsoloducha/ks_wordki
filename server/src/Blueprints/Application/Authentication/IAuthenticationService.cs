@@ -5,6 +5,8 @@ namespace Application.Authentication;
 
 public interface IAuthenticationService
 {
-    string Authenticate(Guid userId, IEnumerable<string> roles);
-    string Refresh(string token);
+    AuthenticationResult Authenticate(Guid userId, IEnumerable<string> roles);
+    AuthenticationResult Refresh(string token);
 }
+
+public record AuthenticationResult(string Token, DateTime CreatingDateTime, DateTime ExpirationDateTime);

@@ -3,24 +3,20 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Users.Application.Services;
 using Users.Domain.User;
-using Users.Domain.User.Services;
 
 namespace Users.Infrastructure.Services.AdminUserCreator;
 
 public class AdminAccountCreator
 {
     private readonly IUserRepository _userRepository;
-    private readonly IDataChecker _dataChecker;
     private readonly IPasswordManager _passwordManager;
     private readonly AdminAccountConfiguration _adminAccountSettings;
 
     public AdminAccountCreator(IUserRepository userRepository,
-        IDataChecker dataChecker,
         IOptions<AdminAccountConfiguration> options,
         IPasswordManager passwordManager)
     {
         _userRepository = userRepository;
-        _dataChecker = dataChecker;
         _passwordManager = passwordManager;
         _adminAccountSettings = options.Value;
     }
